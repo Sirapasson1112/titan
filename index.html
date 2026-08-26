@@ -101,7 +101,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;}
 .header-bar{
   height:60px;flex-shrink:0;border-bottom:1px solid var(--border-light);
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 24px;background:rgba(255,255,255,0.85);backdrop-filter:blur(100px);
+  padding:0 24px;background:rgba(255,255,255,0.85);backdrop-filter:blur(10px);
   position:sticky;top:0;z-index:20;
 }
 .headline-title{font-family:var(--font-heading);font-weight:700;font-size:17px;letter-spacing:-0.01em;}
@@ -376,7 +376,6 @@ const EQUIPMENT = [
   {id:'CO-0909', type:'Cutout', name:'เสาเลขที่ 102 ถ.แพรกษา', feeder:'SP-09', lat:13.5600, lng:100.6400, status:'ok', lastPM:'2026-07-22', nextPM:'2027-01-22', health:97, region:'บางปู', mea:'CO-0909', brand:'CHANCE', size:'100 A'},
 ];
 
-// ประวัติการบันทึกผลการตรวจสอบภาคสนามที่จัดเก็บในระบบ
 let INSPECTION_RECORDS = [
   {
     recordId: 'REC-2026-0826-01',
@@ -969,7 +968,6 @@ function saveStudioData(){
   studioForm.inspector = document.getElementById('st_inspector').value;
   studioForm.date = document.getElementById('st_date').value;
 
-  // เพิ่มข้อมูลลงในประวัติการบันทึกงาน
   const newRec = {
     recordId: 'REC-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + Math.floor(10 + Math.random()*90),
     stationId: studioForm.stationId,
