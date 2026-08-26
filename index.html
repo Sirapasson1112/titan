@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ElectroPM - High-Tech Soft Tangerine CMMS</title>
+  <title>ElectroPM Enterprise - Power Grid CMMS & PM Platform</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -20,14 +20,15 @@
               500: '#f97316',
               600: '#ea580c',
               700: '#c2410c',
-              800: '#9a3412'
+              800: '#9a3412',
+              900: '#7c2d12'
             },
-            lightBg: '#fdfbf7',
+            lightBg: '#fcfaf6',
             lightCard: '#ffffff',
-            lightBorder: '#eedbc5',
+            lightBorder: '#e8dbce',
             darkBg: '#121118',
-            darkCard: '#1c1b24',
-            darkBorder: '#343040'
+            darkCard: '#1a1822',
+            darkBorder: '#322e3f'
           }
         }
       }
@@ -46,14 +47,16 @@
       font-family: 'Sarabun', sans-serif; 
       transition: background-color 0.3s ease, color 0.3s ease;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     .font-hud { font-family: 'Orbitron', monospace; }
-    #map { height: 480px; width: 100%; border-radius: 16px; z-index: 10; }
+    #map { height: 490px; width: 100%; border-radius: 20px; z-index: 10; }
     
+    /* Smooth Scrollbar */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #fb923c80; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #ea580c; }
+    ::-webkit-scrollbar-thumb:hover { background: #f97316; }
 
     @media print {
       body * { visibility: hidden; }
@@ -66,49 +69,49 @@
   <div id="app" class="flex min-h-screen">
     
     <!-- Sidebar Navigation -->
-    <aside :class="isDarkMode ? 'bg-[#171520] border-darkBorder' : 'bg-[#1e1c26] border-stone-800'" class="w-64 border-r flex flex-col flex-shrink-0 text-white transition-colors duration-300">
-      <!-- Brand Header -->
+    <aside :class="isDarkMode ? 'bg-[#15131c] border-darkBorder' : 'bg-[#1b1924] border-stone-800'" class="w-64 border-r flex flex-col flex-shrink-0 text-white transition-colors duration-300 shadow-xl">
+      <!-- Brand Logo Header -->
       <div class="p-5 border-b border-white/10 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-tangerine-500 to-tangerine-300 text-slate-950 flex items-center justify-center text-lg font-black shadow-lg shadow-tangerine-500/30">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-tangerine-500 to-tangerine-300 text-slate-950 flex items-center justify-center text-xl font-black shadow-lg shadow-tangerine-500/30">
           <i class="fa-solid fa-bolt-lightning"></i>
         </div>
         <div>
-          <h1 class="font-extrabold text-base leading-tight tracking-wide text-white">ElectroPM</h1>
-          <p class="text-xs text-tangerine-300 font-bold">Grid Asset CMMS</p>
+          <h1 class="font-black text-base leading-tight tracking-wide text-white">ElectroPM</h1>
+          <p class="text-[11px] text-tangerine-300 font-bold uppercase tracking-wider">Enterprise Power CMMS</p>
         </div>
       </div>
 
-      <!-- Navigation Links -->
+      <!-- Nav Links -->
       <nav class="flex-1 p-3 space-y-1.5 overflow-y-auto">
-        <button @click="switchTab('schedule')" :class="navClass('schedule')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition text-left">
+        <button @click="switchTab('schedule')" :class="navClass('schedule')" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-black transition text-left">
           <i class="fa-solid fa-calendar-days w-5 text-center text-tangerine-300 text-sm"></i> 1. แผนงาน PM ประจำปี
         </button>
-        <button @click="switchTab('feeder')" :class="navClass('feeder')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition text-left">
+        <button @click="switchTab('feeder')" :class="navClass('feeder')" class="w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-black transition text-left">
           <span class="flex items-center gap-3"><i class="fa-solid fa-chart-line w-5 text-center text-tangerine-300 text-sm"></i> 2. สถิติไฟดับสายป้อน</span>
           <span class="bg-tangerine-400/20 text-tangerine-200 border border-tangerine-400/40 text-[10px] px-2 py-0.5 rounded-full font-mono font-black">SAIFI</span>
         </button>
-        <button @click="switchTab('route')" :class="navClass('route')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition text-left">
+        <button @click="switchTab('route')" :class="navClass('route')" class="w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-black transition text-left">
           <span class="flex items-center gap-3"><i class="fa-solid fa-location-crosshairs w-5 text-center text-tangerine-300 text-sm"></i> 3. แผนที่ GIS & GPS</span>
           <span class="bg-emerald-500/20 text-emerald-300 text-[10px] px-2 py-0.5 rounded-full font-black border border-emerald-500/30">LIVE</span>
         </button>
-        <button @click="switchTab('orders')" :class="navClass('orders')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition text-left">
+        <button @click="switchTab('orders')" :class="navClass('orders')" class="w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-black transition text-left">
           <span class="flex items-center gap-3"><i class="fa-solid fa-file-invoice w-5 text-center text-tangerine-300 text-sm"></i> 4. ใบสั่งงาน (Work Orders)</span>
-          <span class="bg-white/10 text-tangerine-200 text-xs px-2.5 py-0.5 rounded-full font-extrabold border border-white/10">{{ workOrders.length }}</span>
+          <span class="bg-white/10 text-tangerine-200 text-xs px-2.5 py-0.5 rounded-full font-black border border-white/10">{{ workOrders.length }}</span>
         </button>
-        <button @click="switchTab('anomaly')" :class="navClass('anomaly')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition text-left">
+        <button @click="switchTab('anomaly')" :class="navClass('anomaly')" class="w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-black transition text-left">
           <span class="flex items-center gap-3"><i class="fa-solid fa-triangle-exclamation w-5 text-center text-tangerine-300 text-sm"></i> 5. วิเคราะห์ Anomaly WO</span>
           <span class="bg-tangerine-400 text-slate-950 text-[10px] px-2 py-0.5 rounded-full font-black">{{ anomalies.length }}</span>
         </button>
-        <button @click="switchTab('form')" :class="navClass('form')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition text-left">
+        <button @click="switchTab('form')" :class="navClass('form')" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-black transition text-left">
           <i class="fa-solid fa-file-signature w-5 text-center text-tangerine-300 text-sm"></i> 6. ฟอร์มเอกสาร & พิมพ์
         </button>
       </nav>
 
       <!-- Bottom Reliability Score -->
-      <div class="p-4 border-t border-white/10 bg-black/20 text-xs text-slate-300">
-        <div class="flex justify-between items-center mb-1.5 text-xs font-bold">
-          <span>Grid Reliability Score</span>
-          <span class="text-tangerine-300 font-extrabold">99.98%</span>
+      <div class="p-4 border-t border-white/10 bg-black/25 text-xs text-slate-300">
+        <div class="flex justify-between items-center mb-2 text-xs font-extrabold">
+          <span>Grid Reliability Index</span>
+          <span class="text-tangerine-300 font-black">99.98%</span>
         </div>
         <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
           <div class="bg-gradient-to-r from-tangerine-500 to-tangerine-300 h-full rounded-full" style="width: 99.98%"></div>
@@ -122,23 +125,23 @@
       <!-- Top Title Bar + Theme Switcher -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-6 border-b gap-4" :class="isDarkMode ? 'border-darkBorder' : 'border-lightBorder'">
         <div>
-          <h2 class="text-2xl font-black tracking-tight" :class="isDarkMode ? 'text-white' : 'text-slate-900'">
-            <span v-if="currentTab === 'schedule'">ตารางวางแผน PM อุปกรณ์ไฟฟ้ารายปี (Annual Master Grid)</span>
+          <h2 class="text-2xl font-black tracking-tight" :class="isDarkMode ? 'text-white' : 'text-slate-950'">
+            <span v-if="currentTab === 'schedule'">ตารางวางแผน PM อุปกรณ์ไฟฟ้ารายปี (Annual Master PM Grid)</span>
             <span v-if="currentTab === 'feeder'">สถิติไฟฟ้าดับและความมั่นคงรายสายป้อน (Feeder Reliability Analytics)</span>
-            <span v-if="currentTab === 'route'">แผนที่ GIS & ระบบนำทางตรวจ PM ภาคสนาม (Field GPS Cockpit)</span>
-            <span v-if="currentTab === 'orders'">ศูนย์จัดการใบสั่งงานบำรุงรักษา (Work Orders Hub)</span>
+            <span v-if="currentTab === 'route'">แผนที่ GIS & ระบบนำทางตรวจ PM ภาคสนาม (Turn-by-Turn GPS Cockpit)</span>
+            <span v-if="currentTab === 'orders'">ศูนย์จัดการใบสั่งงานและประวัติบำรุงรักษา (Work Orders Hub)</span>
             <span v-if="currentTab === 'anomaly'">ระบบวิเคราะห์ความผิดปกติของ Work Order (Anomaly Engine)</span>
-            <span v-if="currentTab === 'form'">ฟอร์มเอกสารตรวจวัดและบันทึกผลบำรุงรักษา (Standard PM Form)</span>
+            <span v-if="currentTab === 'form'">ฟอร์มเอกสารตรวจวัดและบันทึกผลบำรุงรักษามาตรฐาน (Standard PM Form)</span>
           </h2>
-          <p class="text-xs font-semibold mt-1" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">ระบบบริหารจัดการงานบำรุงรักษาอุปกรณ์ไฟฟ้า ตัวหนังสือคมชัดสูง</p>
+          <p class="text-xs font-bold mt-1" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">ระบบบริหารจัดการงานซ่อมบำรุงเชิงรุก ตัวหนังสือคมชัดสูง สบายตา</p>
         </div>
         
         <div class="flex items-center gap-3">
           <!-- Day/Night Toggle Button -->
           <button @click="toggleTheme" 
-                  class="p-2.5 rounded-2xl border flex items-center gap-2 text-xs font-bold transition shadow-sm"
-                  :class="isDarkMode ? 'bg-darkCard border-darkBorder text-tangerine-300 hover:bg-[#262432]' : 'bg-white border-lightBorder text-slate-800 hover:bg-tangerine-50'">
-            <i class="fa-solid" :class="isDarkMode ? 'fa-sun text-tangerine-400 text-sm' : 'fa-moon text-slate-700 text-sm'"></i>
+                  class="p-2.5 rounded-2xl border flex items-center gap-2 text-xs font-black transition shadow-sm"
+                  :class="isDarkMode ? 'bg-darkCard border-darkBorder text-tangerine-300 hover:bg-[#252230]' : 'bg-white border-lightBorder text-slate-900 hover:bg-tangerine-50'">
+            <i class="fa-solid" :class="isDarkMode ? 'fa-sun text-tangerine-400 text-sm' : 'fa-moon text-slate-800 text-sm'"></i>
             <span>{{ isDarkMode ? 'โหมดสว่างสบายตา' : 'โหมดกลางคืน' }}</span>
           </button>
 
@@ -153,10 +156,10 @@
         <div class="p-6 rounded-3xl border shadow-sm transition" :class="isDarkMode ? 'bg-darkCard border-darkBorder' : 'bg-white border-lightBorder'">
           <div class="flex justify-between items-center mb-6">
             <div>
-              <h3 class="font-extrabold text-base" :class="isDarkMode ? 'text-white' : 'text-slate-900'">ตารางวางแผนวงรอบ PM ปี 2026</h3>
-              <p class="text-xs font-medium mt-0.5" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">แผนการทดสอบและบำรุงรักษาแยกตามหมวดหมู่อุปกรณ์ไฟฟ้าและไตรมาส</p>
+              <h3 class="font-black text-base" :class="isDarkMode ? 'text-white' : 'text-slate-950'">ตารางวางแผนวงรอบ PM ปี 2026</h3>
+              <p class="text-xs font-semibold mt-0.5" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">แผนการทดสอบและบำรุงรักษาแยกตามหมวดหมู่อุปกรณ์ไฟฟ้าและไตรมาส</p>
             </div>
-            <div class="flex gap-3 text-xs font-bold" :class="isDarkMode ? 'text-slate-200' : 'text-slate-700'">
+            <div class="flex gap-3 text-xs font-extrabold" :class="isDarkMode ? 'text-slate-200' : 'text-slate-800'">
               <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-500"></span> ดำเนินการแล้ว</span>
               <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-tangerine-400"></span> ตามกำหนดการ</span>
               <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full" :class="isDarkMode ? 'bg-slate-700' : 'bg-slate-300'"></span> แผนในอนาคต</span>
@@ -165,7 +168,7 @@
 
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs border rounded-2xl overflow-hidden" :class="isDarkMode ? 'border-darkBorder' : 'border-lightBorder'">
-              <thead class="uppercase font-bold border-b text-xs" :class="isDarkMode ? 'bg-[#23202d] text-white border-darkBorder' : 'bg-tangerine-50 text-slate-950 border-lightBorder'">
+              <thead class="uppercase font-black border-b text-xs" :class="isDarkMode ? 'bg-[#23202e] text-white border-darkBorder' : 'bg-tangerine-50 text-slate-950 border-lightBorder'">
                 <tr>
                   <th class="p-3.5 border-r font-black" :class="isDarkMode ? 'border-darkBorder' : 'border-lightBorder'">หมวดหมู่อุปกรณ์</th>
                   <th class="p-3.5 border-r font-black" :class="isDarkMode ? 'border-darkBorder' : 'border-lightBorder'">วงรอบ</th>
@@ -174,16 +177,16 @@
                 </tr>
               </thead>
               <tbody class="divide-y font-bold" :class="isDarkMode ? 'divide-darkBorder text-slate-200' : 'divide-lightBorder text-slate-800'">
-                <tr v-for="item in scheduleMatrix" :key="item.id" :class="isDarkMode ? 'hover:bg-white/[0.03]' : 'hover:bg-tangerine-50/50'">
+                <tr v-for="item in scheduleMatrix" :key="item.id" :class="isDarkMode ? 'hover:bg-white/[0.03]' : 'hover:bg-tangerine-50/60'">
                   <td class="p-3.5 border-r font-extrabold text-sm" :class="[isDarkMode ? 'border-darkBorder text-white' : 'border-lightBorder text-slate-950']">{{ item.name }}</td>
-                  <td class="p-3.5 border-r" :class="isDarkMode ? 'border-darkBorder' : 'border-lightBorder'"><span class="px-2.5 py-1 rounded-lg font-mono text-xs font-bold border" :class="isDarkMode ? 'bg-slate-800 text-tangerine-300 border-slate-700' : 'bg-tangerine-100 text-tangerine-800 border-tangerine-300'">{{ item.cycle }}</span></td>
+                  <td class="p-3.5 border-r" :class="isDarkMode ? 'border-darkBorder' : 'border-lightBorder'"><span class="px-2.5 py-1 rounded-lg font-mono text-xs font-black border" :class="isDarkMode ? 'bg-slate-800 text-tangerine-300 border-slate-700' : 'bg-tangerine-100 text-tangerine-800 border-tangerine-300'">{{ item.cycle }}</span></td>
                   <td v-for="(status, idx) in item.months" :key="idx" class="p-2 border-r text-center" :class="isDarkMode ? 'border-darkBorder' : 'border-lightBorder'">
                     <span v-if="status === 'DONE'" class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 px-2 py-0.5 rounded-md text-[11px] font-black">DONE</span>
                     <span v-else-if="status === 'PLANNED'" class="bg-tangerine-400 text-slate-950 px-2 py-0.5 rounded-md text-[11px] font-black shadow-sm">PLAN</span>
                     <span v-else class="text-slate-400 font-bold opacity-30">-</span>
                   </td>
                   <td class="p-2 text-center">
-                    <button @click="triggerScheduleWO(item)" class="text-xs px-3 py-1.5 rounded-xl font-bold transition border" :class="isDarkMode ? 'bg-slate-800 hover:bg-tangerine-400 text-tangerine-200 hover:text-slate-950 border-slate-700' : 'bg-tangerine-100 hover:bg-tangerine-400 text-tangerine-800 hover:text-slate-950 border-tangerine-300'">
+                    <button @click="triggerScheduleWO(item)" class="text-xs px-3 py-1.5 rounded-xl font-extrabold transition border" :class="isDarkMode ? 'bg-slate-800 hover:bg-tangerine-400 text-tangerine-200 hover:text-slate-950 border-slate-700' : 'bg-tangerine-100 hover:bg-tangerine-400 text-tangerine-800 hover:text-slate-950 border-tangerine-300'">
                       สร้างใบงาน
                     </button>
                   </td>
@@ -198,32 +201,32 @@
       <section v-if="currentTab === 'feeder'" class="space-y-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div class="p-5 rounded-3xl border shadow-sm" :class="isDarkMode ? 'bg-darkCard border-darkBorder' : 'bg-white border-lightBorder'">
-            <span class="text-xs font-bold uppercase tracking-wider" :class="isDarkMode ? 'text-slate-300' : 'text-slate-700'">SAIFI (ความถี่ไฟดับ)</span>
-            <div class="text-3xl font-black mt-1" :class="isDarkMode ? 'text-white' : 'text-slate-950'">0.42 <span class="text-xs font-semibold" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">ครั้ง/ราย/ปี</span></div>
-            <div class="text-xs text-emerald-500 font-bold mt-1.5"><i class="fa-solid fa-arrow-down"></i> ลดลง 12% ตามเกณฑ์</div>
+            <span class="text-xs font-black uppercase tracking-wider" :class="isDarkMode ? 'text-slate-300' : 'text-slate-700'">SAIFI (ความถี่ไฟดับ)</span>
+            <div class="text-3xl font-black mt-1" :class="isDarkMode ? 'text-white' : 'text-slate-950'">0.42 <span class="text-xs font-bold" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">ครั้ง/ราย/ปี</span></div>
+            <div class="text-xs text-emerald-500 font-black mt-1.5"><i class="fa-solid fa-arrow-down"></i> ลดลง 12% ตามเกณฑ์</div>
           </div>
           <div class="p-5 rounded-3xl border shadow-sm" :class="isDarkMode ? 'bg-darkCard border-darkBorder' : 'bg-white border-lightBorder'">
-            <span class="text-xs font-bold uppercase tracking-wider" :class="isDarkMode ? 'text-slate-300' : 'text-slate-700'">SAIDI (ระยะเวลาไฟดับ)</span>
-            <div class="text-3xl font-black mt-1" :class="isDarkMode ? 'text-white' : 'text-slate-950'">18.5 <span class="text-xs font-semibold" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">นาที/ราย/ปี</span></div>
-            <div class="text-xs text-emerald-500 font-bold mt-1.5"><i class="fa-solid fa-arrow-down"></i> ดีกว่าเป้าหมาย 25 นาที</div>
+            <span class="text-xs font-black uppercase tracking-wider" :class="isDarkMode ? 'text-slate-300' : 'text-slate-700'">SAIDI (ระยะเวลาไฟดับ)</span>
+            <div class="text-3xl font-black mt-1" :class="isDarkMode ? 'text-white' : 'text-slate-950'">18.5 <span class="text-xs font-bold" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">นาที/ราย/ปี</span></div>
+            <div class="text-xs text-emerald-500 font-black mt-1.5"><i class="fa-solid fa-arrow-down"></i> ดีกว่าเป้าหมาย 25 นาที</div>
           </div>
           <div class="p-5 rounded-3xl border shadow-sm" :class="isDarkMode ? 'bg-darkCard border-darkBorder' : 'bg-white border-lightBorder'">
-            <span class="text-xs font-bold uppercase tracking-wider" :class="isDarkMode ? 'text-slate-300' : 'text-slate-700'">สายป้อนทริปสูงสุด</span>
+            <span class="text-xs font-black uppercase tracking-wider" :class="isDarkMode ? 'text-slate-300' : 'text-slate-700'">สายป้อนทริปสูงสุด</span>
             <div class="text-3xl font-black text-tangerine-500 mt-1">F-03 บางนา</div>
-            <div class="text-xs text-tangerine-700 dark:text-tangerine-400 font-bold mt-1.5">ทริปสะสม 4 ครั้ง (กิ่งไม้/สัตว์)</div>
+            <div class="text-xs text-tangerine-700 dark:text-tangerine-400 font-black mt-1.5">ทริปสะสม 4 ครั้ง (กิ่งไม้/สัตว์)</div>
           </div>
           <div class="p-5 rounded-3xl border shadow-sm" :class="isDarkMode ? 'bg-darkCard border-darkBorder' : 'bg-white border-lightBorder'">
-            <span class="text-xs font-bold uppercase tracking-wider" :class="isDarkMode ? 'text-slate-300' : 'text-slate-700'">อัตราจ่ายไฟต่อเนื่อง (ASAI)</span>
+            <span class="text-xs font-black uppercase tracking-wider" :class="isDarkMode ? 'text-slate-300' : 'text-slate-700'">อัตราจ่ายไฟต่อเนื่อง (ASAI)</span>
             <div class="text-3xl font-black text-emerald-500 mt-1">99.982%</div>
             <div class="text-xs mt-1.5 font-bold" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">ระดับคุณภาพ World-Class</div>
           </div>
         </div>
 
         <div class="p-6 rounded-3xl border shadow-sm" :class="isDarkMode ? 'bg-darkCard border-darkBorder' : 'bg-white border-lightBorder'">
-          <h3 class="font-extrabold mb-4 text-base" :class="isDarkMode ? 'text-white' : 'text-slate-900'">สถิติไฟฟ้าดับจำแนกรายสายป้อน</h3>
+          <h3 class="font-extrabold mb-4 text-base" :class="isDarkMode ? 'text-white' : 'text-slate-950'">สถิติไฟฟ้าดับจำแนกรายสายป้อน</h3>
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs border rounded-2xl overflow-hidden" :class="isDarkMode ? 'border-darkBorder' : 'border-lightBorder'">
-              <thead class="uppercase font-bold border-b" :class="isDarkMode ? 'bg-[#23202d] text-white border-darkBorder' : 'bg-tangerine-50 text-slate-950 border-lightBorder'">
+              <thead class="uppercase font-black border-b" :class="isDarkMode ? 'bg-[#23202e] text-white border-darkBorder' : 'bg-tangerine-50 text-slate-950 border-lightBorder'">
                 <tr>
                   <th class="p-3.5 font-black">รหัสสายป้อน</th>
                   <th class="p-3.5 font-black">พื้นที่รับผิดชอบ</th>
@@ -235,15 +238,15 @@
                 </tr>
               </thead>
               <tbody class="divide-y font-bold" :class="isDarkMode ? 'divide-darkBorder text-slate-200' : 'divide-lightBorder text-slate-800'">
-                <tr v-for="f in feeders" :key="f.id" :class="isDarkMode ? 'hover:bg-white/[0.03]' : 'hover:bg-tangerine-50/50'">
+                <tr v-for="f in feeders" :key="f.id" :class="isDarkMode ? 'hover:bg-white/[0.03]' : 'hover:bg-tangerine-50/60'">
                   <td class="p-3.5 font-mono font-black text-sm text-tangerine-500">{{ f.id }}</td>
-                  <td class="p-3.5 font-bold text-sm" :class="isDarkMode ? 'text-white' : 'text-slate-950'">{{ f.name }}</td>
-                  <td class="p-3.5"><span class="bg-rose-500/10 text-rose-600 border border-rose-500/30 font-bold px-2.5 py-0.5 rounded text-xs">{{ f.voltage }}</span></td>
+                  <td class="p-3.5 font-extrabold text-sm" :class="isDarkMode ? 'text-white' : 'text-slate-950'">{{ f.name }}</td>
+                  <td class="p-3.5"><span class="bg-rose-500/10 text-rose-600 border border-rose-500/30 font-black px-2.5 py-0.5 rounded text-xs">{{ f.voltage }}</span></td>
                   <td class="p-3.5 text-center font-black text-sm" :class="f.trips > 2 ? 'text-tangerine-500' : ''">{{ f.trips }} ครั้ง</td>
-                  <td class="p-3.5 text-center font-mono font-bold text-sm">{{ f.duration }} นาที</td>
-                  <td class="p-3.5 font-medium" :class="isDarkMode ? 'text-slate-300' : 'text-slate-700'">{{ f.rootCause }}</td>
+                  <td class="p-3.5 text-center font-mono font-black text-sm">{{ f.duration }} นาที</td>
+                  <td class="p-3.5 font-semibold" :class="isDarkMode ? 'text-slate-300' : 'text-slate-700'">{{ f.rootCause }}</td>
                   <td class="p-3.5">
-                    <button @click="createPMFromFeeder(f)" class="bg-tangerine-100 hover:bg-tangerine-400 text-tangerine-800 hover:text-slate-950 border border-tangerine-300 px-3.5 py-1.5 rounded-xl font-bold text-xs transition">
+                    <button @click="createPMFromFeeder(f)" class="bg-tangerine-100 hover:bg-tangerine-400 text-tangerine-800 hover:text-slate-950 border border-tangerine-300 px-3.5 py-1.5 rounded-xl font-black text-xs transition">
                       <i class="fa-solid fa-screwdriver-wrench mr-1"></i> เปิดงาน PM สายป้อน
                     </button>
                   </td>
@@ -261,8 +264,8 @@
           <!-- Left Checkpoint List -->
           <div class="p-5 rounded-3xl border shadow-sm space-y-3" :class="isDarkMode ? 'bg-darkCard border-darkBorder' : 'bg-white border-lightBorder'">
             <div class="flex justify-between items-center">
-              <h3 class="font-extrabold text-sm" :class="isDarkMode ? 'text-white' : 'text-slate-900'">ลำดับจุดตรวจ PM ภาคสนาม</h3>
-              <button @click="optimizeRoute" class="text-xs bg-tangerine-100 hover:bg-tangerine-400 text-tangerine-800 hover:text-slate-950 border border-tangerine-300 px-2.5 py-1.5 rounded-xl font-bold transition">
+              <h3 class="font-extrabold text-sm" :class="isDarkMode ? 'text-white' : 'text-slate-950'">ลำดับจุดตรวจ PM ภาคสนาม</h3>
+              <button @click="optimizeRoute" class="text-xs bg-tangerine-100 hover:bg-tangerine-400 text-tangerine-800 hover:text-slate-950 border border-tangerine-300 px-2.5 py-1.5 rounded-xl font-black transition">
                 <i class="fa-solid fa-wand-magic-sparkles"></i> จัดเส้นทางลัด
               </button>
             </div>
@@ -274,17 +277,17 @@
                    :class="selectedCp?.id === cp.id ? (isDarkMode ? 'border-tangerine-400 bg-tangerine-400/10' : 'border-tangerine-500 bg-tangerine-50') : (isDarkMode ? 'border-darkBorder bg-slate-900/50' : 'border-lightBorder bg-lightBg')">
                 <div class="flex items-start justify-between">
                   <div class="flex items-start gap-2.5">
-                    <span class="w-6 h-6 rounded-md bg-slate-950 text-tangerine-300 font-extrabold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span class="w-6 h-6 rounded-md bg-slate-950 text-tangerine-300 font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
                       {{ cp.status === 'COMPLETED' ? '✓' : idx + 1 }}
                     </span>
                     <div>
-                      <div class="font-bold text-sm" :class="isDarkMode ? 'text-white' : 'text-slate-900'">{{ cp.name }}</div>
-                      <div class="text-xs font-mono font-bold" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">{{ cp.tag }} &bull; {{ cp.voltage }}</div>
-                      <div class="text-xs text-tangerine-700 dark:text-tangerine-400 font-bold mt-0.5"><i class="fa-solid fa-wrench"></i> {{ cp.task }}</div>
+                      <div class="font-bold text-sm" :class="isDarkMode ? 'text-white' : 'text-slate-950'">{{ cp.name }}</div>
+                      <div class="text-xs font-mono font-black" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">{{ cp.tag }} &bull; {{ cp.voltage }}</div>
+                      <div class="text-xs text-tangerine-700 dark:text-tangerine-400 font-black mt-0.5"><i class="fa-solid fa-wrench"></i> {{ cp.task }}</div>
                     </div>
                   </div>
                   <div class="text-right">
-                    <span class="text-xs font-mono font-bold block" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">{{ cp.distance }} km</span>
+                    <span class="text-xs font-mono font-black block" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">{{ cp.distance }} km</span>
                     <span v-if="cp.isNearby" class="text-[10px] bg-emerald-500/20 text-emerald-500 border border-emerald-500/30 font-black px-2 py-0.5 rounded-full">
                       ใกล้ถึง
                     </span>
@@ -294,7 +297,7 @@
                   <button @click.stop="startNavigationTo(cp)" class="text-tangerine-600 hover:text-tangerine-700 font-black">
                     <i class="fa-solid fa-location-arrow"></i> นำทางจุดนี้
                   </button>
-                  <button v-if="cp.isNearby && cp.status !== 'COMPLETED'" @click.stop="openFieldChecklist(cp)" class="bg-emerald-500 text-white px-2.5 py-1 rounded-lg font-bold text-xs">
+                  <button v-if="cp.isNearby && cp.status !== 'COMPLETED'" @click.stop="openFieldChecklist(cp)" class="bg-emerald-500 text-white px-2.5 py-1 rounded-lg font-black text-xs">
                     ตรวจ PM ทันที
                   </button>
                 </div>
@@ -344,13 +347,13 @@
       <!-- TAB 4: WORK ORDERS -->
       <section v-if="currentTab === 'orders'" class="p-6 rounded-3xl border shadow-sm space-y-4" :class="isDarkMode ? 'bg-darkCard border-darkBorder' : 'bg-white border-lightBorder'">
         <div class="flex justify-between items-center">
-          <h3 class="font-extrabold text-base" :class="isDarkMode ? 'text-white' : 'text-slate-900'">รายการใบสั่งงาน PM / CM ทั้งหมด</h3>
+          <h3 class="font-extrabold text-base" :class="isDarkMode ? 'text-white' : 'text-slate-950'">รายการใบสั่งงาน PM / CM ทั้งหมด</h3>
           <span class="text-xs font-semibold" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">จัดการสถานะและพิมพ์ใบงาน</span>
         </div>
 
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs border rounded-2xl overflow-hidden" :class="isDarkMode ? 'border-darkBorder' : 'border-lightBorder'">
-            <thead class="uppercase font-bold border-b text-xs" :class="isDarkMode ? 'bg-[#23202d] text-white border-darkBorder' : 'bg-tangerine-50 text-slate-950 border-lightBorder'">
+            <thead class="uppercase font-bold border-b text-xs" :class="isDarkMode ? 'bg-[#23202e] text-white border-darkBorder' : 'bg-tangerine-50 text-slate-950 border-lightBorder'">
               <tr>
                 <th class="p-3.5 font-black">รหัสงาน</th>
                 <th class="p-3.5 font-black">ประเภท</th>
@@ -366,7 +369,7 @@
                 <td class="p-3.5 font-mono font-black text-sm text-tangerine-500">{{ wo.id }}</td>
                 <td class="p-3.5"><span :class="wo.type === 'PM' ? 'bg-blue-500/10 text-blue-600 border border-blue-500/30' : 'bg-rose-500/10 text-rose-600 border border-rose-500/30'" class="px-2.5 py-0.5 rounded-md font-bold text-xs">{{ wo.type }}</span></td>
                 <td class="p-3.5">
-                  <div class="font-bold text-sm" :class="isDarkMode ? 'text-white' : 'text-slate-900'">{{ wo.title }}</div>
+                  <div class="font-bold text-sm" :class="isDarkMode ? 'text-white' : 'text-slate-950'">{{ wo.title }}</div>
                   <div class="text-xs font-semibold" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">{{ wo.asset }} ({{ wo.tag }})</div>
                 </td>
                 <td class="p-3.5"><span class="border px-2 py-0.5 rounded-md font-bold" :class="isDarkMode ? 'bg-slate-800 text-slate-200 border-slate-700' : 'bg-tangerine-50 text-slate-800 border-tangerine-200'">{{ wo.voltage }}</span></td>
@@ -393,7 +396,7 @@
             <i class="fa-solid fa-brain"></i>
           </div>
           <div>
-            <h3 class="font-extrabold text-base" :class="isDarkMode ? 'text-white' : 'text-slate-900'">ระบบวิเคราะห์ความผิดปกติของใบสั่งงาน (Work Order Anomaly Engine)</h3>
+            <h3 class="font-extrabold text-base" :class="isDarkMode ? 'text-white' : 'text-slate-950'">ระบบวิเคราะห์ความผิดปกติของใบสั่งงาน (Work Order Anomaly Engine)</h3>
             <p class="text-xs font-medium mt-1 leading-relaxed" :class="isDarkMode ? 'text-slate-300' : 'text-slate-700'">ตรวจจับความผิดปกติ เช่น ทริปซ้ำซาก, ค่าความต้านทานฉนวนเสื่อมสภาพเร็ว, หรือใช้เวลาซ่อมเกินเกณฑ์</p>
           </div>
         </div>
@@ -407,7 +410,7 @@
                   {{ item.severity }}
                 </span>
               </div>
-              <h4 class="font-extrabold text-base mt-2" :class="isDarkMode ? 'text-white' : 'text-slate-900'">{{ item.title }}</h4>
+              <h4 class="font-extrabold text-base mt-2" :class="isDarkMode ? 'text-white' : 'text-slate-950'">{{ item.title }}</h4>
               <p class="text-xs font-bold mt-1" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">อุปกรณ์: <strong :class="isDarkMode ? 'text-white' : 'text-slate-900'">{{ item.asset }}</strong></p>
               
               <div class="mt-3 p-3 rounded-2xl border text-xs leading-relaxed font-bold" :class="isDarkMode ? 'bg-slate-900/60 border-darkBorder' : 'bg-tangerine-50 border-tangerine-200'">
@@ -462,7 +465,7 @@
 
           <!-- Megger Test -->
           <div class="border rounded-2xl overflow-hidden" :class="isDarkMode ? 'border-darkBorder bg-slate-900/40' : 'border-lightBorder bg-white'">
-            <div class="p-3 font-extrabold border-b flex justify-between items-center text-xs" :class="isDarkMode ? 'bg-[#23202d] text-white border-darkBorder' : 'bg-tangerine-50 text-slate-950 border-lightBorder'">
+            <div class="p-3 font-extrabold border-b flex justify-between items-center text-xs" :class="isDarkMode ? 'bg-[#23202e] text-white border-darkBorder' : 'bg-tangerine-50 text-slate-950 border-lightBorder'">
               <span>1. ค่าความต้านทานความเป็นฉนวน (Insulation Megger Test @ 2.5kV)</span>
               <span class="text-xs font-bold text-tangerine-700 dark:text-tangerine-300">เกณฑ์: &ge; 100 M&Omega;</span>
             </div>
@@ -493,7 +496,7 @@
 
           <!-- Ground & Thermo -->
           <div class="border rounded-2xl overflow-hidden" :class="isDarkMode ? 'border-darkBorder bg-slate-900/40' : 'border-lightBorder bg-white'">
-            <div class="p-3 font-extrabold border-b flex justify-between items-center text-xs" :class="isDarkMode ? 'bg-[#23202d] text-white border-darkBorder' : 'bg-tangerine-50 text-slate-950 border-lightBorder'">
+            <div class="p-3 font-extrabold border-b flex justify-between items-center text-xs" :class="isDarkMode ? 'bg-[#23202e] text-white border-darkBorder' : 'bg-tangerine-50 text-slate-950 border-lightBorder'">
               <span>2. การทดสอบความต้านทานดินและอุณหภูมิ (Grounding & Thermal Scan)</span>
             </div>
             <div class="p-4 grid grid-cols-3 gap-4">
@@ -768,9 +771,9 @@
 
           const carIcon = L.divIcon({
             className: 'custom-car-icon',
-            html: `<div style="background:#fb923c; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2.5px solid #1e1c26; box-shadow:0 0 10px rgba(249,115,22,0.6);"><i class="fa-solid fa-truck-pickup" style="color:#1e1c26; font-size:13px;"></i></div>`,
-            iconSize: [30, 30],
-            iconAnchor: [15, 15]
+            html: `<div style="background:#fb923c; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2.5px solid #1e1c26; box-shadow:0 0 12px rgba(249,115,22,0.6);"><i class="fa-solid fa-truck-pickup" style="color:#1e1c26; font-size:14px;"></i></div>`,
+            iconSize: [32, 32],
+            iconAnchor: [16, 16]
           });
           this.carMarker = L.marker(this.carPos, { icon: carIcon }).addTo(this.map);
         },
@@ -788,8 +791,8 @@
           this.markersGroup.clearLayers();
           this.checkpoints.forEach((cp, idx) => {
             const isDone = cp.status === 'COMPLETED';
-            const iconHtml = `<div style="background:${isDone ? '#10b981' : '#ffedd5'}; color:${isDone ? '#ffffff' : '#9a3412'}; width:26px; height:26px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:12px; border:2px solid ${isDone ? '#10b981' : '#fb923c'}; box-shadow:0 2px 6px rgba(0,0,0,0.15);">${isDone ? '✓' : idx + 1}</div>`;
-            const customIcon = L.divIcon({ html: iconHtml, iconSize: [26, 26], iconAnchor: [13, 13] });
+            const iconHtml = `<div style="background:${isDone ? '#10b981' : '#ffedd5'}; color:${isDone ? '#ffffff' : '#9a3412'}; width:28px; height:28px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:12px; border:2px solid ${isDone ? '#10b981' : '#fb923c'}; box-shadow:0 3px 8px rgba(0,0,0,0.15);">${isDone ? '✓' : idx + 1}</div>`;
+            const customIcon = L.divIcon({ html: iconHtml, iconSize: [28, 28], iconAnchor: [14, 14] });
             const marker = L.marker([cp.lat, cp.lng], { icon: customIcon }).bindPopup(`<strong>${cp.name}</strong>`);
             marker.on('click', () => { this.selectCheckpoint(cp); });
             this.markersGroup.addLayer(marker);
