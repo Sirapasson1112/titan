@@ -135,6 +135,7 @@ button{font-family:inherit;cursor:pointer;}
 .panel-title span{color:var(--text-faint);font-family:var(--font-body);font-weight:400;font-size:11.5px;margin-left:8px;}
 .grid-2{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;}
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
 
 /* ===== one-line diagram ===== */
 .feeder-strip{margin-bottom:12px;background:var(--surface-2);padding:10px 14px;border-radius:8px;}
@@ -207,15 +208,25 @@ tbody tr:hover{background:var(--surface-2);}
 .btn.ghost:hover{background:var(--surface-2);}
 
 /* ===== form styles ===== */
-.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
-.form-group{display:flex;flex-direction:column;gap:5px;}
-.form-label{font-size:11.5px;font-weight:600;color:var(--text);}
+.form-section-title{
+  font-size:13px;font-weight:700;color:var(--text);margin:14px 0 10px;
+  padding-bottom:5px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;
+}
+.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.form-group{display:flex;flex-direction:column;gap:4px;}
+.form-label{font-size:11.5px;font-weight:600;color:var(--text-dim);}
 .form-control{
-  background:var(--surface-2);border:1px solid var(--border);border-radius:7px;
-  padding:8px 12px;font-family:inherit;font-size:12.5px;color:var(--text);outline:none;
+  background:var(--surface-2);border:1px solid var(--border);border-radius:6px;
+  padding:7px 10px;font-family:inherit;font-size:12px;color:var(--text);outline:none;transition:border .15s;
 }
 .form-control:focus{border-color:var(--primary-accent);background:#FFFFFF;}
-.check-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-dim);padding:5px 0;}
+.form-control[readonly]{background:var(--surface-3);color:var(--text-dim);cursor:not-allowed;}
+
+/* Inspection Checklist Table in Form */
+.check-table{width:100%;border-collapse:collapse;margin:10px 0;}
+.check-table th{background:var(--surface-2);padding:7px 10px;font-size:11px;font-weight:600;color:var(--text-dim);border:1px solid var(--border);}
+.check-table td{padding:7px 10px;border:1px solid var(--border);font-size:12px;}
+.radio-cell{text-align:center;width:60px;}
 
 /* ===== route navigation card ===== */
 .route-step{
@@ -234,12 +245,23 @@ tbody tr:hover{background:var(--surface-2);}
 .chart-box{position:relative;height:250px;}
 .chart-box.short{height:190px;}
 
+/* ===== Printable Print View ===== */
+@media print{
+  body{background:#fff;color:#000;font-size:11pt;}
+  .sidebar, .topbar, .bottom-nav, .controls-row, .btn, .nav{display:none !important;}
+  .main{width:100%;margin:0;padding:0;}
+  .view{padding:0;}
+  .panel{border:1px solid #000;box-shadow:none;page-break-inside:avoid;margin-bottom:15px;padding:12px;}
+  .form-control{border:1px solid #ccc;background:#fff !important;color:#000;}
+  .check-table th, .check-table td{border:1px solid #000 !important;}
+}
+
 /* ===== mobile bottom nav ===== */
 .bottom-nav{display:none;}
 
 @media (max-width: 980px){
   .kpi-grid{grid-template-columns:repeat(2,1fr);}
-  .grid-2, .grid-3, .form-grid{grid-template-columns:1fr;}
+  .grid-2, .grid-3, .grid-4, .form-grid{grid-template-columns:1fr;}
 }
 @media (max-width: 760px){
   .sidebar{
@@ -330,7 +352,7 @@ const SECTIONS = [
   {id:'pm_plan', label:'ตารางวางแผน PM', sub:'ปฏิทินและแผนการเข้าตรวจบำรุงรักษาเชิงป้องกันประจำปี 2026', icon:'pm_plan'},
   {id:'outage', label:'สถิติไฟฟ้าดับรายสายป้อน', sub:'บันทึก SAIFI / SAIDI และสถิติไฟดับแยกตามสายป้อน', icon:'outage'},
   {id:'route', label:'เส้นทาง & นำทางภาคสนาม', sub:'วางแผนเส้นทางตรวจอุปกรณ์และระบบ GPS นำทางภาคสนาม', icon:'route'},
-  {id:'form', label:'ฟอร์มเอกสารตรวจบำรุงรักษา', sub:'ฟอร์มบันทึกผลการตรวจสอบอุปกรณ์ดิจิทัลหน้างาน', icon:'form'},
+  {id:'form', label:'แบบตรวจสอบหม้อแปลง (SF-07)', sub:'ใบตรวจงานบำรุงรักษาหม้อแปลงจำหน่าย แก้ไขและส่งออกได้', icon:'form'},
   {id:'anomaly', label:'วิเคราะห์ความผิดปกติ WO', sub:'ระบบตรวจจับ Cost Outliers และงานซ้ำซ้อนผิดปกติ', icon:'anomaly'},
   {id:'assets', label:'ทะเบียนอุปกรณ์', sub:'หม้อแปลงจำหน่าย · LBS · Unit Substation · Cutout', icon:'assets'},
   {id:'cost', label:'วิเคราะห์ต้นทุน', sub:'ต้นทุนบำรุงรักษาแยกตามประเภทงาน หม้อแปลง และสายป้อน', icon:'cost'},
@@ -338,7 +360,7 @@ const SECTIONS = [
 ];
 
 /* ======================================================================
-   DATA
+   DATA & STATE
 ====================================================================== */
 const FEEDERS = [
   {id:'SP-01', name:'สายป้อน ปากน้ำ 01', station:'สฟ.สมุทรปราการ (ปากน้ำ)', outages: 4, duration: 145, saifi: 0.85, saidi: 32.4},
@@ -374,6 +396,60 @@ const WORK_ORDERS = [
   {id:'WO-SP-8781', eq:'TR-0904', feeder:'SP-09', type:'PM', date:'2026-07-10', cost:2950, stdCost:3000, durationHours:2.2, tech:'ทีมบำรุงรักษา 3 (กบจ.)', status:'เสร็จสิ้น', anomaly:false, anomalyReason:'-'},
   {id:'WO-SP-8770', eq:'CO-0115', feeder:'SP-01', type:'PM', date:'2026-07-01', cost:1400, stdCost:1500, durationHours:1.5, tech:'ทีมบำรุงรักษา 3 (กบจ.)', status:'เสร็จสิ้น', anomaly:false, anomalyReason:'-'},
   {id:'WO-SP-8762', eq:'LBS-0105', feeder:'SP-01', type:'CM', date:'2026-06-25', cost:8900, stdCost:4000, durationHours:5.0, tech:'ทีมบำรุงรักษา 1 (กบจ.)', status:'เสร็จสิ้น', anomaly:true, anomalyReason:'อุปกรณ์เดิมถูกเปิดซ่อมซ้ำภายในรอบ 60 วัน (Repeat Failure)'},
+];
+
+// ข้อมูลตัวอย่างสำหรับแบบฟอร์ม SF-07-0-015 ตามเอกสาร PDF
+let formData = {
+  stationId: 'MBT0399',
+  location: 'ถ.ประเสริฐมนูกิจ (351)',
+  lat: '13.807466',
+  lng: '100.657294',
+  meaNo1: '4EE-5278',
+  meaNo2: '',
+  meaNo3: '',
+  phaseCount: '3',
+  brand1: 'PRECISE',
+  brand2: '',
+  brand3: '',
+  size: '250 kVA',
+  type: 'Oil Type',
+  mountType: 'หม้อแปลงฯแขวน',
+  timeShift: 'day',
+  inspectMethod: 'onsite',
+  v1n: '235',
+  v2n: '234',
+  v3n: '',
+  v12: '236',
+  v23: '399',
+  v13: '',
+  in_cur: '34',
+  i1: '21',
+  i2: '26',
+  i3: '19',
+  totalCurrent: '100',
+  notes: 'วงจรตามแบบ อป. หน้าหม้อแปลง',
+  actions: 'ดำเนินการขันกวดจุดต่อและทำความสะอาดแล้ว',
+  inspector: 'ว่าที่ รต. อภิสิทธิ์ ประดิษฐธรรม',
+  position: 'ชทอ.5',
+  inspectDate: '2026-08-18',
+  docRef: 'SF-07-0-015'
+};
+
+const CHECKLIST_ITEMS = [
+  {id:'c1', name:'2.1 Drop Fuse', val:'ok'},
+  {id:'c2', name:'2.2 Station Post Type Insulator', val:'ok'},
+  {id:'c3', name:'2.3 สายเข้า-ออก Drop Fuse', val:'ok'},
+  {id:'c4', name:'2.4 คอนสาย', val:'ok'},
+  {id:'c5', name:'2.5 อุปกรณ์ป้องกันสัตว์', val:'ok'},
+  {id:'c6', name:'2.6 Low Voltage Capacitor', val:'none'},
+  {id:'c7', name:'2.7 กับดักฟ้าผ่า (L/A)', val:'ok'},
+  {id:'c8', name:'2.8 ตัวถังหม้อแปลง', val:'ok'},
+  {id:'c9', name:'2.9 Bushing HV-LV', val:'ok'},
+  {id:'c10', name:'2.10 Cover (Bushing, L/A, Term. kit)', val:'ok'},
+  {id:'c11', name:'2.11 สายหน้าหม้อแปลง LV', val:'ok'},
+  {id:'c12', name:'2.12 LV Ground', val:'ok'},
+  {id:'c13', name:'2.13 HV Ground', val:'ok'},
+  {id:'c14', name:'2.14 CT-TLM Meter (ถ้ามี)', val:'ok'}
 ];
 
 /* ======================================================================
@@ -511,8 +587,8 @@ function viewPMPlan(){
     <div class="panel-head">
       <div class="panel-title">ตารางวางแผนบำรุงรักษาเชิงป้องกันรายเดือน (PM Master Schedule 2026-2027) <span>กบจ.ฟขป.</span></div>
       <div class="controls-row">
-        <button class="btn ghost">📥 ส่งออกไฟล์ Excel</button>
-        <button class="btn">+ จัดตารางงานใหม่</button>
+        <button class="btn ghost" onclick="alert('ส่งออกตารางแผนงานเป็น Excel สำเร็จ')">📥 ส่งออกไฟล์ Excel</button>
+        <button class="btn" onclick="alert('สร้างตารางแผนงานใหม่เรียบร้อย')">+ จัดตารางงานใหม่</button>
       </div>
     </div>
     <div class="table-wrap"><table>
@@ -645,7 +721,7 @@ function viewRoute(){
           <option>สายป้อน เทพารักษ์ 04 (SP-04) - 4 อุปกรณ์</option>
           <option>สายป้อน บางปู 09 (SP-09) - 4 อุปกรณ์</option>
         </select>
-        <button class="btn teal">🚗 เริ่มระบบนำทาง GPS ทั้งหมด</button>
+        <button class="btn teal" onclick="window.open('https://maps.google.com/?q=13.5850,100.6010','_blank')">🚗 เริ่มระบบนำทาง GPS ทั้งหมด</button>
       </div>
     </div>
     
@@ -663,8 +739,9 @@ function viewRoute(){
                 <span style="font-size:11px; color:var(--text-faint)">ระยะห่างจุดก่อนหน้า ~650 ม.</span>
               </div>
             </div>
-            <div>
+            <div style="display:flex; gap:4px;">
               <a href="https://maps.google.com/?q=${e.lat},${e.lng}" target="_blank" class="btn ghost" style="padding:4px 9px; font-size:11px;">📍 นำทาง</a>
+              <button class="btn ghost" style="padding:4px 9px; font-size:11px;" onclick="fillFormFromEq('${e.id}')">📝 ตรวจ</button>
             </div>
           </div>
         `).join('')}
@@ -691,70 +768,251 @@ function viewRoute(){
 }
 
 /* ======================================================================
-   VIEW: FORM (ฟอร์มเอกสารการบำรุงรักษาอุปกรณ์ไฟฟ้า)
+   VIEW: FORM (แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย SF-07-0-015)
 ====================================================================== */
 function viewForm(){
   return `
-  <div class="panel">
+  <div class="panel" id="inspectionPrintArea">
     <div class="panel-head">
-      <div class="panel-title">ฟอร์มบันทึกผลการตรวจสอบบำรุงรักษาเชิงป้องกัน (Digital PM Inspection Form) <span>กบจ.ฟขป.</span></div>
-      <button class="btn ghost" onclick="alert('บันทึกร่างเอกสารสำเร็จ')">💾 บันทึกร่าง</button>
+      <div>
+        <div class="panel-title">แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย <span>เอกสารอ้างอิง: ${formData.docRef}</span></div>
+        <div style="font-size:11px; color:var(--text-faint); margin-top:2px;">ฟอร์มบันทึกผลภาคสนาม สามารถกรอกแก้ไขข้อมูล และสั่งพิมพ์/ส่งออก PDF ได้ทันที</div>
+      </div>
+      <div class="controls-row">
+        <button class="btn ghost" onclick="exportFormDataJSON()">📥 ส่งออก JSON</button>
+        <button class="btn ghost" onclick="window.print()">🖨️ พิมพ์ / บันทึก PDF</button>
+        <button class="btn" onclick="saveFormData()">💾 บันทึกข้อมูลใบตรวจ</button>
+      </div>
     </div>
-    
-    <form onsubmit="event.preventDefault(); alert('ส่งผลการตรวจบำรุงรักษาเข้าสู่ระบบ CMMS เรียบร้อยแล้ว');">
-      <div class="form-grid" style="margin-bottom:16px;">
+
+    <form id="inspectionForm" onsubmit="event.preventDefault(); saveFormData();">
+      <!-- ส่วนที่ 1: ข้อมูลทั่วไป -->
+      <div class="form-section-title">
+        <span>1 ข้อมูลทั่วไป (General Information)</span>
+        <span style="font-size:11px; font-weight:normal; color:var(--text-faint);">พิกัดและข้อมูลระบุตำแหน่ง</span>
+      </div>
+
+      <div class="form-grid">
         <div class="form-group">
-          <label class="form-label">อุปกรณ์ที่เข้าตรวจ</label>
-          <select class="form-control">
-            <option>TR-0112 | หม้อแปลงจำหน่าย - ชุมชนท้ายบ้าน ซอย 5 (สายป้อน SP-01)</option>
-            <option>LBS-0105 | LBS - เสาเลขที่ 28 หน้าตลาดปากน้ำ (สายป้อน SP-01)</option>
-            <option>USTA-0406 | Unit Substation - หมู่บ้านทิพวัลย์ (สายป้อน SP-04)</option>
-            <option>TR-0410 | หม้อแปลงจำหน่าย - เสาเลขที่ 52 ถ.หนามแดง (สายป้อน SP-04)</option>
-          </select>
+          <label class="form-label">Station ID</label>
+          <input type="text" class="form-control" id="f_stationId" value="${formData.stationId}">
         </div>
-        <div class="form-group">
-          <label class="form-label">วันที่และเวลาตรวจหน้างาน</label>
-          <input type="datetime-local" class="form-control" value="2026-08-26T10:30">
-        </div>
-        <div class="form-group">
-          <label class="form-label">หัวหน้าทีมช่างผู้รับผิดชอบ</label>
-          <input type="text" class="form-control" value="นายสมศักดิ์ มั่นคง (ทีมบำรุงรักษา 1)">
-        </div>
-        <div class="form-group">
-          <label class="form-label">อุณหภูมิขั้วต่อสูงสุดจากการ Thermal Scan (°C)</label>
-          <input type="number" class="form-control" placeholder="เช่น 45.5" value="48.2">
+        <div class="form-group" style="grid-column: span 2;">
+          <label class="form-label">สถานที่ติดตั้ง</label>
+          <input type="text" class="form-control" id="f_location" value="${formData.location}">
         </div>
       </div>
 
-      <div style="font-weight:600; font-size:13px; margin:16px 0 10px; color:var(--text); border-bottom:1px solid var(--border); padding-bottom:6px;">
-        รายการตรวจสอบมาตรฐาน (Inspection Checklist)
+      <div class="form-grid" style="margin-top:10px;">
+        <div class="form-group">
+          <label class="form-label">GIS Lat.</label>
+          <input type="text" class="form-control" id="f_lat" value="${formData.lat}">
+        </div>
+        <div class="form-group">
+          <label class="form-label">GIS Long.</label>
+          <input type="text" class="form-control" id="f_lng" value="${formData.lng}">
+        </div>
+        <div class="form-group">
+          <label class="form-label">ลักษณะการติดตั้ง</label>
+          <input type="text" class="form-control" id="f_mountType" value="${formData.mountType}">
+        </div>
       </div>
 
-      <div class="grid-2" style="margin-bottom:16px;">
+      <div class="form-grid" style="margin-top:10px;">
+        <div class="form-group">
+          <label class="form-label">MEA No. 1</label>
+          <input type="text" class="form-control" id="f_meaNo1" value="${formData.meaNo1}">
+        </div>
+        <div class="form-group">
+          <label class="form-label">MEA No. 2</label>
+          <input type="text" class="form-control" id="f_meaNo2" value="${formData.meaNo2}">
+        </div>
+        <div class="form-group">
+          <label class="form-label">MEA No. 3</label>
+          <input type="text" class="form-control" id="f_meaNo3" value="${formData.meaNo3}">
+        </div>
+      </div>
+
+      <div class="form-grid" style="margin-top:10px;">
+        <div class="form-group">
+          <label class="form-label">ยี่ห้อ (Brand 1)</label>
+          <input type="text" class="form-control" id="f_brand1" value="${formData.brand1}">
+        </div>
+        <div class="form-group">
+          <label class="form-label">ขนาดพิกัด (kVA) / ชนิด</label>
+          <input type="text" class="form-control" id="f_size" value="${formData.size} · ${formData.type}">
+        </div>
+        <div class="form-group">
+          <label class="form-label">จำนวนเฟส</label>
+          <input type="text" class="form-control" id="f_phaseCount" value="${formData.phaseCount} เฟส">
+        </div>
+      </div>
+
+      <!-- ส่วนที่ 2: รายการตรวจสอบบำรุงรักษา -->
+      <div class="form-section-title" style="margin-top:20px;">
+        <span>2 รายการตรวจสอบบำรุงรักษา (Maintenance Checklist)</span>
+        <span style="font-size:11px; font-weight:normal; color:var(--text-faint);">ระบุผลการตรวจสอบแต่ละรายการ</span>
+      </div>
+
+      <div class="table-wrap">
+        <table class="check-table">
+          <thead>
+            <tr>
+              <th style="text-align:left;">รายการตรวจสอบอุปกรณ์</th>
+              <th class="radio-cell">ปกติ</th>
+              <th class="radio-cell">ชำรุด</th>
+              <th class="radio-cell">ไม่มี</th>
+              <th>ข้อบกพร่อง / รายละเอียดที่พบ</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${CHECKLIST_ITEMS.map((c, i)=>`
+              <tr>
+                <td><b>${c.name}</b></td>
+                <td class="radio-cell"><input type="radio" name="chk_${c.id}" value="ok" ${c.val==='ok'?'checked':''}></td>
+                <td class="radio-cell"><input type="radio" name="chk_${c.id}" value="defect" ${c.val==='defect'?'checked':''}></td>
+                <td class="radio-cell"><input type="radio" name="chk_${c.id}" value="none" ${c.val==='none'?'checked':''}></td>
+                <td><input type="text" class="form-control" style="padding:3px 8px; font-size:11.5px;" placeholder="ระบุข้อบกพร่อง (ถ้ามี)" value="${c.val==='defect'?'พบร่องรอยชำรุด':''}"></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ส่วนที่ 3: ตรวจสอบวัดกระแสและแรงดันไฟฟ้า -->
+      <div class="form-section-title" style="margin-top:16px;">
+        <span>3 ตรวจสอบวัดกระแสและแรงดันไฟฟ้า (Electrical Measurements)</span>
+        <div style="display:flex; gap:12px; font-weight:normal; font-size:11.5px;">
+          <label><input type="radio" name="timeShift" value="day" ${formData.timeShift==='day'?'checked':''}> กลางวัน</label>
+          <label><input type="radio" name="timeShift" value="night" ${formData.timeShift==='night'?'checked':''}> กลางคืน</label>
+          &nbsp;|&nbsp;
+          <label><input type="radio" name="inspectMethod" value="onsite" ${formData.inspectMethod==='onsite'?'checked':''}> วัดหน้างาน</label>
+          <label><input type="radio" name="inspectMethod" value="tlm" ${formData.inspectMethod==='tlm'?'checked':''}> TLM</label>
+        </div>
+      </div>
+
+      <div class="grid-2">
         <div>
-          <label class="check-item"><input type="checkbox" checked> ตรวจสภาพฉนวนภายนอกและไม่พบคราบแตกร้าว</label>
-          <label class="check-item"><input type="checkbox" checked> ตรวจระดับน้ำมันหม้อแปลง/สวิตช์อยู่ในเกณฑ์ปกติ</label>
-          <label class="check-item"><input type="checkbox" checked> ขันกวด Torque จุดต่อสายและขั้วต่อแรงสูง-ต่ำ</label>
+          <div style="font-size:11.5px; font-weight:600; color:var(--text-dim); margin-bottom:6px;">แรงดันไฟฟ้า (Voltage - V)</div>
+          <div class="grid-3">
+            <div class="form-group"><label class="form-label">V1-N</label><input type="text" class="form-control mono" id="f_v1n" value="${formData.v1n}"></div>
+            <div class="form-group"><label class="form-label">V2-N</label><input type="text" class="form-control mono" id="f_v2n" value="${formData.v2n}"></div>
+            <div class="form-group"><label class="form-label">V3-N</label><input type="text" class="form-control mono" id="f_v3n" value="${formData.v3n}"></div>
+            <div class="form-group"><label class="form-label">V1-2</label><input type="text" class="form-control mono" id="f_v12" value="${formData.v12}"></div>
+            <div class="form-group"><label class="form-label">V2-3</label><input type="text" class="form-control mono" id="f_v23" value="${formData.v23}"></div>
+            <div class="form-group"><label class="form-label">V1-3</label><input type="text" class="form-control mono" id="f_v13" value="${formData.v13}"></div>
+          </div>
         </div>
         <div>
-          <label class="check-item"><input type="checkbox" checked> ตรวจวัดค่าความต้านทานกราวด์ (&lt; 5 โอห์ม)</label>
-          <label class="check-item"><input type="checkbox"> ตรวจสอบการทำงานของรีโมทควบคุม SCADA</label>
-          <label class="check-item"><input type="checkbox" checked> ทำความสะอาดฝุ่นและตรวจป้ายเตือนความปลอดภัย</label>
+          <div style="font-size:11.5px; font-weight:600; color:var(--text-dim); margin-bottom:6px;">กระแสไฟฟ้า (Current - A)</div>
+          <div class="grid-4">
+            <div class="form-group"><label class="form-label">IN</label><input type="text" class="form-control mono" id="f_in" value="${formData.in_cur}"></div>
+            <div class="form-group"><label class="form-label">I1</label><input type="text" class="form-control mono" id="f_i1" value="${formData.i1}"></div>
+            <div class="form-group"><label class="form-label">I2</label><input type="text" class="form-control mono" id="f_i2" value="${formData.i2}"></div>
+            <div class="form-group"><label class="form-label">I3</label><input type="text" class="form-control mono" id="f_i3" value="${formData.i3}"></div>
+          </div>
+          <div class="form-group" style="margin-top:6px;">
+            <label class="form-label">ผลรวมกระแสหน้าหม้อแปลงฯ ทั้งหมด (A)</label>
+            <input type="text" class="form-control mono" id="f_totalCurrent" value="${formData.totalCurrent}">
+          </div>
         </div>
       </div>
 
-      <div class="form-group" style="margin-bottom:16px;">
-        <label class="form-label">ผลการประเมินสภาพและข้อเสนอแนะเพิ่มเติม</label>
-        <textarea class="form-control" rows="3" placeholder="ระบุสภาพความผิดปกติที่พบ หรืออะไหล่ที่ต้องเตรียมเปลี่ยนในรอบถัดไป...">พบซีลยางขั้วต่อเริ่มแข็งตัวเล็กน้อย ควรจัดแผนเปลี่ยนซีลในรอบ 6 เดือนข้างหน้า</textarea>
+      <!-- ส่วนที่ 4 & 5: ข้อเสนอแนะ & ลายมือชื่อผู้ตรวจ -->
+      <div class="grid-2" style="margin-top:16px;">
+        <div class="form-group">
+          <label class="form-label">4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม</label>
+          <textarea class="form-control" rows="2" id="f_notes">${formData.notes}</textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">5 การปรับปรุงข้อบกพร่อง</label>
+          <textarea class="form-control" rows="2" id="f_actions">${formData.actions}</textarea>
+        </div>
       </div>
 
-      <div style="display:flex; justify-content:flex-end; gap:10px;">
-        <button type="reset" class="btn ghost">ล้างข้อมูล</button>
-        <button type="submit" class="btn">ยืนยันส่งผลตรวจดิจิทัล (Submit PM Form)</button>
+      <div class="grid-3" style="margin-top:14px; background:var(--surface-2); padding:12px; border-radius:8px; border:1px solid var(--border);">
+        <div class="form-group">
+          <label class="form-label">ผู้ตรวจสอบ</label>
+          <input type="text" class="form-control" id="f_inspector" value="${formData.inspector}">
+        </div>
+        <div class="form-group">
+          <label class="form-label">ตำแหน่ง</label>
+          <input type="text" class="form-control" id="f_position" value="${formData.position}">
+        </div>
+        <div class="form-group">
+          <label class="form-label">วันที่ตรวจสอบ</label>
+          <input type="date" class="form-control" id="f_inspectDate" value="${formData.inspectDate}">
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
+        <div style="font-size:11px; color:var(--text-faint);">แบบฟอร์มฝ่ายการไฟฟ้านครหลวง · ปรับปรุงครั้งที่ 0</div>
+        <div style="display:flex; gap:8px;">
+          <button type="button" class="btn ghost" onclick="resetFormToSample()">🔄 รีเซ็ตเป็นค่าเริ่มต้น</button>
+          <button type="submit" class="btn">💾 บันทึกผลตรวจเข้าสู่ฐานข้อมูล</button>
+        </div>
       </div>
     </form>
   </div>
   `;
+}
+
+function saveFormData(){
+  formData.stationId = document.getElementById('f_stationId').value;
+  formData.location = document.getElementById('f_location').value;
+  formData.lat = document.getElementById('f_lat').value;
+  formData.lng = document.getElementById('f_lng').value;
+  formData.meaNo1 = document.getElementById('f_meaNo1').value;
+  formData.meaNo2 = document.getElementById('f_meaNo2').value;
+  formData.meaNo3 = document.getElementById('f_meaNo3').value;
+  formData.brand1 = document.getElementById('f_brand1').value;
+  formData.size = document.getElementById('f_size').value;
+  formData.phaseCount = document.getElementById('f_phaseCount').value;
+  formData.notes = document.getElementById('f_notes').value;
+  formData.actions = document.getElementById('f_actions').value;
+  formData.inspector = document.getElementById('f_inspector').value;
+  formData.position = document.getElementById('f_position').value;
+  formData.inspectDate = document.getElementById('f_inspectDate').value;
+
+  alert('บันทึกการแก้ไขข้อมูลแบบตรวจสอบ SF-07-0-015 สำเร็จ!');
+}
+
+function exportFormDataJSON(){
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(formData, null, 2));
+  const downloadAnchor = document.createElement('a');
+  downloadAnchor.setAttribute("href", dataStr);
+  downloadAnchor.setAttribute("download", `Inspection_${formData.stationId}_${formData.inspectDate}.json`);
+  document.body.appendChild(downloadAnchor);
+  downloadAnchor.click();
+  downloadAnchor.remove();
+}
+
+function resetFormToSample(){
+  formData.stationId = 'MBT0399';
+  formData.location = 'ถ.ประเสริฐมนูกิจ (351)';
+  formData.lat = '13.807466';
+  formData.lng = '100.657294';
+  formData.meaNo1 = '4EE-5278';
+  formData.brand1 = 'PRECISE';
+  formData.size = '250 kVA';
+  formData.mountType = 'หม้อแปลงฯแขวน';
+  formData.inspector = 'ว่าที่ รต. อภิสิทธิ์ ประดิษฐธรรม';
+  formData.position = 'ชทอ.5';
+  formData.inspectDate = '2026-08-18';
+  renderView();
+}
+
+function fillFormFromEq(eqId){
+  const eq = EQUIPMENT.find(e=>e.id===eqId);
+  if(eq){
+    formData.stationId = eq.id;
+    formData.location = eq.name + ' (' + eq.region + ')';
+    formData.lat = eq.lat.toString();
+    formData.lng = eq.lng.toString();
+    formData.meaNo1 = 'MEA-' + eq.id;
+    formData.mountType = eq.type==='หม้อแปลงจำหน่าย'?'หม้อแปลงฯแขวน':'ติดตั้งบนพื้นดิน';
+    go('form');
+  }
 }
 
 /* ======================================================================
@@ -819,7 +1077,7 @@ function viewAssets(){
       <div class="panel-title">ทะเบียนอุปกรณ์ระบบจำหน่าย กฟน.สมุทรปราการ <span>${rows.length} จาก ${EQUIPMENT.length} รายการ</span></div>
       <div class="controls-row">
         <div class="seg">${types.map(t=>`<button class="${assetFilter===t?'active':''}" onclick="setAssetFilter('${t}')">${t==='ALL'?'ทั้งหมด':t}</button>`).join('')}</div>
-        <button class="btn">+ ลงทะเบียนอุปกรณ์ใหม่</button>
+        <button class="btn" onclick="alert('เปิดฟอร์มลงทะเบียนอุปกรณ์ใหม่')">+ ลงทะเบียนอุปกรณ์ใหม่</button>
       </div>
     </div>
     <div class="table-wrap"><table>
@@ -940,7 +1198,7 @@ function viewWork(){
   <div class="panel">
     <div class="panel-head">
       <div class="panel-title">ระบบบันทึกและติดตามใบสั่งงาน (Work Orders) <span>กบจ.ฟขป.</span></div>
-      <button class="btn">+ สร้างใบสั่งงานดิจิทัล</button>
+      <button class="btn" onclick="alert('เปิดหน้าต่างสร้างใบสั่งงานใหม่')">+ สร้างใบสั่งงานดิจิทัล</button>
     </div>
     <div class="table-wrap"><table>
       <thead><tr><th>เลขที่ WO</th><th>อุปกรณ์</th><th>สายป้อน</th><th>ประเภทงาน</th><th>วันที่</th><th>ทีมผู้รับผิดชอบ</th><th>ต้นทุน</th><th>สถานะ</th></tr></thead>
