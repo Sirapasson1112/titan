@@ -3,542 +3,220 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ElectroPM Advanced - ระบบบริหารงาน PM และความมั่นคงระบบไฟฟ้า</title>
+  <title>ElectroCMMS - High-Tech GIS & Field GPS Navigation</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Leaflet GIS Map Library -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=Orbitron:wght@600;800;900&display=swap');
     body { font-family: 'Sarabun', sans-serif; }
-    @media print {
-      body * { visibility: hidden; }
-      #printable-sheet, #printable-sheet * { visibility: visible; }
-      #printable-sheet { position: absolute; left: 0; top: 0; width: 100%; }
-    }
+    .font-hud { font-family: 'Orbitron', monospace; }
+    #map { height: 100%; width: 100%; z-index: 10; }
+    .leaflet-popup-content-wrapper { background: #0f172a; color: #fff; border-radius: 12px; border: 1px solid #334155; }
+    .leaflet-popup-tip { background: #0f172a; }
   </style>
 </head>
-<body class="bg-slate-100 text-slate-800">
-  <div id="app" class="flex min-h-screen">
-    
-    <!-- Sidebar -->
-    <aside class="w-64 bg-slate-950 text-white flex flex-col flex-shrink-0 border-r border-slate-800">
-      <div class="p-5 border-b border-slate-800 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 text-slate-950 flex items-center justify-center text-xl font-black shadow-lg">
-          <i class="fa-solid fa-bolt-lightning"></i>
+<body class="bg-slate-950 text-slate-100 overflow-hidden">
+  <div id="app" class="flex h-screen w-screen">
+
+    <!-- Left: Navigation Control & Checkpoint Dispatch -->
+    <aside class="w-96 bg-slate-900 border-r border-slate-800 flex flex-col flex-shrink-0 z-20 shadow-2xl">
+      <!-- Header -->
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/70">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-black text-lg shadow-lg shadow-amber-500/20">
+            <i class="fa-solid fa-location-crosshairs"></i>
+          </div>
+          <div>
+            <h1 class="font-bold text-sm tracking-wide text-white">GIS FIELD DISPATCH</h1>
+            <p class="text-[11px] text-amber-400 font-mono">22kV FEEDER F-03 PATROL</p>
+          </div>
         </div>
+        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> GPS LIVE
+        </span>
+      </div>
+
+      <!-- Action Panel: Route Optimizer -->
+      <div class="p-3.5 bg-slate-800/40 border-b border-slate-800 flex items-center justify-between">
         <div>
-          <h1 class="font-bold text-base leading-tight">ElectroPM Pro</h1>
-          <p class="text-[11px] text-amber-400 font-medium">Power Grid CMMS & PM</p>
+          <div class="text-[11px] text-slate-400">ระยะทางรวม: <strong class="text-white">12.8 กม.</strong> (~35 นาที)</div>
+          <div class="text-[10px] text-slate-500">จุดตรวจทั้งหมด: {{ checkpoints.length }} สถานี</div>
+        </div>
+        <button @click="optimizeRoute" class="px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> จัดเส้นทางลัด
+        </button>
+      </div>
+
+      <!-- Checkpoints Roster -->
+      <div class="flex-1 p-3 space-y-2.5 overflow-y-auto">
+        <div v-for="(cp, idx) in checkpoints" :key="cp.id" 
+             @click="selectCheckpoint(cp)"
+             class="p-3.5 rounded-xl border transition cursor-pointer relative"
+             :class="selectedCp?.id === cp.id ? 'bg-slate-800 border-amber-500 shadow-lg' : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'">
+          
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex items-start gap-3">
+              <span class="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold font-mono mt-0.5 shadow"
+                    :class="cp.status === 'COMPLETED' ? 'bg-emerald-500 text-slate-950' : (selectedCp?.id === cp.id ? 'bg-amber-500 text-slate-950 font-black' : 'bg-slate-800 text-slate-400')">
+                {{ cp.status === 'COMPLETED' ? '✓' : idx + 1 }}
+              </span>
+              <div>
+                <div class="font-bold text-xs text-white">{{ cp.name }}</div>
+                <div class="text-[11px] text-slate-400 font-mono mt-0.5">Tag: {{ cp.tag }} &bull; {{ cp.voltage }}</div>
+                <div class="text-[11px] text-amber-400 font-medium mt-1 flex items-center gap-1">
+                  <i class="fa-solid fa-wrench text-[10px]"></i> {{ cp.task }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Distance Indicator -->
+            <div class="text-right flex-shrink-0">
+              <span class="text-[10px] font-mono text-slate-400 block">{{ cp.distance }} km</span>
+              <span v-if="cp.isNearby" class="text-[9px] bg-emerald-500 text-slate-950 font-black px-1.5 py-0.5 rounded-full mt-1 inline-block animate-bounce">
+                ในรัศมี 50m
+              </span>
+            </div>
+          </div>
+
+          <!-- Bottom Action Buttons -->
+          <div class="mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between">
+            <button @click.stop="startNavigationTo(cp)" class="text-[11px] text-amber-400 hover:text-amber-300 font-bold flex items-center gap-1">
+              <i class="fa-solid fa-location-arrow"></i> นำทางจุดนี้
+            </button>
+            <button v-if="cp.isNearby && cp.status !== 'COMPLETED'" @click.stop="openFieldChecklist(cp)" class="text-[11px] bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-2 py-0.5 rounded transition">
+              <i class="fa-solid fa-clipboard-check"></i> ตรวจ PM
+            </button>
+            <span v-else-if="cp.status === 'COMPLETED'" class="text-[10px] text-emerald-400 font-semibold">
+              ตรวจเสร็จสิ้น
+            </span>
+          </div>
+
         </div>
       </div>
 
-      <nav class="flex-1 p-3 space-y-1 overflow-y-auto">
-        <button @click="currentTab = 'schedule'" :class="navClass('schedule')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold transition text-left">
-          <i class="fa-solid fa-calendar-days w-5 text-center"></i> แผนงาน PM ประจำปี
-        </button>
-        <button @click="currentTab = 'feeder'" :class="navClass('feeder')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-semibold transition text-left">
-          <span class="flex items-center gap-3"><i class="fa-solid fa-chart-line w-5 text-center"></i> สถิติไฟฟ้าดับรายสายป้อน</span>
-          <span class="bg-red-500/20 text-red-400 text-[10px] px-1.5 py-0.5 rounded font-mono font-bold">SAIFI/SAIDI</span>
-        </button>
-        <button @click="currentTab = 'route'" :class="navClass('route')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold transition text-left">
-          <i class="fa-solid fa-route w-5 text-center"></i> เส้นทางตรวจ PM ภาคสนาม
-        </button>
-        <button @click="currentTab = 'orders'" :class="navClass('orders')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-semibold transition text-left">
-          <span class="flex items-center gap-3"><i class="fa-solid fa-file-invoice w-5 text-center"></i> ใบสั่งงาน (Work Orders)</span>
-          <span class="bg-slate-800 text-amber-400 text-xs px-2 py-0.5 rounded-full font-bold">{{ workOrders.length }}</span>
-        </button>
-        <button @click="currentTab = 'anomaly'" :class="navClass('anomaly')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-semibold transition text-left">
-          <span class="flex items-center gap-3"><i class="fa-solid fa-triangle-exclamation w-5 text-center"></i> วิเคราะห์ความผิดปกติ WO</span>
-          <span class="bg-amber-500 text-slate-950 text-[10px] px-2 py-0.5 rounded-full font-bold">{{ anomalies.length }} ข้อผิดปกติ</span>
-        </button>
-        <button @click="currentTab = 'form'" :class="navClass('form')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold transition text-left">
-          <i class="fa-solid fa-file-signature w-5 text-center"></i> ฟอร์มเอกสาร PM มาตรฐาน
-        </button>
-      </nav>
-
-      <div class="p-4 border-t border-slate-800 text-xs text-slate-400 bg-slate-900/50">
-        <div class="flex justify-between items-center mb-1 text-[11px]">
-          <span>Grid Reliability Score</span>
-          <span class="text-emerald-400 font-bold">99.98%</span>
+      <!-- Live GPS Telemetry Footer -->
+      <div class="p-3 bg-slate-950 border-t border-slate-800 text-xs font-mono text-slate-400 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-truck-pickup text-amber-400 text-sm"></i>
+          <div>
+            <div class="text-[10px] text-slate-500">พิกัดรถตรวจการณ์</div>
+            <div class="text-white text-[11px]">{{ carPos[0].toFixed(4) }}°N, {{ carPos[1].toFixed(4) }}°E</div>
+          </div>
         </div>
-        <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
-          <div class="bg-emerald-400 h-full rounded-full" style="width: 99.98%"></div>
+        <div class="text-right">
+          <div class="text-[10px] text-slate-500">สถานะสัญญาณ</div>
+          <div class="text-emerald-400 font-bold">HDOP 0.8 (Precision)</div>
         </div>
       </div>
     </aside>
 
-    <!-- Main Workspace -->
-    <main class="flex-1 p-8 overflow-y-auto">
+    <!-- Center: Interactive GIS Map + HUD Cockpit Overlay -->
+    <main class="flex-1 relative flex flex-col">
       
-      <!-- Top Title -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-6 border-b border-slate-200 gap-4">
-        <div>
-          <h2 class="text-2xl font-bold text-slate-900">
-            <span v-if="currentTab === 'schedule'">ตารางวางแผน PM อุปกรณ์ไฟฟ้ารายปี (Annual Master PM Grid)</span>
-            <span v-if="currentTab === 'feeder'">สถิติไฟฟ้าดับและความมั่นคงรายสายป้อน (Feeder Reliability Analytics)</span>
-            <span v-if="currentTab === 'route'">แผนและระบบนำทางเส้นทางตรวจ PM ภาคสนาม (GIS Field Dispatch)</span>
-            <span v-if="currentTab === 'orders'">ศูนย์จัดการใบสั่งงานและประวัติบำรุงรักษา (Work Orders Hub)</span>
-            <span v-if="currentTab === 'anomaly'">ระบบวิเคราะห์ความผิดปกติและการเสื่อมสภาพของ Work Order</span>
-            <span v-if="currentTab === 'form'">ฟอร์มเอกสารตรวจวัดและบันทึกผลบำรุงรักษาทางวิศวกรรม</span>
-          </h2>
-          <p class="text-xs text-slate-500 mt-1">ระบบวิเคราะห์ข้อมูลเชิงลึก บริหารวงรอบการซ่อมบำรุง และรักษาเสถียรภาพระบบจ่ายไฟ</p>
-        </div>
+      <!-- Top HUD Banner (Cockpit Mode) -->
+      <div class="absolute top-4 left-4 right-4 z-30 flex items-center justify-between pointer-events-none">
         
-        <div class="flex items-center gap-2">
-          <button @click="openNewWOModal = true" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs px-4 py-2.5 rounded-lg shadow transition flex items-center gap-2">
-            <i class="fa-solid fa-plus"></i> ออกใบสั่งงานใหม่
+        <!-- Turn-by-Turn Next Step Card -->
+        <div class="bg-slate-900/90 backdrop-blur-md border border-slate-700/80 p-4 rounded-2xl shadow-2xl flex items-center gap-4 pointer-events-auto max-w-md">
+          <div class="w-14 h-14 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center text-2xl font-black shadow-lg">
+            <i class="fa-solid" :class="navPrompt.icon"></i>
+          </div>
+          <div>
+            <div class="text-amber-400 text-xs font-bold uppercase tracking-wider">{{ navPrompt.distance }}</div>
+            <div class="text-white font-bold text-base leading-tight">{{ navPrompt.instruction }}</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">ปลายทาง: <strong class="text-slate-200">{{ activeTarget?.name || 'เลือกจุดหมาย' }}</strong></div>
+          </div>
+        </div>
+
+        <!-- Telemetry Gauges (Speedometer & ETA) -->
+        <div class="flex items-center gap-3 pointer-events-auto">
+          <div class="bg-slate-900/90 backdrop-blur-md border border-slate-700/80 p-3 rounded-2xl text-center min-w-[90px] shadow-2xl">
+            <div class="text-[10px] font-bold text-slate-400 uppercase">ความเร็ว</div>
+            <div class="text-2xl font-black text-amber-400 font-hud mt-0.5">{{ speed }} <span class="text-xs font-normal text-slate-400 font-sans">km/h</span></div>
+          </div>
+
+          <div class="bg-slate-900/90 backdrop-blur-md border border-slate-700/80 p-3 rounded-2xl text-center min-w-[90px] shadow-2xl">
+            <div class="text-[10px] font-bold text-slate-400 uppercase">ETA ถึงจุดตรวจ</div>
+            <div class="text-2xl font-black text-emerald-400 font-hud mt-0.5">{{ etaMinutes }} <span class="text-xs font-normal text-slate-400 font-sans">min</span></div>
+          </div>
+
+          <!-- Controls: Simulation Start/Pause -->
+          <button @click="toggleSimulation" class="bg-gradient-to-r p-3.5 rounded-2xl text-slate-950 font-bold shadow-2xl flex items-center gap-2 text-xs transition"
+                  :class="isDriving ? 'from-rose-500 to-rose-400' : 'from-amber-500 to-amber-400 hover:scale-105'">
+            <i class="fa-solid" :class="isDriving ? 'fa-pause' : 'fa-play'"></i>
+            <span>{{ isDriving ? 'หยุดชั่วคราว' : 'เริ่มขับนำทาง' }}</span>
           </button>
         </div>
+
       </div>
 
-      <!-- 1. ANNUAL PM SCHEDULE TAB -->
-      <section v-if="currentTab === 'schedule'" class="space-y-6">
-        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-          <div class="flex justify-between items-center mb-6">
-            <div>
-              <h3 class="font-bold text-slate-900">ตารางวางแผนวงรอบ PM ปี 2026</h3>
-              <p class="text-xs text-slate-500">แผนการทดสอบและบำรุงรักษาแยกตามหมวดหมู่อุปกรณ์และไตรมาส</p>
-            </div>
-            <div class="flex gap-2 text-xs">
-              <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded bg-emerald-500"></span> ดำเนินการแล้ว</span>
-              <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded bg-amber-500"></span> ตามกำหนดการ</span>
-              <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded bg-slate-200"></span> แผนในอนาคต</span>
-            </div>
-          </div>
+      <!-- Real Interactive Map Container -->
+      <div id="map" class="h-full w-full"></div>
 
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs border">
-              <thead class="bg-slate-50 text-slate-700 uppercase font-bold border-b">
-                <tr>
-                  <th class="p-3 border-r">หมวดหมู่อุปกรณ์ (Asset Category)</th>
-                  <th class="p-3 border-r">วงรอบ (Cycle)</th>
-                  <th class="p-3 border-r text-center" v-for="m in ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.']" :key="m">{{ m }}</th>
-                  <th class="p-3 text-center">จัดการ</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-100 font-medium">
-                <tr v-for="item in scheduleMatrix" :key="item.id" class="hover:bg-slate-50">
-                  <td class="p-3 border-r font-bold text-slate-800">{{ item.name }}</td>
-                  <td class="p-3 border-r"><span class="bg-slate-100 px-2 py-0.5 rounded font-mono text-[11px]">{{ item.cycle }}</span></td>
-                  <td v-for="(status, idx) in item.months" :key="idx" class="p-2 border-r text-center">
-                    <span v-if="status === 'DONE'" class="bg-emerald-500 text-white px-2 py-1 rounded text-[10px] font-bold">DONE</span>
-                    <span v-else-if="status === 'PLANNED'" class="bg-amber-500 text-slate-950 px-2 py-1 rounded text-[10px] font-bold animate-pulse">PLAN</span>
-                    <span v-else class="text-slate-300">-</span>
-                  </td>
-                  <td class="p-2 text-center">
-                    <button @click="triggerScheduleWO(item)" class="text-[11px] bg-slate-900 text-amber-400 font-bold px-2 py-1 rounded hover:bg-slate-800">
-                      สร้างใบงาน
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- 2. FEEDER OUTAGE & RELIABILITY STATISTICS TAB -->
-      <section v-if="currentTab === 'feeder'" class="space-y-6">
-        <!-- Reliability Metrics Overview -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <span class="text-xs font-semibold text-slate-400 uppercase">SAIFI (ความถี่ไฟดับเฉลี่ย)</span>
-            <div class="text-2xl font-bold text-slate-900 mt-1">0.42 <span class="text-xs text-slate-500 font-normal">ครั้ง/ราย/ปี</span></div>
-            <div class="text-xs text-emerald-600 font-semibold mt-1"><i class="fa-solid fa-arrow-down"></i> ลดลง 12% ตามเกณฑ์</div>
-          </div>
-          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <span class="text-xs font-semibold text-slate-400 uppercase">SAIDI (ระยะเวลาดับเฉลี่ย)</span>
-            <div class="text-2xl font-bold text-slate-900 mt-1">18.5 <span class="text-xs text-slate-500 font-normal">นาที/ราย/ปี</span></div>
-            <div class="text-xs text-emerald-600 font-semibold mt-1"><i class="fa-solid fa-arrow-down"></i> ดีกว่าเป้าหมาย 25 นาที</div>
-          </div>
-          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <span class="text-xs font-semibold text-slate-400 uppercase">สายป้อนที่เกิดทริปสูงสุด</span>
-            <div class="text-2xl font-bold text-rose-600 mt-1">F-03 บางนา</div>
-            <div class="text-xs text-rose-500 font-semibold mt-1">ทริปสะสม 4 ครั้ง (กิ่งไม้/สัตว์)</div>
-          </div>
-          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <span class="text-xs font-semibold text-slate-400 uppercase">อัตราการจ่ายไฟต่อเนื่อง (ASAI)</span>
-            <div class="text-2xl font-bold text-emerald-600 mt-1">99.982%</div>
-            <div class="text-xs text-slate-500 mt-1">ระดับคุณภาพ World-Class</div>
-          </div>
-        </div>
-
-        <!-- Feeder Outage Breakdown Table -->
-        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="font-bold text-slate-900">สถิติเหตุการณ์ไฟฟ้าดับจำแนกรายสายป้อน (Feeder Incident Statistics)</h3>
-            <span class="text-xs text-slate-500">ข้อมูลรอบ 12 เดือนย้อนหลัง</span>
-          </div>
-
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs">
-              <thead class="bg-slate-50 text-slate-700 uppercase font-bold border-y">
-                <tr>
-                  <th class="p-3.5">รหัสสายป้อน (Feeder ID)</th>
-                  <th class="p-3.5">สถานีต้นทาง / พื้นที่รับผิดชอบ</th>
-                  <th class="p-3.5">ระดับแรงดัน</th>
-                  <th class="p-3.5 text-center">จำนวนครั้งที่ดับ (Trips)</th>
-                  <th class="p-3.5 text-center">ระยะเวลาสะสม (นาที)</th>
-                  <th class="p-3.5">สาเหตุหลัก (Root Cause)</th>
-                  <th class="p-3.5">แผนงาน PM แก้ไขเร่งด่วน</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-100 font-medium">
-                <tr v-for="f in feeders" :key="f.id" class="hover:bg-slate-50">
-                  <td class="p-3.5 font-mono font-bold text-slate-900">{{ f.id }}</td>
-                  <td class="p-3.5 font-semibold text-slate-800">{{ f.name }}</td>
-                  <td class="p-3.5"><span class="bg-red-50 text-red-700 font-bold px-2 py-0.5 rounded border border-red-200 text-[11px]">{{ f.voltage }}</span></td>
-                  <td class="p-3.5 text-center font-bold" :class="f.trips > 2 ? 'text-rose-600' : 'text-slate-800'">{{ f.trips }} ครั้ง</td>
-                  <td class="p-3.5 text-center font-mono">{{ f.duration }} นาที</td>
-                  <td class="p-3.5 text-slate-600">{{ f.rootCause }}</td>
-                  <td class="p-3.5">
-                    <button @click="createPMFromFeeder(f)" class="bg-amber-100 hover:bg-amber-200 text-amber-900 px-2.5 py-1 rounded font-bold text-[11px] transition">
-                      <i class="fa-solid fa-screwdriver-wrench mr-1"></i> เปิดงาน PM สายป้อน
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- 3. FIELD ROUTE & NAVIGATION TAB -->
-      <section v-if="currentTab === 'route'" class="space-y-6">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
-          <!-- Route Control & Checkpoints Sequence -->
-          <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
-            <div class="flex justify-between items-center">
-              <h3 class="font-bold text-slate-900">ลำดับเส้นทางตรวจ PM ภาคสนาม</h3>
-              <span class="bg-emerald-100 text-emerald-800 text-[11px] font-bold px-2 py-0.5 rounded">Optimized Route</span>
-            </div>
-            <p class="text-xs text-slate-500">ระบบคำนวณลำดับจุดตรวจหม้อแปลงและสวิตช์เกียร์เพื่อประหยัดเวลาเดินทางมากที่สุด</p>
-
-            <div class="space-y-3 pt-2">
-              <div v-for="(cp, idx) in routeCheckpoints" :key="cp.id" 
-                   class="p-3.5 rounded-lg border flex items-start justify-between gap-3"
-                   :class="selectedCheckpoint?.id === cp.id ? 'border-amber-500 bg-amber-50/50' : 'border-slate-200 bg-slate-50/50'">
-                <div class="flex items-start gap-3">
-                  <span class="w-6 h-6 rounded-full bg-slate-900 text-amber-400 font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">{{ idx + 1 }}</span>
-                  <div>
-                    <div class="font-bold text-xs text-slate-900">{{ cp.name }}</div>
-                    <div class="text-[11px] text-slate-500">Tag: {{ cp.tag }} &bull; พิกัด: {{ cp.lat }}, {{ cp.lng }}</div>
-                    <div class="text-[11px] text-amber-700 font-semibold mt-1"><i class="fa-solid fa-list-check"></i> {{ cp.task }}</div>
-                  </div>
-                </div>
-                <button @click="navigateCheckpoint(cp)" class="bg-slate-900 hover:bg-slate-800 text-white text-[11px] px-2.5 py-1.5 rounded font-bold shadow flex items-center gap-1 flex-shrink-0">
-                  <i class="fa-solid fa-location-arrow text-amber-400"></i> นำทาง
-                </button>
-              </div>
-            </div>
-
-            <div class="pt-3 border-t text-xs flex justify-between text-slate-600">
-              <span>ระยะทางรวมโดยประมาณ: <strong>14.2 กม.</strong></span>
-              <span>เวลาตรวจรวม: <strong>~3.5 ชม.</strong></span>
-            </div>
-          </div>
-
-          <!-- Simulated Field Map & Navigation Canvas -->
-          <div class="lg:col-span-2 bg-slate-900 text-white p-6 rounded-xl shadow-sm flex flex-col justify-between relative overflow-hidden min-h-[420px]">
-            <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#f59e0b_1px,transparent_1px)] [background-size:16px_16px]"></div>
-            
-            <div class="relative z-10 flex justify-between items-start">
-              <div>
-                <span class="bg-amber-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded uppercase">GIS Field Live</span>
-                <h4 class="text-lg font-bold mt-1">แผนผังพิกัดอุปกรณ์และจุดตรวจเชิงพื้นที่</h4>
-                <p class="text-xs text-slate-400">พิกัดสถานีย่อยและเสาหม้อแปลงแรงสูงในเขตปฏิบัติการ</p>
-              </div>
-              <div v-if="activeNavTarget" class="bg-slate-800/90 border border-amber-500/50 p-3 rounded-lg text-right">
-                <div class="text-[10px] text-amber-400 font-bold uppercase">กำลังนำทางไปยัง</div>
-                <div class="font-bold text-xs">{{ activeNavTarget.name }}</div>
-                <div class="text-[11px] text-slate-300 mt-0.5 font-mono">ระยะห่าง: ~1.8 km (7 นาที)</div>
-              </div>
-            </div>
-
-            <!-- Visual Route Canvas Nodes -->
-            <div class="relative z-10 my-8 grid grid-cols-3 gap-6 text-center">
-              <div v-for="(cp, idx) in routeCheckpoints" :key="cp.id" 
-                   @click="selectedCheckpoint = cp"
-                   class="p-4 rounded-xl border transition cursor-pointer backdrop-blur-md"
-                   :class="selectedCheckpoint?.id === cp.id ? 'bg-amber-500/20 border-amber-400 text-white' : 'bg-slate-800/60 border-slate-700 text-slate-300 hover:border-slate-500'">
-                <div class="text-2xl mb-1">
-                  <i v-if="idx === 0" class="fa-solid fa-industry text-amber-400"></i>
-                  <i v-else-if="idx === 1" class="fa-solid fa-bolt text-blue-400"></i>
-                  <i v-else class="fa-solid fa-network-wired text-emerald-400"></i>
-                </div>
-                <div class="font-bold text-xs">{{ cp.name }}</div>
-                <div class="text-[10px] text-slate-400 mt-1">เสร็จสิ้น [{{ cp.done ? '✓' : 'รอตรวจ' }}]</div>
-              </div>
-            </div>
-
-            <div class="relative z-10 flex justify-between items-center bg-slate-950/80 p-3 rounded-lg border border-slate-800 text-xs">
-              <span class="text-slate-400"><i class="fa-solid fa-satellite text-amber-400 mr-1"></i> GPS Lock: 13.5990° N, 100.5968° E (High Accuracy)</span>
-              <a :href="'https://www.google.com/maps/search/?api=1&query=' + (selectedCheckpoint?.lat || 13.599) + ',' + (selectedCheckpoint?.lng || 100.596)" target="_blank" class="text-amber-400 hover:underline font-bold flex items-center gap-1">
-                เปิดใน Google Maps &rarr;
-              </a>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- 4. WORK ORDERS & ANOMALY DETECTION TAB -->
-      <section v-if="currentTab === 'anomaly'" class="space-y-6">
-        <div class="bg-amber-500/10 border border-amber-500/30 p-5 rounded-xl flex items-start gap-4">
-          <div class="w-10 h-10 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center text-xl font-bold flex-shrink-0">
-            <i class="fa-solid fa-brain"></i>
-          </div>
-          <div>
-            <h3 class="font-bold text-slate-900 text-sm">ระบบวิเคราะห์ความผิดปกติของใบสั่งงาน (Work Order Anomaly Engine)</h3>
-            <p class="text-xs text-slate-600 mt-1">ระบบทำการสแกนประวัติการสั่งซ่อม ตรวจจับความผิดปกติ เช่น การทริปซ้ำซากในจุดเดิม (Recurring Faults), ค่าเวลาซ่อมสูงผิดเกณฑ์ (High MTTR), และสัญญาณความเสื่อมสภาพของฉนวนก่อนเกิดการระเบิด</p>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div v-for="item in anomalies" :key="item.id" class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
-            <div>
-              <div class="flex items-center justify-between">
-                <span class="font-mono font-bold text-xs text-slate-500">{{ item.woId }}</span>
-                <span :class="item.severity === 'CRITICAL' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800'" class="text-[10px] font-bold px-2 py-0.5 rounded">
-                  {{ item.severity }}
-                </span>
-              </div>
-              <h4 class="font-bold text-sm text-slate-900 mt-2">{{ item.title }}</h4>
-              <p class="text-xs text-slate-500 mt-1">อุปกรณ์: <strong>{{ item.asset }}</strong></p>
-              
-              <div class="mt-3 p-2.5 bg-slate-50 rounded-lg border border-slate-100 text-xs">
-                <div class="font-semibold text-rose-700"><i class="fa-solid fa-circle-exclamation mr-1"></i> สาเหตุที่ตรวจพบ:</div>
-                <div class="text-slate-600 mt-0.5">{{ item.anomalyReason }}</div>
-              </div>
-            </div>
-
-            <div class="mt-4 pt-3 border-t">
-              <div class="text-[11px] text-slate-500 font-medium mb-2"><strong>ข้อเสนอแนะเชิงวิศวกรรม:</strong> {{ item.recommendation }}</div>
-              <button @click="resolveAnomaly(item)" class="w-full bg-slate-900 hover:bg-slate-800 text-amber-400 text-xs font-bold py-2 rounded-lg transition shadow">
-                เปิดใบงาน PM พิเศษแก้ไขจุดนี้
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 5. WORK ORDERS GENERAL TAB -->
-      <section v-if="currentTab === 'orders'" class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
-        <div class="flex justify-between items-center">
-          <h3 class="font-bold text-slate-900">รายการใบสั่งงาน PM / CM ทั้งหมด</h3>
-          <span class="text-xs text-slate-500">จัดการสถานะและพิมพ์ใบงาน</span>
-        </div>
-
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-slate-50 text-slate-700 uppercase font-bold border-y">
-              <tr>
-                <th class="p-3">รหัสงาน</th>
-                <th class="p-3">ประเภท</th>
-                <th class="p-3">ชื่องาน / อุปกรณ์</th>
-                <th class="p-3">ระดับแรงดัน</th>
-                <th class="p-3">กำหนดเสร็จ</th>
-                <th class="p-3">สถานะ</th>
-                <th class="p-3 text-center">จัดการ</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100 font-medium">
-              <tr v-for="wo in workOrders" :key="wo.id" class="hover:bg-slate-50">
-                <td class="p-3 font-mono font-bold">{{ wo.id }}</td>
-                <td class="p-3"><span :class="wo.type === 'PM' ? 'bg-blue-100 text-blue-800' : 'bg-rose-100 text-rose-800'" class="px-2 py-0.5 rounded font-bold">{{ wo.type }}</span></td>
-                <td class="p-3">
-                  <div class="font-bold text-slate-800">{{ wo.title }}</div>
-                  <div class="text-[11px] text-slate-400">{{ wo.asset }} ({{ wo.tag }})</div>
-                </td>
-                <td class="p-3"><span class="bg-slate-100 px-2 py-0.5 rounded font-bold">{{ wo.voltage }}</span></td>
-                <td class="p-3 font-mono">{{ wo.dueDate }}</td>
-                <td class="p-3">
-                  <span :class="wo.status === 'Completed' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'" class="px-2 py-0.5 rounded font-bold">
-                    {{ wo.status }}
-                  </span>
-                </td>
-                <td class="p-3 text-center space-x-1">
-                  <button @click="openFormWithWO(wo)" class="bg-slate-900 hover:bg-slate-800 text-white px-2.5 py-1 rounded text-[11px]">บันทึกผล</button>
-                  <button @click="printWorkOrder(wo)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 border px-2.5 py-1 rounded text-[11px]"><i class="fa-solid fa-print"></i></button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- 6. STANDARDIZED PM FORM TAB -->
-      <section v-if="currentTab === 'form'" class="max-w-4xl mx-auto bg-white p-8 rounded-xl border border-slate-200 shadow-sm space-y-6">
-        <div class="border-b pb-4 flex justify-between items-start">
-          <div>
-            <span class="text-[11px] font-mono font-bold text-amber-600 uppercase tracking-widest">ELECTRICAL TESTING STANDARD FORM</span>
-            <h3 class="text-xl font-black text-slate-900 mt-1">ฟอร์มบันทึกผลการบำรุงรักษาอุปกรณ์ไฟฟ้าและทดสอบฉนวน</h3>
-            <p class="text-xs text-slate-500 mt-0.5">มาตรฐานการทดสอบตาม IEEE Std 43 / IEC 60076</p>
-          </div>
-          <button @click="triggerPrint" class="bg-slate-900 text-white text-xs font-bold px-3 py-2 rounded-lg shadow hover:bg-slate-800 flex items-center gap-1.5">
-            <i class="fa-solid fa-print"></i> พิมพ์เอกสาร
-          </button>
-        </div>
-
-        <div id="printable-sheet" class="space-y-6 text-xs text-slate-800">
-          
-          <!-- General Asset Meta -->
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-slate-50 rounded-lg border border-slate-200">
-            <div>
-              <span class="text-slate-400 block text-[10px] uppercase font-bold">รหัสใบสั่งงาน</span>
-              <span class="font-mono font-bold text-slate-800">{{ activeFormWO?.id || 'WO-PM-2026-001' }}</span>
-            </div>
-            <div>
-              <span class="text-slate-400 block text-[10px] uppercase font-bold">ชื่ออุปกรณ์</span>
-              <span class="font-bold text-slate-800">{{ activeFormWO?.asset || 'หม้อแปลงไฟฟ้า 22kV 1000kVA' }}</span>
-            </div>
-            <div>
-              <span class="text-slate-400 block text-[10px] uppercase font-bold">รหัสพิกัด Tag</span>
-              <span class="font-mono font-bold text-slate-800">{{ activeFormWO?.tag || 'TR-SUB-01' }}</span>
-            </div>
-            <div>
-              <span class="text-slate-400 block text-[10px] uppercase font-bold">วันที่ทดสอบ</span>
-              <span class="font-mono font-bold text-slate-800">{{ currentDate }}</span>
-            </div>
-          </div>
-
-          <!-- Insulation Resistance Test (Megger) -->
-          <div class="border rounded-lg overflow-hidden">
-            <div class="bg-slate-100 p-2.5 font-bold text-slate-800 border-b flex justify-between items-center">
-              <span>1. ผลการทดสอบค่าความต้านทานความเป็นฉนวน (Insulation Resistance - Megger Test @ 2.5kV)</span>
-              <span class="text-[11px] text-slate-500 font-normal">เกณฑ์มาตรฐาน: &ge; 100 M&Omega;</span>
-            </div>
-            <div class="p-4 grid grid-cols-3 gap-4">
-              <div>
-                <label class="block text-slate-500 font-semibold mb-1">Primary to Ground (HV - E)</label>
-                <div class="flex items-center gap-1">
-                  <input type="number" v-model="pmFormData.meggerHV_E" class="w-full border rounded p-1.5 text-xs font-mono font-bold text-slate-900">
-                  <span class="text-slate-400">M&Omega;</span>
-                </div>
-              </div>
-              <div>
-                <label class="block text-slate-500 font-semibold mb-1">Secondary to Ground (LV - E)</label>
-                <div class="flex items-center gap-1">
-                  <input type="number" v-model="pmFormData.meggerLV_E" class="w-full border rounded p-1.5 text-xs font-mono font-bold text-slate-900">
-                  <span class="text-slate-400">M&Omega;</span>
-                </div>
-              </div>
-              <div>
-                <label class="block text-slate-500 font-semibold mb-1">Primary to Secondary (HV - LV)</label>
-                <div class="flex items-center gap-1">
-                  <input type="number" v-model="pmFormData.meggerHV_LV" class="w-full border rounded p-1.5 text-xs font-mono font-bold text-slate-900">
-                  <span class="text-slate-400">M&Omega;</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Grounding & Thermo Scan -->
-          <div class="border rounded-lg overflow-hidden">
-            <div class="bg-slate-100 p-2.5 font-bold text-slate-800 border-b flex justify-between items-center">
-              <span>2. การทดสอบความต้านทานดินและอุณหภูมิขั้วต่อ (Grounding & Thermal Scan)</span>
-            </div>
-            <div class="p-4 grid grid-cols-3 gap-4">
-              <div>
-                <label class="block text-slate-500 font-semibold mb-1">ความต้านทานดิน (Ground Resistance)</label>
-                <div class="flex items-center gap-1">
-                  <input type="number" step="0.1" v-model="pmFormData.groundResistance" class="w-full border rounded p-1.5 text-xs font-mono font-bold text-slate-900">
-                  <span class="text-slate-400">&Omega;</span>
-                </div>
-                <span class="text-[10px] text-slate-400">เกณฑ์: &le; 5.0 &Omega;</span>
-              </div>
-              <div>
-                <label class="block text-slate-500 font-semibold mb-1">อุณหภูมิขั้วต่อ Busbar สูงสุด</label>
-                <div class="flex items-center gap-1">
-                  <input type="number" v-model="pmFormData.thermoTemp" class="w-full border rounded p-1.5 text-xs font-mono font-bold text-slate-900">
-                  <span class="text-slate-400">&deg;C</span>
-                </div>
-                <span class="text-[10px] text-slate-400">เกณฑ์: &le; 65.0 &deg;C</span>
-              </div>
-              <div>
-                <label class="block text-slate-500 font-semibold mb-1">แรงดันก๊าซ SF6 (สำหรับ Switchgear)</label>
-                <div class="flex items-center gap-1">
-                  <input type="number" step="0.01" v-model="pmFormData.sf6Pressure" class="w-full border rounded p-1.5 text-xs font-mono font-bold text-slate-900">
-                  <span class="text-slate-400">MPa</span>
-                </div>
-                <span class="text-[10px] text-slate-400">เกณฑ์: &ge; 0.55 MPa</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Pass/Fail Status Banner -->
-          <div class="p-4 rounded-lg flex items-center justify-between border" :class="isFormPassed ? 'bg-emerald-50 border-emerald-300 text-emerald-800' : 'bg-rose-50 border-rose-300 text-rose-800'">
-            <div class="flex items-center gap-2 font-bold">
-              <i class="fa-solid" :class="isFormPassed ? 'fa-circle-check text-emerald-600' : 'fa-circle-xmark text-rose-600'"></i>
-              สรุปผลการประเมินทางวิศวกรรม: {{ isFormPassed ? 'ผ่านเกณฑ์มาตรฐานความปลอดภัย (PASSED)' : 'ไม่ผ่านเกณฑ์มาตรฐาน - ต้องออกใบงานแก้ไขด่วน (FAILED)' }}
-            </div>
-            <span class="text-xs font-mono font-bold">Safety Compliance Verified</span>
-          </div>
-
-          <!-- Signature Sign-off for Printing -->
-          <div class="grid grid-cols-2 gap-8 pt-8 border-t text-center">
-            <div>
-              <div class="border-b border-slate-400 w-48 mx-auto mb-2 pb-6"></div>
-              <div class="font-bold">( นายสมชาย มั่นคง )</div>
-              <div class="text-[10px] text-slate-500">วิศวกร/ช่างเทคนิคผู้ทดสอบ</div>
-            </div>
-            <div>
-              <div class="border-b border-slate-400 w-48 mx-auto mb-2 pb-6"></div>
-              <div class="font-bold">( นายวิชัย ช่างทอง )</div>
-              <div class="text-[10px] text-slate-500">หัวหน้าแผนกบำรุงรักษาระบบส่งจ่าย</div>
-            </div>
-          </div>
-
-        </div>
-      </section>
+      <!-- Floating Bottom Toolbar -->
+      <div class="absolute bottom-6 left-6 z-30 flex items-center gap-2">
+        <button @click="recenterCar" class="bg-slate-900/90 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl border border-slate-700 backdrop-blur shadow-xl flex items-center gap-2">
+          <i class="fa-solid fa-crosshairs text-amber-400"></i> ล็อกมุมกล้องที่ตัวรถ
+        </button>
+        <button @click="openGoogleMaps" class="bg-slate-900/90 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl border border-slate-700 backdrop-blur shadow-xl flex items-center gap-2">
+          <i class="fa-brands fa-google text-blue-400"></i> นำทางด้วย Google Maps App
+        </button>
+      </div>
 
     </main>
 
-    <!-- CREATE WORK ORDER MODAL -->
-    <div v-if="openNewWOModal" class="fixed inset-0 bg-slate-950/60 flex items-center justify-center p-4 z-50">
-      <div class="bg-white rounded-xl max-w-lg w-full p-6 shadow-2xl">
-        <h3 class="text-base font-bold text-slate-900 mb-4">ออกใบสั่งงานบำรุงรักษาอุปกรณ์ไฟฟ้า</h3>
+    <!-- MODAL: GEOFENCE FIELD PM CHECKLIST -->
+    <div v-if="activeFieldPM" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl text-slate-100 space-y-4">
+        <div class="flex justify-between items-start border-b border-slate-800 pb-3">
+          <div>
+            <span class="text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded uppercase">
+              GPS Verified (< 50m)
+            </span>
+            <h3 class="text-base font-bold text-white mt-1.5">{{ activeFieldPM.name }}</h3>
+            <p class="text-xs text-slate-400 font-mono">Tag: {{ activeFieldPM.tag }} &bull; {{ activeFieldPM.voltage }}</p>
+          </div>
+          <button @click="activeFieldPM = null" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+
         <div class="space-y-3 text-xs">
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">ชื่องานซ่อมบำรุง</label>
-            <input v-model="newWO.title" type="text" placeholder="เช่น PM ประจำรอบ 6 เดือน ตู้ Switchgear" class="w-full border rounded-lg p-2">
+          <div class="p-3 bg-slate-800/60 rounded-xl border border-slate-700/60">
+            <div class="font-bold text-amber-400 mb-2">รายการตรวจเช็กหน้างาน (Field Inspection)</div>
+            <div class="space-y-2">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" v-model="fieldForm.visual" class="rounded text-amber-500 bg-slate-950 border-slate-700">
+                <span>ตรวจสภาพภายนอก, รอยรั่วซึมน้ำมัน และความสะอาดลูกถ้วย</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" v-model="fieldForm.ground" class="rounded text-amber-500 bg-slate-950 border-slate-700">
+                <span>ตรวจสอบสภาพสายต่อลงดิน (Ground Conductor) แน่นหนา</span>
+              </label>
+            </div>
           </div>
+
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block font-semibold text-slate-700 mb-1">ชื่ออุปกรณ์</label>
-              <input v-model="newWO.asset" type="text" placeholder="เช่น Feeder Switchgear F-02" class="w-full border rounded-lg p-2">
+              <label class="block text-slate-400 font-semibold mb-1">Thermo Scan อุณหภูมิ (°C)</label>
+              <input type="number" v-model="fieldForm.thermo" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs text-white font-mono font-bold">
             </div>
             <div>
-              <label class="block font-semibold text-slate-700 mb-1">รหัส Tag</label>
-              <input v-model="newWO.tag" type="text" placeholder="เช่น SWG-F02" class="w-full border rounded-lg p-2">
+              <label class="block text-slate-400 font-semibold mb-1">ค่า Megger ฉนวน (MΩ)</label>
+              <input type="number" v-model="fieldForm.megger" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs text-white font-mono font-bold">
             </div>
-          </div>
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">ประเภทงาน</label>
-              <select v-model="newWO.type" class="w-full border rounded-lg p-2 bg-white">
-                <option value="PM">PM (Preventive)</option>
-                <option value="CM">CM (Corrective)</option>
-              </select>
-            </div>
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">ระดับแรงดัน</label>
-              <select v-model="newWO.voltage" class="w-full border rounded-lg p-2 bg-white">
-                <option value="High Voltage 22kV">High Voltage 22kV</option>
-                <option value="Medium Voltage 6.6kV">Medium Voltage 6.6kV</option>
-                <option value="Low Voltage 400V">Low Voltage 400V</option>
-              </select>
-            </div>
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">กำหนดส่งงาน</label>
-            <input v-model="newWO.dueDate" type="date" class="w-full border rounded-lg p-2 bg-white">
           </div>
         </div>
-        <div class="flex justify-end gap-2 mt-6 pt-4 border-t">
-          <button @click="openNewWOModal = false" class="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg">ยกเลิก</button>
-          <button @click="saveNewWorkOrder" class="px-4 py-2 text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-lg shadow">สร้างใบสั่งงาน</button>
+
+        <div class="flex justify-end gap-2 pt-4 border-t border-slate-800">
+          <button @click="activeFieldPM = null" class="px-4 py-2 text-xs font-bold text-slate-400 hover:text-white">ยกเลิก</button>
+          <button @click="completeFieldPM" class="px-5 py-2 text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-xl shadow-lg flex items-center gap-1.5">
+            <i class="fa-solid fa-check-double"></i> บันทึกผล PM ประจำจุดตรวจนี้
+          </button>
         </div>
       </div>
     </div>
@@ -551,133 +229,214 @@
     createApp({
       data() {
         return {
-          currentTab: 'schedule',
-          openNewWOModal: false,
-          activeFormWO: null,
-          selectedCheckpoint: null,
-          activeNavTarget: null,
-          currentDate: new Date().toLocaleDateString('th-TH'),
+          map: null,
+          carMarker: null,
+          routeLine: null,
+          markersGroup: null,
+          
+          isDriving: false,
+          drivingInterval: null,
+          pathIndex: 0,
+          speed: 0,
+          etaMinutes: 14,
+          
+          carPos: [13.5992, 100.5968],
+          selectedCp: null,
+          activeTarget: null,
+          activeFieldPM: null,
 
-          newWO: {
-            title: '',
-            asset: '',
-            tag: '',
-            type: 'PM',
-            voltage: 'High Voltage 22kV',
-            dueDate: '2026-09-15'
+          navPrompt: {
+            icon: 'fa-arrow-up',
+            distance: 'อีก 350 เมตร',
+            instruction: 'ตรงไปตามแนวถนนสายป้อน 22kV สุขุมวิท'
           },
 
-          pmFormData: {
-            meggerHV_E: 350,
-            meggerLV_E: 280,
-            meggerHV_LV: 410,
-            groundResistance: 2.4,
-            thermoTemp: 44.5,
-            sf6Pressure: 0.62
+          fieldForm: {
+            visual: true,
+            ground: true,
+            thermo: 42.5,
+            megger: 320
           },
 
-          scheduleMatrix: [
-            { id: 1, name: 'หม้อแปลงไฟฟ้ากำลัง (Power Transformer 22kV)', cycle: 'รายปี (1Y)', months: ['DONE', '-', '-', 'PLANNED', '-', '-', 'DONE', '-', '-', 'PLANNED', '-', '-'] },
-            { id: 2, name: 'ตู้สวิตช์เกียร์และ RMU (Ring Main Unit)', cycle: 'ราย 6 เดือน (6M)', months: ['DONE', '-', '-', '-', '-', 'DONE', '-', '-', '-', '-', '-', 'PLANNED'] },
-            { id: 3, name: 'รีเลย์ป้องกันและตู้คอนโทรล (Protection Relays)', cycle: 'ราย 1 ปี (1Y)', months: ['-', 'DONE', '-', '-', '-', '-', '-', 'PLANNED', '-', '-', '-', '-'] },
-            { id: 4, name: 'คาปาซิเตอร์แบงก์และ MDB แรงต่ำ (Capacitor Bank)', cycle: 'ราย 3 เดือน (3M)', months: ['DONE', '-', '-', 'DONE', '-', '-', 'DONE', '-', '-', 'PLANNED', '-', '-'] }
+          checkpoints: [
+            { id: 1, name: 'สถานีย่อยต้นทาง Substation A', tag: 'SUB-A-SWG', voltage: '22kV', lat: 13.5992, lng: 100.5968, task: 'ตรวจเช็กแรงดัน SF6 และ Relay Protection', distance: 0.0, isNearby: true, status: 'COMPLETED' },
+            { id: 2, name: 'หม้อแปลงจำหน่าย บ.ไทยอินดัสทรี', tag: 'TR-IND-01', voltage: '22kV/400V', lat: 13.6048, lng: 100.6030, task: 'Thermo Scan ขั้วต่อแรงสูง & วัดค่า Megger', distance: 1.2, isNearby: false, status: 'PENDING' },
+            { id: 3, name: 'ตู้ RMU วงแหวนแยกสาย 24kV', tag: 'RMU-F03-02', voltage: '24kV', lat: 13.6120, lng: 100.6095, task: 'ทดสอบกลไกเปิด-ปิด & ตรวจวัดค่ากราวด์', distance: 2.8, isNearby: false, status: 'PENDING' },
+            { id: 4, name: 'Auto Recloser หัวสายแยก F-03', tag: 'REC-F03-TOP', voltage: '22kV', lat: 13.6190, lng: 100.6150, task: 'อ่านค่า Event Log & ตรวจแบตเตอรี่ตู้ควบคุม', distance: 4.5, isNearby: false, status: 'PENDING' }
           ],
 
-          feeders: [
-            { id: 'F-01', name: 'สายป้อนสุขุมวิท (Substation A)', voltage: '22kV', trips: 1, duration: 25, rootCause: 'กิ่งไม้แตะสายช่วงลมพายุ' },
-            { id: 'F-02', name: 'สายป้อนนิคมอุตสาหกรรม (Substation B)', voltage: '22kV', trips: 0, duration: 0, rootCause: 'ปกติ (ไม่มีเหตุขัดข้อง)' },
-            { id: 'F-03', name: 'สายป้อนบางนา (Substation C)', voltage: '22kV', trips: 4, duration: 110, rootCause: 'ฉนวนลูกถ้วยเสื่อมสภาพ & นกทำรัง' },
-            { id: 'F-04', name: 'สายป้อนสมุทรปราการ (Substation D)', voltage: '22kV', trips: 2, duration: 45, rootCause: 'หม้อแปลงลูกค้าระเบิดกระทบระบบส่ง' }
-          ],
-
-          routeCheckpoints: [
-            { id: 1, name: 'จุดตรวจที่ 1: สถานีย่อยต้นทาง (Substation A)', tag: 'SUB-A-SWG', lat: 13.5992, lng: 100.5968, task: 'ตรวจเช็กแรงดันก๊าซ SF6 และ Insulation Megger', done: true },
-            { id: 2, name: 'จุดตรวจที่ 2: หม้อแปลงจำหน่ายหน้า รง. 1', tag: 'TR-IND-01', lat: 13.6045, lng: 100.6012, task: 'Thermo Scan ขั้วต่อแรงสูงและเก็บตัวอย่างน้ำมัน', done: false },
-            { id: 3, name: 'จุดตรวจที่ 3: ตู้ RMU วงแหวนแยกสาย', tag: 'RMU-04', lat: 13.6120, lng: 100.6105, task: 'ทดสอบกลไกเปิด-ปิดสวิตช์และวัดค่าความต้านทานดิน', done: false }
-          ],
-
-          anomalies: [
-            { id: 1, woId: 'WO-CM-9941', title: 'การทริปซ้ำซ้อน 3 ครั้งใน 30 วัน', asset: 'Feeder F-03 บางนา', severity: 'CRITICAL', anomalyReason: 'พบการเกิด Overcurrent Fault ซ้ำซ้อนที่จุดเดิม แม้จะสั่ง Reset Relay แล้ว', recommendation: 'ควรส่งทีมทำ Thermo Scan และทดสอบ Insulation ลูกถ้วยฉนวนตลอดแนวสาย 2 กม.' },
-            { id: 2, woId: 'WO-PM-8820', title: 'ค่าความต้านทานฉนวน (Megger) ลดลงฮวบ', asset: 'หม้อแปลง TR-02 (22kV)', severity: 'CRITICAL', anomalyReason: 'ค่าความเป็นฉนวนลดจาก 450 MΩ เหลือ 110 MΩ ภายใน 6 เดือน (เสื่อมสภาพเร็วผิดปกติ)', recommendation: 'ดึงตัวอย่างน้ำมันหม้อแปลงทดสอบ DGA (Dissolved Gas Analysis) ทันทีเพื่อกันการระเบิด' },
-            { id: 3, woId: 'WO-CM-7712', title: 'เวลาเฉลี่ยในการซ่อม (MTTR) สูงเกินเกณฑ์', asset: 'Capacitor Bank 250kVAR', severity: 'WARNING', anomalyReason: 'ใช้เวลาแก้ปัญหานานกว่า 5.5 ชั่วโมง (ค่าเฉลี่ยปกติ 1.5 ชม.) เนื่องจากอะไหล่ขาดสต็อก', recommendation: 'ปรับปรุง Min/Max Spare Parts Fuse แรงสูงและคอนแทกเตอร์ในระบบคลัง' }
-          ],
-
-          workOrders: [
-            { id: 'WO-PM-2026-001', type: 'PM', title: 'PM ประจำปี หม้อแปลงไฟฟ้า TR-01', asset: 'Power Transformer 22kV', tag: 'TR-01', voltage: '22kV', dueDate: '2026-09-15', status: 'In Progress' },
-            { id: 'WO-PM-2026-002', type: 'PM', title: 'ตรวจเช็กก๊าซและ Contact RMU-02', asset: 'Ring Main Unit 24kV', tag: 'RMU-02', voltage: '22kV', dueDate: '2026-09-20', status: 'Pending' },
-            { id: 'WO-CM-2026-003', type: 'CM', title: 'เปลี่ยน Fuse แรงสูงขาดจากฟ้าผ่า', asset: 'Feeder Protection F-03', tag: 'FUSE-F03', voltage: '22kV', dueDate: '2026-08-28', status: 'Completed' }
+          // Simulation path coordinates
+          simRoute: [
+            [13.5992, 100.5968],
+            [13.6010, 100.5985],
+            [13.6030, 100.6008],
+            [13.6048, 100.6030], // CP 2
+            [13.6075, 100.6055],
+            [13.6098, 100.6078],
+            [13.6120, 100.6095], // CP 3
+            [13.6155, 100.6120],
+            [13.6190, 100.6150]  // CP 4
           ]
         };
       },
-      computed: {
-        isFormPassed() {
-          return this.pmFormData.meggerHV_E >= 100 &&
-                 this.pmFormData.meggerLV_E >= 100 &&
-                 this.pmFormData.meggerHV_LV >= 100 &&
-                 this.pmFormData.groundResistance <= 5.0 &&
-                 this.pmFormData.thermoTemp <= 65.0 &&
-                 this.pmFormData.sf6Pressure >= 0.55;
-        }
+      mounted() {
+        this.initMap();
+        this.activeTarget = this.checkpoints[1];
+        this.selectedCp = this.checkpoints[1];
       },
       methods: {
-        navClass(tab) {
-          return this.currentTab === tab 
-            ? 'bg-amber-500 text-slate-950 font-bold shadow' 
-            : 'text-slate-300 hover:bg-slate-800 hover:text-white';
-        },
-        navigateCheckpoint(cp) {
-          this.selectedCheckpoint = cp;
-          this.activeNavTarget = cp;
-        },
-        triggerScheduleWO(item) {
-          this.newWO.title = `PM ตามรอบ ${item.cycle} - ${item.name}`;
-          this.newWO.asset = item.name;
-          this.newWO.tag = 'TAG-AUTO';
-          this.newWO.type = 'PM';
-          this.openNewWOModal = true;
-        },
-        createPMFromFeeder(f) {
-          this.newWO.title = `PM เร่งด่วนแก้ปัญหาสายป้อนทริป - ${f.name}`;
-          this.newWO.asset = `Feeder ${f.id} Line System`;
-          this.newWO.tag = f.id;
-          this.newWO.type = 'CM';
-          this.openNewWOModal = true;
-        },
-        saveNewWorkOrder() {
-          if (!this.newWO.title) return;
-          this.workOrders.unshift({
-            id: `WO-${this.newWO.type}-2026-${Math.floor(100 + Math.random() * 900)}`,
-            type: this.newWO.type,
-            title: this.newWO.title,
-            asset: this.newWO.asset || 'อุปกรณ์ไฟฟ้า',
-            tag: this.newWO.tag || 'TAG-01',
-            voltage: this.newWO.voltage,
-            dueDate: this.newWO.dueDate,
-            status: 'Pending'
+        initMap() {
+          // Dark/Modern Basemap Tile Layer
+          this.map = L.map('map', { zoomControl: false }).setView(this.carPos, 14);
+          
+          L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap &copy; CARTO'
+          }).addTo(this.map);
+
+          L.control.zoom({ position: 'bottomright' }).addTo(this.map);
+
+          // Route Polyline (Glow effect for 22kV Power line)
+          this.routeLine = L.polyline(this.simRoute, {
+            color: '#f59e0b',
+            weight: 5,
+            opacity: 0.9,
+            dashArray: '8, 8'
+          }).addTo(this.map);
+
+          this.markersGroup = L.layerGroup().addTo(this.map);
+          this.renderMarkers();
+
+          // Technician Van Car Marker
+          const carIcon = L.divIcon({
+            className: 'custom-car-icon',
+            html: `
+              <div style="background:#f59e0b; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:3px solid #0f172a; box-shadow:0 0 15px #f59e0b;">
+                <i class="fa-solid fa-truck-pickup" style="color:#0f172a; font-size:16px;"></i>
+              </div>`,
+            iconSize: [34, 34],
+            iconAnchor: [17, 17]
           });
-          this.openNewWOModal = false;
-          this.currentTab = 'orders';
+
+          this.carMarker = L.marker(this.carPos, { icon: carIcon }).addTo(this.map);
         },
-        openFormWithWO(wo) {
-          this.activeFormWO = wo;
-          this.currentTab = 'form';
-        },
-        resolveAnomaly(item) {
-          this.newWO.title = `PM พิเศษ: แก้ไข ${item.title}`;
-          this.newWO.asset = item.asset;
-          this.newWO.tag = item.woId;
-          this.newWO.type = 'PM';
-          this.openNewWOModal = true;
-        },
-        printWorkOrder(wo) {
-          this.activeFormWO = wo;
-          this.currentTab = 'form';
-          this.$nextTick(() => {
-            window.print();
+
+        renderMarkers() {
+          this.markersGroup.clearLayers();
+          this.checkpoints.forEach((cp, idx) => {
+            const isDone = cp.status === 'COMPLETED';
+            const iconHtml = `
+              <div style="background:${isDone ? '#10b981' : '#0f172a'}; color:${isDone ? '#0f172a' : '#f59e0b'}; width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:bold; border:2px solid ${isDone ? '#10b981' : '#f59e0b'}; font-size:12px; box-shadow:0 4px 10px rgba(0,0,0,0.5);">
+                ${isDone ? '✓' : idx + 1}
+              </div>`;
+            
+            const customIcon = L.divIcon({
+              html: iconHtml,
+              iconSize: [30, 30],
+              iconAnchor: [15, 15]
+            });
+
+            const marker = L.marker([cp.lat, cp.lng], { icon: customIcon })
+              .bindPopup(`<strong>${cp.name}</strong><br><span style="font-size:11px;color:#94a3b8">Tag: ${cp.tag}</span>`);
+            
+            marker.on('click', () => { this.selectCheckpoint(cp); });
+            this.markersGroup.addLayer(marker);
           });
         },
-        triggerPrint() {
-          window.print();
+
+        selectCheckpoint(cp) {
+          this.selectedCp = cp;
+          this.map.panTo([cp.lat, cp.lng]);
+        },
+
+        startNavigationTo(cp) {
+          this.activeTarget = cp;
+          this.selectedCp = cp;
+          this.navPrompt = {
+            icon: 'fa-diamond-turn-right',
+            distance: 'อีก 150 เมตร',
+            instruction: `เลี้ยวขวาเข้าพื้นที่ ${cp.name}`
+          };
+          this.map.flyTo([cp.lat, cp.lng], 15);
+        },
+
+        toggleSimulation() {
+          if (this.isDriving) {
+            clearInterval(this.drivingInterval);
+            this.isDriving = false;
+            this.speed = 0;
+          } else {
+            this.isDriving = true;
+            this.speed = 45;
+            this.drivingInterval = setInterval(this.driveStep, 1500);
+          }
+        },
+
+        driveStep() {
+          if (this.pathIndex < this.simRoute.length - 1) {
+            this.pathIndex++;
+            this.carPos = this.simRoute[this.pathIndex];
+            this.carMarker.setLatLng(this.carPos);
+            this.map.panTo(this.carPos);
+
+            // Calculate distance & Geofence check
+            this.checkpoints.forEach(cp => {
+              const d = this.getDistance(this.carPos[0], this.carPos[1], cp.lat, cp.lng);
+              cp.distance = (d / 1000).toFixed(1);
+              if (d < 100) {
+                cp.isNearby = true;
+                if (!cp.notified && cp.status !== 'COMPLETED') {
+                  cp.notified = true;
+                  this.activeFieldPM = cp; // Auto open PM checklist upon arrival!
+                }
+              }
+            });
+
+            this.etaMinutes = Math.max(1, this.etaMinutes - 2);
+          } else {
+            this.toggleSimulation();
+            this.pathIndex = 0;
+          }
+        },
+
+        getDistance(lat1, lon1, lat2, lon2) {
+          const R = 6371e3; // Earth radius in meters
+          const φ1 = lat1 * Math.PI / 180;
+          const φ2 = lat2 * Math.PI / 180;
+          const Δφ = (lat2 - lat1) * Math.PI / 180;
+          const Δλ = (lon2 - lon1) * Math.PI / 180;
+          const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                    Math.cos(φ1) * Math.cos(φ2) *
+                    Math.sin(Δλ/2) * Math.sin(Δλ/2);
+          return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        },
+
+        recenterCar() {
+          this.map.flyTo(this.carPos, 15);
+        },
+
+        openGoogleMaps() {
+          if (this.activeTarget) {
+            window.open(`https://www.google.com/maps/dir/?api=1&destination=${this.activeTarget.lat},${this.activeTarget.lng}`, '_blank');
+          }
+        },
+
+        optimizeRoute() {
+          this.checkpoints.sort((a, b) => a.distance - b.distance);
+          this.renderMarkers();
+        },
+
+        openFieldChecklist(cp) {
+          this.activeFieldPM = cp;
+        },
+
+        completeFieldPM() {
+          if (this.activeFieldPM) {
+            this.activeFieldPM.status = 'COMPLETED';
+            this.activeFieldPM.isNearby = false;
+            this.renderMarkers();
+            this.activeFieldPM = null;
+          }
         }
       }
     }).mount('#app');
