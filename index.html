@@ -3,293 +3,157 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ElectroCMMS - Workforce & Electrical Asset Management</title>
+  <title>ElectroPM - ระบบจัดการใบสั่งงานบำรุงรักษาอุปกรณ์ไฟฟ้า</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
     body { font-family: 'Sarabun', sans-serif; }
+    @media print {
+      body * { visibility: hidden; }
+      #printable-sheet, #printable-sheet * { visibility: visible; }
+      #printable-sheet { position: absolute; left: 0; top: 0; width: 100%; }
+    }
   </style>
 </head>
 <body class="bg-slate-100 text-slate-800">
   <div id="app" class="flex min-h-screen">
     
-    <!-- Sidebar Navigation -->
+    <!-- Sidebar -->
     <aside class="w-64 bg-slate-900 text-white flex flex-col flex-shrink-0">
-      <div class="p-5 border-b border-slate-800">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold">
-            <i class="fa-solid fa-bolt"></i>
-          </div>
-          <div>
-            <h1 class="font-bold text-base leading-tight tracking-wide">ElectroCMMS</h1>
-            <p class="text-[11px] text-slate-400">ระบบซ่อมบำรุงและพัฒนาช่าง</p>
-          </div>
+      <div class="p-5 border-b border-slate-800 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center text-xl font-black">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-base leading-tight">ElectroPM CMMS</h1>
+          <p class="text-[11px] text-slate-400">ระบบบริหารแผนงาน PM</p>
         </div>
       </div>
 
       <nav class="flex-1 p-4 space-y-1.5">
-        <button @click="currentTab = 'dashboard'" :class="currentTab === 'dashboard' ? 'bg-amber-500 text-slate-950 font-bold shadow' : 'text-slate-300 hover:bg-slate-800'" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition text-left">
-          <i class="fa-solid fa-chart-line w-5 text-center"></i> ภาพรวมระบบ
-        </button>
-        <button @click="currentTab = 'workorders'" :class="currentTab === 'workorders' ? 'bg-amber-500 text-slate-950 font-bold shadow' : 'text-slate-300 hover:bg-slate-800'" class="w-full flex items-center justify-between px-4 py-2.5 rounded-lg text-sm transition text-left">
-          <span class="flex items-center gap-3"><i class="fa-solid fa-clipboard-list w-5 text-center"></i> ใบสั่งงาน (PM/CM)</span>
+        <button @click="currentTab = 'orders'" :class="currentTab === 'orders' ? 'bg-amber-500 text-slate-950 font-bold shadow' : 'text-slate-300 hover:bg-slate-800'" class="w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm transition text-left">
+          <span class="flex items-center gap-3"><i class="fa-solid fa-file-invoice w-5 text-center"></i> ใบสั่งงาน (Work Orders)</span>
           <span class="bg-slate-800 text-amber-400 text-xs px-2 py-0.5 rounded-full font-bold">{{ workOrders.length }}</span>
         </button>
-        <button @click="currentTab = 'workforce'" :class="currentTab === 'workforce' ? 'bg-amber-500 text-slate-950 font-bold shadow' : 'text-slate-300 hover:bg-slate-800'" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition text-left">
-          <i class="fa-solid fa-user-gear w-5 text-center"></i> Skill Matrix & ช่าง
+        <button @click="currentTab = 'plans'" :class="currentTab === 'plans' ? 'bg-amber-500 text-slate-950 font-bold shadow' : 'text-slate-300 hover:bg-slate-800'" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition text-left">
+          <i class="fa-solid fa-calendar-check w-5 text-center"></i> ตารางแผน PM ประจำปี
         </button>
-        <button @click="currentTab = 'loto'" :class="currentTab === 'loto' ? 'bg-amber-500 text-slate-950 font-bold shadow' : 'text-slate-300 hover:bg-slate-800'" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition text-left">
-          <i class="fa-solid fa-lock w-5 text-center"></i> Digital LOTO SOP
+        <button @click="currentTab = 'history'" :class="currentTab === 'history' ? 'bg-amber-500 text-slate-950 font-bold shadow' : 'text-slate-300 hover:bg-slate-800'" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition text-left">
+          <i class="fa-solid fa-clock-rotate-left w-5 text-center"></i> ประวัติผลการตรวจวัด
         </button>
       </nav>
 
-      <div class="p-4 border-t border-slate-800">
-        <div class="bg-slate-800/60 p-3 rounded-lg flex items-center gap-3">
-          <div class="w-8 h-8 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center font-bold text-xs">วิ</div>
-          <div class="text-xs">
-            <div class="font-semibold text-slate-200">หัวหน้างานบำรุงรักษา</div>
-            <div class="text-slate-400">แผนกไฟฟ้าแรงสูง</div>
-          </div>
+      <div class="p-4 border-t border-slate-800 text-xs text-slate-400">
+        <div class="flex items-center justify-between mb-1">
+          <span>PM Compliance</span>
+          <span class="text-amber-400 font-bold">{{ pmCompliance }}%</span>
+        </div>
+        <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+          <div class="bg-amber-400 h-full rounded-full" :style="{ width: pmCompliance + '%' }"></div>
         </div>
       </div>
     </aside>
 
-    <!-- Main Content Area -->
+    <!-- Main Content -->
     <main class="flex-1 p-8 overflow-y-auto">
       
-      <!-- Top Title Bar -->
+      <!-- Top Bar -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-6 border-b border-slate-200 gap-4">
         <div>
           <h2 class="text-2xl font-bold text-slate-900">
-            <span v-if="currentTab === 'dashboard'">ภาพรวมระบบบำรุงรักษาและสมรรถนะบุคลากร</span>
-            <span v-if="currentTab === 'workorders'">จัดการและจ่ายใบสั่งงาน (Smart Work Orders)</span>
-            <span v-if="currentTab === 'workforce'">Electrical Competency & Skill Matrix Hub</span>
-            <span v-if="currentTab === 'loto'">ขั้นตอนความปลอดภัยตัดแยกไฟฟ้า (Digital LOTO Protocol)</span>
+            <span v-if="currentTab === 'orders'">ศูนย์จัดการและออกใบสั่งงาน PM / CM</span>
+            <span v-if="currentTab === 'plans'">แผนบำรุงรักษาเชิงป้องกันประจำปี (PM Schedule Master)</span>
+            <span v-if="currentTab === 'history'">บันทึกประวัติการทดสอบและผลตรวจวัดทางไฟฟ้า</span>
           </h2>
-          <p class="text-xs text-slate-500 mt-1">วิเคราะห์ขีดความสามารถ จับคู่งานตามระดับความปลอดภัย และบันทึกประวัติซ่อมบำรุง</p>
+          <p class="text-xs text-slate-500 mt-1">จัดการวงรอบการซ่อมบำรุง, ออกใบสั่งงาน, และบันทึกผลการทดสอบทางไฟฟ้าตามมาตรฐานความปลอดภัย</p>
         </div>
-
-        <!-- Notification Toast / Status Badge -->
-        <div class="flex items-center gap-3">
-          <button @click="openModal = true" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm px-4 py-2.5 rounded-lg shadow transition flex items-center gap-2">
-            <i class="fa-solid fa-plus"></i> ออกใบสั่งงานใหม่
+        <div>
+          <button @click="openCreateModal = true" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm px-4 py-2.5 rounded-lg shadow transition flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i> ออกใบสั่งงาน PM ใหม่
           </button>
         </div>
       </div>
 
-      <!-- TAB 1: DASHBOARD -->
-      <section v-if="currentTab === 'dashboard'" class="space-y-6">
-        <!-- KPI Metrics -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
-          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <div class="flex justify-between items-start">
-              <span class="text-xs font-semibold text-slate-400 uppercase">PM Compliance</span>
-              <span class="text-emerald-500 text-xs font-bold"><i class="fa-solid fa-arrow-up"></i> +4.2%</span>
-            </div>
-            <div class="text-2xl font-bold text-slate-900 mt-2">{{ pmCompliance }}%</div>
-            <div class="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden">
-              <div class="bg-emerald-500 h-full rounded-full" :style="{ width: pmCompliance + '%' }"></div>
-            </div>
+      <!-- TAB 1: WORK ORDERS -->
+      <section v-if="currentTab === 'orders'" class="space-y-6">
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+            <div class="text-xs text-slate-400 font-bold uppercase">ใบงานทั้งหมด</div>
+            <div class="text-2xl font-bold text-slate-900 mt-1">{{ workOrders.length }} ใบ</div>
           </div>
-
-          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <div class="flex justify-between items-start">
-              <span class="text-xs font-semibold text-slate-400 uppercase">ค่าเฉลี่ย MTTR</span>
-              <span class="text-blue-500 text-xs font-bold">เป้าหมาย &le; 2.0 ชม.</span>
-            </div>
-            <div class="text-2xl font-bold text-slate-900 mt-2">1.65 ชม.</div>
-            <p class="text-xs text-slate-500 mt-2">ลดลง 22 นาทีจากไตรมาสก่อน</p>
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+            <div class="text-xs text-amber-600 font-bold uppercase">รอดำเนินการ (Pending)</div>
+            <div class="text-2xl font-bold text-amber-600 mt-1">{{ countStatus('Pending') }} ใบ</div>
           </div>
-
-          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <div class="flex justify-between items-start">
-              <span class="text-xs font-semibold text-slate-400 uppercase">ความพร้อมช่างแรงสูง (L3-L4)</span>
-              <span class="text-amber-500 text-xs font-bold">พร้อมปฏิบัติงาน</span>
-            </div>
-            <div class="text-2xl font-bold text-amber-600 mt-2">{{ qualifiedTechPercentage }}%</div>
-            <p class="text-xs text-slate-500 mt-2">ผ่านเกณฑ์ High-Voltage License</p>
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+            <div class="text-xs text-blue-600 font-bold uppercase">กำลังตรวจเช็ก (In Progress)</div>
+            <div class="text-2xl font-bold text-blue-600 mt-1">{{ countStatus('In Progress') }} ใบ</div>
           </div>
-
-          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <div class="flex justify-between items-start">
-              <span class="text-xs font-semibold text-slate-400 uppercase">Safety LOTO Score</span>
-              <span class="text-emerald-600 text-xs font-bold"><i class="fa-solid fa-shield-halved"></i> 100%</span>
-            </div>
-            <div class="text-2xl font-bold text-emerald-600 mt-2">Zero Accident</div>
-            <p class="text-xs text-slate-500 mt-2">ไม่มีอุบัติเหตุทางไฟฟ้า 420 วัน</p>
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+            <div class="text-xs text-emerald-600 font-bold uppercase">เสร็จสมบูรณ์ (Completed)</div>
+            <div class="text-2xl font-bold text-emerald-600 mt-1">{{ countStatus('Completed') }} ใบ</div>
           </div>
         </div>
 
-        <!-- Work Orders & Technician Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div class="lg:col-span-2 bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-            <div class="flex justify-between items-center mb-4">
-              <h3 class="font-bold text-slate-800">งานซ่อมบำรุงที่กำลังดำเนินการ</h3>
-              <button @click="currentTab = 'workorders'" class="text-xs font-bold text-amber-600 hover:text-amber-700">ดูทั้งหมด &rarr;</button>
-            </div>
-            <div class="space-y-3">
-              <div v-for="wo in workOrders" :key="wo.id" class="p-4 rounded-lg border border-slate-100 bg-slate-50 flex items-center justify-between">
-                <div>
-                  <div class="flex items-center gap-2">
-                    <span class="font-mono text-xs font-bold text-slate-500">{{ wo.id }}</span>
-                    <span :class="getVoltageBadge(wo.voltageLevel)">{{ wo.voltageLevel }}</span>
-                  </div>
-                  <div class="font-bold text-sm text-slate-800 mt-1">{{ wo.title }}</div>
-                  <div class="text-xs text-slate-500 mt-0.5">อุปกรณ์: {{ wo.asset }} | ช่าง: <span class="font-medium text-slate-700">{{ wo.assignedTo || 'ยังไม่มอบหมาย' }}</span></div>
-                </div>
-                <div>
-                  <span :class="getStatusBadge(wo.status)">{{ wo.status }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Quick Technician Status -->
-          <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-            <div class="flex justify-between items-center mb-4">
-              <h3 class="font-bold text-slate-800">สถานะช่างในกะวันนี้</h3>
-              <button @click="currentTab = 'workforce'" class="text-xs font-bold text-amber-600 hover:text-amber-700">Skill Matrix &rarr;</button>
-            </div>
-            <div class="space-y-3">
-              <div v-for="tech in technicians" :key="tech.id" class="flex items-center justify-between p-3 rounded-lg border border-slate-100">
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center font-bold text-xs text-slate-700">{{ tech.name.substring(0,2) }}</div>
-                  <div>
-                    <div class="text-xs font-bold text-slate-800">{{ tech.name }}</div>
-                    <div class="text-[11px] text-slate-400">Level {{ tech.level }} &bull; {{ tech.specialty }}</div>
-                  </div>
-                </div>
-                <button @click="toggleTechStatus(tech)" :class="tech.status === 'ว่าง' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-amber-100 text-amber-800 border-amber-300'" class="text-xs px-2.5 py-1 rounded-md font-semibold border cursor-pointer">
-                  {{ tech.status }}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- TAB 2: WORK ORDERS -->
-      <section v-if="currentTab === 'workorders'" class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-          <div>
-            <h3 class="font-bold text-lg text-slate-900">รายการใบสั่งงาน PM / CM อุปกรณ์ไฟฟ้า</h3>
-            <p class="text-xs text-slate-500">จับคู่และมอบหมายช่างที่มีระดับ Skill Matrix และความปลอดภัยตรงตามเงื่อนไข</p>
-          </div>
-          <div class="flex items-center gap-2">
-            <select v-model="filterVoltage" class="border border-slate-300 text-xs rounded-lg px-3 py-2 bg-white">
-              <option value="ALL">ทุกลำดับแรงดันไฟฟ้า</option>
-              <option value="High Voltage">เฉพาะ High Voltage</option>
-              <option value="Medium Voltage">เฉพาะ Medium Voltage</option>
-              <option value="Low Voltage">เฉพาะ Low Voltage</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-sm text-slate-600">
-            <thead class="bg-slate-50 text-slate-700 uppercase text-xs font-semibold border-y">
-              <tr>
-                <th class="p-3.5">รหัสงาน</th>
-                <th class="p-3.5">ชื่องาน / อุปกรณ์</th>
-                <th class="p-3.5">ระดับแรงดัน</th>
-                <th class="p-3.5">เงื่อนไขทักษะขั้นต่ำ</th>
-                <th class="p-3.5">ช่างผู้รับผิดชอบ</th>
-                <th class="p-3.5">สถานะ</th>
-                <th class="p-3.5 text-center">การจัดการ</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100">
-              <tr v-for="wo in filteredWorkOrders" :key="wo.id" class="hover:bg-slate-50/80">
-                <td class="p-3.5 font-mono font-bold text-xs text-slate-800">{{ wo.id }}</td>
-                <td class="p-3.5">
-                  <div class="font-bold text-slate-800">{{ wo.title }}</div>
-                  <div class="text-xs text-slate-400">{{ wo.asset }}</div>
-                </td>
-                <td class="p-3.5">
-                  <span :class="getVoltageBadge(wo.voltageLevel)">{{ wo.voltageLevel }}</span>
-                </td>
-                <td class="p-3.5 text-xs font-medium text-slate-700">
-                  <span class="bg-slate-100 border border-slate-200 px-2 py-0.5 rounded font-mono text-[11px] font-bold">L{{ wo.requiredMinLevel }}+</span> 
-                  <span class="ml-1 text-slate-500">{{ wo.requiredSkillName }}</span>
-                </td>
-                <td class="p-3.5 text-xs">
-                  <div v-if="wo.assignedTo" class="font-semibold text-slate-800 flex items-center gap-1.5">
-                    <i class="fa-solid fa-user-check text-emerald-500"></i> {{ wo.assignedTo }}
-                  </div>
-                  <div v-else class="text-amber-600 font-semibold italic flex items-center gap-1">
-                    <i class="fa-solid fa-triangle-exclamation"></i> รอจ่ายงาน
-                  </div>
-                </td>
-                <td class="p-3.5">
-                  <span :class="getStatusBadge(wo.status)">{{ wo.status }}</span>
-                </td>
-                <td class="p-3.5 text-center space-x-2">
-                  <button @click="openAssignModal(wo)" class="text-xs bg-slate-900 hover:bg-slate-800 text-white font-medium px-3 py-1.5 rounded transition">
-                    {{ wo.assignedTo ? 'เปลี่ยนช่าง' : 'มอบหมายงาน' }}
-                  </button>
-                  <button v-if="wo.status !== 'Completed'" @click="completeWorkOrder(wo)" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-3 py-1.5 rounded transition">
-                    ปิดงาน
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- TAB 3: WORKFORCE & SKILL MATRIX -->
-      <section v-if="currentTab === 'workforce'" class="space-y-6">
-        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-          <div class="flex justify-between items-center mb-6">
-            <div>
-              <h3 class="font-bold text-lg text-slate-900">ตารางประเมินสมรรถนะช่างไฟฟ้า (Competency & Skill Matrix)</h3>
-              <p class="text-xs text-slate-500">กำหนดระดับความชำนาญ (L1: พื้นฐาน, L2: ทำงานทั่วไป, L3: งานขั้นสูง/แรงสูง, L4: ผู้เชี่ยวชาญ/ที่ปรึกษา)</p>
+        <!-- Orders Table -->
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+            <h3 class="font-bold text-slate-800 text-sm">รายการใบสั่งงานบำรุงรักษา</h3>
+            <div class="flex gap-2">
+              <select v-model="filterType" class="text-xs border rounded-lg px-3 py-1.5 bg-white">
+                <option value="ALL">ทุกประเภทงาน</option>
+                <option value="PM">เฉพาะ PM (Preventive)</option>
+                <option value="CM">เฉพาะ CM (Corrective)</option>
+              </select>
             </div>
           </div>
 
           <div class="overflow-x-auto">
             <table class="w-full text-left text-sm text-slate-600">
-              <thead class="bg-slate-50 text-slate-700 uppercase text-xs font-semibold border-y">
+              <thead class="bg-slate-50 text-slate-700 uppercase text-xs font-semibold border-b">
                 <tr>
-                  <th class="p-3.5">ชื่อช่างเทคนิค</th>
-                  <th class="p-3.5 text-center">ระดับโดยรวม</th>
-                  <th class="p-3.5">หม้อแปลง (Transformer)</th>
-                  <th class="p-3.5">สวิตช์เกียร์ (Switchgear)</th>
-                  <th class="p-3.5">รีเลย์ป้องกัน (Protection)</th>
-                  <th class="p-3.5">Safety & LOTO</th>
-                  <th class="p-3.5 text-center">ปรับระดับทักษะ</th>
+                  <th class="p-3.5">รหัสใบสั่งงาน</th>
+                  <th class="p-3.5">ประเภท</th>
+                  <th class="p-3.5">ชื่องาน / อุปกรณ์</th>
+                  <th class="p-3.5">ระดับแรงดัน</th>
+                  <th class="p-3.5">กำหนดเสร็จ</th>
+                  <th class="p-3.5">สถานะ</th>
+                  <th class="p-3.5 text-center">การจัดการ</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-100">
-                <tr v-for="t in technicians" :key="t.id" class="hover:bg-slate-50/80">
+                <tr v-for="wo in filteredWorkOrders" :key="wo.id" class="hover:bg-slate-50/80">
+                  <td class="p-3.5 font-mono font-bold text-xs text-slate-900">{{ wo.id }}</td>
                   <td class="p-3.5">
-                    <div class="font-bold text-slate-800">{{ t.name }}</div>
-                    <div class="text-xs text-slate-400">{{ t.role }}</div>
-                  </td>
-                  <td class="p-3.5 text-center">
-                    <span class="bg-slate-900 text-amber-400 font-mono text-xs px-2.5 py-1 rounded-md font-bold">L{{ t.level }}</span>
-                  </td>
-                  <td class="p-3.5">
-                    <span :class="getSkillBadge(t.skills.transformer)">L{{ t.skills.transformer }} {{ getSkillLabel(t.skills.transformer) }}</span>
-                  </td>
-                  <td class="p-3.5">
-                    <span :class="getSkillBadge(t.skills.switchgear)">L{{ t.skills.switchgear }} {{ getSkillLabel(t.skills.switchgear) }}</span>
-                  </td>
-                  <td class="p-3.5">
-                    <span :class="getSkillBadge(t.skills.relay)">L{{ t.skills.relay }} {{ getSkillLabel(t.skills.relay) }}</span>
-                  </td>
-                  <td class="p-3.5">
-                    <span class="inline-flex items-center gap-1 text-emerald-600 font-bold text-xs">
-                      <i class="fa-solid fa-circle-check"></i> ผ่านรับรอง
+                    <span :class="wo.type === 'PM' ? 'bg-blue-100 text-blue-800' : 'bg-rose-100 text-rose-800'" class="text-[11px] font-bold px-2 py-0.5 rounded">
+                      {{ wo.type }}
                     </span>
                   </td>
-                  <td class="p-3.5 text-center">
-                    <div class="inline-flex rounded-md shadow-sm">
-                      <button @click="adjustSkill(t, -1)" class="px-2.5 py-1 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-l-md">-</button>
-                      <button @click="adjustSkill(t, 1)" class="px-2.5 py-1 text-xs font-bold text-white bg-amber-500 hover:bg-amber-600 border border-amber-500 rounded-r-md">+ Level</button>
-                    </div>
+                  <td class="p-3.5">
+                    <div class="font-bold text-slate-900">{{ wo.title }}</div>
+                    <div class="text-xs text-slate-400">Tag: {{ wo.assetTag }} &bull; {{ wo.assetName }}</div>
+                  </td>
+                  <td class="p-3.5">
+                    <span :class="getVoltageClass(wo.voltageLevel)" class="text-xs font-bold px-2 py-0.5 rounded border">
+                      {{ wo.voltageLevel }}
+                    </span>
+                  </td>
+                  <td class="p-3.5 text-xs font-mono">{{ wo.dueDate }}</td>
+                  <td class="p-3.5">
+                    <span :class="getStatusClass(wo.status)" class="text-xs font-bold px-2.5 py-1 rounded">
+                      {{ wo.status }}
+                    </span>
+                  </td>
+                  <td class="p-3.5 text-center space-x-1.5 whitespace-nowrap">
+                    <button @click="openChecklist(wo)" class="text-xs bg-slate-900 hover:bg-slate-800 text-white font-medium px-2.5 py-1.5 rounded transition">
+                      <i class="fa-solid fa-list-check mr-1"></i> บันทึกผล PM
+                    </button>
+                    <button @click="printWorkOrder(wo)" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-2.5 py-1.5 rounded transition border border-slate-300">
+                      <i class="fa-solid fa-print"></i> พิมพ์ใบงาน
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -298,115 +162,266 @@
         </div>
       </section>
 
-      <!-- TAB 4: DIGITAL LOTO SOP -->
-      <section v-if="currentTab === 'loto'" class="max-w-3xl mx-auto bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-        <div class="border-b pb-4 mb-6">
-          <div class="flex items-center gap-2 text-red-600 font-bold text-xs uppercase tracking-wider">
-            <i class="fa-solid fa-triangle-exclamation"></i> High Voltage Safety Protocol
-          </div>
-          <h3 class="text-xl font-bold text-slate-900 mt-1">SOP ขั้นตอนการตัดแยกระบบไฟฟ้าและล็อกนิรภัย (LOTO)</h3>
-          <p class="text-xs text-slate-500 mt-1">ต้องปฏิบัติตามลำดับอย่างเคร่งครัดก่อนดำเนินการซ่อมบำรุงอุปกรณ์ไฟฟ้าแรงดันสูง</p>
-        </div>
+      <!-- TAB 2: PM PLANS -->
+      <section v-if="currentTab === 'plans'" class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+        <h3 class="font-bold text-lg text-slate-900 mb-2">ตารางวงรอบการบำรุงรักษาเชิงป้องกัน (Master PM Plans)</h3>
+        <p class="text-xs text-slate-500 mb-6">กำหนดรอบเวลาการเข้าบำรุงรักษาสำหรับอุปกรณ์ไฟฟ้าแต่ละประเภทตามมาตรฐานวิศวกรรม</p>
 
         <div class="space-y-4">
-          <div v-for="(step, idx) in lotoSteps" :key="idx" 
-               class="p-4 rounded-lg border transition cursor-pointer flex items-start gap-3"
-               :class="step.completed ? 'bg-emerald-50/60 border-emerald-300' : 'bg-slate-50 border-slate-200'"
-               @click="step.completed = !step.completed">
-            <div class="mt-0.5">
-              <input type="checkbox" :checked="step.completed" class="w-4 h-4 text-emerald-600 rounded border-slate-300 cursor-pointer">
-            </div>
-            <div class="flex-1">
-              <div class="font-bold text-sm text-slate-800" :class="{'line-through text-slate-400': step.completed}">
-                ขั้นตอนที่ {{ idx + 1 }}: {{ step.title }}
+          <div v-for="plan in pmPlans" :key="plan.id" class="p-4 rounded-lg border border-slate-200 bg-slate-50/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="bg-slate-900 text-white text-xs font-mono px-2 py-0.5 rounded">{{ plan.cycle }}</span>
+                <span class="font-bold text-slate-800 text-sm">{{ plan.assetCategory }}</span>
               </div>
-              <p class="text-xs text-slate-500 mt-1">{{ step.desc }}</p>
+              <p class="text-xs text-slate-500 mt-1">{{ plan.scope }}</p>
+              <div class="text-[11px] text-slate-400 mt-1">เครื่องมือที่ต้องใช้: {{ plan.tools }}</div>
             </div>
-            <span v-if="step.completed" class="text-xs text-emerald-600 font-bold bg-emerald-100 px-2 py-0.5 rounded">ผ่านการตรวจสอบ</span>
+            <button @click="generateFromPlan(plan)" class="text-xs bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-2 rounded-lg transition shadow whitespace-nowrap">
+              <i class="fa-solid fa-bolt mr-1"></i> ออกใบสั่งงานตามรอบนี้
+            </button>
           </div>
         </div>
+      </section>
 
-        <div class="mt-6 pt-4 border-t flex justify-between items-center">
-          <div class="text-xs text-slate-500">
-            ความคืบหน้า: <strong class="text-slate-800">{{ lotoCompletedCount }}/{{ lotoSteps.length }} ขั้นตอน</strong>
-          </div>
-          <button :disabled="lotoCompletedCount !== lotoSteps.length" 
-                  :class="lotoCompletedCount === lotoSteps.length ? 'bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer' : 'bg-slate-200 text-slate-400 cursor-not-allowed'"
-                  class="text-xs font-bold px-4 py-2.5 rounded-lg transition shadow">
-            <i class="fa-solid fa-lock-open mr-1"></i> ปลดล็อกอนุญาตเข้าปฏิบัติงาน
-          </button>
+      <!-- TAB 3: TEST HISTORY -->
+      <section v-if="currentTab === 'history'" class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+        <h3 class="font-bold text-lg text-slate-900 mb-2">ประวัติผลการทดสอบทางไฟฟ้า (Test Measurement Logs)</h3>
+        <p class="text-xs text-slate-500 mb-6">บันทึกค่าทางวิศวกรรมที่ตรวจวัดได้จริงจากหน้างาน เพื่อนำไปวิเคราะห์แนวโน้มความเสื่อมสภาพ</p>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm text-slate-600">
+            <thead class="bg-slate-50 text-slate-700 uppercase text-xs font-semibold border-y">
+              <tr>
+                <th class="p-3">วันที่บันทึก</th>
+                <th class="p-3">รหัสใบงาน</th>
+                <th class="p-3">อุปกรณ์</th>
+                <th class="p-3">Insulation Megger</th>
+                <th class="p-3">Ground Resistance</th>
+                <th class="p-3">Thermo Scan (&deg;C)</th>
+                <th class="p-3">ผลการประเมิน</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              <tr v-for="log in testLogs" :key="log.id" class="hover:bg-slate-50/80 text-xs">
+                <td class="p-3 font-mono">{{ log.date }}</td>
+                <td class="p-3 font-mono font-bold text-slate-800">{{ log.woId }}</td>
+                <td class="p-3 font-medium text-slate-800">{{ log.asset }}</td>
+                <td class="p-3 font-mono">{{ log.insulation }} M&Omega;</td>
+                <td class="p-3 font-mono">{{ log.ground }} &Omega;</td>
+                <td class="p-3 font-mono">{{ log.thermo }} &deg;C</td>
+                <td class="p-3">
+                  <span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-[11px]">
+                    <i class="fa-solid fa-circle-check"></i> ผ่านเกณฑ์
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
     </main>
 
-    <!-- MODAL 1: CREATE WORK ORDER -->
-    <div v-if="openModal" class="fixed inset-0 bg-slate-950/50 flex items-center justify-center p-4 z-50">
+    <!-- MODAL: ISSUE NEW WORK ORDER -->
+    <div v-if="openCreateModal" class="fixed inset-0 bg-slate-950/50 flex items-center justify-center p-4 z-50">
       <div class="bg-white rounded-xl max-w-lg w-full p-6 shadow-2xl">
-        <h3 class="text-lg font-bold text-slate-900 mb-4">สร้างใบสั่งงานบำรุงรักษาใหม่</h3>
-        <div class="space-y-4 text-sm">
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">ชื่องานซ่อมบำรุง</label>
-            <input v-model="newWO.title" type="text" placeholder="เช่น PM ประจำปี หม้อแปลง TR-02" class="w-full border rounded-lg p-2.5 text-xs">
+        <div class="flex justify-between items-center mb-4 border-b pb-3">
+          <h3 class="text-base font-bold text-slate-900"><i class="fa-solid fa-file-circle-plus text-amber-500 mr-1.5"></i> ออกใบสั่งงานบำรุงรักษา (New Work Order)</h3>
+          <button @click="openCreateModal = false" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="space-y-3.5 text-xs">
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">ประเภทงาน</label>
+              <select v-model="newWO.type" class="w-full border rounded-lg p-2 bg-white">
+                <option value="PM">PM - บำรุงรักษาเชิงป้องกัน</option>
+                <option value="CM">CM - งานซ่อมแก้ไขเร่งด่วน</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">ระดับแรงดันไฟฟ้า</label>
+              <select v-model="newWO.voltageLevel" class="w-full border rounded-lg p-2 bg-white">
+                <option value="High Voltage (22kV+)">High Voltage (22kV+)</option>
+                <option value="Medium Voltage (3.3-6.6kV)">Medium Voltage (3.3-6.6kV)</option>
+                <option value="Low Voltage (400V)">Low Voltage (400V)</option>
+              </select>
+            </div>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">อุปกรณ์ / Asset</label>
-            <input v-model="newWO.asset" type="text" placeholder="เช่น Main Transformer 22kV" class="w-full border rounded-lg p-2.5 text-xs">
+            <label class="block font-semibold text-slate-700 mb-1">ชื่องานซ่อมบำรุง</label>
+            <input v-model="newWO.title" type="text" placeholder="เช่น PM ประจำปี ตรวจสอบ Insulation & Oil หม้อแปลง TR-01" class="w-full border rounded-lg p-2">
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block text-xs font-semibold text-slate-600 mb-1">ระดับแรงดันไฟฟ้า</label>
-              <select v-model="newWO.voltageLevel" class="w-full border rounded-lg p-2.5 text-xs bg-white">
-                <option value="High Voltage">High Voltage (22kV+)</option>
-                <option value="Medium Voltage">Medium Voltage</option>
-                <option value="Low Voltage">Low Voltage (400V)</option>
-              </select>
+              <label class="block font-semibold text-slate-700 mb-1">ชื่ออุปกรณ์ (Asset Name)</label>
+              <input v-model="newWO.assetName" type="text" placeholder="เช่น Main Transformer 22kV 1500kVA" class="w-full border rounded-lg p-2">
             </div>
             <div>
-              <label class="block text-xs font-semibold text-slate-600 mb-1">ระดับทักษะขั้นต่ำที่ต้องการ</label>
-              <select v-model="newWO.requiredMinLevel" class="w-full border rounded-lg p-2.5 text-xs bg-white">
-                <option :value="1">Level 1 (ช่างทั่วไป)</option>
-                <option :value="2">Level 2 (ระดับกลาง)</option>
-                <option :value="3">Level 3 (ช่างแรงสูง)</option>
-                <option :value="4">Level 4 (ผู้เชี่ยวชาญ)</option>
-              </select>
+              <label class="block font-semibold text-slate-700 mb-1">รหัสอุปกรณ์ (Asset Tag)</label>
+              <input v-model="newWO.assetTag" type="text" placeholder="เช่น TR-SUB-01" class="w-full border rounded-lg p-2">
             </div>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">กำหนดแล้วเสร็จ (Due Date)</label>
+            <input v-model="newWO.dueDate" type="date" class="w-full border rounded-lg p-2 bg-white">
           </div>
         </div>
         <div class="flex justify-end gap-2 mt-6 pt-4 border-t">
-          <button @click="openModal = false" class="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg">ยกเลิก</button>
-          <button @click="createWorkOrder" class="px-4 py-2 text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-lg shadow">บันทึกและสร้างใบงาน</button>
+          <button @click="openCreateModal = false" class="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg">ยกเลิก</button>
+          <button @click="submitWorkOrder" class="px-4 py-2 text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-lg shadow">ออกใบสั่งงาน</button>
         </div>
       </div>
     </div>
 
-    <!-- MODAL 2: ASSIGN TECHNICIAN -->
-    <div v-if="assignModalWO" class="fixed inset-0 bg-slate-950/50 flex items-center justify-center p-4 z-50">
-      <div class="bg-white rounded-xl max-w-lg w-full p-6 shadow-2xl">
-        <h3 class="text-lg font-bold text-slate-900 mb-1">มอบหมายช่างสำหรับใบงาน: {{ assignModalWO.id }}</h3>
-        <p class="text-xs text-slate-500 mb-4">ระบบคัดกรองช่างที่ระดับทักษะ &ge; L{{ assignModalWO.requiredMinLevel }} ให้อัตโนมัติ</p>
-
-        <div class="space-y-2 max-h-64 overflow-y-auto">
-          <div v-for="tech in eligibleTechnicians" :key="tech.id" 
-               @click="selectedTechForAssign = tech"
-               class="p-3 rounded-lg border cursor-pointer flex items-center justify-between"
-               :class="selectedTechForAssign?.id === tech.id ? 'border-amber-500 bg-amber-50/50' : 'border-slate-200 hover:bg-slate-50'">
-            <div>
-              <div class="font-bold text-xs text-slate-800">{{ tech.name }} (Level {{ tech.level }})</div>
-              <div class="text-[11px] text-slate-400">{{ tech.role }} &bull; สถานะ: <span class="font-semibold text-slate-600">{{ tech.status }}</span></div>
-            </div>
-            <span v-if="tech.level >= assignModalWO.requiredMinLevel" class="text-[11px] text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded font-bold">
-              ตรงตามเกณฑ์
-            </span>
+    <!-- MODAL: ELECTRICAL PM CHECKLIST & RECORD -->
+    <div v-if="activeChecklistWO" class="fixed inset-0 bg-slate-950/50 flex items-center justify-center p-4 z-50">
+      <div class="bg-white rounded-xl max-w-2xl w-full p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-start mb-4 border-b pb-3">
+          <div>
+            <div class="text-xs font-mono font-bold text-amber-600">{{ activeChecklistWO.id }}</div>
+            <h3 class="text-base font-bold text-slate-900">{{ activeChecklistWO.title }}</h3>
+            <p class="text-xs text-slate-500">อุปกรณ์: {{ activeChecklistWO.assetName }} ({{ activeChecklistWO.assetTag }})</p>
           </div>
-          <div v-if="eligibleTechnicians.length === 0" class="text-center py-6 text-xs text-slate-400">
-            ไม่มีช่างที่มีระดับทักษะถึงเกณฑ์ในขณะนี้
+          <button @click="activeChecklistWO = null" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+
+        <div class="space-y-4 text-xs">
+          <!-- Safety First Banner -->
+          <div class="p-3 bg-amber-50 border border-amber-200 rounded-lg flex items-center gap-2.5 text-amber-800">
+            <i class="fa-solid fa-shield-halved text-amber-600 text-base"></i>
+            <div><strong>มาตรการความปลอดภัย:</strong> ยืนยันการตัดแยกแหล่งจ่ายไฟ (LOTO) และต่อลงดินก่อนทำการทดสอบทุกครั้ง</div>
+          </div>
+
+          <!-- Checklist Items -->
+          <div class="border rounded-lg overflow-hidden">
+            <div class="bg-slate-50 p-2.5 font-bold text-slate-700 border-b">1. รายการตรวจสอบสภาพทางกายภาพ (Visual & Mechanical)</div>
+            <div class="p-3 space-y-2">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" v-model="formChecklist.visualClean" class="rounded text-emerald-600">
+                <span>ทำความสะอาดฝุ่น คราบน้ำมัน และตรวจสอบรอยรั่วซึม</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" v-model="formChecklist.terminalTight" class="rounded text-emerald-600">
+                <span>กวดขันน็อตขั้วต่อสายและ Busbar ด้วยประแจปอนด์ (Torque Check)</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" v-model="formChecklist.groundConnected" class="rounded text-emerald-600">
+                <span>ตรวจสอบสภาพสายดินหลัก (Main Grounding Conductor) แน่นหนา ไม่หลุดหลวม</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Electrical Test Numeric Inputs -->
+          <div class="border rounded-lg overflow-hidden">
+            <div class="bg-slate-50 p-2.5 font-bold text-slate-700 border-b">2. บันทึกผลการตรวจวัดทางไฟฟ้า (Electrical Measurements)</div>
+            <div class="p-3 grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block font-semibold text-slate-600 mb-1">ค่าความเป็นฉนวน (Megger Test)</label>
+                <div class="flex items-center gap-1">
+                  <input type="number" v-model="formChecklist.meggerValue" class="w-full border rounded p-1.5 text-xs" placeholder="เช่น 200">
+                  <span class="text-slate-400">M&Omega;</span>
+                </div>
+                <div class="text-[10px] text-slate-400 mt-0.5">เกณฑ์มาตรฐาน &ge; 100 M&Omega;</div>
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-600 mb-1">ค่าความต้านทานดิน (Ground Test)</label>
+                <div class="flex items-center gap-1">
+                  <input type="number" step="0.1" v-model="formChecklist.groundValue" class="w-full border rounded p-1.5 text-xs" placeholder="เช่น 3.5">
+                  <span class="text-slate-400">&Omega;</span>
+                </div>
+                <div class="text-[10px] text-slate-400 mt-0.5">เกณฑ์มาตรฐาน &le; 5.0 &Omega;</div>
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-600 mb-1">อุณหภูมิจุดสัมผัส (Thermo Scan)</label>
+                <div class="flex items-center gap-1">
+                  <input type="number" v-model="formChecklist.thermoValue" class="w-full border rounded p-1.5 text-xs" placeholder="เช่น 45">
+                  <span class="text-slate-400">&deg;C</span>
+                </div>
+                <div class="text-[10px] text-slate-400 mt-0.5">เกณฑ์มาตรฐาน &le; 65 &deg;C</div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="flex justify-end gap-2 mt-6 pt-4 border-t">
-          <button @click="assignModalWO = null" class="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg">ยกเลิก</button>
-          <button :disabled="!selectedTechForAssign" @click="confirmAssign" class="px-4 py-2 text-xs font-bold bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 rounded-lg shadow">ยืนยันการจ่ายงาน</button>
+        <div class="flex justify-between items-center mt-6 pt-4 border-t">
+          <button @click="activeChecklistWO = null" class="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg">ปิดหน้าต่าง</button>
+          <button @click="savePMResult" class="px-5 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg shadow flex items-center gap-1.5">
+            <i class="fa-solid fa-check-double"></i> บันทึกผลและปิดใบสั่งงาน
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: PRINT PREVIEW SHEET -->
+    <div v-if="printWO" class="fixed inset-0 bg-slate-950/60 flex items-center justify-center p-4 z-50">
+      <div class="bg-white rounded-xl max-w-2xl w-full p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
+        
+        <!-- Sheet to Print -->
+        <div id="printable-sheet" class="border border-slate-300 p-6 rounded bg-white text-slate-900 text-xs">
+          <div class="flex justify-between items-start border-b-2 border-slate-900 pb-3 mb-4">
+            <div>
+              <h1 class="text-lg font-black uppercase tracking-wider">ใบสั่งงานบำรุงรักษาเชิงป้องกัน (PM WORK ORDER)</h1>
+              <p class="text-[11px] text-slate-500">ELECTRICAL PREVENTIVE MAINTENANCE DISPATCH SHEET</p>
+            </div>
+            <div class="text-right">
+              <div class="font-mono font-bold text-sm">{{ printWO.id }}</div>
+              <div class="text-[10px] text-slate-500">วันที่พิมพ์: {{ currentDate }}</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 mb-4 bg-slate-50 p-3 rounded border border-slate-200">
+            <div>
+              <div><strong>ชื่องาน:</strong> {{ printWO.title }}</div>
+              <div><strong>อุปกรณ์:</strong> {{ printWO.assetName }}</div>
+              <div><strong>รหัสอุปกรณ์ (Tag):</strong> {{ printWO.assetTag }}</div>
+            </div>
+            <div>
+              <div><strong>ประเภทงาน:</strong> {{ printWO.type }} (Preventive Maintenance)</div>
+              <div><strong>ระดับแรงดัน:</strong> {{ printWO.voltageLevel }}</div>
+              <div><strong>กำหนดเสร็จ:</strong> {{ printWO.dueDate }}</div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <div class="font-bold border-b pb-1 mb-2">ตารางรายการตรวจเช็กหน้างาน (Field Inspection Checklist)</div>
+            <table class="w-full text-left border text-[11px]">
+              <thead class="bg-slate-100 border-b">
+                <tr>
+                  <th class="p-1.5 border-r">รายการทดสอบ</th>
+                  <th class="p-1.5 border-r">เกณฑ์มาตรฐาน</th>
+                  <th class="p-1.5 border-r">ค่าที่วัดได้จริง</th>
+                  <th class="p-1.5 text-center">ผลการตรวจ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b"><td class="p-1.5 border-r">Insulation Resistance Test (Megger 1000V/2500V)</td><td class="p-1.5 border-r">&ge; 100 M&Omega;</td><td class="p-1.5 border-r font-mono">______ M&Omega;</td><td class="p-1.5 text-center">[ ] ผ่าน [ ] ไม่ผ่าน</td></tr>
+                <tr class="border-b"><td class="p-1.5 border-r">Ground Resistance Test (Earth Tester)</td><td class="p-1.5 border-r">&le; 5.0 &Omega;</td><td class="p-1.5 border-r font-mono">______ &Omega;</td><td class="p-1.5 text-center">[ ] ผ่าน [ ] ไม่ผ่าน</td></tr>
+                <tr class="border-b"><td class="p-1.5 border-r">Contact & Busbar Thermo Scan</td><td class="p-1.5 border-r">&le; 65.0 &deg;C</td><td class="p-1.5 border-r font-mono">______ &deg;C</td><td class="p-1.5 text-center">[ ] ผ่าน [ ] ไม่ผ่าน</td></tr>
+                <tr><td class="p-1.5 border-r">Torque Check น็อตขั้วต่อสายไฟเมน</td><td class="p-1.5 border-r">ตามสเปกผู้ผลิต</td><td class="p-1.5 border-r font-mono">______ Nm</td><td class="p-1.5 text-center">[ ] ผ่าน [ ] ไม่ผ่าน</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="grid grid-cols-2 gap-8 pt-8 border-t">
+            <div class="text-center">
+              <div class="border-b border-slate-400 w-48 mx-auto mb-1 pb-4"></div>
+              <div>( _______________________________ )</div>
+              <div class="text-[10px] text-slate-500">ผู้ปฏิบัติงาน / ช่างไฟฟ้าผู้ตรวจสอบ</div>
+            </div>
+            <div class="text-center">
+              <div class="border-b border-slate-400 w-48 mx-auto mb-1 pb-4"></div>
+              <div>( _______________________________ )</div>
+              <div class="text-[10px] text-slate-500">หัวหน้างาน / วิศวกรผู้รับรองผล</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2 mt-6">
+          <button @click="printWO = null" class="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg">ปิด</button>
+          <button @click="triggerPrint" class="px-4 py-2 text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white rounded-lg shadow flex items-center gap-1.5">
+            <i class="fa-solid fa-print"></i> สั่งพิมพ์เอกสาร
+          </button>
         </div>
       </div>
     </div>
@@ -419,122 +434,123 @@
     createApp({
       data() {
         return {
-          currentTab: 'dashboard',
-          filterVoltage: 'ALL',
-          openModal: false,
-          assignModalWO: null,
-          selectedTechForAssign: null,
-          
+          currentTab: 'orders',
+          filterType: 'ALL',
+          openCreateModal: false,
+          activeChecklistWO: null,
+          printWO: null,
+          currentDate: new Date().toLocaleDateString('th-TH'),
+
           newWO: {
+            type: 'PM',
             title: '',
-            asset: '',
-            voltageLevel: 'High Voltage',
-            requiredMinLevel: 3
+            assetName: '',
+            assetTag: '',
+            voltageLevel: 'High Voltage (22kV+)',
+            dueDate: ''
+          },
+
+          formChecklist: {
+            visualClean: true,
+            terminalTight: true,
+            groundConnected: true,
+            meggerValue: 250,
+            groundValue: 3.2,
+            thermoValue: 42
           },
 
           workOrders: [
-            { id: 'WO-2026-001', title: 'PM ตรวจเช็กค่าน้ำมันและ Insulation หม้อแปลง TR-01', asset: 'Transformer 22kV 1000kVA', voltageLevel: 'High Voltage', requiredMinLevel: 3, requiredSkillName: 'หม้อแปลงแรงสูง', assignedTo: 'สมชาย มั่นคง', status: 'In Progress' },
-            { id: 'WO-2026-002', title: 'ทดสอบการทำงานของ Protection Relay (Overcurrent)', asset: 'Feeder Relay F-04', voltageLevel: 'Medium Voltage', requiredMinLevel: 4, requiredSkillName: 'Relay Specialist', assignedTo: '', status: 'Pending' },
-            { id: 'WO-2026-003', title: 'ตรวจเช็กความร้อนขั้วต่อด้วยกล้องอินฟราเรด (Thermo Scan)', asset: 'Main Distribution Board 01', voltageLevel: 'Low Voltage', requiredMinLevel: 2, requiredSkillName: 'ตรวจวัดอุณหภูมิ', assignedTo: 'อานนท์ วงศ์ดี', status: 'Completed' }
+            { id: 'WO-PM-2601', type: 'PM', title: 'PM ประจำปี หม้อแปลงไฟฟ้า TR-01', assetName: 'Oil Transformer 22kV 1000kVA', assetTag: 'TR-01', voltageLevel: 'High Voltage (22kV+)', dueDate: '2026-09-15', status: 'In Progress' },
+            { id: 'WO-PM-2602', type: 'PM', title: 'PM รอบ 6 เดือน ตู้ Ring Main Unit (RMU)', assetName: 'RMU 24kV SF6 Gas Insulated', assetTag: 'RMU-SW-02', voltageLevel: 'High Voltage (22kV+)', dueDate: '2026-09-20', status: 'Pending' },
+            { id: 'WO-PM-2603', type: 'PM', title: 'PM ตรวจวัดอุณหภูมิและกระแส MDB 01', assetName: 'Main Distribution Board', assetTag: 'MDB-MAIN-01', voltageLevel: 'Low Voltage (400V)', dueDate: '2026-08-30', status: 'Completed' },
+            { id: 'WO-CM-2604', type: 'CM', title: 'แก้ไขขั้วต่อสายไฟ Capacitor ร้อนเกินพิกัด', assetName: 'Capacitor Bank 250kVAR', assetTag: 'CAP-BK-03', voltageLevel: 'Low Voltage (400V)', dueDate: '2026-08-28', status: 'Pending' }
           ],
 
-          technicians: [
-            { id: 1, name: 'สมชาย มั่นคง', role: 'Senior Electrical Tech', level: 3, specialty: 'หม้อแปลงไฟฟ้า', status: 'ปฏิบัติงาน', skills: { transformer: 4, switchgear: 3, relay: 2 } },
-            { id: 2, name: 'วิชัย ช่างทอง', role: 'Protection Specialist', level: 4, specialty: 'รีเลย์ & ระบบควบคุม', status: 'ว่าง', skills: { transformer: 3, switchgear: 4, relay: 4 } },
-            { id: 3, name: 'อานนท์ วงศ์ดี', role: 'Junior Technician', level: 2, specialty: 'งานบำรุงรักษาทั่วไป', status: 'ว่าง', skills: { transformer: 2, switchgear: 2, relay: 1 } },
-            { id: 4, name: 'เกียรติศักดิ์ มีสุข', role: 'Electrical Technician', level: 3, specialty: 'สวิตช์เกียร์แรงสูง', status: 'ว่าง', skills: { transformer: 3, switchgear: 3, relay: 2 } }
+          pmPlans: [
+            { id: 1, cycle: 'ราย 1 ปี (Annual)', assetCategory: 'หม้อแปลงไฟฟ้าแรงสูง (Power Transformer)', scope: 'ทดสอบความเป็นฉนวน (Megger), ค่าความต้านทานดิน, และตรวจสภาพน้ำมันหม้อแปลง (Dielectric Test)', tools: 'Insulation Tester 2.5kV, Earth Tester, Oil Breakdown Tester' },
+            { id: 2, cycle: 'ราย 6 เดือน (Semi-Annual)', assetCategory: 'ตู้สวิตช์เกียร์แรงสูง (High Voltage Switchgear)', scope: 'ทดสอบ Contact Resistance, ตรวจสอบแรงดันก๊าซ SF6, และฟังก์ชันรีเลย์ป้องกัน', tools: 'Micro-Ohmmeter, SF6 Gauge, Secondary Injection Kit' },
+            { id: 3, cycle: 'ราย 3 เดือน (Quarterly)', assetCategory: 'ตู้เมนสวิตช์บอร์ดแรงต่ำ (MDB & Cap Bank)', scope: 'ตรวจเช็กด้วยกล้องอินฟราเรด (Thermo Scan), ขันกวดแน่นขั้วต่อ, และเช็กค่า Capacitance', tools: 'Infrared Thermal Camera, Torque Wrench, Clamp Meter' }
           ],
 
-          lotoSteps: [
-            { title: 'แจ้งเตือนผู้มีส่วนเกี่ยวข้องและขออนุมัติ Permit to Work', desc: 'แจ้งศูนย์ควบคุมและติดประกาศแจ้งพื้นที่ก่อนตัดกระแสไฟฟ้า', completed: true },
-            { title: 'ปลดสวิตช์ตัดตอน (Open Circuit Breaker & Disconnector)', desc: 'ตรวจสอบสถานะเปิดวงจรทั้งระบบเมนและระบบสำรอง', completed: true },
-            { title: 'ล็อกกุญแจนิรภัยและแขวนป้ายเตือน (Lockout & Tagout)', desc: 'ใส่แม่กุญแจประจำตัวช่างผู้ปฏิบัติงานทุกคนที่จุดตัดแยก', completed: false },
-            { title: 'ตรวจวัดแรงดันไฟฟ้าเป็นศูนย์ (Zero Energy Verification)', desc: 'ใช้ High Voltage Detector ตรวจสอบว่าไม่มีกระแสไฟฟ้าค้างในระบบ', completed: false },
-            { title: 'ต่อสายลงดินชั่วคราว (Temporary Grounding)', desc: 'ต่ออุปกรณ์ Grounding เพื่อความปลอดภัยสูงสุดก่อนสัมผัสชิ้นงาน', completed: false }
+          testLogs: [
+            { id: 1, date: '2026-08-15', woId: 'WO-PM-2603', asset: 'Main Distribution Board (MDB-MAIN-01)', insulation: 320, ground: 2.8, thermo: 44.5 },
+            { id: 2, date: '2026-07-10', woId: 'WO-PM-2580', asset: 'Feeder Switchgear 22kV (SWG-01)', insulation: 500, ground: 1.9, thermo: 38.0 }
           ]
         };
       },
       computed: {
         pmCompliance() {
-          const completed = this.workOrders.filter(w => w.status === 'Completed').length;
-          return Math.round((completed / this.workOrders.length) * 100) || 85;
-        },
-        qualifiedTechPercentage() {
-          const qualified = this.technicians.filter(t => t.level >= 3).length;
-          return Math.round((qualified / this.technicians.length) * 100);
+          const pmOrders = this.workOrders.filter(w => w.type === 'PM');
+          const completed = pmOrders.filter(w => w.status === 'Completed').length;
+          return pmOrders.length ? Math.round((completed / pmOrders.length) * 100) : 100;
         },
         filteredWorkOrders() {
-          if (this.filterVoltage === 'ALL') return this.workOrders;
-          return this.workOrders.filter(wo => wo.voltageLevel.includes(this.filterVoltage));
-        },
-        eligibleTechnicians() {
-          if (!this.assignModalWO) return [];
-          return this.technicians.filter(t => t.level >= this.assignModalWO.requiredMinLevel);
-        },
-        lotoCompletedCount() {
-          return this.lotoSteps.filter(s => s.completed).length;
+          if (this.filterType === 'ALL') return this.workOrders;
+          return this.workOrders.filter(wo => wo.type === this.filterType);
         }
       },
       methods: {
-        getVoltageBadge(voltage) {
-          if (voltage.includes('High')) return 'bg-red-100 text-red-700 text-xs px-2 py-0.5 rounded font-bold';
-          if (voltage.includes('Medium')) return 'bg-amber-100 text-amber-700 text-xs px-2 py-0.5 rounded font-bold';
-          return 'bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded font-bold';
+        countStatus(status) {
+          return this.workOrders.filter(w => w.status === status).length;
         },
-        getStatusBadge(status) {
-          if (status === 'Completed') return 'bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded font-bold';
-          if (status === 'In Progress') return 'bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded font-bold';
-          return 'bg-amber-100 text-amber-800 text-xs px-2 py-0.5 rounded font-bold';
+        getVoltageClass(voltage) {
+          if (voltage.includes('High')) return 'bg-red-50 text-red-700 border-red-200';
+          if (voltage.includes('Medium')) return 'bg-amber-50 text-amber-700 border-amber-200';
+          return 'bg-blue-50 text-blue-700 border-blue-200';
         },
-        getSkillLabel(level) {
-          const labels = { 1: 'Basic', 2: 'Intermediate', 3: 'Advanced', 4: 'Expert' };
-          return labels[level] || 'Basic';
+        getStatusClass(status) {
+          if (status === 'Completed') return 'bg-emerald-100 text-emerald-800';
+          if (status === 'In Progress') return 'bg-blue-100 text-blue-800';
+          return 'bg-amber-100 text-amber-800';
         },
-        getSkillBadge(level) {
-          if (level === 4) return 'bg-purple-100 text-purple-700 text-xs px-2 py-0.5 rounded font-semibold';
-          if (level === 3) return 'bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded font-semibold';
-          if (level === 2) return 'bg-amber-100 text-amber-700 text-xs px-2 py-0.5 rounded font-semibold';
-          return 'bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded font-semibold';
-        },
-        toggleTechStatus(tech) {
-          tech.status = tech.status === 'ว่าง' ? 'ปฏิบัติงาน' : 'ว่าง';
-        },
-        adjustSkill(tech, amount) {
-          tech.level = Math.max(1, Math.min(4, tech.level + amount));
-        },
-        createWorkOrder() {
-          if (!this.newWO.title) return;
-          const nextId = `WO-2026-00${this.workOrders.length + 1}`;
+        submitWorkOrder() {
+          if (!this.newWO.title || !this.newWO.assetName) return;
+          const nextId = `WO-${this.newWO.type}-${Math.floor(1000 + Math.random() * 9000)}`;
           this.workOrders.unshift({
             id: nextId,
+            type: this.newWO.type,
             title: this.newWO.title,
-            asset: this.newWO.asset || 'อุปกรณ์ไฟฟ้าทั่วไป',
+            assetName: this.newWO.assetName,
+            assetTag: this.newWO.assetTag || 'TAG-NEW',
             voltageLevel: this.newWO.voltageLevel,
-            requiredMinLevel: Number(this.newWO.requiredMinLevel),
-            requiredSkillName: 'การบำรุงรักษาไฟฟ้า',
-            assignedTo: '',
+            dueDate: this.newWO.dueDate || '2026-09-30',
             status: 'Pending'
           });
-          this.openModal = false;
+          this.openCreateModal = false;
           this.newWO.title = '';
-          this.newWO.asset = '';
+          this.newWO.assetName = '';
+          this.newWO.assetTag = '';
         },
-        openAssignModal(wo) {
-          this.assignModalWO = wo;
-          this.selectedTechForAssign = null;
+        generateFromPlan(plan) {
+          this.newWO.type = 'PM';
+          this.newWO.title = `PM ตามรอบ ${plan.cycle} - ${plan.assetCategory}`;
+          this.newWO.assetName = plan.assetCategory;
+          this.newWO.assetTag = 'AST-PLAN';
+          this.openCreateModal = true;
         },
-        confirmAssign() {
-          if (this.assignModalWO && this.selectedTechForAssign) {
-            this.assignModalWO.assignedTo = this.selectedTechForAssign.name;
-            this.assignModalWO.status = 'In Progress';
-            this.selectedTechForAssign.status = 'ปฏิบัติงาน';
-            this.assignModalWO = null;
+        openChecklist(wo) {
+          this.activeChecklistWO = wo;
+        },
+        savePMResult() {
+          if (this.activeChecklistWO) {
+            this.activeChecklistWO.status = 'Completed';
+            this.testLogs.unshift({
+              id: this.testLogs.length + 1,
+              date: new Date().toISOString().split('T')[0],
+              woId: this.activeChecklistWO.id,
+              asset: `${this.activeChecklistWO.assetName} (${this.activeChecklistWO.assetTag})`,
+              insulation: this.formChecklist.meggerValue,
+              ground: this.formChecklist.groundValue,
+              thermo: this.formChecklist.thermoValue
+            });
+            this.activeChecklistWO = null;
           }
         },
-        completeWorkOrder(wo) {
-          wo.status = 'Completed';
-          const assignedTech = this.technicians.find(t => t.name === wo.assignedTo);
-          if (assignedTech) assignedTech.status = 'ว่าง';
+        printWorkOrder(wo) {
+          this.printWO = wo;
+        },
+        triggerPrint() {
+          window.print();
         }
       }
     }).mount('#app');
