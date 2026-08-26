@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GRID-CARE | ระบบบำรุงรักษาสายป้อนและอุปกรณ์ระบบจำหน่าย</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#0F1720;
+  --surface:#16212C;
+  --surface-2:#1D2B38;
+  --surface-3:#243646;
+  --border:#2A3B4A;
+  --text:#E8EDF2;
+  --text-dim:#8FA1B0;
+  --text-faint:#5C7180;
+  --amber:#F2A93B;
+  --amber-dim:#4A3A1E;
+  --teal:#2FD4C4;
+  --teal-dim:#173733;
+  --danger:#EF5A5A;
+  --danger-dim:#402323;
+  --success:#33C17A;
+  --font-display:'Space Grotesk',sans-serif;
+  --font-body:'IBM Plex Sans Thai','IBM Plex Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  font-size:14px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;}
+::-webkit-scrollbar{width:8px;height:8px;}
+::-webkit-scrollbar-track{background:var(--surface);}
+::-webkit-scrollbar-thumb{background:var(--surface-3);border-radius:4px;}
+
+/* ===== Layout shell ===== */
+.shell{display:flex;min-height:100vh;}
+.sidebar{
+  width:230px;flex-shrink:0;background:var(--surface);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  position:sticky;top:0;height:100vh;
+}
+.brand{
+  padding:20px 18px 16px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+.brand-mark{
+  width:34px;height:34px;border-radius:7px;
+  background:linear-gradient(135deg,var(--amber),#c97f1c);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-weight:700;color:#1a1206;font-size:15px;
+  flex-shrink:0;
+}
+.brand-text{font-family:var(--font-display);font-weight:700;font-size:15.5px;letter-spacing:.02em;}
+.brand-sub{font-size:10.5px;color:var(--text-faint);letter-spacing:.06em;text-transform:uppercase;margin-top:1px;}
+
+.nav{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;}
+.nav-item{
+  display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:8px;
+  color:var(--text-dim);font-size:13.5px;font-weight:500;border:none;background:transparent;
+  width:100%;text-align:left;transition:background .12s, color .12s;
+}
+.nav-item:hover{background:var(--surface-2);color:var(--text);}
+.nav-item.active{background:var(--surface-2);color:var(--amber);}
+.nav-icon{width:18px;height:18px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.nav-item svg{width:100%;height:100%;}
+
+.sidebar-foot{padding:14px 18px;border-top:1px solid var(--border);}
+.status-pill{
+  display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--text-faint);
+}
+.dot-live{width:7px;height:7px;border-radius:50%;background:var(--success);box-shadow:0 0 0 3px rgba(51,193,122,.18);}
+
+.main{flex:1;min-width:0;display:flex;flex-direction:column;}
+.topbar{
+  height:58px;flex-shrink:0;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 22px;background:rgba(15,23,32,.85);backdrop-filter:blur(6px);
+  position:sticky;top:0;z-index:20;
+}
+.page-title{font-family:var(--font-display);font-weight:600;font-size:17px;}
+.page-sub{font-size:11.5px;color:var(--text-faint);margin-top:1px;}
+.topbar-right{display:flex;align-items:center;gap:14px;}
+.hamburger{display:none;background:none;border:1px solid var(--border);border-radius:7px;width:36px;height:36px;color:var(--text);align-items:center;justify-content:center;}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--surface-3);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:var(--teal);border:1px solid var(--border);}
+
+.view{padding:22px;flex:1;}
+.view-section{display:none;}
+.view-section.active{display:block;animation:fadein .25s ease;}
+@keyframes fadein{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+
+/* ===== KPI cards ===== */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+.kpi-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:16px 18px;position:relative;overflow:hidden;
+}
+.kpi-label{font-size:11.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.05em;font-weight:600;}
+.kpi-value{font-family:var(--font-display);font-size:28px;font-weight:700;margin-top:8px;}
+.kpi-value small{font-size:14px;font-weight:500;color:var(--text-dim);}
+.kpi-delta{font-size:11.5px;margin-top:6px;display:flex;align-items:center;gap:5px;}
+.kpi-delta.up{color:var(--danger);}
+.kpi-delta.down{color:var(--success);}
+.kpi-delta.flat{color:var(--text-faint);}
+.kpi-accent{position:absolute;left:0;top:0;bottom:0;width:3px;}
+
+/* ===== panel ===== */
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:16px;}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
+.panel-title{font-family:var(--font-display);font-weight:600;font-size:14.5px;}
+.panel-title span{color:var(--text-faint);font-family:var(--font-body);font-weight:400;font-size:12px;margin-left:8px;}
+.grid-2{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;}
+
+/* ===== one-line diagram ===== */
+.feeder-strip{margin-bottom:10px;}
+.feeder-strip:last-child{margin-bottom:0;}
+.feeder-strip-label{font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);margin-bottom:7px;display:flex;justify-content:space-between;}
+.feeder-strip-label b{color:var(--text);}
+.line-track{display:flex;align-items:center;height:46px;position:relative;}
+.line-seg{flex:1;height:2px;background:var(--border);}
+.line-node{
+  width:15px;height:15px;border-radius:4px;flex-shrink:0;position:relative;
+  border:2px solid var(--surface);cursor:default;
+}
+.line-node.ok{background:var(--teal);}
+.line-node.warn{background:var(--amber);}
+.line-node.overdue{background:var(--danger);}
+.line-node.sub{border-radius:50%;width:17px;height:17px;}
+.line-node::after{
+  content:attr(data-tip);position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
+  background:var(--surface-3);border:1px solid var(--border);padding:5px 8px;border-radius:6px;
+  font-size:10.5px;font-family:var(--font-mono);white-space:nowrap;opacity:0;pointer-events:none;
+  transition:opacity .12s;z-index:5;color:var(--text);
+}
+.line-node:hover::after{opacity:1;}
+.legend-row{display:flex;gap:16px;margin-top:12px;flex-wrap:wrap;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-dim);}
+.legend-swatch{width:9px;height:9px;border-radius:2px;}
+
+/* ===== table ===== */
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{
+  text-align:left;padding:9px 12px;color:var(--text-faint);font-weight:600;
+  font-size:11px;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--border);
+  white-space:nowrap;
+}
+td{padding:11px 12px;border-bottom:1px solid var(--border);white-space:nowrap;}
+tr:last-child td{border-bottom:none;}
+tbody tr{transition:background .1s;}
+tbody tr:hover{background:var(--surface-2);}
+.mono{font-family:var(--font-mono);font-size:12.5px;color:var(--text-dim);}
+.badge{
+  display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;
+  font-size:11px;font-weight:600;white-space:nowrap;
+}
+.badge .bdot{width:6px;height:6px;border-radius:50%;}
+.badge.ok{background:var(--teal-dim);color:var(--teal);}
+.badge.ok .bdot{background:var(--teal);}
+.badge.warn{background:var(--amber-dim);color:var(--amber);}
+.badge.warn .bdot{background:var(--amber);}
+.badge.overdue{background:var(--danger-dim);color:var(--danger);}
+.badge.overdue .bdot{background:var(--danger);}
+.badge.done{background:var(--teal-dim);color:var(--teal);}
+.badge.pm{background:#1e2c40;color:#7fb8e8;}
+.badge.cm{background:var(--amber-dim);color:var(--amber);}
+.badge.em{background:var(--danger-dim);color:var(--danger);}
+
+/* ===== filters / controls ===== */
+.controls-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.seg{display:flex;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:3px;gap:2px;}
+.seg button{background:none;border:none;color:var(--text-dim);font-size:12.5px;font-weight:500;padding:6px 12px;border-radius:6px;}
+.seg button.active{background:var(--surface-3);color:var(--text);}
+.select, .input{
+  background:var(--surface-2);border:1px solid var(--border);color:var(--text);
+  border-radius:8px;padding:8px 12px;font-size:12.5px;font-family:inherit;
+}
+.btn{
+  background:var(--amber);color:#1a1206;border:none;border-radius:8px;padding:8px 14px;
+  font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;gap:6px;
+}
+.btn.ghost{background:var(--surface-2);color:var(--text);border:1px solid var(--border);}
+
+/* ===== PM checklist cards ===== */
+.pm-cal{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;}
+.pm-task{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:13px 14px;}
+.pm-task-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;}
+.pm-task-eq{font-weight:600;font-size:13px;}
+.pm-task-id{font-family:var(--font-mono);font-size:10.5px;color:var(--text-faint);margin-top:2px;}
+.pm-task-date{font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);margin-bottom:8px;}
+.pm-checklist{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.pm-checklist li{font-size:11.5px;color:var(--text-dim);display:flex;gap:6px;align-items:flex-start;}
+.pm-checklist li::before{content:'—';color:var(--text-faint);flex-shrink:0;}
+
+.tmpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
+.tmpl-card{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+.tmpl-card h4{font-family:var(--font-display);font-size:13px;margin-bottom:4px;}
+.tmpl-freq{font-size:11px;color:var(--amber);font-family:var(--font-mono);margin-bottom:9px;}
+.tmpl-card ol{padding-left:16px;font-size:11.5px;color:var(--text-dim);display:flex;flex-direction:column;gap:3px;}
+
+/* ===== cost analysis ===== */
+.chart-box{position:relative;height:260px;}
+.chart-box.short{height:200px;}
+.cost-legend-note{font-size:11px;color:var(--text-faint);margin-top:8px;}
+
+/* ===== mobile bottom nav ===== */
+.bottom-nav{display:none;}
+
+@media (max-width: 980px){
+  .kpi-grid{grid-template-columns:repeat(2,1fr);}
+  .grid-2{grid-template-columns:1fr;}
+}
+@media (max-width: 760px){
+  .sidebar{
+    position:fixed;left:0;top:0;bottom:0;z-index:50;transform:translateX(-100%);
+    transition:transform .2s ease;box-shadow:20px 0 40px rgba(0,0,0,.4);
+  }
+  .sidebar.open{transform:translateX(0);}
+  .hamburger{display:flex;}
+  .kpi-grid{grid-template-columns:1fr 1fr;gap:10px;}
+  .view{padding:14px 14px 84px;}
+  .topbar{padding:0 14px;}
+  .bottom-nav{
+    display:flex;position:fixed;bottom:0;left:0;right:0;height:60px;
+    background:var(--surface);border-top:1px solid var(--border);z-index:40;
+    justify-content:space-around;align-items:center;padding-bottom:env(safe-area-inset-bottom);
+  }
+  .bn-item{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text-faint);background:none;border:none;font-size:9.5px;font-weight:600;padding:6px;flex:1;}
+  .bn-item svg{width:19px;height:19px;}
+  .bn-item.active{color:var(--amber);}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:45;}
+  .overlay.show{display:block;}
+  .panel-head{align-items:flex-start;}
+}
+@media (max-width: 480px){
+  .kpi-grid{grid-template-columns:1fr 1fr;}
+  .kpi-value{font-size:22px;}
+  table{font-size:12px;}
+}
+</style>
+</head>
+<body>
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark">GC</div>
+      <div>
+        <div class="brand-text">GRID-CARE</div>
+        <div class="brand-sub">CMMS · ระบบจำหน่าย</div>
+      </div>
+    </div>
+    <nav class="nav" id="navList"></nav>
+    <div class="sidebar-foot">
+      <div class="status-pill"><span class="dot-live"></span> เชื่อมต่อระบบ SCADA · ปกติ</div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <button class="hamburger" onclick="openSidebar()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M3 6h18M3 12h18M3 18h18" stroke-linecap="round"/></svg>
+        </button>
+        <div>
+          <div class="page-title" id="pageTitle">แดชบอร์ด</div>
+          <div class="page-sub" id="pageSub">ภาพรวมสถานะการบำรุงรักษาสายป้อนและอุปกรณ์</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="avatar">วศ</div>
+      </div>
+    </div>
+
+    <div class="view" id="viewRoot"></div>
+  </div>
+</div>
+
+<nav class="bottom-nav" id="bottomNav"></nav>
+
+<script>
+/* ======================================================================
+   NAV CONFIG
+====================================================================== */
+const ICONS = {
+  dashboard:'<path d="M3 3h8v8H3V3zm10 0h8v5h-8V3zM3 13h8v8H3v-8zm10 3h8v5h-8v-5z" fill="currentColor"/>',
+  assets:'<path d="M4 4h16v4H4zM4 10h7v10H4zM13 10h7v4h-7zM13 16h7v4h-7z" fill="currentColor"/>',
+  pm:'<path d="M3 10h18M8 3v4M16 3v4M5 6h14a2 2 0 012 2v11a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z" stroke="currentColor" stroke-width="2" fill="none"/>',
+  cost:'<path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>',
+  work:'<path d="M14.7 6.3a4 4 0 01-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 015.4-5.4l-3 3-2-2z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/>'
+};
+const SECTIONS = [
+  {id:'dashboard', label:'แดชบอร์ด', sub:'ภาพรวมสถานะการบำรุงรักษาสายป้อนและอุปกรณ์', icon:'dashboard'},
+  {id:'assets', label:'ทะเบียนอุปกรณ์', sub:'สายป้อน · LBS · Unit Substation · อุปกรณ์ที่เกี่ยวข้อง', icon:'assets'},
+  {id:'pm', label:'แผนบำรุงรักษาเชิงป้องกัน', sub:'ตารางงาน PM และเช็คลิสต์ตามประเภทอุปกรณ์', icon:'pm'},
+  {id:'cost', label:'วิเคราะห์ต้นทุน', sub:'ต้นทุนบำรุงรักษาแยกตามประเภทงานและอุปกรณ์', icon:'cost'},
+  {id:'work', label:'ใบสั่งงาน', sub:'ประวัติงาน PM / CM และสถานะการซ่อม', icon:'work'},
+];
+
+/* ======================================================================
+   SAMPLE DATA
+====================================================================== */
+const FEEDERS = [
+  {id:'F-12', name:'สายป้อน บางกรวย 12', station:'สฟ.บางกรวย'},
+  {id:'F-07', name:'สายป้อน รัตนาธิเบศร์ 07', station:'สฟ.รัตนาธิเบศร์'},
+  {id:'F-21', name:'สายป้อน งามวงศ์วาน 21', station:'สฟ.งามวงศ์วาน'},
+];
+
+const EQUIPMENT = [
+  {id:'LBS-1201', type:'LBS', name:'เสาเลขที่ 45/2', feeder:'F-12', status:'ok', lastPM:'2026-05-14', nextPM:'2026-08-14', condition:92, region:'บางกรวย'},
+  {id:'LBS-1207', type:'LBS', name:'เสาเลขที่ 51/1', feeder:'F-12', status:'warn', lastPM:'2026-03-02', nextPM:'2026-09-02', condition:74, region:'บางกรวย'},
+  {id:'USTA-1204', type:'Unit Substation', name:'หมู่บ้านศุภาลัย', feeder:'F-12', status:'ok', lastPM:'2026-06-20', nextPM:'2026-12-20', condition:88, region:'บางกรวย'},
+  {id:'RMU-1210', type:'RMU', name:'สถานีย่อยตลาดบางกรวย', feeder:'F-12', status:'overdue', lastPM:'2025-11-04', nextPM:'2026-05-04', condition:58, region:'บางกรวย'},
+  {id:'CO-1215', type:'Cutout', name:'เสาเลขที่ 60', feeder:'F-12', status:'ok', lastPM:'2026-07-01', nextPM:'2027-01-01', condition:95, region:'บางกรวย'},
+
+  {id:'LBS-0703', type:'LBS', name:'เสาเลขที่ 12/4', feeder:'F-07', status:'ok', lastPM:'2026-07-10', nextPM:'2026-10-10', condition:90, region:'รัตนาธิเบศร์'},
+  {id:'USTA-0709', type:'Unit Substation', name:'คอนโดริเวอร์เพลส', feeder:'F-07', status:'overdue', lastPM:'2025-08-18', nextPM:'2026-02-18', condition:49, region:'รัตนาธิเบศร์'},
+  {id:'RECL-0711', type:'Recloser', name:'เสาเลขที่ 18/2', feeder:'F-07', status:'warn', lastPM:'2026-04-22', nextPM:'2026-08-22', condition:70, region:'รัตนาธิเบศร์'},
+  {id:'LBS-0716', type:'LBS', name:'เสาเลขที่ 22', feeder:'F-07', status:'ok', lastPM:'2026-06-30', nextPM:'2026-09-30', condition:93, region:'รัตนาธิเบศร์'},
+
+  {id:'USTA-2102', type:'Unit Substation', name:'โรงพยาบาลงามวงศ์วาน', feeder:'F-21', status:'ok', lastPM:'2026-07-05', nextPM:'2027-01-05', condition:96, region:'งามวงศ์วาน'},
+  {id:'LBS-2105', type:'LBS', name:'เสาเลขที่ 9', feeder:'F-21', status:'warn', lastPM:'2026-03-19', nextPM:'2026-09-19', condition:68, region:'งามวงศ์วาน'},
+  {id:'CO-2108', type:'Cutout', name:'เสาเลขที่ 15/3', feeder:'F-21', status:'ok', lastPM:'2026-07-22', nextPM:'2027-01-22', condition:97, region:'งามวงศ์วาน'},
+  {id:'RMU-2111', type:'RMU', name:'ห้างสรรพสินค้าเซ็นทรัล', feeder:'F-21', status:'ok', lastPM:'2026-05-30', nextPM:'2026-11-30', condition:85, region:'งามวงศ์วาน'},
+];
+
+const PM_TEMPLATES = [
+  {type:'LBS (Load Break Switch)', freq:'ทุก 6 เดือน', steps:['ตรวจสภาพฉนวนภายนอกและจุดต่อสาย','วัดค่าความเป็นฉนวน (Insulation Resistance)','ตรวจสภาพหน้าสัมผัสและกลไกใบมีด','ทดสอบการเปิด-ปิดด้วยมือ / รีโมท','ตรวจ Torque จุดยึดและขั้วต่อ']},
+  {type:'Unit Substation', freq:'ทุก 6 เดือน', steps:['ตรวจวัดอุณหภูมิด้วย Thermal Scan','ตรวจระดับและคุณภาพน้ำมันหม้อแปลง','วัดค่า Partial Discharge','ตรวจสอบระบบระบายอากาศ/พัดลม','ตรวจสภาพบุชชิ่งและกราวด์']},
+  {type:'Recloser', freq:'ทุก 12 เดือน', steps:['ทดสอบฟังก์ชัน Protection Relay','ตรวจสอบแบตเตอรี่สำรอง','ทดสอบการ Trip/Reclose','ตรวจสภาพตู้ควบคุมและซีลกันน้ำ']},
+  {type:'Cutout / RMU', freq:'ทุก 12 เดือน', steps:['ตรวจสภาพ Fuse Link','ตรวจจุดต่อสายและขั้วต่อ','ทำความสะอาดฉนวนภายนอก','ตรวจสอบป้ายเตือนความปลอดภัย']},
+];
+
+const WORK_ORDERS = [
+  {id:'WO-8841', eq:'LBS-1207', feeder:'F-12', type:'PM', date:'2026-08-20', cost:3200, tech:'ทีมช่างกล 2', status:'กำหนดการ'},
+  {id:'WO-8830', eq:'RMU-1210', feeder:'F-12', type:'CM', date:'2026-08-18', cost:18500, tech:'ทีมฉุกเฉิน A', status:'ดำเนินการ'},
+  {id:'WO-8822', eq:'USTA-0709', feeder:'F-07', type:'EM', date:'2026-08-15', cost:42300, tech:'ทีมฉุกเฉิน A', status:'เสร็จสิ้น'},
+  {id:'WO-8810', eq:'USTA-2102', feeder:'F-21', type:'PM', date:'2026-08-05', cost:5100, tech:'ทีมช่างกล 1', status:'เสร็จสิ้น'},
+  {id:'WO-8804', eq:'LBS-0703', feeder:'F-07', type:'PM', date:'2026-07-28', cost:2800, tech:'ทีมช่างกล 2', status:'เสร็จสิ้น'},
+  {id:'WO-8795', eq:'RECL-0711', feeder:'F-07', type:'CM', date:'2026-07-20', cost:12750, tech:'ทีมช่างกล 1', status:'เสร็จสิ้น'},
+  {id:'WO-8781', eq:'LBS-2105', feeder:'F-21', type:'PM', date:'2026-07-10', cost:2950, tech:'ทีมช่างกล 3', status:'เสร็จสิ้น'},
+  {id:'WO-8770', eq:'CO-1215', feeder:'F-12', type:'PM', date:'2026-07-01', cost:1400, tech:'ทีมช่างกล 3', status:'เสร็จสิ้น'},
+];
+
+/* ======================================================================
+   NAV RENDER
+====================================================================== */
+let current = 'dashboard';
+
+function renderNav(){
+  document.getElementById('navList').innerHTML = SECTIONS.map(s=>`
+    <button class="nav-item ${s.id===current?'active':''}" onclick="go('${s.id}')">
+      <span class="nav-icon"><svg viewBox="0 0 24 24">${ICONS[s.icon]}</svg></span>${s.label}
+    </button>`).join('');
+  document.getElementById('bottomNav').innerHTML = SECTIONS.map(s=>`
+    <button class="bn-item ${s.id===current?'active':''}" onclick="go('${s.id}')">
+      <svg viewBox="0 0 24 24">${ICONS[s.icon]}</svg>${s.label.split(' ')[0]}
+    </button>`).join('');
+}
+
+function go(id){
+  current = id;
+  const s = SECTIONS.find(x=>x.id===id);
+  document.getElementById('pageTitle').textContent = s.label;
+  document.getElementById('pageSub').textContent = s.sub;
+  renderNav();
+  renderView();
+  closeSidebar();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('show');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+
+/* ======================================================================
+   HELPERS
+====================================================================== */
+const thb = n => '฿' + n.toLocaleString('th-TH');
+const statusLabel = {ok:'ปกติ', warn:'ใกล้ครบกำหนด', overdue:'เกินกำหนด'};
+function badgeHTML(status){
+  return `<span class="badge ${status}"><span class="bdot"></span>${statusLabel[status]}</span>`;
+}
+function woBadge(type){
+  const map = {PM:'pm', CM:'cm', EM:'em'};
+  const label = {PM:'PM ตามแผน', CM:'CM แก้ไข', EM:'ฉุกเฉิน'};
+  return `<span class="badge ${map[type]}"><span class="bdot"></span>${label[type]}</span>`;
+}
+
+/* ======================================================================
+   VIEW: DASHBOARD
+====================================================================== */
+function viewDashboard(){
+  const total = EQUIPMENT.length;
+  const overdue = EQUIPMENT.filter(e=>e.status==='overdue').length;
+  const warn = EQUIPMENT.filter(e=>e.status==='warn').length;
+  const ytdCost = WORK_ORDERS.reduce((a,w)=>a+w.cost,0);
+  const pmCost = WORK_ORDERS.filter(w=>w.type==='PM').reduce((a,w)=>a+w.cost,0);
+  const upcoming = [...EQUIPMENT].sort((a,b)=>new Date(a.nextPM)-new Date(b.nextPM)).slice(0,6);
+
+  return `
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--teal)"></div>
+      <div class="kpi-label">อุปกรณ์ทั้งหมด</div>
+      <div class="kpi-value">${total} <small>จุด</small></div>
+      <div class="kpi-delta flat">ครอบคลุม 3 สายป้อนหลัก</div></div>
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--danger)"></div>
+      <div class="kpi-label">เกินกำหนด PM</div>
+      <div class="kpi-value" style="color:var(--danger)">${overdue} <small>จุด</small></div>
+      <div class="kpi-delta up">ต้องจัดคิวด่วน</div></div>
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--amber)"></div>
+      <div class="kpi-label">ใกล้ครบกำหนด (30 วัน)</div>
+      <div class="kpi-value" style="color:var(--amber)">${warn} <small>จุด</small></div>
+      <div class="kpi-delta flat">อยู่ในแผนไตรมาสนี้</div></div>
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--teal)"></div>
+      <div class="kpi-label">ต้นทุนบำรุงรักษาสะสม YTD</div>
+      <div class="kpi-value">${thb(ytdCost)}</div>
+      <div class="kpi-delta down">PM คิดเป็น ${Math.round(pmCost/ytdCost*100)}% ของต้นทุน</div></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-title">แผนผังสายป้อนแบบเส้นเดียว <span>สถานะอุปกรณ์แบบเรียลไทม์ตามลำดับตำแหน่งบนสายป้อน</span></div>
+    </div>
+    ${FEEDERS.map(f=>{
+      const eqs = EQUIPMENT.filter(e=>e.feeder===f.id);
+      return `<div class="feeder-strip">
+        <div class="feeder-strip-label"><span><b>${f.id}</b> · ${f.name}</span><span>ต้นทาง: ${f.station}</span></div>
+        <div class="line-track">
+          <div class="line-seg" style="max-width:24px"></div>
+          ${eqs.map((e,i)=>`<div class="line-node ${e.status} ${e.type==='Unit Substation'?'sub':''}" data-tip="${e.id} · ${statusLabel[e.status]}"></div>${i<eqs.length-1?'<div class="line-seg"></div>':''}`).join('')}
+          <div class="line-seg" style="max-width:24px"></div>
+        </div>
+      </div>`;
+    }).join('')}
+    <div class="legend-row">
+      <div class="legend-item"><span class="legend-swatch" style="background:var(--teal)"></span>ปกติ</div>
+      <div class="legend-item"><span class="legend-swatch" style="background:var(--amber)"></span>ใกล้ครบกำหนด</div>
+      <div class="legend-item"><span class="legend-swatch" style="background:var(--danger)"></span>เกินกำหนด</div>
+      <div class="legend-item">● วงกลม = Unit Substation &nbsp; ■ สี่เหลี่ยม = LBS/อุปกรณ์อื่น</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">งาน PM ที่ใกล้ถึง <span>เรียงตามวันครบกำหนดถัดไป</span></div></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>รหัส</th><th>อุปกรณ์</th><th>สายป้อน</th><th>ครบกำหนด</th><th>สถานะ</th></tr></thead>
+        <tbody>${upcoming.map(e=>`<tr><td class="mono">${e.id}</td><td>${e.name}</td><td>${e.feeder}</td><td class="mono">${e.nextPM}</td><td>${badgeHTML(e.status)}</td></tr>`).join('')}</tbody>
+      </table></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">แนวโน้มต้นทุนราย 6 เดือน <span>PM เทียบ CM/ฉุกเฉิน</span></div></div>
+      <div class="chart-box short"><canvas id="chartDashTrend"></canvas></div>
+    </div>
+  </div>
+  `;
+}
+
+function mountDashboardCharts(){
+  const ctx = document.getElementById('chartDashTrend');
+  if(!ctx) return;
+  new Chart(ctx, {
+    type:'line',
+    data:{
+      labels:['มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.'],
+      datasets:[
+        {label:'PM', data:[14200,15800,16200,17100,15600,13600], borderColor:'#2FD4C4', backgroundColor:'rgba(47,212,196,.12)', tension:.35, fill:true, borderWidth:2, pointRadius:3},
+        {label:'CM/ฉุกเฉิน', data:[8200,6100,21400,9800,42300,18500], borderColor:'#F2A93B', backgroundColor:'rgba(242,169,59,.10)', tension:.35, fill:true, borderWidth:2, pointRadius:3},
+      ]
+    },
+    options: chartOpts()
+  });
+}
+
+/* ======================================================================
+   VIEW: ASSETS
+====================================================================== */
+let assetFilter = 'ALL';
+function viewAssets(){
+  const types = ['ALL', ...new Set(EQUIPMENT.map(e=>e.type))];
+  const rows = EQUIPMENT.filter(e=>assetFilter==='ALL'||e.type===assetFilter);
+  return `
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-title">ทะเบียนอุปกรณ์ระบบจำหน่าย <span>${rows.length} จาก ${EQUIPMENT.length} รายการ</span></div>
+      <div class="controls-row">
+        <div class="seg">${types.map(t=>`<button class="${assetFilter===t?'active':''}" onclick="setAssetFilter('${t}')">${t==='ALL'?'ทั้งหมด':t}</button>`).join('')}</div>
+        <button class="btn">+ เพิ่มอุปกรณ์</button>
+      </div>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr>
+        <th>รหัสอุปกรณ์</th><th>ประเภท</th><th>ชื่อ/ตำแหน่ง</th><th>สายป้อน</th><th>พื้นที่</th>
+        <th>สภาพ (%)</th><th>PM ล่าสุด</th><th>PM ถัดไป</th><th>สถานะ</th>
+      </tr></thead>
+      <tbody>${rows.map(e=>`
+        <tr>
+          <td class="mono">${e.id}</td>
+          <td>${e.type}</td>
+          <td>${e.name}</td>
+          <td>${e.feeder}</td>
+          <td>${e.region}</td>
+          <td><div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:52px;height:6px;background:var(--surface-3);border-radius:3px;overflow:hidden;">
+                  <div style="width:${e.condition}%;height:100%;background:${e.condition<60?'var(--danger)':e.condition<80?'var(--amber)':'var(--teal)'}"></div>
+                </div><span class="mono">${e.condition}</span></div></td>
+          <td class="mono">${e.lastPM}</td>
+          <td class="mono">${e.nextPM}</td>
+          <td>${badgeHTML(e.status)}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table></div>
+  </div>`;
+}
+function setAssetFilter(t){assetFilter=t; renderView();}
+
+/* ======================================================================
+   VIEW: PM PLANNING
+====================================================================== */
+function viewPM(){
+  const upcoming = [...EQUIPMENT].sort((a,b)=>new Date(a.nextPM)-new Date(b.nextPM));
+  return `
+  <div class="panel">
+    <div class="panel-head"><div class="panel-title">คิวงาน PM ถัดไป <span>จัดเรียงตามวันครบกำหนด · ${upcoming.length} รายการ</span></div>
+      <button class="btn ghost">ส่งออกตารางงาน</button></div>
+    <div class="pm-cal">
+      ${upcoming.slice(0,9).map(e=>{
+        const tmpl = PM_TEMPLATES.find(t=>t.type.startsWith(e.type)) || PM_TEMPLATES[0];
+        return `<div class="pm-task">
+          <div class="pm-task-top">
+            <div><div class="pm-task-eq">${e.name}</div><div class="pm-task-id">${e.id} · ${e.feeder}</div></div>
+            ${badgeHTML(e.status)}
+          </div>
+          <div class="pm-task-date">📅 กำหนดตรวจ: ${e.nextPM}</div>
+          <ul class="pm-checklist">${tmpl.steps.slice(0,3).map(s=>`<li>${s}</li>`).join('')}</ul>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><div class="panel-title">เทมเพลตเช็คลิสต์บำรุงรักษาเชิงป้องกัน <span>ตามประเภทอุปกรณ์และความถี่มาตรฐาน</span></div></div>
+    <div class="tmpl-grid">
+      ${PM_TEMPLATES.map(t=>`
+        <div class="tmpl-card">
+          <h4>${t.type}</h4>
+          <div class="tmpl-freq">รอบตรวจ: ${t.freq}</div>
+          <ol>${t.steps.map(s=>`<li>${s}</li>`).join('')}</ol>
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+/* ======================================================================
+   VIEW: COST ANALYSIS
+====================================================================== */
+function viewCost(){
+  const byType = {};
+  EQUIPMENT.forEach(e=>{ byType[e.type] = byType[e.type]||0; });
+  WORK_ORDERS.forEach(w=>{
+    const eq = EQUIPMENT.find(e=>e.id===w.eq);
+    if(eq) byType[eq.type] = (byType[eq.type]||0) + w.cost;
+  });
+  const totalCost = WORK_ORDERS.reduce((a,w)=>a+w.cost,0);
+  const pmCost = WORK_ORDERS.filter(w=>w.type==='PM').reduce((a,w)=>a+w.cost,0);
+  const cmCost = WORK_ORDERS.filter(w=>w.type==='CM').reduce((a,w)=>a+w.cost,0);
+  const emCost = WORK_ORDERS.filter(w=>w.type==='EM').reduce((a,w)=>a+w.cost,0);
+  const byFeeder = {};
+  FEEDERS.forEach(f=>byFeeder[f.id]=0);
+  WORK_ORDERS.forEach(w=>byFeeder[w.feeder]=(byFeeder[w.feeder]||0)+w.cost);
+
+  return `
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--teal)"></div>
+      <div class="kpi-label">ต้นทุนรวม YTD</div><div class="kpi-value">${thb(totalCost)}</div>
+      <div class="kpi-delta flat">8 ใบสั่งงานในระบบ</div></div>
+    <div class="kpi-card"><div class="kpi-accent" style="background:#7fb8e8"></div>
+      <div class="kpi-label">ต้นทุน PM (ตามแผน)</div><div class="kpi-value" style="color:#7fb8e8">${thb(pmCost)}</div>
+      <div class="kpi-delta down">${Math.round(pmCost/totalCost*100)}% ของต้นทุนรวม</div></div>
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--amber)"></div>
+      <div class="kpi-label">ต้นทุน CM (แก้ไข)</div><div class="kpi-value" style="color:var(--amber)">${thb(cmCost)}</div>
+      <div class="kpi-delta up">${Math.round(cmCost/totalCost*100)}% ของต้นทุนรวม</div></div>
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--danger)"></div>
+      <div class="kpi-label">ต้นทุนฉุกเฉิน</div><div class="kpi-value" style="color:var(--danger)">${thb(emCost)}</div>
+      <div class="kpi-delta up">${Math.round(emCost/totalCost*100)}% ของต้นทุนรวม — เป้าหมาย &lt;10%</div></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">ต้นทุนแยกตามประเภทอุปกรณ์ <span>บาท, สะสม YTD</span></div></div>
+      <div class="chart-box"><canvas id="chartByType"></canvas></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">สัดส่วนต้นทุน PM / CM / ฉุกเฉิน</div></div>
+      <div class="chart-box"><canvas id="chartSplit"></canvas></div>
+      <div class="cost-legend-note">สัดส่วน PM ที่สูงกว่า CM/ฉุกเฉิน บ่งชี้ว่าการบำรุงรักษาเชิงป้องกันช่วยลดต้นทุนจากความเสียหายฉุกเฉินได้อย่างมีประสิทธิภาพ</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><div class="panel-title">ต้นทุนแยกตามสายป้อน <span>เปรียบเทียบภาระต้นทุนต่อสายป้อน</span></div></div>
+    <div class="chart-box short"><canvas id="chartByFeeder"></canvas></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><div class="panel-title">รายละเอียดต้นทุนต่อใบสั่งงาน</div></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>เลขที่ WO</th><th>อุปกรณ์</th><th>สายป้อน</th><th>ประเภทงาน</th><th>วันที่</th><th>ต้นทุน</th></tr></thead>
+      <tbody>${[...WORK_ORDERS].sort((a,b)=>b.cost-a.cost).map(w=>`
+        <tr><td class="mono">${w.id}</td><td>${w.eq}</td><td>${w.feeder}</td><td>${woBadge(w.type)}</td><td class="mono">${w.date}</td><td class="mono">${thb(w.cost)}</td></tr>
+      `).join('')}</tbody>
+    </table></div>
+  </div>
+  `;
+}
+
+function chartOpts(extra={}){
+  return Object.assign({
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ labels:{ color:'#8FA1B0', font:{family:"'IBM Plex Sans Thai'",size:11} } },
+      tooltip:{ backgroundColor:'#1D2B38', borderColor:'#2A3B4A', borderWidth:1, titleColor:'#E8EDF2', bodyColor:'#E8EDF2' } },
+    scales:{
+      x:{ ticks:{ color:'#8FA1B0', font:{size:11} }, grid:{ color:'#2A3B4A', drawBorder:false } },
+      y:{ ticks:{ color:'#8FA1B0', font:{size:11} }, grid:{ color:'#2A3B4A', drawBorder:false } }
+    }
+  }, extra);
+}
+
+function mountCostCharts(){
+  const byType = {};
+  EQUIPMENT.forEach(e=>{ byType[e.type] = 0; });
+  WORK_ORDERS.forEach(w=>{
+    const eq = EQUIPMENT.find(e=>e.id===w.eq);
+    if(eq) byType[eq.type] = (byType[eq.type]||0) + w.cost;
+  });
+  const c1 = document.getElementById('chartByType');
+  if(c1){
+    new Chart(c1, { type:'bar',
+      data:{ labels:Object.keys(byType), datasets:[{ label:'บาท', data:Object.values(byType),
+        backgroundColor:'#F2A93B', borderRadius:6, maxBarThickness:42 }] },
+      options: chartOpts({ plugins:{legend:{display:false}} })
+    });
+  }
+  const c2 = document.getElementById('chartSplit');
+  if(c2){
+    const pm = WORK_ORDERS.filter(w=>w.type==='PM').reduce((a,w)=>a+w.cost,0);
+    const cm = WORK_ORDERS.filter(w=>w.type==='CM').reduce((a,w)=>a+w.cost,0);
+    const em = WORK_ORDERS.filter(w=>w.type==='EM').reduce((a,w)=>a+w.cost,0);
+    new Chart(c2, { type:'doughnut',
+      data:{ labels:['PM ตามแผน','CM แก้ไข','ฉุกเฉิน'], datasets:[{ data:[pm,cm,em],
+        backgroundColor:['#7fb8e8','#F2A93B','#EF5A5A'], borderColor:'#16212C', borderWidth:3 }] },
+      options:{ responsive:true, maintainAspectRatio:false, cutout:'62%',
+        plugins:{ legend:{ position:'bottom', labels:{ color:'#8FA1B0', font:{family:"'IBM Plex Sans Thai'",size:11}, padding:14 } } } }
+    });
+  }
+  const c3 = document.getElementById('chartByFeeder');
+  if(c3){
+    const byFeeder = {};
+    FEEDERS.forEach(f=>byFeeder[f.id]=0);
+    WORK_ORDERS.forEach(w=>byFeeder[w.feeder]=(byFeeder[w.feeder]||0)+w.cost);
+    new Chart(c3, { type:'bar',
+      data:{ labels:FEEDERS.map(f=>f.id+' · '+f.name), datasets:[{ label:'ต้นทุน (บาท)', data:Object.values(byFeeder),
+        backgroundColor:'#2FD4C4', borderRadius:6, maxBarThickness:52 }] },
+      options: chartOpts({ indexAxis:'y', plugins:{legend:{display:false}} })
+    });
+  }
+}
+
+/* ======================================================================
+   VIEW: WORK ORDERS
+====================================================================== */
+function viewWork(){
+  return `
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-title">ใบสั่งงานบำรุงรักษา <span>${WORK_ORDERS.length} รายการ</span></div>
+      <button class="btn">+ สร้างใบสั่งงาน</button>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>เลขที่ WO</th><th>อุปกรณ์</th><th>สายป้อน</th><th>ประเภทงาน</th><th>วันที่</th><th>ทีมงาน</th><th>ต้นทุน</th><th>สถานะ</th></tr></thead>
+      <tbody>${WORK_ORDERS.map(w=>`
+        <tr>
+          <td class="mono">${w.id}</td><td class="mono">${w.eq}</td><td>${w.feeder}</td>
+          <td>${woBadge(w.type)}</td><td class="mono">${w.date}</td><td>${w.tech}</td>
+          <td class="mono">${thb(w.cost)}</td>
+          <td><span class="badge ${w.status==='เสร็จสิ้น'?'ok':w.status==='ดำเนินการ'?'warn':'cm'}"><span class="bdot"></span>${w.status}</span></td>
+        </tr>`).join('')}
+      </tbody>
+    </table></div>
+  </div>`;
+}
+
+/* ======================================================================
+   ROUTER
+====================================================================== */
+function renderView(){
+  const root = document.getElementById('viewRoot');
+  if(current==='dashboard'){ root.innerHTML = viewDashboard(); mountDashboardCharts(); }
+  else if(current==='assets'){ root.innerHTML = viewAssets(); }
+  else if(current==='pm'){ root.innerHTML = viewPM(); }
+  else if(current==='cost'){ root.innerHTML = viewCost(); mountCostCharts(); }
+  else if(current==='work'){ root.innerHTML = viewWork(); }
+}
+
+renderNav();
+renderView();
+</script>
+</body>
+</html>
