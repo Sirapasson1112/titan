@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ElectroPM - Soft Peach & Warm Amber CMMS</title>
+  <title>ElectroPM - High Legibility Soft Orange CMMS</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -18,14 +18,15 @@
               300: '#fdba74',
               400: '#fb923c',
               500: '#f97316',
-              600: '#ea580c'
+              600: '#ea580c',
+              700: '#c2410c'
             },
-            softBg: '#faf7f2',
+            softBg: '#fcfaf6',
             softCard: '#ffffff',
-            softBorder: '#f3ece1',
-            darkWarmBg: '#151419',
-            darkWarmCard: '#1d1b24',
-            darkWarmBorder: '#2d2a37'
+            softBorder: '#e8dbce',
+            darkWarmBg: '#111015',
+            darkWarmCard: '#1a1820',
+            darkWarmBorder: '#2f2b3a'
           }
         }
       }
@@ -39,15 +40,20 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=Orbitron:wght@600;800;900&display=swap');
-    body { font-family: 'Sarabun', sans-serif; transition: background-color 0.3s ease, color 0.3s ease; }
+    @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&family=Orbitron:wght@600;800;900&display=swap');
+    body { 
+      font-family: 'Sarabun', sans-serif; 
+      transition: background-color 0.3s ease, color 0.3s ease;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
     .font-hud { font-family: 'Orbitron', monospace; }
     #map { height: 480px; width: 100%; border-radius: 16px; z-index: 10; }
     
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #fdba7460; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #fb923c; }
+    ::-webkit-scrollbar-thumb { background: #fdba7480; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #f97316; }
 
     @media print {
       body * { visibility: hidden; }
@@ -56,55 +62,55 @@
     }
   </style>
 </head>
-<body :class="isDarkMode ? 'dark bg-darkWarmBg text-stone-200 selection:bg-peach-300 selection:text-stone-900' : 'bg-softBg text-stone-800 selection:bg-peach-200 selection:text-stone-900'">
+<body :class="isDarkMode ? 'dark bg-darkWarmBg text-slate-100 selection:bg-peach-400 selection:text-slate-950' : 'bg-softBg text-stone-900 selection:bg-peach-200 selection:text-stone-900'">
   <div id="app" class="flex min-h-screen">
     
     <!-- Sidebar Navigation -->
-    <aside :class="isDarkMode ? 'bg-[#181620] border-darkWarmBorder' : 'bg-[#211f27] border-stone-800'" class="w-64 border-r flex flex-col flex-shrink-0 text-white transition-colors duration-300">
+    <aside :class="isDarkMode ? 'bg-[#15131b] border-darkWarmBorder' : 'bg-[#1c1a22] border-stone-800'" class="w-64 border-r flex flex-col flex-shrink-0 text-white transition-colors duration-300">
       <!-- Brand Logo Header -->
       <div class="p-5 border-b border-white/10 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-peach-400 to-peach-200 text-stone-900 flex items-center justify-center text-lg font-black shadow-md shadow-peach-500/20">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-peach-400 to-peach-200 text-stone-950 flex items-center justify-center text-lg font-black shadow-md shadow-peach-500/20">
           <i class="fa-solid fa-bolt-lightning"></i>
         </div>
         <div>
           <h1 class="font-bold text-base leading-tight tracking-wide text-white">ElectroPM</h1>
-          <p class="text-[11px] text-peach-300 font-medium">Soft Grid CMMS</p>
+          <p class="text-xs text-peach-300 font-semibold">Grid Asset CMMS</p>
         </div>
       </div>
 
       <!-- Nav Links -->
       <nav class="flex-1 p-3 space-y-1.5 overflow-y-auto">
-        <button @click="switchTab('schedule')" :class="navClass('schedule')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition text-left">
-          <i class="fa-solid fa-calendar-days w-5 text-center text-peach-300"></i> แผนงาน PM ประจำปี
+        <button @click="switchTab('schedule')" :class="navClass('schedule')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition text-left">
+          <i class="fa-solid fa-calendar-days w-5 text-center text-peach-300 text-sm"></i> 1. แผนงาน PM ประจำปี
         </button>
-        <button @click="switchTab('feeder')" :class="navClass('feeder')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition text-left">
-          <span class="flex items-center gap-3"><i class="fa-solid fa-chart-line w-5 text-center text-peach-300"></i> สถิติไฟดับสายป้อน</span>
+        <button @click="switchTab('feeder')" :class="navClass('feeder')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition text-left">
+          <span class="flex items-center gap-3"><i class="fa-solid fa-chart-line w-5 text-center text-peach-300 text-sm"></i> 2. สถิติไฟดับสายป้อน</span>
           <span class="bg-peach-400/20 text-peach-200 border border-peach-400/30 text-[10px] px-2 py-0.5 rounded-full font-mono font-bold">SAIFI</span>
         </button>
-        <button @click="switchTab('route')" :class="navClass('route')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition text-left">
-          <span class="flex items-center gap-3"><i class="fa-solid fa-location-crosshairs w-5 text-center text-peach-300"></i> แผนที่ GIS & GPS</span>
+        <button @click="switchTab('route')" :class="navClass('route')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition text-left">
+          <span class="flex items-center gap-3"><i class="fa-solid fa-location-crosshairs w-5 text-center text-peach-300 text-sm"></i> 3. แผนที่ GIS & GPS</span>
           <span class="bg-emerald-500/20 text-emerald-300 text-[10px] px-2 py-0.5 rounded-full font-bold border border-emerald-500/30">LIVE</span>
         </button>
-        <button @click="switchTab('orders')" :class="navClass('orders')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition text-left">
-          <span class="flex items-center gap-3"><i class="fa-solid fa-file-invoice w-5 text-center text-peach-300"></i> ใบสั่งงาน (Work Orders)</span>
+        <button @click="switchTab('orders')" :class="navClass('orders')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition text-left">
+          <span class="flex items-center gap-3"><i class="fa-solid fa-file-invoice w-5 text-center text-peach-300 text-sm"></i> 4. ใบสั่งงาน (Work Orders)</span>
           <span class="bg-white/10 text-peach-200 text-xs px-2.5 py-0.5 rounded-full font-bold border border-white/10">{{ workOrders.length }}</span>
         </button>
-        <button @click="switchTab('anomaly')" :class="navClass('anomaly')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition text-left">
-          <span class="flex items-center gap-3"><i class="fa-solid fa-triangle-exclamation w-5 text-center text-peach-300"></i> วิเคราะห์ Anomaly WO</span>
-          <span class="bg-peach-300 text-stone-900 text-[10px] px-2 py-0.5 rounded-full font-bold">{{ anomalies.length }}</span>
+        <button @click="switchTab('anomaly')" :class="navClass('anomaly')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition text-left">
+          <span class="flex items-center gap-3"><i class="fa-solid fa-triangle-exclamation w-5 text-center text-peach-300 text-sm"></i> 5. วิเคราะห์ Anomaly WO</span>
+          <span class="bg-peach-300 text-stone-950 text-[10px] px-2 py-0.5 rounded-full font-black">{{ anomalies.length }}</span>
         </button>
-        <button @click="switchTab('form')" :class="navClass('form')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition text-left">
-          <i class="fa-solid fa-file-signature w-5 text-center text-peach-300"></i> ฟอร์มเอกสาร & พิมพ์
+        <button @click="switchTab('form')" :class="navClass('form')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition text-left">
+          <i class="fa-solid fa-file-signature w-5 text-center text-peach-300 text-sm"></i> 6. ฟอร์มเอกสาร & พิมพ์
         </button>
       </nav>
 
       <!-- Bottom Reliability Score -->
-      <div class="p-4 border-t border-white/10 bg-black/20 text-xs text-stone-400">
-        <div class="flex justify-between items-center mb-1.5 text-[11px]">
+      <div class="p-4 border-t border-white/10 bg-black/20 text-xs text-stone-300">
+        <div class="flex justify-between items-center mb-1.5 text-xs font-semibold">
           <span>Grid Reliability Score</span>
           <span class="text-peach-300 font-bold">99.98%</span>
         </div>
-        <div class="w-full bg-stone-800 h-1.5 rounded-full overflow-hidden">
+        <div class="w-full bg-stone-800 h-2 rounded-full overflow-hidden">
           <div class="bg-gradient-to-r from-peach-400 to-peach-200 h-full rounded-full" style="width: 99.98%"></div>
         </div>
       </div>
@@ -116,28 +122,28 @@
       <!-- Top Title Bar + Theme Switcher -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-6 border-b gap-4" :class="isDarkMode ? 'border-darkWarmBorder' : 'border-softBorder'">
         <div>
-          <h2 class="text-2xl font-bold tracking-wide" :class="isDarkMode ? 'text-white' : 'text-stone-800'">
+          <h2 class="text-2xl font-extrabold tracking-tight" :class="isDarkMode ? 'text-white' : 'text-stone-950'">
             <span v-if="currentTab === 'schedule'">ตารางวางแผน PM อุปกรณ์ไฟฟ้ารายปี (Annual Master Grid)</span>
-            <span v-if="currentTab === 'feeder'">สถิติไฟฟ้าดับและความมั่นคงรายสายป้อน (Feeder Reliability)</span>
+            <span v-if="currentTab === 'feeder'">สถิติไฟฟ้าดับและความมั่นคงรายสายป้อน (Feeder Reliability Analytics)</span>
             <span v-if="currentTab === 'route'">แผนที่ GIS & ระบบนำทางตรวจ PM ภาคสนาม (Field GPS Cockpit)</span>
             <span v-if="currentTab === 'orders'">ศูนย์จัดการใบสั่งงานบำรุงรักษา (Work Orders Hub)</span>
             <span v-if="currentTab === 'anomaly'">ระบบวิเคราะห์ความผิดปกติของ Work Order (Anomaly Engine)</span>
             <span v-if="currentTab === 'form'">ฟอร์มเอกสารตรวจวัดและบันทึกผลบำรุงรักษา (Standard PM Form)</span>
           </h2>
-          <p class="text-xs mt-1" :class="isDarkMode ? 'text-stone-400' : 'text-stone-500'">ระบบวิเคราะห์ข้อมูลเชิงลึกและบริหารจัดการงานบำรุงรักษาอุปกรณ์ไฟฟ้า โทนสีสบายตา</p>
+          <p class="text-xs font-medium mt-1" :class="isDarkMode ? 'text-stone-300' : 'text-stone-600'">ระบบวิเคราะห์ข้อมูลเชิงลึกและบริหารจัดการงานบำรุงรักษาอุปกรณ์ไฟฟ้า ตัวหนังสือคมชัดสูง</p>
         </div>
         
         <div class="flex items-center gap-3">
           <!-- DAY / NIGHT TOGGLE BUTTON -->
           <button @click="toggleTheme" 
                   class="p-2.5 rounded-2xl border flex items-center gap-2 text-xs font-bold transition shadow-sm"
-                  :class="isDarkMode ? 'bg-darkWarmCard border-darkWarmBorder text-peach-300 hover:bg-[#25232e]' : 'bg-white border-softBorder text-stone-700 hover:bg-peach-50'">
-            <i class="fa-solid" :class="isDarkMode ? 'fa-sun text-peach-300' : 'fa-moon text-stone-600'"></i>
+                  :class="isDarkMode ? 'bg-darkWarmCard border-darkWarmBorder text-peach-300 hover:bg-[#25232e]' : 'bg-white border-softBorder text-stone-800 hover:bg-peach-50'">
+            <i class="fa-solid" :class="isDarkMode ? 'fa-sun text-peach-300 text-sm' : 'fa-moon text-stone-700 text-sm'"></i>
             <span>{{ isDarkMode ? 'โหมดสว่างสบายตา' : 'โหมดกลางคืน' }}</span>
           </button>
 
-          <button @click="openNewWOModal = true" class="bg-gradient-to-r from-peach-400 to-peach-300 hover:from-peach-500 hover:to-peach-400 text-stone-950 font-bold text-xs px-4 py-2.5 rounded-2xl shadow-md shadow-peach-400/20 transition flex items-center gap-2">
-            <i class="fa-solid fa-plus"></i> ออกใบสั่งงานใหม่
+          <button @click="openNewWOModal = true" class="bg-gradient-to-r from-peach-400 to-peach-300 hover:from-peach-500 hover:to-peach-400 text-stone-950 font-black text-xs px-4 py-2.5 rounded-2xl shadow-md shadow-peach-400/20 transition flex items-center gap-2">
+            <i class="fa-solid fa-plus text-sm"></i> ออกใบสั่งงานใหม่
           </button>
         </div>
       </div>
@@ -147,37 +153,37 @@
         <div class="p-6 rounded-3xl border shadow-sm transition" :class="isDarkMode ? 'bg-darkWarmCard border-darkWarmBorder' : 'bg-white border-softBorder'">
           <div class="flex justify-between items-center mb-6">
             <div>
-              <h3 class="font-bold text-base" :class="isDarkMode ? 'text-white' : 'text-stone-800'">ตารางวางแผนวงรอบ PM ปี 2026</h3>
-              <p class="text-xs mt-0.5" :class="isDarkMode ? 'text-stone-400' : 'text-stone-500'">แผนการทดสอบและบำรุงรักษาแยกตามหมวดหมู่อุปกรณ์ไฟฟ้าและไตรมาส</p>
+              <h3 class="font-extrabold text-base" :class="isDarkMode ? 'text-white' : 'text-stone-950'">ตารางวางแผนวงรอบ PM ปี 2026</h3>
+              <p class="text-xs font-medium mt-0.5" :class="isDarkMode ? 'text-stone-300' : 'text-stone-600'">แผนการทดสอบและบำรุงรักษาแยกตามหมวดหมู่อุปกรณ์ไฟฟ้าและไตรมาส</p>
             </div>
-            <div class="flex gap-3 text-xs" :class="isDarkMode ? 'text-stone-300' : 'text-stone-600'">
-              <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span> ดำเนินการแล้ว</span>
-              <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-peach-400"></span> ตามกำหนดการ</span>
-              <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full" :class="isDarkMode ? 'bg-stone-700' : 'bg-stone-300'"></span> แผนในอนาคต</span>
+            <div class="flex gap-3 text-xs font-bold" :class="isDarkMode ? 'text-stone-200' : 'text-stone-700'">
+              <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-500"></span> ดำเนินการแล้ว</span>
+              <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-peach-400"></span> ตามกำหนดการ</span>
+              <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full" :class="isDarkMode ? 'bg-stone-700' : 'bg-stone-300'"></span> แผนในอนาคต</span>
             </div>
           </div>
 
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs border rounded-2xl overflow-hidden" :class="isDarkMode ? 'border-darkWarmBorder' : 'border-softBorder'">
-              <thead class="uppercase font-bold border-b" :class="isDarkMode ? 'bg-[#23212b] text-stone-300 border-darkWarmBorder' : 'bg-peach-50/70 text-stone-700 border-softBorder'">
+              <thead class="uppercase font-bold border-b text-xs" :class="isDarkMode ? 'bg-[#23212b] text-white border-darkWarmBorder' : 'bg-peach-50 text-stone-900 border-softBorder'">
                 <tr>
-                  <th class="p-3.5 border-r" :class="isDarkMode ? 'border-darkWarmBorder' : 'border-softBorder'">หมวดหมู่อุปกรณ์</th>
-                  <th class="p-3.5 border-r" :class="isDarkMode ? 'border-darkWarmBorder' : 'border-softBorder'">วงรอบ</th>
-                  <th class="p-3.5 border-r text-center" :class="isDarkMode ? 'border-darkWarmBorder' : 'border-softBorder'" v-for="m in ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.']" :key="m">{{ m }}</th>
-                  <th class="p-3.5 text-center">จัดการ</th>
+                  <th class="p-3.5 border-r font-extrabold" :class="isDarkMode ? 'border-darkWarmBorder' : 'border-softBorder'">หมวดหมู่อุปกรณ์</th>
+                  <th class="p-3.5 border-r font-extrabold" :class="isDarkMode ? 'border-darkWarmBorder' : 'border-softBorder'">วงรอบ</th>
+                  <th class="p-3.5 border-r text-center font-extrabold" :class="isDarkMode ? 'border-darkWarmBorder' : 'border-softBorder'" v-for="m in ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.']" :key="m">{{ m }}</th>
+                  <th class="p-3.5 text-center font-extrabold">จัดการ</th>
                 </tr>
               </thead>
-              <tbody class="divide-y font-medium" :class="isDarkMode ? 'divide-darkWarmBorder text-stone-300' : 'divide-softBorder text-stone-600'">
-                <tr v-for="item in scheduleMatrix" :key="item.id" :class="isDarkMode ? 'hover:bg-white/[0.02]' : 'hover:bg-peach-50/40'">
-                  <td class="p-3.5 border-r font-bold" :class="[isDarkMode ? 'border-darkWarmBorder text-white' : 'border-softBorder text-stone-800']">{{ item.name }}</td>
-                  <td class="p-3.5 border-r" :class="isDarkMode ? 'border-darkWarmBorder' : 'border-softBorder'"><span class="px-2.5 py-1 rounded-lg font-mono text-[11px] border" :class="isDarkMode ? 'bg-stone-800 text-peach-200 border-stone-700' : 'bg-peach-50 text-peach-600 border-peach-200'">{{ item.cycle }}</span></td>
+              <tbody class="divide-y font-semibold" :class="isDarkMode ? 'divide-darkWarmBorder text-stone-200' : 'divide-softBorder text-stone-800'">
+                <tr v-for="item in scheduleMatrix" :key="item.id" :class="isDarkMode ? 'hover:bg-white/[0.03]' : 'hover:bg-peach-50/60'">
+                  <td class="p-3.5 border-r font-bold text-sm" :class="[isDarkMode ? 'border-darkWarmBorder text-white' : 'border-softBorder text-stone-950']">{{ item.name }}</td>
+                  <td class="p-3.5 border-r" :class="isDarkMode ? 'border-darkWarmBorder' : 'border-softBorder'"><span class="px-2.5 py-1 rounded-lg font-mono text-xs font-bold border" :class="isDarkMode ? 'bg-stone-800 text-peach-200 border-stone-700' : 'bg-peach-100 text-peach-700 border-peach-300'">{{ item.cycle }}</span></td>
                   <td v-for="(status, idx) in item.months" :key="idx" class="p-2 border-r text-center" :class="isDarkMode ? 'border-darkWarmBorder' : 'border-softBorder'">
-                    <span v-if="status === 'DONE'" class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-md text-[10px] font-bold">DONE</span>
-                    <span v-else-if="status === 'PLANNED'" class="bg-peach-300 text-stone-950 px-2 py-0.5 rounded-md text-[10px] font-bold shadow-sm">PLAN</span>
-                    <span v-else class="text-stone-400 opacity-40">-</span>
+                    <span v-if="status === 'DONE'" class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 px-2 py-0.5 rounded-md text-[11px] font-black">DONE</span>
+                    <span v-else-if="status === 'PLANNED'" class="bg-peach-300 text-stone-950 px-2 py-0.5 rounded-md text-[11px] font-black shadow-sm">PLAN</span>
+                    <span v-else class="text-stone-400 font-bold opacity-30">-</span>
                   </td>
                   <td class="p-2 text-center">
-                    <button @click="triggerScheduleWO(item)" class="text-[11px] px-3 py-1 rounded-xl font-bold transition border" :class="isDarkMode ? 'bg-stone-800 hover:bg-peach-300 text-peach-200 hover:text-stone-900 border-stone-700' : 'bg-peach-100/60 hover:bg-peach-300 text-peach-700 hover:text-stone-900 border-peach-200'">
+                    <button @click="triggerScheduleWO(item)" class="text-xs px-3 py-1.5 rounded-xl font-bold transition border" :class="isDarkMode ? 'bg-stone-800 hover:bg-peach-300 text-peach-200 hover:text-stone-900 border-stone-700' : 'bg-peach-100 hover:bg-peach-300 text-peach-800 hover:text-stone-950 border-peach-300'">
                       สร้างใบงาน
                     </button>
                   </td>
@@ -192,52 +198,52 @@
       <section v-if="currentTab === 'feeder'" class="space-y-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div class="p-5 rounded-3xl border shadow-sm" :class="isDarkMode ? 'bg-darkWarmCard border-darkWarmBorder' : 'bg-white border-softBorder'">
-            <span class="text-xs font-semibold uppercase" :class="isDarkMode ? 'text-stone-400' : 'text-stone-500'">SAIFI (ความถี่ไฟดับ)</span>
-            <div class="text-2xl font-bold mt-1" :class="isDarkMode ? 'text-white' : 'text-stone-800'">0.42 <span class="text-xs font-normal" :class="isDarkMode ? 'text-stone-400' : 'text-stone-500'">ครั้ง/ราย/ปี</span></div>
-            <div class="text-xs text-emerald-500 font-semibold mt-1"><i class="fa-solid fa-arrow-down"></i> ลดลง 12% ตามเกณฑ์</div>
+            <span class="text-xs font-bold uppercase tracking-wider" :class="isDarkMode ? 'text-stone-300' : 'text-stone-700'">SAIFI (ความถี่ไฟดับ)</span>
+            <div class="text-3xl font-extrabold mt-1" :class="isDarkMode ? 'text-white' : 'text-stone-950'">0.42 <span class="text-xs font-semibold" :class="isDarkMode ? 'text-stone-300' : 'text-stone-600'">ครั้ง/ราย/ปี</span></div>
+            <div class="text-xs text-emerald-500 font-bold mt-1.5"><i class="fa-solid fa-arrow-down"></i> ลดลง 12% ตามเกณฑ์</div>
           </div>
           <div class="p-5 rounded-3xl border shadow-sm" :class="isDarkMode ? 'bg-darkWarmCard border-darkWarmBorder' : 'bg-white border-softBorder'">
-            <span class="text-xs font-semibold uppercase" :class="isDarkMode ? 'text-stone-400' : 'text-stone-500'">SAIDI (ระยะเวลาไฟดับ)</span>
-            <div class="text-2xl font-bold mt-1" :class="isDarkMode ? 'text-white' : 'text-stone-800'">18.5 <span class="text-xs font-normal" :class="isDarkMode ? 'text-stone-400' : 'text-stone-500'">นาที/ราย/ปี</span></div>
-            <div class="text-xs text-emerald-500 font-semibold mt-1"><i class="fa-solid fa-arrow-down"></i> ดีกว่าเป้าหมาย 25 นาที</div>
+            <span class="text-xs font-bold uppercase tracking-wider" :class="isDarkMode ? 'text-stone-300' : 'text-stone-700'">SAIDI (ระยะเวลาไฟดับ)</span>
+            <div class="text-3xl font-extrabold mt-1" :class="isDarkMode ? 'text-white' : 'text-stone-950'">18.5 <span class="text-xs font-semibold" :class="isDarkMode ? 'text-stone-300' : 'text-stone-600'">นาที/ราย/ปี</span></div>
+            <div class="text-xs text-emerald-500 font-bold mt-1.5"><i class="fa-solid fa-arrow-down"></i> ดีกว่าเป้าหมาย 25 นาที</div>
           </div>
           <div class="p-5 rounded-3xl border shadow-sm" :class="isDarkMode ? 'bg-darkWarmCard border-darkWarmBorder' : 'bg-white border-softBorder'">
-            <span class="text-xs font-semibold uppercase" :class="isDarkMode ? 'text-stone-400' : 'text-stone-500'">สายป้อนทริปสูงสุด</span>
-            <div class="text-2xl font-bold text-peach-400 mt-1">F-03 บางนา</div>
-            <div class="text-xs text-peach-500 font-semibold mt-1">ทริปสะสม 4 ครั้ง (กิ่งไม้/สัตว์)</div>
+            <span class="text-xs font-bold uppercase tracking-wider" :class="isDarkMode ? 'text-stone-300' : 'text-stone-700'">สายป้อนทริปสูงสุด</span>
+            <div class="text-3xl font-extrabold text-peach-500 mt-1">F-03 บางนา</div>
+            <div class="text-xs text-peach-600 font-bold mt-1.5">ทริปสะสม 4 ครั้ง (กิ่งไม้/สัตว์)</div>
           </div>
           <div class="p-5 rounded-3xl border shadow-sm" :class="isDarkMode ? 'bg-darkWarmCard border-darkWarmBorder' : 'bg-white border-softBorder'">
-            <span class="text-xs font-semibold uppercase" :class="isDarkMode ? 'text-stone-400' : 'text-stone-500'">อัตราจ่ายไฟต่อเนื่อง (ASAI)</span>
-            <div class="text-2xl font-bold text-emerald-500 mt-1">99.982%</div>
-            <div class="text-xs mt-1" :class="isDarkMode ? 'text-stone-400' : 'text-stone-500'">ระดับคุณภาพ World-Class</div>
+            <span class="text-xs font-bold uppercase tracking-wider" :class="isDarkMode ? 'text-stone-300' : 'text-stone-700'">อัตราจ่ายไฟต่อเนื่อง (ASAI)</span>
+            <div class="text-3xl font-extrabold text-emerald-500 mt-1">99.982%</div>
+            <div class="text-xs mt-1.5 font-bold" :class="isDarkMode ? 'text-stone-300' : 'text-stone-600'">ระดับคุณภาพ World-Class</div>
           </div>
         </div>
 
         <div class="p-6 rounded-3xl border shadow-sm" :class="isDarkMode ? 'bg-darkWarmCard border-darkWarmBorder' : 'bg-white border-softBorder'">
-          <h3 class="font-bold mb-4 text-base" :class="isDarkMode ? 'text-white' : 'text-stone-800'">สถิติไฟฟ้าดับจำแนกรายสายป้อน</h3>
+          <h3 class="font-extrabold mb-4 text-base" :class="isDarkMode ? 'text-white' : 'text-stone-950'">สถิติไฟฟ้าดับจำแนกรายสายป้อน</h3>
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs border rounded-2xl overflow-hidden" :class="isDarkMode ? 'border-darkWarmBorder' : 'border-softBorder'">
-              <thead class="uppercase font-bold border-b" :class="isDarkMode ? 'bg-[#23212b] text-stone-300 border-darkWarmBorder' : 'bg-peach-50/70 text-stone-700 border-softBorder'">
+              <thead class="uppercase font-bold border-b" :class="isDarkMode ? 'bg-[#23212b] text-white border-darkWarmBorder' : 'bg-peach-50 text-stone-900 border-softBorder'">
                 <tr>
-                  <th class="p-3.5">รหัสสายป้อน</th>
-                  <th class="p-3.5">พื้นที่รับผิดชอบ</th>
-                  <th class="p-3.5">ระดับแรงดัน</th>
-                  <th class="p-3.5 text-center">จำนวนครั้งที่ทริป</th>
-                  <th class="p-3.5 text-center">ระยะเวลาสะสม (นาที)</th>
-                  <th class="p-3.5">สาเหตุหลัก</th>
-                  <th class="p-3.5">แผนงาน PM แก้ไขเร่งด่วน</th>
+                  <th class="p-3.5 font-extrabold">รหัสสายป้อน</th>
+                  <th class="p-3.5 font-extrabold">พื้นที่รับผิดชอบ</th>
+                  <th class="p-3.5 font-extrabold">ระดับแรงดัน</th>
+                  <th class="p-3.5 text-center font-extrabold">จำนวนครั้งที่ทริป</th>
+                  <th class="p-3.5 text-center font-extrabold">ระยะเวลาสะสม (นาที)</th>
+                  <th class="p-3.5 font-extrabold">สาเหตุหลัก</th>
+                  <th class="p-3.5 font-extrabold">แผนงาน PM แก้ไขเร่งด่วน</th>
                 </tr>
               </thead>
-              <tbody class="divide-y font-medium" :class="isDarkMode ? 'divide-darkWarmBorder text-stone-300' : 'divide-softBorder text-stone-600'">
-                <tr v-for="f in feeders" :key="f.id" :class="isDarkMode ? 'hover:bg-white/[0.02]' : 'hover:bg-peach-50/40'">
-                  <td class="p-3.5 font-mono font-bold text-peach-400">{{ f.id }}</td>
-                  <td class="p-3.5 font-semibold" :class="isDarkMode ? 'text-white' : 'text-stone-800'">{{ f.name }}</td>
-                  <td class="p-3.5"><span class="bg-rose-500/10 text-rose-500 border border-rose-500/20 font-bold px-2 py-0.5 rounded text-[11px]">{{ f.voltage }}</span></td>
-                  <td class="p-3.5 text-center font-bold" :class="f.trips > 2 ? 'text-peach-400' : ''">{{ f.trips }} ครั้ง</td>
-                  <td class="p-3.5 text-center font-mono">{{ f.duration }} นาที</td>
-                  <td class="p-3.5" :class="isDarkMode ? 'text-stone-400' : 'text-stone-500'">{{ f.rootCause }}</td>
+              <tbody class="divide-y font-semibold" :class="isDarkMode ? 'divide-darkWarmBorder text-stone-200' : 'divide-softBorder text-stone-800'">
+                <tr v-for="f in feeders" :key="f.id" :class="isDarkMode ? 'hover:bg-white/[0.03]' : 'hover:bg-peach-50/60'">
+                  <td class="p-3.5 font-mono font-extrabold text-sm text-peach-500">{{ f.id }}</td>
+                  <td class="p-3.5 font-bold text-sm" :class="isDarkMode ? 'text-white' : 'text-stone-950'">{{ f.name }}</td>
+                  <td class="p-3.5"><span class="bg-rose-500/10 text-rose-600 border border-rose-500/30 font-bold px-2.5 py-0.5 rounded text-xs">{{ f.voltage }}</span></td>
+                  <td class="p-3.5 text-center font-black text-sm" :class="f.trips > 2 ? 'text-peach-500' : ''">{{ f.trips }} ครั้ง</td>
+                  <td class="p-3.5 text-center font-mono font-bold text-sm">{{ f.duration }} นาที</td>
+                  <td class="p-3.5 font-medium" :class="isDarkMode ? 'text-stone-300' : 'text-stone-700'">{{ f.rootCause }}</td>
                   <td class="p-3.5">
-                    <button @click="createPMFromFeeder(f)" class="bg-peach-100 hover:bg-peach-300 text-peach-700 hover:text-stone-950 border border-peach-200 px-3 py-1 rounded-xl font-bold text-[11px] transition">
+                    <button @click="createPMFromFeeder(f)" class="bg-peach-100 hover:bg-peach-300 text-peach-800 hover:text-stone-950 border border-peach-300 px-3.5 py-1.5 rounded-xl font-bold text-xs transition">
                       <i class="fa-solid fa-screwdriver-wrench mr-1"></i> เปิดงาน PM สายป้อน
                     </button>
                   </td>
@@ -255,8 +261,8 @@
           <!-- Left Checkpoint List -->
           <div class="p-5 rounded-3xl border shadow-sm space-y-3" :class="isDarkMode ? 'bg-darkWarmCard border-darkWarmBorder' : 'bg-white border-softBorder'">
             <div class="flex justify-between items-center">
-              <h3 class="font-bold text-sm" :class="isDarkMode ? 'text-white' : 'text-stone-800'">ลำดับจุดตรวจ PM ภาคสนาม</h3>
-              <button @click="optimizeRoute" class="text-xs bg-peach-100 hover:bg-peach-300 text-peach-700 hover:text-stone-950 border border-peach-200 px-2.5 py-1 rounded-xl font-bold transition">
+              <h3 class="font-extrabold text-sm" :class="isDarkMode ? 'text-white' : 'text-stone-950'">ลำดับจุดตรวจ PM ภาคสนาม</h3>
+              <button @click="optimizeRoute" class="text-xs bg-peach-100 hover:bg-peach-300 text-peach-800 hover:text-stone-950 border border-peach-300 px-2.5 py-1.5 rounded-xl font-bold transition">
                 <i class="fa-solid fa-wand-magic-sparkles"></i> จัดเส้นทางลัด
               </button>
             </div>
@@ -264,31 +270,31 @@
             <div class="space-y-2.5 pt-1">
               <div v-for="(cp, idx) in checkpoints" :key="cp.id" 
                    @click="selectCheckpoint(cp)"
-                   class="p-3 rounded-2xl border transition cursor-pointer"
-                   :class="selectedCp?.id === cp.id ? (isDarkMode ? 'border-peach-400 bg-peach-400/10' : 'border-peach-300 bg-peach-50') : (isDarkMode ? 'border-darkWarmBorder bg-stone-900/40' : 'border-softBorder bg-softBg/60')">
+                   class="p-3.5 rounded-2xl border transition cursor-pointer"
+                   :class="selectedCp?.id === cp.id ? (isDarkMode ? 'border-peach-400 bg-peach-400/10' : 'border-peach-400 bg-peach-50') : (isDarkMode ? 'border-darkWarmBorder bg-stone-900/50' : 'border-softBorder bg-softBg')">
                 <div class="flex items-start justify-between">
                   <div class="flex items-start gap-2.5">
-                    <span class="w-5 h-5 rounded-md bg-stone-900 text-peach-300 font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span class="w-6 h-6 rounded-md bg-stone-950 text-peach-300 font-extrabold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
                       {{ cp.status === 'COMPLETED' ? '✓' : idx + 1 }}
                     </span>
                     <div>
-                      <div class="font-bold text-xs" :class="isDarkMode ? 'text-white' : 'text-stone-800'">{{ cp.name }}</div>
-                      <div class="text-[11px] font-mono" :class="isDarkMode ? 'text-stone-400' : 'text-stone-500'">{{ cp.tag }} &bull; {{ cp.voltage }}</div>
-                      <div class="text-[11px] text-peach-500 font-medium mt-0.5"><i class="fa-solid fa-wrench"></i> {{ cp.task }}</div>
+                      <div class="font-bold text-sm" :class="isDarkMode ? 'text-white' : 'text-stone-950'">{{ cp.name }}</div>
+                      <div class="text-xs font-mono font-semibold" :class="isDarkMode ? 'text-stone-300' : 'text-stone-600'">{{ cp.tag }} &bull; {{ cp.voltage }}</div>
+                      <div class="text-xs text-peach-600 font-bold mt-0.5"><i class="fa-solid fa-wrench"></i> {{ cp.task }}</div>
                     </div>
                   </div>
                   <div class="text-right">
-                    <span class="text-[10px] font-mono block" :class="isDarkMode ? 'text-stone-400' : 'text-stone-500'">{{ cp.distance }} km</span>
-                    <span v-if="cp.isNearby" class="text-[9px] bg-emerald-500/20 text-emerald-500 border border-emerald-500/30 font-bold px-1.5 py-0.5 rounded-full">
+                    <span class="text-xs font-mono font-bold block" :class="isDarkMode ? 'text-stone-300' : 'text-stone-600'">{{ cp.distance }} km</span>
+                    <span v-if="cp.isNearby" class="text-[10px] bg-emerald-500/20 text-emerald-500 border border-emerald-500/30 font-black px-2 py-0.5 rounded-full">
                       ใกล้ถึง
                     </span>
                   </div>
                 </div>
-                <div class="mt-2 pt-2 border-t flex justify-between items-center text-xs" :class="isDarkMode ? 'border-darkWarmBorder' : 'border-softBorder'">
-                  <button @click.stop="startNavigationTo(cp)" class="text-peach-500 hover:text-peach-600 font-bold">
+                <div class="mt-2.5 pt-2 border-t flex justify-between items-center text-xs" :class="isDarkMode ? 'border-darkWarmBorder' : 'border-softBorder'">
+                  <button @click.stop="startNavigationTo(cp)" class="text-peach-600 hover:text-peach-700 font-extrabold">
                     <i class="fa-solid fa-location-arrow"></i> นำทางจุดนี้
                   </button>
-                  <button v-if="cp.isNearby && cp.status !== 'COMPLETED'" @click.stop="openFieldChecklist(cp)" class="bg-emerald-500 text-white px-2 py-0.5 rounded-lg font-bold text-[10px]">
+                  <button v-if="cp.isNearby && cp.status !== 'COMPLETED'" @click.stop="openFieldChecklist(cp)" class="bg-emerald-500 text-white px-2.5 py-1 rounded-lg font-bold text-xs">
                     ตรวจ PM ทันที
                   </button>
                 </div>
@@ -298,25 +304,25 @@
 
           <!-- Right Leaflet Map Canvas with Soft HUD -->
           <div class="lg:col-span-2 space-y-4">
-            <div class="p-4 rounded-3xl border flex items-center justify-between shadow-md" :class="isDarkMode ? 'bg-darkWarmCard text-white border-darkWarmBorder' : 'bg-stone-900 text-white border-stone-800'">
+            <div class="p-4 rounded-3xl border flex items-center justify-between shadow-md" :class="isDarkMode ? 'bg-darkWarmCard text-white border-darkWarmBorder' : 'bg-stone-950 text-white border-stone-800'">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-peach-400 to-peach-200 text-stone-900 flex items-center justify-center text-xl font-black shadow-md">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-peach-400 to-peach-200 text-stone-950 flex items-center justify-center text-2xl font-black shadow-md">
                   <i class="fa-solid" :class="navPrompt.icon"></i>
                 </div>
                 <div>
-                  <div class="text-peach-300 text-xs font-bold">{{ navPrompt.distance }}</div>
-                  <div class="text-white font-bold text-sm">{{ navPrompt.instruction }}</div>
+                  <div class="text-peach-300 text-xs font-black uppercase tracking-wider">{{ navPrompt.distance }}</div>
+                  <div class="text-white font-bold text-base">{{ navPrompt.instruction }}</div>
                 </div>
               </div>
               
               <div class="flex items-center gap-3">
-                <div class="text-center px-3.5 py-1.5 rounded-2xl border bg-black/30 border-white/10">
-                  <div class="text-[10px] text-stone-400">ความเร็ว</div>
-                  <div class="text-lg font-black text-peach-300 font-hud">{{ speed }} <span class="text-xs text-stone-400 font-sans">km/h</span></div>
+                <div class="text-center px-4 py-2 rounded-2xl border bg-black/40 border-white/10">
+                  <div class="text-[10px] font-bold text-stone-300 uppercase">ความเร็ว</div>
+                  <div class="text-xl font-black text-peach-300 font-hud">{{ speed }} <span class="text-xs font-normal text-stone-300 font-sans">km/h</span></div>
                 </div>
-                <button @click="toggleSimulation" class="px-4 py-2.5 rounded-2xl font-bold text-xs shadow-md transition flex items-center gap-1.5"
+                <button @click="toggleSimulation" class="px-4 py-3 rounded-2xl font-black text-xs shadow-md transition flex items-center gap-1.5"
                         :class="isDriving ? 'bg-rose-500 text-white' : 'bg-gradient-to-r from-peach-400 to-peach-300 hover:from-peach-500 text-stone-950'">
-                  <i class="fa-solid" :class="isDriving ? 'fa-pause' : 'fa-play'"></i>
+                  <i class="fa-solid text-sm" :class="isDriving ? 'fa-pause' : 'fa-play'"></i>
                   <span>{{ isDriving ? 'หยุดจำลอง' : 'เริ่มขับจำลอง' }}</span>
                 </button>
               </div>
@@ -324,10 +330,10 @@
 
             <div id="map" class="shadow-sm border" :class="isDarkMode ? 'border-darkWarmBorder' : 'border-softBorder'"></div>
 
-            <div class="flex justify-between items-center text-xs p-3 rounded-2xl border" :class="isDarkMode ? 'bg-darkWarmCard border-darkWarmBorder text-stone-400' : 'bg-white border-softBorder text-stone-600'">
-              <span><i class="fa-solid fa-satellite text-peach-400 mr-1"></i> พิกัดรถ: {{ carPos[0].toFixed(4) }}°N, {{ carPos[1].toFixed(4) }}°E</span>
-              <button @click="openGoogleMaps" class="text-peach-500 hover:underline font-bold">
-                <i class="fa-brands fa-google mr-1"></i> เปิดใน Google Maps App
+            <div class="flex justify-between items-center text-xs font-bold p-3.5 rounded-2xl border" :class="isDarkMode ? 'bg-darkWarmCard border-darkWarmBorder text-stone-300' : 'bg-white border-softBorder text-stone-800'">
+              <span><i class="fa-solid fa-satellite text-peach-500 mr-1 text-sm"></i> พิกัดรถ: {{ carPos[0].toFixed(4) }}°N, {{ carPos[1].toFixed(4) }}°E</span>
+              <button @click="openGoogleMaps" class="text-peach-600 hover:underline font-black">
+                <i class="fa-brands fa-google mr-1 text-sm"></i> เปิดใน Google Maps App
               </button>
             </div>
           </div>
@@ -338,41 +344,41 @@
       <!-- TAB 4: WORK ORDERS -->
       <section v-if="currentTab === 'orders'" class="p-6 rounded-3xl border shadow-sm space-y-4" :class="isDarkMode ? 'bg-darkWarmCard border-darkWarmBorder' : 'bg-white border-softBorder'">
         <div class="flex justify-between items-center">
-          <h3 class="font-bold text-base" :class="isDarkMode ? 'text-white' : 'text-stone-800'">รายการใบสั่งงาน PM / CM ทั้งหมด</h3>
-          <span class="text-xs" :class="isDarkMode ? 'text-stone-400' : 'text-stone-500'">จัดการสถานะและพิมพ์ใบงาน</span>
+          <h3 class="font-extrabold text-base" :class="isDarkMode ? 'text-white' : 'text-stone-950'">รายการใบสั่งงาน PM / CM ทั้งหมด</h3>
+          <span class="text-xs font-semibold" :class="isDarkMode ? 'text-stone-300' : 'text-stone-600'">จัดการสถานะและพิมพ์ใบงาน</span>
         </div>
 
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs border rounded-2xl overflow-hidden" :class="isDarkMode ? 'border-darkWarmBorder' : 'border-softBorder'">
-            <thead class="uppercase font-bold border-b" :class="isDarkMode ? 'bg-[#23212b] text-stone-300 border-darkWarmBorder' : 'bg-peach-50/70 text-stone-700 border-softBorder'">
+            <thead class="uppercase font-bold border-b text-xs" :class="isDarkMode ? 'bg-[#23212b] text-white border-darkWarmBorder' : 'bg-peach-50 text-stone-900 border-softBorder'">
               <tr>
-                <th class="p-3.5">รหัสงาน</th>
-                <th class="p-3.5">ประเภท</th>
-                <th class="p-3.5">ชื่องาน / อุปกรณ์</th>
-                <th class="p-3.5">ระดับแรงดัน</th>
-                <th class="p-3.5">กำหนดเสร็จ</th>
-                <th class="p-3.5">สถานะ</th>
-                <th class="p-3.5 text-center">จัดการ</th>
+                <th class="p-3.5 font-extrabold">รหัสงาน</th>
+                <th class="p-3.5 font-extrabold">ประเภท</th>
+                <th class="p-3.5 font-extrabold">ชื่องาน / อุปกรณ์</th>
+                <th class="p-3.5 font-extrabold">ระดับแรงดัน</th>
+                <th class="p-3.5 font-extrabold">กำหนดเสร็จ</th>
+                <th class="p-3.5 font-extrabold">สถานะ</th>
+                <th class="p-3.5 text-center font-extrabold">จัดการ</th>
               </tr>
             </thead>
-            <tbody class="divide-y font-medium" :class="isDarkMode ? 'divide-darkWarmBorder text-stone-300' : 'divide-softBorder text-stone-600'">
-              <tr v-for="wo in workOrders" :key="wo.id" :class="isDarkMode ? 'hover:bg-white/[0.02]' : 'hover:bg-peach-50/40'">
-                <td class="p-3.5 font-mono font-bold text-peach-400">{{ wo.id }}</td>
-                <td class="p-3.5"><span :class="wo.type === 'PM' ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20' : 'bg-rose-500/10 text-rose-500 border border-rose-500/20'" class="px-2 py-0.5 rounded-md font-bold">{{ wo.type }}</span></td>
+            <tbody class="divide-y font-semibold" :class="isDarkMode ? 'divide-darkWarmBorder text-stone-200' : 'divide-softBorder text-stone-800'">
+              <tr v-for="wo in workOrders" :key="wo.id" :class="isDarkMode ? 'hover:bg-white/[0.03]' : 'hover:bg-peach-50/60'">
+                <td class="p-3.5 font-mono font-black text-sm text-peach-500">{{ wo.id }}</td>
+                <td class="p-3.5"><span :class="wo.type === 'PM' ? 'bg-blue-500/10 text-blue-600 border border-blue-500/30' : 'bg-rose-500/10 text-rose-600 border border-rose-500/30'" class="px-2.5 py-0.5 rounded-md font-bold text-xs">{{ wo.type }}</span></td>
                 <td class="p-3.5">
-                  <div class="font-bold" :class="isDarkMode ? 'text-white' : 'text-stone-800'">{{ wo.title }}</div>
-                  <div class="text-[11px]" :class="isDarkMode ? 'text-stone-400' : 'text-stone-500'">{{ wo.asset }} ({{ wo.tag }})</div>
+                  <div class="font-bold text-sm" :class="isDarkMode ? 'text-white' : 'text-stone-950'">{{ wo.title }}</div>
+                  <div class="text-xs font-semibold" :class="isDarkMode ? 'text-stone-300' : 'text-stone-600'">{{ wo.asset }} ({{ wo.tag }})</div>
                 </td>
-                <td class="p-3.5"><span class="border px-2 py-0.5 rounded-md font-bold" :class="isDarkMode ? 'bg-stone-800 text-stone-300 border-stone-700' : 'bg-peach-50 text-stone-700 border-peach-200'">{{ wo.voltage }}</span></td>
-                <td class="p-3.5 font-mono">{{ wo.dueDate }}</td>
+                <td class="p-3.5"><span class="border px-2 py-0.5 rounded-md font-bold" :class="isDarkMode ? 'bg-stone-800 text-stone-200 border-stone-700' : 'bg-peach-50 text-stone-800 border-peach-200'">{{ wo.voltage }}</span></td>
+                <td class="p-3.5 font-mono font-bold text-sm">{{ wo.dueDate }}</td>
                 <td class="p-3.5">
-                  <span :class="wo.status === 'Completed' ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-peach-400/15 text-peach-500 border border-peach-400/30'" class="px-2.5 py-1 rounded-full font-bold">
+                  <span :class="wo.status === 'Completed' ? 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/30' : 'bg-peach-400/20 text-peach-600 border border-peach-400/40'" class="px-3 py-1 rounded-full font-black text-xs">
                     {{ wo.status }}
                   </span>
                 </td>
                 <td class="p-3.5 text-center space-x-1.5">
-                  <button @click="openFormWithWO(wo)" class="bg-peach-300 hover:bg-peach-400 text-stone-950 font-bold px-3 py-1 rounded-xl text-[11px] transition shadow-sm">บันทึกผล</button>
-                  <button @click="printWorkOrder(wo)" class="border px-2.5 py-1 rounded-xl text-[11px]" :class="isDarkMode ? 'bg-stone-800 hover:bg-stone-700 text-stone-300 border-stone-700' : 'bg-stone-100 hover:bg-stone-200 text-stone-700 border-stone-300'"><i class="fa-solid fa-print"></i></button>
+                  <button @click="openFormWithWO(wo)" class="bg-peach-300 hover:bg-peach-400 text-stone-950 font-black px-3.5 py-1.5 rounded-xl text-xs transition shadow-sm">บันทึกผล</button>
+                  <button @click="printWorkOrder(wo)" class="border px-3 py-1.5 rounded-xl text-xs font-bold" :class="isDarkMode ? 'bg-stone-800 hover:bg-stone-700 text-stone-200 border-stone-700' : 'bg-stone-100 hover:bg-stone-200 text-stone-800 border-stone-300'"><i class="fa-solid fa-print"></i></button>
                 </td>
               </tr>
             </tbody>
@@ -382,13 +388,13 @@
 
       <!-- TAB 5: ANOMALY ENGINE -->
       <section v-if="currentTab === 'anomaly'" class="space-y-6">
-        <div class="bg-peach-100/50 border border-peach-300/60 p-5 rounded-3xl flex items-start gap-4" :class="isDarkMode ? 'bg-peach-500/10 border-peach-400/20' : ''">
-          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-peach-400 to-peach-200 text-stone-950 flex items-center justify-center text-xl font-bold flex-shrink-0 shadow-sm">
+        <div class="p-5 rounded-3xl flex items-start gap-4 border" :class="isDarkMode ? 'bg-peach-500/10 border-peach-400/20' : 'bg-peach-100/60 border-peach-300'">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-peach-400 to-peach-200 text-stone-950 flex items-center justify-center text-2xl font-black flex-shrink-0 shadow-sm">
             <i class="fa-solid fa-brain"></i>
           </div>
           <div>
-            <h3 class="font-bold text-sm" :class="isDarkMode ? 'text-white' : 'text-stone-800'">ระบบวิเคราะห์ความผิดปกติของใบสั่งงาน (Work Order Anomaly Engine)</h3>
-            <p class="text-xs mt-1" :class="isDarkMode ? 'text-stone-400' : 'text-stone-600'">ตรวจจับความผิดปกติ เช่น ทริปซ้ำซาก, ค่าความต้านทานฉนวนเสื่อมสภาพเร็ว, หรือใช้เวลาซ่อมเกินเกณฑ์</p>
+            <h3 class="font-extrabold text-base" :class="isDarkMode ? 'text-white' : 'text-stone-950'">ระบบวิเคราะห์ความผิดปกติของใบสั่งงาน (Work Order Anomaly Engine)</h3>
+            <p class="text-xs font-medium mt-1 leading-relaxed" :class="isDarkMode ? 'text-stone-300' : 'text-stone-700'">ตรวจจับความผิดปกติ เช่น ทริปซ้ำซาก, ค่าความต้านทานฉนวนเสื่อมสภาพเร็ว, หรือใช้เวลาซ่อมเกินเกณฑ์</p>
           </div>
         </div>
 
@@ -396,23 +402,23 @@
           <div v-for="item in anomalies" :key="item.id" class="p-5 rounded-3xl border shadow-sm flex flex-col justify-between" :class="isDarkMode ? 'bg-darkWarmCard border-darkWarmBorder' : 'bg-white border-softBorder'">
             <div>
               <div class="flex items-center justify-between">
-                <span class="font-mono font-bold text-xs text-peach-400">{{ item.woId }}</span>
-                <span :class="item.severity === 'CRITICAL' ? 'bg-rose-500/10 text-rose-500 border border-rose-500/20' : 'bg-peach-400/15 text-peach-500 border border-peach-400/30'" class="text-[10px] font-bold px-2 py-0.5 rounded-full">
+                <span class="font-mono font-black text-xs text-peach-500">{{ item.woId }}</span>
+                <span :class="item.severity === 'CRITICAL' ? 'bg-rose-500/10 text-rose-600 border border-rose-500/30' : 'bg-peach-400/20 text-peach-600 border border-peach-400/40'" class="text-xs font-black px-2.5 py-0.5 rounded-full">
                   {{ item.severity }}
                 </span>
               </div>
-              <h4 class="font-bold text-sm mt-2" :class="isDarkMode ? 'text-white' : 'text-stone-800'">{{ item.title }}</h4>
-              <p class="text-xs mt-1" :class="isDarkMode ? 'text-stone-400' : 'text-stone-500'">อุปกรณ์: <strong>{{ item.asset }}</strong></p>
+              <h4 class="font-extrabold text-base mt-2" :class="isDarkMode ? 'text-white' : 'text-stone-950'">{{ item.title }}</h4>
+              <p class="text-xs font-semibold mt-1" :class="isDarkMode ? 'text-stone-300' : 'text-stone-600'">อุปกรณ์: <strong :class="isDarkMode ? 'text-white' : 'text-stone-900'">{{ item.asset }}</strong></p>
               
-              <div class="mt-3 p-3 rounded-2xl border text-xs" :class="isDarkMode ? 'bg-stone-900/60 border-darkWarmBorder' : 'bg-peach-50/50 border-peach-100'">
-                <div class="font-semibold text-rose-500"><i class="fa-solid fa-circle-exclamation mr-1"></i> ข้อผิดปกติ:</div>
-                <div class="mt-0.5" :class="isDarkMode ? 'text-stone-400' : 'text-stone-600'">{{ item.anomalyReason }}</div>
+              <div class="mt-3 p-3 rounded-2xl border text-xs leading-relaxed font-semibold" :class="isDarkMode ? 'bg-stone-900/60 border-darkWarmBorder' : 'bg-peach-50 border-peach-200'">
+                <div class="font-black text-rose-600"><i class="fa-solid fa-circle-exclamation mr-1"></i> ข้อผิดปกติ:</div>
+                <div class="mt-0.5 font-medium" :class="isDarkMode ? 'text-stone-200' : 'text-stone-800'">{{ item.anomalyReason }}</div>
               </div>
             </div>
 
             <div class="mt-4 pt-3 border-t" :class="isDarkMode ? 'border-darkWarmBorder' : 'border-softBorder'">
-              <div class="text-[11px] font-medium mb-2.5" :class="isDarkMode ? 'text-stone-400' : 'text-stone-600'"><strong>คำแนะนำ:</strong> {{ item.recommendation }}</div>
-              <button @click="resolveAnomaly(item)" class="w-full text-xs font-bold py-2 rounded-2xl transition shadow-sm border" :class="isDarkMode ? 'bg-stone-800 hover:bg-peach-300 text-peach-200 hover:text-stone-950 border-stone-700' : 'bg-peach-100 hover:bg-peach-300 text-peach-700 hover:text-stone-950 border-peach-200'">
+              <div class="text-xs font-medium mb-3 leading-relaxed" :class="isDarkMode ? 'text-stone-300' : 'text-stone-700'"><strong>คำแนะนำ:</strong> {{ item.recommendation }}</div>
+              <button @click="resolveAnomaly(item)" class="w-full text-xs font-black py-2.5 rounded-2xl transition shadow-sm border" :class="isDarkMode ? 'bg-stone-800 hover:bg-peach-300 text-peach-200 hover:text-stone-950 border-stone-700' : 'bg-peach-100 hover:bg-peach-300 text-peach-800 hover:text-stone-950 border-peach-300'">
                 เปิดใบงาน PM พิเศษแก้ไขจุดนี้
               </button>
             </div>
@@ -424,62 +430,62 @@
       <section v-if="currentTab === 'form'" class="max-w-4xl mx-auto p-8 rounded-3xl border shadow-sm space-y-6" :class="isDarkMode ? 'bg-darkWarmCard border-darkWarmBorder' : 'bg-white border-softBorder'">
         <div class="border-b pb-4 flex justify-between items-start" :class="isDarkMode ? 'border-darkWarmBorder' : 'border-softBorder'">
           <div>
-            <span class="text-[11px] font-mono font-bold text-peach-400 uppercase tracking-widest">ELECTRICAL TESTING STANDARD FORM</span>
-            <h3 class="text-xl font-black mt-1" :class="isDarkMode ? 'text-white' : 'text-stone-800'">ฟอร์มบันทึกผลการบำรุงรักษาอุปกรณ์ไฟฟ้าและทดสอบฉนวน</h3>
-            <p class="text-xs mt-0.5" :class="isDarkMode ? 'text-stone-400' : 'text-stone-500'">มาตรฐาน IEEE Std 43 / IEC 60076</p>
+            <span class="text-xs font-mono font-black text-peach-500 uppercase tracking-widest">ELECTRICAL TESTING STANDARD FORM</span>
+            <h3 class="text-xl font-black mt-1" :class="isDarkMode ? 'text-white' : 'text-stone-950'">ฟอร์มบันทึกผลการบำรุงรักษาอุปกรณ์ไฟฟ้าและทดสอบฉนวน</h3>
+            <p class="text-xs font-semibold mt-0.5" :class="isDarkMode ? 'text-stone-300' : 'text-stone-600'">มาตรฐาน IEEE Std 43 / IEC 60076</p>
           </div>
-          <button @click="triggerPrint" class="bg-gradient-to-r from-peach-400 to-peach-300 hover:from-peach-500 hover:to-peach-400 text-stone-950 text-xs font-bold px-4 py-2.5 rounded-2xl shadow-md shadow-peach-400/20 transition flex items-center gap-1.5">
-            <i class="fa-solid fa-print"></i> พิมพ์เอกสาร
+          <button @click="triggerPrint" class="bg-gradient-to-r from-peach-400 to-peach-300 hover:from-peach-500 hover:to-peach-400 text-stone-950 text-xs font-black px-4 py-2.5 rounded-2xl shadow-md shadow-peach-400/20 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-print text-sm"></i> พิมพ์เอกสาร
           </button>
         </div>
 
-        <div id="printable-sheet" class="space-y-6 text-xs" :class="isDarkMode ? 'text-stone-300' : 'text-stone-700'">
+        <div id="printable-sheet" class="space-y-6 text-xs font-semibold" :class="isDarkMode ? 'text-stone-200' : 'text-stone-800'">
           <!-- Meta Info -->
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 rounded-2xl border" :class="isDarkMode ? 'bg-stone-900/60 border-darkWarmBorder' : 'bg-peach-50/50 border-peach-100'">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 rounded-2xl border" :class="isDarkMode ? 'bg-stone-900/60 border-darkWarmBorder' : 'bg-peach-50 border-peach-200'">
             <div>
-              <span class="block text-[10px] uppercase font-bold" :class="isDarkMode ? 'text-stone-500' : 'text-stone-400'">รหัสใบสั่งงาน</span>
-              <span class="font-mono font-bold text-peach-400">{{ activeFormWO?.id || 'WO-PM-2026-001' }}</span>
+              <span class="block text-xs uppercase font-extrabold" :class="isDarkMode ? 'text-stone-400' : 'text-stone-600'">รหัสใบสั่งงาน</span>
+              <span class="font-mono font-black text-sm text-peach-500">{{ activeFormWO?.id || 'WO-PM-2026-001' }}</span>
             </div>
             <div>
-              <span class="block text-[10px] uppercase font-bold" :class="isDarkMode ? 'text-stone-500' : 'text-stone-400'">ชื่ออุปกรณ์</span>
-              <span class="font-bold" :class="isDarkMode ? 'text-white' : 'text-stone-800'">{{ activeFormWO?.asset || 'หม้อแปลงไฟฟ้า 22kV 1000kVA' }}</span>
+              <span class="block text-xs uppercase font-extrabold" :class="isDarkMode ? 'text-stone-400' : 'text-stone-600'">ชื่ออุปกรณ์</span>
+              <span class="font-bold text-sm" :class="isDarkMode ? 'text-white' : 'text-stone-950'">{{ activeFormWO?.asset || 'หม้อแปลงไฟฟ้า 22kV 1000kVA' }}</span>
             </div>
             <div>
-              <span class="block text-[10px] uppercase font-bold" :class="isDarkMode ? 'text-stone-500' : 'text-stone-400'">รหัสพิกัด Tag</span>
-              <span class="font-mono font-bold" :class="isDarkMode ? 'text-white' : 'text-stone-800'">{{ activeFormWO?.tag || 'TR-SUB-01' }}</span>
+              <span class="block text-xs uppercase font-extrabold" :class="isDarkMode ? 'text-stone-400' : 'text-stone-600'">รหัสพิกัด Tag</span>
+              <span class="font-mono font-bold text-sm" :class="isDarkMode ? 'text-white' : 'text-stone-950'">{{ activeFormWO?.tag || 'TR-SUB-01' }}</span>
             </div>
             <div>
-              <span class="block text-[10px] uppercase font-bold" :class="isDarkMode ? 'text-stone-500' : 'text-stone-400'">วันที่ทดสอบ</span>
-              <span class="font-mono font-bold" :class="isDarkMode ? 'text-white' : 'text-stone-800'">{{ currentDate }}</span>
+              <span class="block text-xs uppercase font-extrabold" :class="isDarkMode ? 'text-stone-400' : 'text-stone-600'">วันที่ทดสอบ</span>
+              <span class="font-mono font-bold text-sm" :class="isDarkMode ? 'text-white' : 'text-stone-950'">{{ currentDate }}</span>
             </div>
           </div>
 
           <!-- Megger Test -->
           <div class="border rounded-2xl overflow-hidden" :class="isDarkMode ? 'border-darkWarmBorder bg-stone-900/40' : 'border-softBorder bg-white'">
-            <div class="p-3 font-bold border-b flex justify-between items-center" :class="isDarkMode ? 'bg-[#23212b] text-white border-darkWarmBorder' : 'bg-peach-50/70 text-stone-800 border-softBorder'">
+            <div class="p-3 font-extrabold border-b flex justify-between items-center text-xs" :class="isDarkMode ? 'bg-[#23212b] text-white border-darkWarmBorder' : 'bg-peach-50 text-stone-950 border-softBorder'">
               <span>1. ค่าความต้านทานความเป็นฉนวน (Insulation Megger Test @ 2.5kV)</span>
-              <span class="text-[11px] font-normal" :class="isDarkMode ? 'text-peach-300' : 'text-stone-500'">เกณฑ์: &ge; 100 M&Omega;</span>
+              <span class="text-xs font-bold text-peach-600">เกณฑ์: &ge; 100 M&Omega;</span>
             </div>
             <div class="p-4 grid grid-cols-3 gap-4">
               <div>
-                <label class="block font-semibold mb-1" :class="isDarkMode ? 'text-stone-400' : 'text-stone-600'">Primary to Ground (HV - E)</label>
-                <div class="flex items-center gap-1">
-                  <input type="number" v-model="pmFormData.meggerHV_E" class="w-full border rounded-xl p-2 text-xs font-mono font-bold text-peach-400" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700' : 'bg-white border-softBorder'">
-                  <span class="text-stone-400">M&Omega;</span>
+                <label class="block font-bold mb-1.5" :class="isDarkMode ? 'text-stone-300' : 'text-stone-700'">Primary to Ground (HV - E)</label>
+                <div class="flex items-center gap-1.5">
+                  <input type="number" v-model="pmFormData.meggerHV_E" class="w-full border rounded-xl p-2 font-mono font-black text-sm text-peach-500" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700' : 'bg-white border-softBorder'">
+                  <span class="font-bold text-stone-500">M&Omega;</span>
                 </div>
               </div>
               <div>
-                <label class="block font-semibold mb-1" :class="isDarkMode ? 'text-stone-400' : 'text-stone-600'">Secondary to Ground (LV - E)</label>
-                <div class="flex items-center gap-1">
-                  <input type="number" v-model="pmFormData.meggerLV_E" class="w-full border rounded-xl p-2 text-xs font-mono font-bold text-peach-400" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700' : 'bg-white border-softBorder'">
-                  <span class="text-stone-400">M&Omega;</span>
+                <label class="block font-bold mb-1.5" :class="isDarkMode ? 'text-stone-300' : 'text-stone-700'">Secondary to Ground (LV - E)</label>
+                <div class="flex items-center gap-1.5">
+                  <input type="number" v-model="pmFormData.meggerLV_E" class="w-full border rounded-xl p-2 font-mono font-black text-sm text-peach-500" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700' : 'bg-white border-softBorder'">
+                  <span class="font-bold text-stone-500">M&Omega;</span>
                 </div>
               </div>
               <div>
-                <label class="block font-semibold mb-1" :class="isDarkMode ? 'text-stone-400' : 'text-stone-600'">Primary to Secondary (HV - LV)</label>
-                <div class="flex items-center gap-1">
-                  <input type="number" v-model="pmFormData.meggerHV_LV" class="w-full border rounded-xl p-2 text-xs font-mono font-bold text-peach-400" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700' : 'bg-white border-softBorder'">
-                  <span class="text-stone-400">M&Omega;</span>
+                <label class="block font-bold mb-1.5" :class="isDarkMode ? 'text-stone-300' : 'text-stone-700'">Primary to Secondary (HV - LV)</label>
+                <div class="flex items-center gap-1.5">
+                  <input type="number" v-model="pmFormData.meggerHV_LV" class="w-full border rounded-xl p-2 font-mono font-black text-sm text-peach-500" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700' : 'bg-white border-softBorder'">
+                  <span class="font-bold text-stone-500">M&Omega;</span>
                 </div>
               </div>
             </div>
@@ -487,41 +493,41 @@
 
           <!-- Ground & Thermo -->
           <div class="border rounded-2xl overflow-hidden" :class="isDarkMode ? 'border-darkWarmBorder bg-stone-900/40' : 'border-softBorder bg-white'">
-            <div class="p-3 font-bold border-b flex justify-between items-center" :class="isDarkMode ? 'bg-[#23212b] text-white border-darkWarmBorder' : 'bg-peach-50/70 text-stone-800 border-softBorder'">
+            <div class="p-3 font-extrabold border-b flex justify-between items-center text-xs" :class="isDarkMode ? 'bg-[#23212b] text-white border-darkWarmBorder' : 'bg-peach-50 text-stone-950 border-softBorder'">
               <span>2. การทดสอบความต้านทานดินและอุณหภูมิ (Grounding & Thermal Scan)</span>
             </div>
             <div class="p-4 grid grid-cols-3 gap-4">
               <div>
-                <label class="block font-semibold mb-1" :class="isDarkMode ? 'text-stone-400' : 'text-stone-600'">ความต้านทานดิน (Ground Test)</label>
-                <div class="flex items-center gap-1">
-                  <input type="number" step="0.1" v-model="pmFormData.groundResistance" class="w-full border rounded-xl p-2 text-xs font-mono font-bold text-peach-400" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700' : 'bg-white border-softBorder'">
-                  <span class="text-stone-400">&Omega;</span>
+                <label class="block font-bold mb-1.5" :class="isDarkMode ? 'text-stone-300' : 'text-stone-700'">ความต้านทานดิน (Ground Test)</label>
+                <div class="flex items-center gap-1.5">
+                  <input type="number" step="0.1" v-model="pmFormData.groundResistance" class="w-full border rounded-xl p-2 font-mono font-black text-sm text-peach-500" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700' : 'bg-white border-softBorder'">
+                  <span class="font-bold text-stone-500">&Omega;</span>
                 </div>
-                <span class="text-[10px] text-stone-400">เกณฑ์: &le; 5.0 &Omega;</span>
+                <span class="text-[11px] font-bold text-stone-500">เกณฑ์: &le; 5.0 &Omega;</span>
               </div>
               <div>
-                <label class="block font-semibold mb-1" :class="isDarkMode ? 'text-stone-400' : 'text-stone-600'">อุณหภูมิขั้วต่อ Busbar สูงสุด</label>
-                <div class="flex items-center gap-1">
-                  <input type="number" v-model="pmFormData.thermoTemp" class="w-full border rounded-xl p-2 text-xs font-mono font-bold text-peach-400" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700' : 'bg-white border-softBorder'">
-                  <span class="text-stone-400">&deg;C</span>
+                <label class="block font-bold mb-1.5" :class="isDarkMode ? 'text-stone-300' : 'text-stone-700'">อุณหภูมิขั้วต่อ Busbar สูงสุด</label>
+                <div class="flex items-center gap-1.5">
+                  <input type="number" v-model="pmFormData.thermoTemp" class="w-full border rounded-xl p-2 font-mono font-black text-sm text-peach-500" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700' : 'bg-white border-softBorder'">
+                  <span class="font-bold text-stone-500">&deg;C</span>
                 </div>
-                <span class="text-[10px] text-stone-400">เกณฑ์: &le; 65.0 &deg;C</span>
+                <span class="text-[11px] font-bold text-stone-500">เกณฑ์: &le; 65.0 &deg;C</span>
               </div>
               <div>
-                <label class="block font-semibold mb-1" :class="isDarkMode ? 'text-stone-400' : 'text-stone-600'">แรงดันก๊าซ SF6</label>
-                <div class="flex items-center gap-1">
-                  <input type="number" step="0.01" v-model="pmFormData.sf6Pressure" class="w-full border rounded-xl p-2 text-xs font-mono font-bold text-peach-400" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700' : 'bg-white border-softBorder'">
-                  <span class="text-stone-400">MPa</span>
+                <label class="block font-bold mb-1.5" :class="isDarkMode ? 'text-stone-300' : 'text-stone-700'">แรงดันก๊าซ SF6</label>
+                <div class="flex items-center gap-1.5">
+                  <input type="number" step="0.01" v-model="pmFormData.sf6Pressure" class="w-full border rounded-xl p-2 font-mono font-black text-sm text-peach-500" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700' : 'bg-white border-softBorder'">
+                  <span class="font-bold text-stone-500">MPa</span>
                 </div>
-                <span class="text-[10px] text-stone-400">เกณฑ์: &ge; 0.55 MPa</span>
+                <span class="text-[11px] font-bold text-stone-500">เกณฑ์: &ge; 0.55 MPa</span>
               </div>
             </div>
           </div>
 
           <!-- Pass/Fail Banner -->
-          <div class="p-4 rounded-2xl flex items-center justify-between border" :class="isFormPassed ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-500' : 'bg-rose-500/10 border-rose-500/30 text-rose-500'">
-            <div class="flex items-center gap-2 font-bold">
-              <i class="fa-solid" :class="isFormPassed ? 'fa-circle-check text-emerald-500' : 'fa-circle-xmark text-rose-500'"></i>
+          <div class="p-4 rounded-2xl flex items-center justify-between border" :class="isFormPassed ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-600' : 'bg-rose-500/10 border-rose-500/40 text-rose-600'">
+            <div class="flex items-center gap-2 font-black text-sm">
+              <i class="fa-solid text-lg" :class="isFormPassed ? 'fa-circle-check text-emerald-500' : 'fa-circle-xmark text-rose-500'"></i>
               สรุปผลการประเมิน: {{ isFormPassed ? 'ผ่านเกณฑ์มาตรฐานความปลอดภัย (PASSED)' : 'ไม่ผ่านเกณฑ์มาตรฐาน (FAILED)' }}
             </div>
           </div>
@@ -529,14 +535,14 @@
           <!-- Signatures for Printing -->
           <div class="grid grid-cols-2 gap-8 pt-8 border-t text-center" :class="isDarkMode ? 'border-darkWarmBorder' : 'border-softBorder'">
             <div>
-              <div class="border-b w-48 mx-auto mb-2 pb-6" :class="isDarkMode ? 'border-stone-700' : 'border-stone-300'"></div>
-              <div class="font-bold" :class="isDarkMode ? 'text-white' : 'text-stone-800'">( _______________________ )</div>
-              <div class="text-[10px]" :class="isDarkMode ? 'text-stone-400' : 'text-stone-500'">วิศวกรผู้ทดสอบ</div>
+              <div class="border-b w-48 mx-auto mb-2 pb-6" :class="isDarkMode ? 'border-stone-600' : 'border-stone-400'"></div>
+              <div class="font-black" :class="isDarkMode ? 'text-white' : 'text-stone-950'">( _______________________ )</div>
+              <div class="text-xs font-semibold" :class="isDarkMode ? 'text-stone-300' : 'text-stone-600'">วิศวกรผู้ทดสอบ</div>
             </div>
             <div>
-              <div class="border-b w-48 mx-auto mb-2 pb-6" :class="isDarkMode ? 'border-stone-700' : 'border-stone-300'"></div>
-              <div class="font-bold" :class="isDarkMode ? 'text-white' : 'text-stone-800'">( _______________________ )</div>
-              <div class="text-[10px]" :class="isDarkMode ? 'text-stone-400' : 'text-stone-500'">หัวหน้างานบำรุงรักษา</div>
+              <div class="border-b w-48 mx-auto mb-2 pb-6" :class="isDarkMode ? 'border-stone-600' : 'border-stone-400'"></div>
+              <div class="font-black" :class="isDarkMode ? 'text-white' : 'text-stone-950'">( _______________________ )</div>
+              <div class="text-xs font-semibold" :class="isDarkMode ? 'text-stone-300' : 'text-stone-600'">หัวหน้างานบำรุงรักษา</div>
             </div>
           </div>
 
@@ -547,34 +553,34 @@
 
     <!-- CREATE WORK ORDER MODAL -->
     <div v-if="openNewWOModal" class="fixed inset-0 bg-stone-950/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div class="border rounded-3xl max-w-lg w-full p-6 shadow-2xl" :class="isDarkMode ? 'bg-darkWarmCard border-darkWarmBorder text-stone-300' : 'bg-white border-softBorder text-stone-700'">
-        <h3 class="text-base font-bold mb-4" :class="isDarkMode ? 'text-white' : 'text-stone-800'">ออกใบสั่งงานบำรุงรักษาอุปกรณ์ไฟฟ้า</h3>
-        <div class="space-y-3 text-xs">
+      <div class="border rounded-3xl max-w-lg w-full p-6 shadow-2xl" :class="isDarkMode ? 'bg-darkWarmCard border-darkWarmBorder text-stone-200' : 'bg-white border-softBorder text-stone-900'">
+        <h3 class="text-base font-black mb-4" :class="isDarkMode ? 'text-white' : 'text-stone-950'">ออกใบสั่งงานบำรุงรักษาอุปกรณ์ไฟฟ้า</h3>
+        <div class="space-y-3.5 text-xs font-semibold">
           <div>
-            <label class="block font-semibold mb-1" :class="isDarkMode ? 'text-stone-400' : 'text-stone-600'">ชื่องานซ่อมบำรุง</label>
-            <input v-model="newWO.title" type="text" placeholder="เช่น PM ประจำรอบ 6 เดือน ตู้ Switchgear" class="w-full border rounded-2xl p-2.5" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700 text-white' : 'bg-white border-softBorder text-stone-800'">
+            <label class="block font-bold mb-1" :class="isDarkMode ? 'text-stone-300' : 'text-stone-700'">ชื่องานซ่อมบำรุง</label>
+            <input v-model="newWO.title" type="text" placeholder="เช่น PM ประจำรอบ 6 เดือน ตู้ Switchgear" class="w-full border rounded-2xl p-2.5 text-xs font-bold" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700 text-white' : 'bg-white border-softBorder text-stone-950'">
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block font-semibold mb-1" :class="isDarkMode ? 'text-stone-400' : 'text-stone-600'">ชื่ออุปกรณ์</label>
-              <input v-model="newWO.asset" type="text" placeholder="เช่น Feeder Switchgear F-02" class="w-full border rounded-2xl p-2.5" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700 text-white' : 'bg-white border-softBorder text-stone-800'">
+              <label class="block font-bold mb-1" :class="isDarkMode ? 'text-stone-300' : 'text-stone-700'">ชื่ออุปกรณ์</label>
+              <input v-model="newWO.asset" type="text" placeholder="เช่น Feeder Switchgear F-02" class="w-full border rounded-2xl p-2.5 text-xs font-bold" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700 text-white' : 'bg-white border-softBorder text-stone-950'">
             </div>
             <div>
-              <label class="block font-semibold mb-1" :class="isDarkMode ? 'text-stone-400' : 'text-stone-600'">รหัส Tag</label>
-              <input v-model="newWO.tag" type="text" placeholder="เช่น SWG-F02" class="w-full border rounded-2xl p-2.5 font-mono" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700 text-white' : 'bg-white border-softBorder text-stone-800'">
+              <label class="block font-bold mb-1" :class="isDarkMode ? 'text-stone-300' : 'text-stone-700'">รหัส Tag</label>
+              <input v-model="newWO.tag" type="text" placeholder="เช่น SWG-F02" class="w-full border rounded-2xl p-2.5 font-mono font-black" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700 text-white' : 'bg-white border-softBorder text-stone-950'">
             </div>
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block font-semibold mb-1" :class="isDarkMode ? 'text-stone-400' : 'text-stone-600'">ประเภทงาน</label>
-              <select v-model="newWO.type" class="w-full border rounded-2xl p-2.5" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700 text-white' : 'bg-white border-softBorder text-stone-800'">
+              <label class="block font-bold mb-1" :class="isDarkMode ? 'text-stone-300' : 'text-stone-700'">ประเภทงาน</label>
+              <select v-model="newWO.type" class="w-full border rounded-2xl p-2.5 text-xs font-bold" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700 text-white' : 'bg-white border-softBorder text-stone-950'">
                 <option value="PM">PM (Preventive)</option>
                 <option value="CM">CM (Corrective)</option>
               </select>
             </div>
             <div>
-              <label class="block font-semibold mb-1" :class="isDarkMode ? 'text-stone-400' : 'text-stone-600'">ระดับแรงดัน</label>
-              <select v-model="newWO.voltage" class="w-full border rounded-2xl p-2.5" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700 text-white' : 'bg-white border-softBorder text-stone-800'">
+              <label class="block font-bold mb-1" :class="isDarkMode ? 'text-stone-300' : 'text-stone-700'">ระดับแรงดัน</label>
+              <select v-model="newWO.voltage" class="w-full border rounded-2xl p-2.5 text-xs font-bold" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700 text-white' : 'bg-white border-softBorder text-stone-950'">
                 <option value="High Voltage 22kV">High Voltage 22kV</option>
                 <option value="Medium Voltage 6.6kV">Medium Voltage 6.6kV</option>
                 <option value="Low Voltage 400V">Low Voltage 400V</option>
@@ -582,48 +588,48 @@
             </div>
           </div>
           <div>
-            <label class="block font-semibold mb-1" :class="isDarkMode ? 'text-stone-400' : 'text-stone-600'">กำหนดส่งงาน</label>
-            <input v-model="newWO.dueDate" type="date" class="w-full border rounded-2xl p-2.5" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700 text-white' : 'bg-white border-softBorder text-stone-800'">
+            <label class="block font-bold mb-1" :class="isDarkMode ? 'text-stone-300' : 'text-stone-700'">กำหนดส่งงาน</label>
+            <input v-model="newWO.dueDate" type="date" class="w-full border rounded-2xl p-2.5 text-xs font-bold" :class="isDarkMode ? 'bg-darkWarmBg border-stone-700 text-white' : 'bg-white border-softBorder text-stone-950'">
           </div>
         </div>
         <div class="flex justify-end gap-2 mt-6 pt-4 border-t" :class="isDarkMode ? 'border-darkWarmBorder' : 'border-softBorder'">
-          <button @click="openNewWOModal = false" class="px-4 py-2 text-xs font-bold" :class="isDarkMode ? 'text-stone-400 hover:text-white' : 'text-stone-600 hover:text-stone-900'">ยกเลิก</button>
-          <button @click="saveNewWorkOrder" class="px-4 py-2 text-xs font-bold bg-peach-300 hover:bg-peach-400 text-stone-950 rounded-2xl shadow-sm transition">สร้างใบสั่งงาน</button>
+          <button @click="openNewWOModal = false" class="px-4 py-2 text-xs font-bold" :class="isDarkMode ? 'text-stone-300 hover:text-white' : 'text-stone-700 hover:text-stone-950'">ยกเลิก</button>
+          <button @click="saveNewWorkOrder" class="px-4 py-2 text-xs font-black bg-peach-300 hover:bg-peach-400 text-stone-950 rounded-2xl shadow-sm transition">สร้างใบสั่งงาน</button>
         </div>
       </div>
     </div>
 
     <!-- FIELD PM GEOFENCE MODAL -->
     <div v-if="activeFieldPM" class="fixed inset-0 bg-stone-950/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div class="border rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4" :class="isDarkMode ? 'bg-darkWarmCard border-darkWarmBorder text-stone-300' : 'bg-white border-softBorder text-stone-700'">
+      <div class="border rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4" :class="isDarkMode ? 'bg-darkWarmCard border-darkWarmBorder text-stone-200' : 'bg-white border-softBorder text-stone-900'">
         <div class="flex justify-between items-start border-b pb-3" :class="isDarkMode ? 'border-darkWarmBorder' : 'border-softBorder'">
           <div>
-            <span class="text-[10px] font-bold bg-emerald-500/20 text-emerald-500 border border-emerald-500/30 px-2 py-0.5 rounded-full uppercase">
+            <span class="text-[10px] font-black bg-emerald-500/20 text-emerald-500 border border-emerald-500/30 px-2.5 py-0.5 rounded-full uppercase">
               GPS Verified (< 50m)
             </span>
-            <h3 class="text-base font-bold mt-1" :class="isDarkMode ? 'text-white' : 'text-stone-800'">{{ activeFieldPM.name }}</h3>
-            <p class="text-xs font-mono" :class="isDarkMode ? 'text-stone-400' : 'text-stone-500'">Tag: {{ activeFieldPM.tag }}</p>
+            <h3 class="text-base font-extrabold mt-1" :class="isDarkMode ? 'text-white' : 'text-stone-950'">{{ activeFieldPM.name }}</h3>
+            <p class="text-xs font-mono font-bold" :class="isDarkMode ? 'text-stone-300' : 'text-stone-600'">Tag: {{ activeFieldPM.tag }}</p>
           </div>
-          <button @click="activeFieldPM = null" :class="isDarkMode ? 'text-stone-400 hover:text-white' : 'text-stone-500 hover:text-stone-800'"><i class="fa-solid fa-xmark text-lg"></i></button>
+          <button @click="activeFieldPM = null" :class="isDarkMode ? 'text-stone-300 hover:text-white' : 'text-stone-600 hover:text-stone-950'"><i class="fa-solid fa-xmark text-lg"></i></button>
         </div>
 
-        <div class="space-y-3 text-xs">
-          <div class="p-3 rounded-2xl border" :class="isDarkMode ? 'bg-stone-900/60 border-darkWarmBorder' : 'bg-peach-50/50 border-peach-100'">
-            <div class="font-bold mb-2" :class="isDarkMode ? 'text-white' : 'text-stone-800'">รายการตรวจเช็กหน้างาน</div>
-            <label class="flex items-center gap-2 cursor-pointer mb-2">
-              <input type="checkbox" checked class="rounded text-peach-400">
+        <div class="space-y-3 text-xs font-bold">
+          <div class="p-3.5 rounded-2xl border" :class="isDarkMode ? 'bg-stone-900/60 border-darkWarmBorder' : 'bg-peach-50 border-peach-200'">
+            <div class="font-black text-sm mb-2" :class="isDarkMode ? 'text-white' : 'text-stone-950'">รายการตรวจเช็กหน้างาน</div>
+            <label class="flex items-center gap-2 cursor-pointer mb-2 font-semibold">
+              <input type="checkbox" checked class="rounded text-peach-500">
               <span>ตรวจสภาพภายนอก และรอยรั่วซึมน้ำมัน</span>
             </label>
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" checked class="rounded text-peach-400">
+            <label class="flex items-center gap-2 cursor-pointer font-semibold">
+              <input type="checkbox" checked class="rounded text-peach-500">
               <span>ตรวจสอบสายต่อลงดิน (Ground Conductor) แน่นหนา</span>
             </label>
           </div>
         </div>
 
         <div class="flex justify-end gap-2 pt-4 border-t" :class="isDarkMode ? 'border-darkWarmBorder' : 'border-softBorder'">
-          <button @click="activeFieldPM = null" class="px-4 py-2 text-xs font-bold" :class="isDarkMode ? 'text-stone-400 hover:text-white' : 'text-stone-600 hover:text-stone-900'">ยกเลิก</button>
-          <button @click="completeFieldPM" class="px-4 py-2 text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-white rounded-2xl shadow-sm">
+          <button @click="activeFieldPM = null" class="px-4 py-2 text-xs font-bold" :class="isDarkMode ? 'text-stone-300 hover:text-white' : 'text-stone-700 hover:text-stone-950'">ยกเลิก</button>
+          <button @click="completeFieldPM" class="px-4 py-2 text-xs font-black bg-emerald-500 hover:bg-emerald-400 text-white rounded-2xl shadow-sm">
             บันทึกผลจุดนี้เรียบร้อย
           </button>
         </div>
@@ -638,7 +644,7 @@
     createApp({
       data() {
         return {
-          isDarkMode: false, // Default to soft daytime mode
+          isDarkMode: false,
           currentTab: 'schedule',
           openNewWOModal: false,
           activeFormWO: null,
@@ -738,8 +744,8 @@
         },
         navClass(tab) {
           return this.currentTab === tab 
-            ? 'bg-gradient-to-r from-peach-300 to-peach-200 text-stone-900 font-bold shadow-sm' 
-            : 'text-stone-300 hover:bg-white/5 hover:text-white';
+            ? 'bg-gradient-to-r from-peach-300 to-peach-200 text-stone-950 font-black shadow-sm' 
+            : 'text-stone-200 hover:bg-white/10 hover:text-white';
         },
         switchTab(tab) {
           this.currentTab = tab;
@@ -756,15 +762,15 @@
           this.map = L.map('map').setView(this.carPos, 14);
           this.updateMapTiles();
 
-          L.polyline(this.simRoute, { color: '#fb923c', weight: 4, opacity: 0.9, dashArray: '6, 6' }).addTo(this.map);
+          L.polyline(this.simRoute, { color: '#f97316', weight: 5, opacity: 0.9, dashArray: '6, 6' }).addTo(this.map);
           this.markersGroup = L.layerGroup().addTo(this.map);
           this.renderMarkers();
 
           const carIcon = L.divIcon({
             className: 'custom-car-icon',
-            html: `<div style="background:#fdba74; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #292524; box-shadow:0 0 10px rgba(251,146,60,0.5);"><i class="fa-solid fa-truck-pickup" style="color:#292524; font-size:12px;"></i></div>`,
-            iconSize: [28, 28],
-            iconAnchor: [14, 14]
+            html: `<div style="background:#fdba74; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2.5px solid #1c1a22; box-shadow:0 0 10px rgba(249,115,22,0.6);"><i class="fa-solid fa-truck-pickup" style="color:#1c1a22; font-size:13px;"></i></div>`,
+            iconSize: [30, 30],
+            iconAnchor: [15, 15]
           });
           this.carMarker = L.marker(this.carPos, { icon: carIcon }).addTo(this.map);
         },
@@ -782,8 +788,8 @@
           this.markersGroup.clearLayers();
           this.checkpoints.forEach((cp, idx) => {
             const isDone = cp.status === 'COMPLETED';
-            const iconHtml = `<div style="background:${isDone ? '#10b981' : '#ffedd5'}; color:${isDone ? '#ffffff' : '#c2410c'}; width:24px; height:24px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:11px; border:2px solid ${isDone ? '#10b981' : '#fdba74'}; box-shadow:0 2px 5px rgba(0,0,0,0.1);">${isDone ? '✓' : idx + 1}</div>`;
-            const customIcon = L.divIcon({ html: iconHtml, iconSize: [24, 24], iconAnchor: [12, 12] });
+            const iconHtml = `<div style="background:${isDone ? '#10b981' : '#ffedd5'}; color:${isDone ? '#ffffff' : '#9a3412'}; width:26px; height:26px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:12px; border:2px solid ${isDone ? '#10b981' : '#fdba74'}; box-shadow:0 2px 6px rgba(0,0,0,0.15);">${isDone ? '✓' : idx + 1}</div>`;
+            const customIcon = L.divIcon({ html: iconHtml, iconSize: [26, 26], iconAnchor: [13, 13] });
             const marker = L.marker([cp.lat, cp.lng], { icon: customIcon }).bindPopup(`<strong>${cp.name}</strong>`);
             marker.on('click', () => { this.selectCheckpoint(cp); });
             this.markersGroup.addLayer(marker);
