@@ -9,7 +9,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
 <style>
 :root{
-  /* Modern Clean Palette (Sage / Slate / Indigo) สบายตา ทันสมัย สไตล์ Web App ยุคใหม่ */
   --bg-app: #F8FAFC;
   --surface-card: #FFFFFF;
   --surface-subtle: #F1F5F9;
@@ -207,7 +206,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;}
 .btn-soft:hover{background:var(--surface-hover);}
 .btn-emerald{background:var(--accent-teal);color:#FFF;}
 
-/* ===== Custom Form System: The New Inspection Studio ===== */
+/* ===== Custom Form System: Inspection Studio ===== */
 .studio-box{
   background:var(--surface-card);border:1px solid var(--border-light);border-radius:var(--radius-md);
   padding:22px;box-shadow:var(--shadow-subtle);
@@ -222,7 +221,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;}
 }
 .field-input:focus{border-color:var(--accent-primary);background:#FFF;box-shadow:0 0 0 3px rgba(59,130,246,0.12);}
 
-/* Custom Smart Switch Checkers */
 .smart-check-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0;}
 .check-card{
   display:flex;align-items:center;justify-content:space-between;padding:10px 14px;
@@ -239,7 +237,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;}
 .pill-switch input:checked + label.opt-defect{background:var(--accent-rose);color:#FFF;}
 .pill-switch input:checked + label.opt-none{background:var(--text-secondary);color:#FFF;}
 
-/* Route Step Tiles */
 .route-tile{
   display:flex;align-items:center;justify-content:space-between;padding:12px 14px;
   background:var(--surface-subtle);border-radius:var(--radius-sm);margin-bottom:8px;
@@ -287,7 +284,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;}
 <body>
 
 <div class="app-container">
-  <!-- Sidebar Panel -->
   <aside class="side-panel">
     <div class="brand-box">
       <div class="brand-gem">GC</div>
@@ -302,7 +298,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;}
     </div>
   </aside>
 
-  <!-- Main Work Stage -->
   <main class="main-stage">
     <header class="header-bar">
       <div>
@@ -374,7 +369,6 @@ const WORK_ORDERS = [
   {id:'WO-SP-8762', eq:'LBS-0105', feeder:'SP-01', type:'CM', date:'2026-06-25', cost:8900, stdCost:4000, duration:5.0, tech:'ทีมบำรุงรักษา 1 (กบจ.)', status:'เสร็จสิ้น', anomaly:true, note:'Repeat Failure: อุปกรณ์ชำรุดซ้ำซ้อนภายในระยะเวลา 60 วัน'},
 ];
 
-// ข้อมูลสถานะของฟอร์มสตูดิโอ (Inspection Studio State)
 let studioForm = {
   stationId: 'MBT-0101',
   location: 'เสาเลขที่ 12/1 ถ.สุขุมวิท (ปากน้ำ)',
@@ -585,7 +579,7 @@ function viewPlanner(){
           <p>แผนการเข้าตรวจสอบหม้อแปลง สวิตช์ LBS และสถานีย่อยประจำเดือน</p>
         </div>
         <div style="display:flex; gap:8px;">
-          <button class="btn-action btn-soft" onclick="alert('ส่งออกตารางเป็นไฟล์ Excel เรียบร้อย')">📥 ส่งออกตาราง Excel</button>
+          <button class="btn-action btn-soft" onclick="exportScheduleExcel()">📊 ส่งออก Excel</button>
           <button class="btn-action btn-primary" onclick="alert('จัดตาราง PM รอบใหม่สำเร็จ')">+ เพิ่มแผนงานใหม่</button>
         </div>
       </div>
@@ -775,8 +769,8 @@ function viewInspectionStudio(){
           <p>ระบบบันทึกผลการตรวจสอบหม้อแปลงไฟฟ้าภาคสนามแบบโต้ตอบ — แก้ไขและส่งออกได้ทันที</p>
         </div>
         <div style="display:flex; gap:8px;">
-          <button class="btn-action btn-soft" onclick="exportStudioJSON()">📥 ส่งออก JSON</button>
-          <button class="btn-action btn-soft" onclick="window.print()">🖨️ พิมพ์ / PDF</button>
+          <button class="btn-action btn-soft" onclick="exportStudioExcel()">📊 ส่งออก Excel</button>
+          <button class="btn-action btn-soft" onclick="exportStudioPDF()">📄 ส่งออก PDF</button>
           <button class="btn-action btn-primary" onclick="saveStudioData()">💾 บันทึกผลตรวจ</button>
         </div>
       </div>
@@ -784,7 +778,7 @@ function viewInspectionStudio(){
       <!-- ส่วนที่ 1: ข้อมูลระบุตำแหน่งหม้อแปลง -->
       <div style="margin-bottom:18px;">
         <div style="font-weight:700; font-size:13px; color:var(--accent-primary); margin-bottom:10px; display:flex; justify-content:space-between;">
-          <span>1. ข้อมูลทั่วไปและพิกัดอุปกรณ์ (General Identification)</span>
+          <span>1. ข้อมูลทั่วไปและพิกัดอุปกรณ์ (General Identification)[cite: 7]</span>
           <span style="font-size:11px; color:var(--text-tertiary); font-weight:normal;">เอกสารมาตรฐาน กฟน.</span>
         </div>
         <div class="studio-grid">
@@ -799,15 +793,15 @@ function viewInspectionStudio(){
         </div>
         <div class="studio-grid">
           <div class="field-box">
-            <label class="field-label">GIS พิกัด Lat, Long</label>
+            <label class="field-label">GIS พิกัด Lat, Long[cite: 7]</label>
             <input type="text" class="field-input code-tag" id="st_coords" value="${studioForm.lat}, ${studioForm.lng}">
           </div>
           <div class="field-box">
-            <label class="field-label">MEA No. ประจำหม้อแปลง</label>
+            <label class="field-label">MEA No. ประจำหม้อแปลง[cite: 7]</label>
             <input type="text" class="field-input" id="st_meaNo" value="${studioForm.meaNo}">
           </div>
           <div class="field-box">
-            <label class="field-label">ยี่ห้อ / ขนาดพิกัด / การติดตั้ง</label>
+            <label class="field-label">ยี่ห้อ / ขนาดพิกัด / การติดตั้ง[cite: 7]</label>
             <input type="text" class="field-input" id="st_specs" value="${studioForm.brand} · ${studioForm.size} · ${studioForm.mount}">
           </div>
         </div>
@@ -816,7 +810,7 @@ function viewInspectionStudio(){
       <!-- ส่วนที่ 2: สวิตช์เช็คลิสต์ตรวจสภาพ (Smart Switch Grid) -->
       <div style="margin-bottom:18px;">
         <div style="font-weight:700; font-size:13px; color:var(--accent-primary); margin-bottom:8px;">
-          2. เช็คลิสต์ตรวจสอบอุปกรณ์ (Interactive Inspection Checklist)
+          2. เช็คลิสต์ตรวจสอบอุปกรณ์ (Interactive Inspection Checklist)[cite: 7]
         </div>
         <div class="smart-check-grid">
           ${STUDIO_CHECKS.map((c, idx)=>`
@@ -838,11 +832,11 @@ function viewInspectionStudio(){
       <!-- ส่วนที่ 3: ค่าการวัดทางไฟฟ้า -->
       <div style="margin-bottom:18px;">
         <div style="font-weight:700; font-size:13px; color:var(--accent-primary); margin-bottom:10px;">
-          3. การตรวจวัดแรงดันและกระแสไฟฟ้า (Electrical Measurements)
+          3. การตรวจวัดแรงดันและกระแสไฟฟ้า (Electrical Measurements)[cite: 7]
         </div>
         <div class="grid-2col">
           <div style="background:var(--surface-subtle); padding:12px; border-radius:var(--radius-sm);">
-            <div style="font-size:11.5px; font-weight:600; color:var(--text-secondary); margin-bottom:8px;">แรงดันไฟฟ้า (Voltage - V)</div>
+            <div style="font-size:11.5px; font-weight:600; color:var(--text-secondary); margin-bottom:8px;">แรงดันไฟฟ้า (Voltage - V)[cite: 7]</div>
             <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px;">
               <div class="field-box"><label class="field-label">V1-N</label><input type="text" class="field-input code-tag" id="st_v1n" value="${studioForm.v1n}"></div>
               <div class="field-box"><label class="field-label">V2-N</label><input type="text" class="field-input code-tag" id="st_v2n" value="${studioForm.v2n}"></div>
@@ -854,7 +848,7 @@ function viewInspectionStudio(){
           </div>
 
           <div style="background:var(--surface-subtle); padding:12px; border-radius:var(--radius-sm);">
-            <div style="font-size:11.5px; font-weight:600; color:var(--text-secondary); margin-bottom:8px;">กระแสไฟฟ้า (Current - A)</div>
+            <div style="font-size:11.5px; font-weight:600; color:var(--text-secondary); margin-bottom:8px;">กระแสไฟฟ้า (Current - A)[cite: 7]</div>
             <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:8px;">
               <div class="field-box"><label class="field-label">IN</label><input type="text" class="field-input code-tag" id="st_in" value="${studioForm.in_c}"></div>
               <div class="field-box"><label class="field-label">I1</label><input type="text" class="field-input code-tag" id="st_i1" value="${studioForm.i1}"></div>
@@ -862,7 +856,7 @@ function viewInspectionStudio(){
               <div class="field-box"><label class="field-label">I3</label><input type="text" class="field-input code-tag" id="st_i3" value="${studioForm.i3}"></div>
             </div>
             <div class="field-box" style="margin-top:8px;">
-              <label class="field-label">รวมกระแสหน้าหม้อแปลงทั้งหมด (A)</label>
+              <label class="field-label">รวมกระแสหน้าหม้อแปลงทั้งหมด (A)[cite: 7]</label>
               <input type="text" class="field-input code-tag" value="100 A" readonly>
             </div>
           </div>
@@ -872,26 +866,26 @@ function viewInspectionStudio(){
       <!-- ส่วนที่ 4: ข้อเสนอแนะ & ผู้ตรวจสอบ -->
       <div class="grid-2col" style="margin-bottom:16px;">
         <div class="field-box">
-          <label class="field-label">บันทึกผลการตรวจสอบหน้างาน / สิ่งที่ต้องปรับปรุง</label>
+          <label class="field-label">บันทึกผลการตรวจสอบหน้างาน / สิ่งที่ต้องปรับปรุง[cite: 7]</label>
           <textarea class="field-input" rows="2" id="st_notes">${studioForm.notes}</textarea>
         </div>
         <div class="field-box">
-          <label class="field-label">การปรับปรุงข้อบกพร่องที่ดำเนินการแล้ว</label>
+          <label class="field-label">การปรับปรุงข้อบกพร่องที่ดำเนินการแล้ว[cite: 7]</label>
           <textarea class="field-input" rows="2" id="st_actions">${studioForm.actions}</textarea>
         </div>
       </div>
 
       <div class="studio-grid" style="background:var(--surface-subtle); padding:12px; border-radius:var(--radius-sm);">
         <div class="field-box">
-          <label class="field-label">ผู้ตรวจสอบ</label>
+          <label class="field-label">ผู้ตรวจสอบ[cite: 7]</label>
           <input type="text" class="field-input" id="st_inspector" value="${studioForm.inspector}">
         </div>
         <div class="field-box">
-          <label class="field-label">ตำแหน่ง</label>
+          <label class="field-label">ตำแหน่ง[cite: 7]</label>
           <input type="text" class="field-input" id="st_position" value="${studioForm.position}">
         </div>
         <div class="field-box">
-          <label class="field-label">วันที่ตรวจสอบ</label>
+          <label class="field-label">วันที่ตรวจสอบ[cite: 7]</label>
           <input type="date" class="field-input" id="st_date" value="${studioForm.date}">
         </div>
       </div>
@@ -911,11 +905,63 @@ function saveStudioData(){
   alert('บันทึกผลการตรวจหม้อแปลง ' + studioForm.stationId + ' เข้าสู่ระบบ CMMS เรียบร้อยแล้ว!');
 }
 
-function exportStudioJSON(){
-  const dataUri = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(studioForm, null, 2));
-  const link = document.createElement('a');
-  link.setAttribute("href", dataUri);
-  link.setAttribute("download", `Inspection_${studioForm.stationId}_${studioForm.date}.json`);
+function exportStudioPDF(){
+  window.print();
+}
+
+function exportStudioExcel(){
+  const csvRows = [
+    ["หัวข้อ", "รายละเอียด"],
+    ["Station ID", studioForm.stationId],
+    ["สถานที่ติดตั้ง", `"${studioForm.location}"`],
+    ["พิกัด GIS", `"${studioForm.lat}, ${studioForm.lng}"`],
+    ["MEA No.", studioForm.meaNo],
+    ["ยี่ห้อ / ขนาด / การติดตั้ง", `"${studioForm.brand} / ${studioForm.size} / ${studioForm.mount}"`],
+    ["V1-N (V)", studioForm.v1n],
+    ["V2-N (V)", studioForm.v2n],
+    ["V3-N (V)", studioForm.v3n],
+    ["V1-2 (V)", studioForm.v12],
+    ["V2-3 (V)", studioForm.v23],
+    ["V1-3 (V)", studioForm.v13],
+    ["IN (A)", studioForm.in_c],
+    ["I1 (A)", studioForm.i1],
+    ["I2 (A)", studioForm.i2],
+    ["I3 (A)", studioForm.i3],
+    ["ข้อเสนอแนะ", `"${studioForm.notes}"`],
+    ["การปรับปรุงข้อบกพร่อง", `"${studioForm.actions}"`],
+    ["ผู้ตรวจสอบ", studioForm.inspector],
+    ["ตำแหน่ง", studioForm.position],
+    ["วันที่ตรวจสอบ", studioForm.date]
+  ];
+
+  const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + csvRows.map(e => e.join(",")).join("\n");
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `Inspection_${studioForm.stationId}_${studioForm.date}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+}
+
+function exportScheduleExcel(){
+  const headers = ["รหัสอุปกรณ์", "ประเภท", "สายป้อน", "รอบความถี่", "PM ล่าสุด", "PM ถัดไป", "ดัชนีสุขภาพ (%)", "สถานะ"];
+  const rows = EQUIPMENT.map(e => [
+    e.id,
+    `"${e.type}"`,
+    `"${e.feeder} (${e.region})"`,
+    e.status === 'overdue' ? 'ด่วนพิเศษ' : '6 เดือน',
+    e.lastPM,
+    e.nextPM,
+    e.health,
+    e.status
+  ]);
+
+  const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `PM_Schedule_2026.csv`);
   document.body.appendChild(link);
   link.click();
   link.remove();
