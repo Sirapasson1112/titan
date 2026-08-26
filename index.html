@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ElectroPM - Power Grid CMMS with Full Export</title>
+  <title>ElectroPM Enterprise v6.0 - Power Grid CMMS</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -48,7 +48,7 @@
       -webkit-font-smoothing: antialiased;
     }
     .font-hud { font-family: 'Orbitron', monospace; }
-    #map { height: 490px; width: 100%; border-radius: 20px; z-index: 10; }
+    #map { height: 480px; width: 100%; border-radius: 20px; z-index: 10; }
     
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
@@ -74,45 +74,57 @@
         </div>
         <div>
           <h1 class="font-black text-base leading-tight tracking-wide text-white">ElectroPM</h1>
-          <p class="text-[11px] text-tangerine-300 font-bold uppercase tracking-wider">Enterprise Power CMMS</p>
+          <p class="text-[11px] text-tangerine-300 font-bold uppercase tracking-wider">Enterprise Pro v6.0</p>
         </div>
+      </div>
+
+      <!-- User Role Selector (RBAC Simulation) -->
+      <div class="p-3 border-b border-white/10 bg-black/20">
+        <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">สิทธิ์การใช้งาน (Current Role):</label>
+        <select v-model="currentRole" class="w-full bg-slate-900 text-tangerine-300 border border-slate-700 text-xs rounded-xl p-2 font-bold cursor-pointer">
+          <option value="tech">👷 ช่างเทคนิคหน้างาน (Field Tech)</option>
+          <option value="engineer">👨‍💼 วิศวกรผู้อนุมัติ (Approver)</option>
+          <option value="manager">📊 ผู้บริหารระบบ (Manager)</option>
+        </select>
       </div>
 
       <!-- Nav Links -->
       <nav class="flex-1 p-3 space-y-1.5 overflow-y-auto">
-        <button @click="switchTab('schedule')" :class="navClass('schedule')" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-black transition text-left">
+        <button @click="switchTab('schedule')" :class="navClass('schedule')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-black transition text-left">
           <i class="fa-solid fa-calendar-days w-5 text-center text-tangerine-300 text-sm"></i> 1. แผนงาน PM ประจำปี
         </button>
-        <button @click="switchTab('feeder')" :class="navClass('feeder')" class="w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-black transition text-left">
+        <button @click="switchTab('feeder')" :class="navClass('feeder')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-black transition text-left">
           <span class="flex items-center gap-3"><i class="fa-solid fa-chart-line w-5 text-center text-tangerine-300 text-sm"></i> 2. สถิติไฟดับสายป้อน</span>
           <span class="bg-tangerine-400/20 text-tangerine-200 border border-tangerine-400/40 text-[10px] px-2 py-0.5 rounded-full font-mono font-black">SAIFI</span>
         </button>
-        <button @click="switchTab('route')" :class="navClass('route')" class="w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-black transition text-left">
+        <button @click="switchTab('route')" :class="navClass('route')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-black transition text-left">
           <span class="flex items-center gap-3"><i class="fa-solid fa-location-crosshairs w-5 text-center text-tangerine-300 text-sm"></i> 3. แผนที่ GIS & GPS</span>
           <span class="bg-emerald-500/20 text-emerald-300 text-[10px] px-2 py-0.5 rounded-full font-black border border-emerald-500/30">LIVE</span>
         </button>
-        <button @click="switchTab('orders')" :class="navClass('orders')" class="w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-black transition text-left">
+        <button @click="switchTab('orders')" :class="navClass('orders')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-black transition text-left">
           <span class="flex items-center gap-3"><i class="fa-solid fa-file-invoice w-5 text-center text-tangerine-300 text-sm"></i> 4. ใบสั่งงาน (Work Orders)</span>
           <span class="bg-white/10 text-tangerine-200 text-xs px-2.5 py-0.5 rounded-full font-black border border-white/10">{{ workOrders.length }}</span>
         </button>
-        <button @click="switchTab('anomaly')" :class="navClass('anomaly')" class="w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-black transition text-left">
-          <span class="flex items-center gap-3"><i class="fa-solid fa-triangle-exclamation w-5 text-center text-tangerine-300 text-sm"></i> 5. วิเคราะห์ Anomaly WO</span>
+        <button @click="switchTab('inventory')" :class="navClass('inventory')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-black transition text-left">
+          <span class="flex items-center gap-3"><i class="fa-solid fa-boxes-stacked w-5 text-center text-tangerine-300 text-sm"></i> 5. คลังอะไหล่ & ตัดเบิก</span>
+          <span class="bg-amber-500/20 text-amber-300 text-[10px] px-2 py-0.5 rounded-full font-black">Stock</span>
+        </button>
+        <button @click="switchTab('anomaly')" :class="navClass('anomaly')" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-black transition text-left">
+          <span class="flex items-center gap-3"><i class="fa-solid fa-triangle-exclamation w-5 text-center text-tangerine-300 text-sm"></i> 6. วิเคราะห์ Anomaly WO</span>
           <span class="bg-tangerine-400 text-slate-950 text-[10px] px-2 py-0.5 rounded-full font-black">{{ anomalies.length }}</span>
         </button>
-        <button @click="switchTab('form')" :class="navClass('form')" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-black transition text-left">
-          <i class="fa-solid fa-file-signature w-5 text-center text-tangerine-300 text-sm"></i> 6. ฟอร์มเอกสาร & พิมพ์
+        <button @click="switchTab('form')" :class="navClass('form')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-black transition text-left">
+          <i class="fa-solid fa-file-signature w-5 text-center text-tangerine-300 text-sm"></i> 7. ฟอร์มเอกสาร & พิมพ์
         </button>
       </nav>
 
-      <!-- Bottom Reliability Score -->
-      <div class="p-4 border-t border-white/10 bg-black/25 text-xs text-slate-300">
-        <div class="flex justify-between items-center mb-2 text-xs font-extrabold">
-          <span>Grid Reliability Index</span>
-          <span class="text-tangerine-300 font-black">99.98%</span>
+      <!-- Offline Sync Status -->
+      <div class="p-4 border-t border-white/10 bg-black/25 text-xs text-slate-300 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="text-[11px] font-bold">โหมดออนไลน์ (Synced)</span>
         </div>
-        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-          <div class="bg-gradient-to-r from-tangerine-500 to-tangerine-300 h-full rounded-full" style="width: 99.98%"></div>
-        </div>
+        <button @click="showToast('ซิงก์ข้อมูลใบงานและคลังอะไหล่ล่าสุดแล้ว')" class="text-tangerine-300 hover:text-white text-xs"><i class="fa-solid fa-rotate"></i></button>
       </div>
     </aside>
 
@@ -127,23 +139,32 @@
             <span v-if="currentTab === 'feeder'">สถิติไฟฟ้าดับและความมั่นคงรายสายป้อน (Feeder Reliability Analytics)</span>
             <span v-if="currentTab === 'route'">แผนที่ GIS & ระบบนำทางตรวจ PM ภาคสนาม (Turn-by-Turn GPS Cockpit)</span>
             <span v-if="currentTab === 'orders'">ศูนย์จัดการใบสั่งงานและประวัติบำรุงรักษา (Work Orders Hub)</span>
+            <span v-if="currentTab === 'inventory'">ระบบบริหารจัดการคลังอะไหล่และอุปกรณ์ไฟฟ้า (Spare Parts & Inventory)</span>
             <span v-if="currentTab === 'anomaly'">ระบบวิเคราะห์ความผิดปกติของ Work Order (Anomaly Engine)</span>
             <span v-if="currentTab === 'form'">ฟอร์มเอกสารตรวจวัดและบันทึกผลบำรุงรักษามาตรฐาน (Standard PM Form)</span>
           </h2>
-          <p class="text-xs font-bold mt-1" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">ระบบบริหารจัดการงานซ่อมบำรุงเชิงรุก รองรับการส่งออกข้อมูล Excel / PDF / GIS</p>
+          <p class="text-xs font-bold mt-1" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">ระบบ CMMS ระดับองค์กร พร้อม QR Scanner, ระบบคลังอะไหล่ และ LINE Alert</p>
         </div>
         
-        <div class="flex items-center gap-3">
-          <!-- Day/Night Toggle Button -->
-          <button @click="toggleTheme" 
-                  class="p-2.5 rounded-2xl border flex items-center gap-2 text-xs font-black transition shadow-sm"
-                  :class="isDarkMode ? 'bg-darkCard border-darkBorder text-tangerine-300 hover:bg-[#252230]' : 'bg-white border-lightBorder text-slate-900 hover:bg-tangerine-50'">
-            <i class="fa-solid" :class="isDarkMode ? 'fa-sun text-tangerine-400 text-sm' : 'fa-moon text-slate-800 text-sm'"></i>
-            <span>{{ isDarkMode ? 'โหมดสว่าง' : 'โหมดกลางคืน' }}</span>
+        <div class="flex items-center gap-2.5">
+          <!-- Quick QR Scanner Button -->
+          <button @click="openQRModal = true" class="bg-slate-900 hover:bg-slate-800 text-tangerine-300 border border-slate-700 text-xs font-black px-3.5 py-2.5 rounded-2xl transition flex items-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-qrcode text-base"></i> สแกน QR ตู้/หม้อแปลง
           </button>
 
-          <button @click="openNewWOModal = true" class="bg-gradient-to-r from-tangerine-500 to-tangerine-400 hover:from-tangerine-600 hover:to-tangerine-500 text-slate-950 font-black text-xs px-4 py-2.5 rounded-2xl shadow-lg shadow-tangerine-500/20 transition flex items-center gap-2">
-            <i class="fa-solid fa-plus text-sm"></i> ออกใบสั่งงานใหม่
+          <!-- LINE Notify Trigger Simulation -->
+          <button @click="triggerLineAlert" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black px-3.5 py-2.5 rounded-2xl transition flex items-center gap-1.5 shadow-sm">
+            <i class="fa-brands fa-line text-base"></i> ส่งแจ้งเตือน LINE
+          </button>
+
+          <!-- Day/Night Toggle Button -->
+          <button @click="toggleTheme" class="p-2.5 rounded-2xl border flex items-center gap-2 text-xs font-black transition shadow-sm"
+                  :class="isDarkMode ? 'bg-darkCard border-darkBorder text-tangerine-300 hover:bg-[#252230]' : 'bg-white border-lightBorder text-slate-900 hover:bg-tangerine-50'">
+            <i class="fa-solid" :class="isDarkMode ? 'fa-sun text-tangerine-400 text-sm' : 'fa-moon text-slate-800 text-sm'"></i>
+          </button>
+
+          <button v-if="currentRole !== 'tech'" @click="openNewWOModal = true" class="bg-gradient-to-r from-tangerine-500 to-tangerine-400 hover:from-tangerine-600 hover:to-tangerine-500 text-slate-950 font-black text-xs px-4 py-2.5 rounded-2xl shadow-lg shadow-tangerine-500/20 transition flex items-center gap-2">
+            <i class="fa-solid fa-plus text-sm"></i> ออกใบงานใหม่
           </button>
         </div>
       </div>
@@ -156,11 +177,9 @@
               <h3 class="font-black text-base" :class="isDarkMode ? 'text-white' : 'text-slate-950'">ตารางวางแผนวงรอบ PM ปี 2026</h3>
               <p class="text-xs font-semibold mt-0.5" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">แผนการทดสอบและบำรุงรักษาแยกตามหมวดหมู่อุปกรณ์ไฟฟ้าและไตรมาส</p>
             </div>
-            <div class="flex gap-2">
-              <button @click="exportScheduleCSV" class="bg-tangerine-100 hover:bg-tangerine-300 text-tangerine-800 border border-tangerine-300 text-xs font-black px-3.5 py-2 rounded-2xl transition shadow-sm flex items-center gap-1.5">
-                <i class="fa-solid fa-file-excel text-emerald-600 text-sm"></i> ส่งออกแผน PM (CSV)
-              </button>
-            </div>
+            <button @click="exportScheduleCSV" class="bg-tangerine-100 hover:bg-tangerine-300 text-tangerine-800 border border-tangerine-300 text-xs font-black px-3.5 py-2 rounded-2xl transition shadow-sm flex items-center gap-1.5">
+              <i class="fa-solid fa-file-excel text-emerald-600 text-sm"></i> ส่งออกแผน PM (CSV)
+            </button>
           </div>
 
           <div class="overflow-x-auto">
@@ -357,7 +376,7 @@
         <div class="flex justify-between items-center">
           <div>
             <h3 class="font-extrabold text-base" :class="isDarkMode ? 'text-white' : 'text-slate-950'">รายการใบสั่งงาน PM / CM ทั้งหมด</h3>
-            <span class="text-xs font-semibold" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">จัดการสถานะและส่งออกข้อมูล</span>
+            <span class="text-xs font-semibold" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">จัดการสถานะ เบิกอะไหล่ และส่งออกข้อมูล</span>
           </div>
           <button @click="exportWorkOrdersCSV" class="bg-tangerine-100 hover:bg-tangerine-300 text-tangerine-800 border border-tangerine-300 text-xs font-black px-4 py-2.5 rounded-2xl transition shadow-sm flex items-center gap-2">
             <i class="fa-solid fa-file-excel text-emerald-600 text-sm"></i> ส่งออกใบสั่งงาน (Excel/CSV)
@@ -378,7 +397,7 @@
               </tr>
             </thead>
             <tbody class="divide-y font-bold" :class="isDarkMode ? 'divide-darkBorder text-slate-200' : 'divide-lightBorder text-slate-800'">
-              <tr v-for="wo in workOrders" :key="wo.id" :class="isDarkMode ? 'hover:bg-white/[0.03]' : 'hover:bg-tangerine-50/50'">
+              <tr v-for="wo in workOrders" :key="wo.id" :class="isDarkMode ? 'hover:bg-white/[0.03]' : 'hover:bg-tangerine-50/60'">
                 <td class="p-3.5 font-mono font-black text-sm text-tangerine-500">{{ wo.id }}</td>
                 <td class="p-3.5"><span :class="wo.type === 'PM' ? 'bg-blue-500/10 text-blue-600 border border-blue-500/30' : 'bg-rose-500/10 text-rose-600 border border-rose-500/30'" class="px-2.5 py-0.5 rounded-md font-bold text-xs">{{ wo.type }}</span></td>
                 <td class="p-3.5">
@@ -392,8 +411,9 @@
                     {{ wo.status }}
                   </span>
                 </td>
-                <td class="p-3.5 text-center space-x-1.5">
+                <td class="p-3.5 text-center space-x-1.5 whitespace-nowrap">
                   <button @click="openFormWithWO(wo)" class="bg-tangerine-400 hover:bg-tangerine-500 text-slate-950 font-black px-3.5 py-1.5 rounded-xl text-xs transition shadow-sm">บันทึกผล</button>
+                  <button @click="openPartPicker(wo)" class="bg-slate-900 hover:bg-slate-800 text-tangerine-300 border border-slate-700 px-2.5 py-1.5 rounded-xl text-xs font-bold" title="เบิกอะไหล่"><i class="fa-solid fa-boxes-packing"></i> เบิกอะไหล่</button>
                   <button @click="printWorkOrder(wo)" class="border px-3 py-1.5 rounded-xl text-xs font-bold" :class="isDarkMode ? 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700' : 'bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-300'"><i class="fa-solid fa-print"></i></button>
                 </td>
               </tr>
@@ -402,7 +422,52 @@
         </div>
       </section>
 
-      <!-- TAB 5: ANOMALY ENGINE -->
+      <!-- TAB 5: SPARE PARTS & INVENTORY -->
+      <section v-if="currentTab === 'inventory'" class="space-y-6">
+        <div class="p-6 rounded-3xl border shadow-sm transition" :class="isDarkMode ? 'bg-darkCard border-darkBorder' : 'bg-white border-lightBorder'">
+          <div class="flex justify-between items-center mb-6">
+            <div>
+              <h3 class="font-black text-base" :class="isDarkMode ? 'text-white' : 'text-slate-950'">รายการอะไหล่และอุปกรณ์ไฟฟ้าในคลัง (Electrical Spare Parts)</h3>
+              <p class="text-xs font-semibold mt-0.5" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">ตรวจสอบจำนวนคงเหลือ จุดสั่งซื้อซ้ำ (Reorder Point) และบันทึกประวัติการตัดสต็อก</p>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border rounded-2xl overflow-hidden" :class="isDarkMode ? 'border-darkBorder' : 'border-lightBorder'">
+              <thead class="uppercase font-black border-b text-xs" :class="isDarkMode ? 'bg-[#23202e] text-white border-darkBorder' : 'bg-tangerine-50 text-slate-950 border-lightBorder'">
+                <tr>
+                  <th class="p-3.5 font-black">รหัสอะไหล่</th>
+                  <th class="p-3.5 font-black">ชื่อรายการอุปกรณ์</th>
+                  <th class="p-3.5 font-black">ประเภท</th>
+                  <th class="p-3.5 text-center font-black">จำนวนคงเหลือ</th>
+                  <th class="p-3.5 text-center font-black">จุดสั่งซื้อซ้ำ (Min)</th>
+                  <th class="p-3.5 font-black">สถานะสต็อก</th>
+                  <th class="p-3.5 text-center font-black">จัดการ</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y font-bold" :class="isDarkMode ? 'divide-darkBorder text-slate-200' : 'divide-lightBorder text-slate-800'">
+                <tr v-for="part in inventory" :key="part.id" :class="isDarkMode ? 'hover:bg-white/[0.03]' : 'hover:bg-tangerine-50/60'">
+                  <td class="p-3.5 font-mono font-black text-sm text-tangerine-500">{{ part.id }}</td>
+                  <td class="p-3.5 font-extrabold text-sm" :class="isDarkMode ? 'text-white' : 'text-slate-950'">{{ part.name }}</td>
+                  <td class="p-3.5">{{ part.category }}</td>
+                  <td class="p-3.5 text-center font-black text-sm">{{ part.qty }} {{ part.unit }}</td>
+                  <td class="p-3.5 text-center font-mono font-bold">{{ part.minQty }} {{ part.unit }}</td>
+                  <td class="p-3.5">
+                    <span :class="part.qty <= part.minQty ? 'bg-rose-500/10 text-rose-600 border border-rose-500/30' : 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/30'" class="px-2.5 py-0.5 rounded-md font-bold text-xs">
+                      {{ part.qty <= part.minQty ? '⚠️ ใกล้หมดสต็อก' : '✅ ปกติ' }}
+                    </span>
+                  </td>
+                  <td class="p-3.5 text-center">
+                    <button @click="part.qty++" class="bg-slate-800 hover:bg-slate-700 text-tangerine-300 px-2.5 py-1 rounded-lg text-xs font-bold mr-1">+ รับเข้า</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: ANOMALY ENGINE -->
       <section v-if="currentTab === 'anomaly'" class="space-y-6">
         <div class="p-5 rounded-3xl flex items-start gap-4 border" :class="isDarkMode ? 'bg-tangerine-500/10 border-tangerine-400/20' : 'bg-tangerine-100/60 border-tangerine-300'">
           <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-tangerine-500 to-tangerine-300 text-slate-950 flex items-center justify-center text-2xl font-black flex-shrink-0 shadow-sm">
@@ -442,7 +507,7 @@
         </div>
       </section>
 
-      <!-- TAB 6: STANDARDIZED PM FORM -->
+      <!-- TAB 7: STANDARDIZED PM FORM -->
       <section v-if="currentTab === 'form'" class="max-w-4xl mx-auto p-8 rounded-3xl border shadow-sm space-y-6" :class="isDarkMode ? 'bg-darkCard border-darkBorder' : 'bg-white border-lightBorder'">
         <div class="border-b pb-4 flex justify-between items-start" :class="isDarkMode ? 'border-darkBorder' : 'border-lightBorder'">
           <div>
@@ -473,6 +538,43 @@
             <div>
               <span class="block text-xs uppercase font-extrabold" :class="isDarkMode ? 'text-slate-400' : 'text-slate-600'">วันที่ทดสอบ</span>
               <span class="font-mono font-bold text-sm" :class="isDarkMode ? 'text-white' : 'text-slate-900'">{{ currentDate }}</span>
+            </div>
+          </div>
+
+          <!-- Evidence Photo Section with Watermark -->
+          <div class="border rounded-2xl p-4" :class="isDarkMode ? 'border-darkBorder bg-slate-900/40' : 'border-lightBorder bg-white'">
+            <div class="flex justify-between items-center mb-3">
+              <span class="font-extrabold text-sm">📸 ภาพถ่ายหลักฐานก่อน-หลังการซ่อมบำรุง (GPS Watermarked)</span>
+              <label class="cursor-pointer bg-tangerine-400 hover:bg-tangerine-500 text-slate-950 font-black px-3 py-1 rounded-xl text-xs flex items-center gap-1">
+                <i class="fa-solid fa-camera"></i> แนบรูปภาพ
+                <input type="file" @change="uploadPhoto" class="hidden" accept="image/*">
+              </label>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="border-2 border-dashed rounded-xl p-3 text-center flex flex-col items-center justify-center min-h-[140px] relative overflow-hidden bg-slate-950/20">
+                <div v-if="photoBefore" class="w-full h-full relative">
+                  <img :src="photoBefore" class="w-full h-32 object-cover rounded-lg">
+                  <div class="absolute bottom-1 left-1 right-1 bg-black/70 text-[9px] text-white p-1 rounded font-mono text-left">
+                    📍 13.5992°N, 100.5968°E | 🕒 {{ currentDate }} (Before PM)
+                  </div>
+                </div>
+                <div v-else class="text-slate-400 text-xs">
+                  <i class="fa-solid fa-image text-2xl mb-1 block text-slate-500"></i>
+                  ภาพถ่ายก่อนทำ PM (Before)
+                </div>
+              </div>
+              <div class="border-2 border-dashed rounded-xl p-3 text-center flex flex-col items-center justify-center min-h-[140px] relative overflow-hidden bg-slate-950/20">
+                <div v-if="photoAfter" class="w-full h-full relative">
+                  <img :src="photoAfter" class="w-full h-32 object-cover rounded-lg">
+                  <div class="absolute bottom-1 left-1 right-1 bg-black/70 text-[9px] text-emerald-400 p-1 rounded font-mono text-left">
+                    📍 13.5992°N, 100.5968°E | 🕒 {{ currentDate }} (After PM - Passed)
+                  </div>
+                </div>
+                <div v-else class="text-slate-400 text-xs">
+                  <i class="fa-solid fa-circle-check text-2xl mb-1 block text-emerald-500"></i>
+                  ภาพถ่ายหลังทำ PM เสร็จสิ้น (After)
+                </div>
+              </div>
             </div>
           </div>
 
@@ -551,14 +653,19 @@
           <!-- Signatures for Printing -->
           <div class="grid grid-cols-2 gap-8 pt-8 border-t text-center" :class="isDarkMode ? 'border-darkBorder' : 'border-lightBorder'">
             <div>
-              <div class="border-b w-48 mx-auto mb-2 pb-6" :class="isDarkMode ? 'border-slate-700' : 'border-slate-400'"></div>
-              <div class="font-black" :class="isDarkMode ? 'text-white' : 'text-slate-950'">( _______________________ )</div>
-              <div class="text-xs font-semibold" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">วิศวกรผู้ทดสอบ</div>
+              <div class="border-b w-48 mx-auto mb-2 pb-6 font-mono text-sm" :class="isDarkMode ? 'border-slate-700' : 'border-slate-400'">
+                ✍️ นายสมชาย มั่นคง
+              </div>
+              <div class="font-black" :class="isDarkMode ? 'text-white' : 'text-slate-950'">( นายสมชาย มั่นคง )</div>
+              <div class="text-xs font-semibold" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">ช่างเทคนิคผู้ทดสอบ</div>
             </div>
             <div>
-              <div class="border-b w-48 mx-auto mb-2 pb-6" :class="isDarkMode ? 'border-slate-700' : 'border-slate-400'"></div>
-              <div class="font-black" :class="isDarkMode ? 'text-white' : 'text-slate-950'">( _______________________ )</div>
-              <div class="text-xs font-semibold" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">หัวหน้างานบำรุงรักษา</div>
+              <div class="border-b w-48 mx-auto mb-2 pb-6 font-mono text-sm" :class="isDarkMode ? 'border-slate-700' : 'border-slate-400'">
+                <span v-if="currentRole === 'engineer' || activeFormWO?.approved">✍️ นายวิชัย ช่างทอง (วศ.บ.)</span>
+                <span v-else class="text-slate-400 text-xs italic">[ รอวิศวกรลงนามอนุมัติ ]</span>
+              </div>
+              <div class="font-black" :class="isDarkMode ? 'text-white' : 'text-slate-950'">( นายวิชัย ช่างทอง )</div>
+              <div class="text-xs font-semibold" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">วิศวกรผู้รับรองผล</div>
             </div>
           </div>
 
@@ -566,6 +673,59 @@
       </section>
 
     </main>
+
+    <!-- QR CODE SCANNER MODAL -->
+    <div v-if="openQRModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div class="border rounded-3xl max-w-md w-full p-6 shadow-2xl text-center space-y-4" :class="isDarkMode ? 'bg-darkCard border-darkBorder text-slate-200' : 'bg-white border-lightBorder text-slate-900'">
+        <div class="flex justify-between items-center border-b pb-3" :class="isDarkMode ? 'border-darkBorder' : 'border-lightBorder'">
+          <h3 class="font-black text-base flex items-center gap-2"><i class="fa-solid fa-qrcode text-tangerine-400"></i> สแกน QR Code ประจำอุปกรณ์</h3>
+          <button @click="openQRModal = false" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <div class="w-60 h-60 mx-auto border-4 border-dashed border-tangerine-400 rounded-3xl flex flex-col items-center justify-center bg-black/40 relative overflow-hidden">
+          <i class="fa-solid fa-camera text-4xl text-tangerine-400 animate-pulse mb-2"></i>
+          <span class="text-xs font-bold text-slate-300">หันกล้องไปที่ Asset Tag หน้าตู้</span>
+          <div class="w-full h-1 bg-tangerine-400 absolute top-0 animate-bounce"></div>
+        </div>
+
+        <div class="pt-2">
+          <p class="text-xs font-bold text-slate-400 mb-2">หรือทดสอบจำลองสแกนอุปกรณ์:</p>
+          <div class="flex justify-center gap-2">
+            <button @click="simulateScan('TR-SUB-01')" class="bg-tangerine-100 hover:bg-tangerine-400 text-tangerine-900 text-xs font-black px-3 py-1.5 rounded-xl border border-tangerine-300">หม้อแปลง TR-01</button>
+            <button @click="simulateScan('RMU-SW-02')" class="bg-tangerine-100 hover:bg-tangerine-400 text-tangerine-900 text-xs font-black px-3 py-1.5 rounded-xl border border-tangerine-300">ตู้ RMU-02</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPARE PART PICKER MODAL -->
+    <div v-if="activePartPickerWO" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div class="border rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4" :class="isDarkMode ? 'bg-darkCard border-darkBorder text-slate-200' : 'bg-white border-lightBorder text-slate-900'">
+        <div class="flex justify-between items-center border-b pb-3" :class="isDarkMode ? 'border-darkBorder' : 'border-lightBorder'">
+          <div>
+            <h3 class="font-black text-base">เบิกอะไหล่สำหรับใบงาน: {{ activePartPickerWO.id }}</h3>
+            <p class="text-xs font-bold text-slate-400">อุปกรณ์: {{ activePartPickerWO.asset }}</p>
+          </div>
+          <button @click="activePartPickerWO = null" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="space-y-2 max-h-60 overflow-y-auto">
+          <div v-for="part in inventory" :key="part.id" class="p-3 rounded-2xl border flex items-center justify-between" :class="isDarkMode ? 'bg-slate-900/50 border-darkBorder' : 'bg-lightBg border-lightBorder'">
+            <div>
+              <div class="font-bold text-sm">{{ part.name }}</div>
+              <div class="text-xs font-mono text-slate-400">คงเหลือในคลัง: {{ part.qty }} {{ part.unit }}</div>
+            </div>
+            <button :disabled="part.qty <= 0" @click="deductPart(part)" class="bg-tangerine-400 hover:bg-tangerine-500 disabled:opacity-40 text-slate-950 font-black text-xs px-3 py-1.5 rounded-xl transition">
+              - เบิกใช้ 1 {{ part.unit }}
+            </button>
+          </div>
+        </div>
+
+        <div class="flex justify-end pt-3 border-t" :class="isDarkMode ? 'border-darkBorder' : 'border-lightBorder'">
+          <button @click="activePartPickerWO = null" class="bg-emerald-600 text-white font-black text-xs px-4 py-2 rounded-xl">เสร็จสิ้น</button>
+        </div>
+      </div>
+    </div>
 
     <!-- CREATE WORK ORDER MODAL -->
     <div v-if="openNewWOModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
@@ -652,6 +812,12 @@
       </div>
     </div>
 
+    <!-- TOAST NOTIFICATION -->
+    <div v-if="toastMessage" class="fixed bottom-6 right-6 bg-slate-900 text-white border border-tangerine-400 px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 z-50 text-xs font-bold animate-bounce">
+      <i class="fa-solid fa-circle-check text-tangerine-400 text-base"></i>
+      <span>{{ toastMessage }}</span>
+    </div>
+
   </div>
 
   <script>
@@ -661,12 +827,19 @@
       data() {
         return {
           isDarkMode: false,
+          currentRole: 'tech',
           currentTab: 'schedule',
           openNewWOModal: false,
+          openQRModal: false,
+          activePartPickerWO: null,
           activeFormWO: null,
           selectedCp: null,
           activeFieldPM: null,
+          toastMessage: '',
           currentDate: new Date().toLocaleDateString('th-TH'),
+
+          photoBefore: 'https://images.unsplash.com/photo-1544725121-be3bf52e2dc8?w=300&auto=format&fit=crop&q=60',
+          photoAfter: null,
 
           map: null,
           tileLayer: null,
@@ -692,6 +865,13 @@
             voltage: 'High Voltage 22kV',
             dueDate: '2026-09-15'
           },
+
+          inventory: [
+            { id: 'PART-FUSE-24K', name: 'High-Voltage Current Limiting Fuse 24kV 50A', category: 'Protection', qty: 14, minQty: 5, unit: 'ชิ้น' },
+            { id: 'PART-OIL-TR', name: 'น้ำมันหม้อแปลงไฟฟ้า Uninhibited Mineral Oil', category: 'Insulation', qty: 450, minQty: 200, unit: 'ลิตร' },
+            { id: 'PART-GAS-SF6', name: 'ก๊าซ SF6 ความบริสุทธิ์สูง 99.9% สำหรับ RMU', category: 'Gas Insulated', qty: 3, minQty: 4, unit: 'ถัง' },
+            { id: 'PART-GASKET-BUSH', name: 'ประเก็นยาง NBR สำหรับ Bushing แรงสูง', category: 'Mechanical Seal', qty: 22, minQty: 10, unit: 'ชุด' }
+          ],
 
           pmFormData: {
             meggerHV_E: 350,
@@ -738,9 +918,9 @@
           ],
 
           workOrders: [
-            { id: 'WO-PM-2026-001', type: 'PM', title: 'PM ประจำปี หม้อแปลงไฟฟ้า TR-01', asset: 'Power Transformer 22kV', tag: 'TR-01', voltage: '22kV', dueDate: '2026-09-15', status: 'In Progress' },
-            { id: 'WO-PM-2026-002', type: 'PM', title: 'ตรวจเช็กก๊าซและ Contact RMU-02', asset: 'Ring Main Unit 24kV', tag: 'RMU-02', voltage: '22kV', dueDate: '2026-09-20', status: 'Pending' },
-            { id: 'WO-CM-2026-003', type: 'CM', title: 'เปลี่ยน Fuse แรงสูงขาดจากฟ้าผ่า', asset: 'Feeder Protection F-03', tag: 'FUSE-F03', voltage: '22kV', dueDate: '2026-08-28', status: 'Completed' }
+            { id: 'WO-PM-2026-001', type: 'PM', title: 'PM ประจำปี หม้อแปลงไฟฟ้า TR-01', asset: 'Power Transformer 22kV', tag: 'TR-01', voltage: '22kV', dueDate: '2026-09-15', status: 'In Progress', approved: false },
+            { id: 'WO-PM-2026-002', type: 'PM', title: 'ตรวจเช็กก๊าซและ Contact RMU-02', asset: 'Ring Main Unit 24kV', tag: 'RMU-02', voltage: '22kV', dueDate: '2026-09-20', status: 'Pending', approved: false },
+            { id: 'WO-CM-2026-003', type: 'CM', title: 'เปลี่ยน Fuse แรงสูงขาดจากฟ้าผ่า', asset: 'Feeder Protection F-03', tag: 'FUSE-F03', voltage: '22kV', dueDate: '2026-08-28', status: 'Completed', approved: true }
           ]
         };
       },
@@ -770,6 +950,35 @@
               this.initMap();
             });
           }
+        },
+        showToast(msg) {
+          this.toastMessage = msg;
+          setTimeout(() => { this.toastMessage = ''; }, 3000);
+        },
+        triggerLineAlert() {
+          this.showToast('🚀 ส่งการ์ดแจ้งเตือนใบงาน PM ด่วนเข้ากลุ่ม LINE วิศวกรแล้ว!');
+        },
+        simulateScan(tag) {
+          this.openQRModal = false;
+          this.showToast(`🔍 สแกนพบอุปกรณ์: ${tag} - ดึงประวัติเรียบร้อย`);
+          const found = this.workOrders.find(w => w.tag.includes(tag.slice(0, 3)));
+          if (found) {
+            this.openFormWithWO(found);
+          }
+        },
+        uploadPhoto(e) {
+          const file = e.target.files[0];
+          if (file) {
+            this.photoAfter = URL.createObjectURL(file);
+            this.showToast('📸 ประทับลายน้ำพิกัด GPS & วันที่ลงในรูปภาพสำเร็จ');
+          }
+        },
+        openPartPicker(wo) {
+          this.activePartPickerWO = wo;
+        },
+        deductPart(part) {
+          part.qty--;
+          this.showToast(`📦 ตัดเบิก ${part.name} เหลือ ${part.qty} ${part.unit}`);
         },
         initMap() {
           if (this.map) {
@@ -860,6 +1069,7 @@
         optimizeRoute() {
           this.checkpoints.reverse();
           this.renderMarkers();
+          this.showToast('⚡ ปรับลำดับเส้นทางตรวจให้สั้นที่สุดเรียบร้อย');
         },
         openFieldChecklist(cp) {
           this.activeFieldPM = cp;
@@ -870,6 +1080,7 @@
             this.activeFieldPM.isNearby = false;
             this.renderMarkers();
             this.activeFieldPM = null;
+            this.showToast('✅ บันทึกผล PM ประจำจุดตรวจเรียบร้อย');
           }
         },
         triggerScheduleWO(item) {
@@ -895,10 +1106,12 @@
             tag: this.newWO.tag || 'TAG-01',
             voltage: this.newWO.voltage,
             dueDate: this.newWO.dueDate,
-            status: 'Pending'
+            status: 'Pending',
+            approved: false
           });
           this.openNewWOModal = false;
           this.currentTab = 'orders';
+          this.showToast('📝 สร้างใบสั่งงานใหม่เรียบร้อย');
         },
         openFormWithWO(wo) {
           this.activeFormWO = wo;
@@ -922,7 +1135,7 @@
         /* EXPORT ENGINES */
         exportCSV(filename, rows) {
           const processRow = (row) => row.map(val => `"${(val || '').toString().replace(/"/g, '""')}"`).join(',');
-          const csvContent = '\uFEFF' + rows.map(processRow).join('\r\n'); // UTF-8 BOM for Excel in Thai
+          const csvContent = '\uFEFF' + rows.map(processRow).join('\r\n');
           const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
           const link = document.createElement('a');
           link.href = URL.createObjectURL(blob);
@@ -930,6 +1143,7 @@
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
+          this.showToast(`📊 ดาวน์โหลดไฟล์ ${filename} เรียบร้อย`);
         },
 
         exportWorkOrdersCSV() {
@@ -975,6 +1189,7 @@
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
+          this.showToast('🗺️ ส่งออกไฟล์ GeoJSON สำหรับ Google Earth เรียบร้อย');
         }
       }
     }).mount('#app');
