@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>ElectroPM - Multi-Device Electrical CMMS</title>
+  <title>ElectroPM - Multi-Year & Advanced Electrical CMMS</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -67,20 +67,18 @@
 <body :class="isDarkMode ? 'dark bg-darkBg text-slate-100 selection:bg-tangerine-500 selection:text-slate-950' : 'bg-lightBg text-slate-900 selection:bg-tangerine-200 selection:text-slate-900'" class="pb-20 lg:pb-0">
   <div id="app" class="flex flex-col lg:flex-row min-h-screen">
     
-    <!-- DESKTOP / TABLET SIDEBAR (Hidden on Mobile) -->
+    <!-- DESKTOP / TABLET SIDEBAR -->
     <aside :class="isDarkMode ? 'bg-[#15131c] border-darkBorder' : 'bg-[#1b1924] border-stone-800'" class="hidden lg:flex w-64 border-r flex-col flex-shrink-0 text-white transition-colors duration-300 shadow-xl">
-      <!-- Brand Logo Header -->
       <div class="p-5 border-b border-white/10 flex items-center gap-3">
         <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-tangerine-500 to-tangerine-300 text-slate-950 flex items-center justify-center text-xl font-black shadow-lg shadow-tangerine-500/30">
           <i class="fa-solid fa-bolt-lightning"></i>
         </div>
         <div>
           <h1 class="font-black text-base leading-tight tracking-wide text-white">ElectroPM</h1>
-          <p class="text-[10px] text-tangerine-300 font-bold uppercase tracking-wider">Multi-Device CMMS</p>
+          <p class="text-[10px] text-tangerine-300 font-bold uppercase tracking-wider">Multi-Year CMMS</p>
         </div>
       </div>
 
-      <!-- Nav Links -->
       <nav class="flex-1 p-3 space-y-1.5 overflow-y-auto">
         <button @click="switchTab('schedule')" :class="navClass('schedule')" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-black transition text-left">
           <i class="fa-solid fa-calendar-days w-5 text-center text-tangerine-300 text-sm"></i> 1. แผนงาน PM ประจำปี
@@ -106,7 +104,6 @@
         </button>
       </nav>
 
-      <!-- Bottom Reliability Score -->
       <div class="p-4 border-t border-white/10 bg-black/25 text-xs text-slate-300">
         <div class="flex justify-between items-center mb-2 text-xs font-extrabold">
           <span>Grid Reliability Index</span>
@@ -140,18 +137,18 @@
     <!-- MAIN WORKSPACE -->
     <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
       
-      <!-- Desktop Top Title Bar (Hidden on Mobile) -->
+      <!-- Top Title Bar -->
       <div class="hidden lg:flex flex-row items-center justify-between pb-6 mb-6 border-b gap-4" :class="isDarkMode ? 'border-darkBorder' : 'border-lightBorder'">
         <div>
           <h2 class="text-2xl font-black tracking-tight" :class="isDarkMode ? 'text-white' : 'text-slate-950'">
-            <span v-if="currentTab === 'schedule'">ตารางวางแผน PM อุปกรณ์ไฟฟ้ารายปี (Annual Master PM Grid)</span>
+            <span v-if="currentTab === 'schedule'">ตารางวางแผน PM รายปี & ประวัติย้อนหลัง (Multi-Year PM Planner)</span>
             <span v-if="currentTab === 'feeder'">สถิติไฟฟ้าดับและความมั่นคงรายสายป้อน (Feeder Reliability Analytics)</span>
             <span v-if="currentTab === 'route'">แผนที่ GIS & ระบบนำทางตรวจ PM ภาคสนาม (Turn-by-Turn GPS Cockpit)</span>
             <span v-if="currentTab === 'orders'">ศูนย์จัดการใบสั่งงานและประวัติบำรุงรักษา (Work Orders Hub)</span>
             <span v-if="currentTab === 'anomaly'">ระบบวิเคราะห์ความผิดปกติของ Work Order (Anomaly Engine)</span>
             <span v-if="currentTab === 'form'">ฟอร์มเอกสารตรวจวัดและบันทึกผลบำรุงรักษามาตรฐาน (Standard PM Form)</span>
           </h2>
-          <p class="text-xs font-bold mt-1" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">รองรับการเปิดใช้งานบนสมาร์ทโฟน แท็บเล็ต และคอมพิวเตอร์</p>
+          <p class="text-xs font-bold mt-1" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">ระบบสลับดูแผนงานล่วงหน้าและประวัติการซ่อมบำรุงย้อนหลัง 3 ปี</p>
         </div>
         
         <div class="flex items-center gap-3">
@@ -168,41 +165,77 @@
         </div>
       </div>
 
-      <!-- TAB 1: ANNUAL PM SCHEDULE -->
+      <!-- TAB 1: MULTI-YEAR ANNUAL PM SCHEDULE -->
       <section v-if="currentTab === 'schedule'" class="space-y-4 sm:space-y-6">
+        
+        <!-- Multi-Year Selector Controls Bar -->
+        <div class="p-4 sm:p-5 rounded-3xl border shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4" :class="isDarkMode ? 'bg-darkCard border-darkBorder' : 'bg-white border-lightBorder'">
+          <div class="flex items-center gap-3 flex-wrap">
+            <span class="text-xs font-black uppercase tracking-wider text-tangerine-500 flex items-center gap-1.5">
+              <i class="fa-solid fa-calendar-week text-sm"></i> เลือกปีที่ต้องการดู:
+            </span>
+            <div class="inline-flex rounded-2xl p-1 bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800">
+              <button v-for="year in availableYears" :key="year"
+                      @click="selectedYear = year"
+                      class="px-3.5 py-1.5 rounded-xl text-xs font-black transition-all"
+                      :class="selectedYear === year ? 'bg-tangerine-400 text-slate-950 shadow-md scale-105' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'">
+                {{ year }}
+                <span v-if="year === 2026" class="text-[9px] bg-emerald-500 text-white px-1 py-0.2 rounded-full font-bold ml-1">ปัจจุบัน</span>
+                <span v-else-if="year > 2026" class="text-[9px] bg-blue-500 text-white px-1 py-0.2 rounded-full font-bold ml-1">ล่วงหน้า</span>
+                <span v-else class="text-[9px] bg-slate-400 text-white px-1 py-0.2 rounded-full font-bold ml-1">ย้อนหลัง</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Year Overview Statistics Badge -->
+          <div class="flex items-center gap-2">
+            <div class="text-right">
+              <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 block">PM Compliance ปี {{ selectedYear }}</span>
+              <span class="text-base font-black text-tangerine-500">{{ currentYearStats.compliance }}%</span>
+            </div>
+            <button @click="exportScheduleCSV" class="bg-tangerine-100 hover:bg-tangerine-300 text-tangerine-800 border border-tangerine-300 text-xs font-black px-3.5 py-2 rounded-2xl transition shadow-sm flex items-center gap-1.5">
+              <i class="fa-solid fa-file-excel text-emerald-600 text-sm"></i> ส่งออกแผนปี {{ selectedYear }} (CSV)
+            </button>
+          </div>
+        </div>
+
+        <!-- Master PM Grid for Selected Year -->
         <div class="p-4 sm:p-6 rounded-3xl border shadow-sm transition" :class="isDarkMode ? 'bg-darkCard border-darkBorder' : 'bg-white border-lightBorder'">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
             <div>
-              <h3 class="font-black text-base" :class="isDarkMode ? 'text-white' : 'text-slate-950'">ตารางวางแผนวงรอบ PM ปี 2026</h3>
-              <p class="text-xs font-semibold mt-0.5" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">แผนการทดสอบแยกตามหมวดหมู่อุปกรณ์ไฟฟ้า</p>
+              <h3 class="font-black text-base flex items-center gap-2" :class="isDarkMode ? 'text-white' : 'text-slate-950'">
+                ตารางแผนงานบำรุงรักษาประจำปี {{ selectedYear }}
+                <span v-if="selectedYear < 2026" class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold px-2 py-0.5 rounded-full">บันทึกประวัติย้อนหลัง</span>
+                <span v-else-if="selectedYear > 2026" class="bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 text-[10px] font-bold px-2 py-0.5 rounded-full">แผนงานคาดการณ์ล่วงหน้า</span>
+                <span v-else class="bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full">แผนงานปฏิบัติการจริง</span>
+              </h3>
+              <p class="text-xs font-semibold mt-0.5" :class="isDarkMode ? 'text-slate-300' : 'text-slate-600'">แสดงรอบการบำรุงรักษา 12 เดือนของอุปกรณ์ไฟฟ้าแรงดันสูง-ต่ำ</p>
             </div>
-            <button @click="exportScheduleCSV" class="w-full sm:w-auto bg-tangerine-100 hover:bg-tangerine-300 text-tangerine-800 border border-tangerine-300 text-xs font-black px-3.5 py-2 rounded-2xl transition shadow-sm flex items-center justify-center gap-1.5">
-              <i class="fa-solid fa-file-excel text-emerald-600 text-sm"></i> ส่งออกแผน PM (CSV)
-            </button>
           </div>
 
           <div class="overflow-x-auto -mx-4 sm:mx-0">
-            <table class="w-full text-left text-xs border rounded-2xl overflow-hidden min-w-[600px]" :class="isDarkMode ? 'border-darkBorder' : 'border-lightBorder'">
+            <table class="w-full text-left text-xs border rounded-2xl overflow-hidden min-w-[650px]" :class="isDarkMode ? 'border-darkBorder' : 'border-lightBorder'">
               <thead class="uppercase font-black border-b text-xs" :class="isDarkMode ? 'bg-[#23202e] text-white border-darkBorder' : 'bg-tangerine-50 text-slate-950 border-lightBorder'">
                 <tr>
-                  <th class="p-3 border-r font-black">หมวดหมู่อุปกรณ์</th>
-                  <th class="p-3 border-r font-black">วงรอบ</th>
-                  <th class="p-3 border-r text-center font-black" v-for="m in ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.']" :key="m">{{ m }}</th>
-                  <th class="p-3 text-center font-black">จัดการ</th>
+                  <th class="p-3.5 border-r font-black">หมวดหมู่อุปกรณ์</th>
+                  <th class="p-3.5 border-r font-black">วงรอบ</th>
+                  <th class="p-3.5 border-r text-center font-black" v-for="m in ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.']" :key="m">{{ m }}</th>
+                  <th class="p-3.5 text-center font-black">จัดการ</th>
                 </tr>
               </thead>
               <tbody class="divide-y font-bold" :class="isDarkMode ? 'divide-darkBorder text-slate-200' : 'divide-lightBorder text-slate-800'">
-                <tr v-for="item in scheduleMatrix" :key="item.id" :class="isDarkMode ? 'hover:bg-white/[0.03]' : 'hover:bg-tangerine-50/60'">
-                  <td class="p-3 border-r font-extrabold text-xs sm:text-sm" :class="[isDarkMode ? 'border-darkBorder text-white' : 'border-lightBorder text-slate-950']">{{ item.name }}</td>
-                  <td class="p-3 border-r" :class="isDarkMode ? 'border-darkBorder' : 'border-lightBorder'"><span class="px-2 py-0.5 rounded-lg font-mono text-[11px] font-black border" :class="isDarkMode ? 'bg-slate-800 text-tangerine-300 border-slate-700' : 'bg-tangerine-100 text-tangerine-800 border-tangerine-300'">{{ item.cycle }}</span></td>
-                  <td v-for="(status, idx) in item.months" :key="idx" class="p-1.5 border-r text-center">
+                <tr v-for="item in currentScheduleMatrix" :key="item.id" :class="isDarkMode ? 'hover:bg-white/[0.03]' : 'hover:bg-tangerine-50/60'">
+                  <td class="p-3.5 border-r font-extrabold text-xs sm:text-sm" :class="[isDarkMode ? 'border-darkBorder text-white' : 'border-lightBorder text-slate-950']">{{ item.name }}</td>
+                  <td class="p-3.5 border-r" :class="isDarkMode ? 'border-darkBorder' : 'border-lightBorder'"><span class="px-2 py-0.5 rounded-lg font-mono text-[11px] font-black border" :class="isDarkMode ? 'bg-slate-800 text-tangerine-300 border-slate-700' : 'bg-tangerine-100 text-tangerine-800 border-tangerine-300'">{{ item.cycle }}</span></td>
+                  <td v-for="(status, idx) in item.months" :key="idx" class="p-2 border-r text-center">
                     <span v-if="status === 'DONE'" class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 px-1.5 py-0.5 rounded text-[10px] font-black">DONE</span>
                     <span v-else-if="status === 'PLANNED'" class="bg-tangerine-400 text-slate-950 px-1.5 py-0.5 rounded text-[10px] font-black shadow-sm">PLAN</span>
+                    <span v-else-if="status === 'OVERDUE'" class="bg-rose-500/20 text-rose-500 border border-rose-500/40 px-1.5 py-0.5 rounded text-[10px] font-black">LATE</span>
                     <span v-else class="text-slate-400 font-bold opacity-30">-</span>
                   </td>
                   <td class="p-2 text-center">
                     <button @click="triggerScheduleWO(item)" class="text-xs px-2.5 py-1 rounded-xl font-extrabold transition border" :class="isDarkMode ? 'bg-slate-800 hover:bg-tangerine-400 text-tangerine-200 hover:text-slate-950 border-slate-700' : 'bg-tangerine-100 hover:bg-tangerine-400 text-tangerine-800 hover:text-slate-950 border-tangerine-300'">
-                      สร้างใบงาน
+                      {{ selectedYear >= 2026 ? 'สร้างใบงาน' : 'ดูประวัติ' }}
                     </button>
                   </td>
                 </tr>
@@ -281,8 +314,6 @@
       <!-- TAB 3: GIS MAP & GPS NAVIGATION -->
       <section v-if="currentTab === 'route'" class="space-y-4 sm:space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-          
-          <!-- Left Checkpoint List -->
           <div class="p-4 sm:p-5 rounded-3xl border shadow-sm space-y-3" :class="isDarkMode ? 'bg-darkCard border-darkBorder' : 'bg-white border-lightBorder'">
             <div class="flex justify-between items-center">
               <h3 class="font-extrabold text-sm" :class="isDarkMode ? 'text-white' : 'text-slate-950'">ลำดับจุดตรวจ PM</h3>
@@ -327,7 +358,6 @@
             </div>
           </div>
 
-          <!-- Right Map Canvas + HUD -->
           <div class="lg:col-span-2 space-y-3 sm:space-y-4">
             <div class="p-3 sm:p-4 rounded-3xl border flex items-center justify-between shadow-md" :class="isDarkMode ? 'bg-darkCard text-white border-darkBorder' : 'bg-slate-950 text-white border-slate-800'">
               <div class="flex items-center gap-2.5 sm:gap-3 truncate">
@@ -341,10 +371,6 @@
               </div>
               
               <div class="flex items-center gap-2 flex-shrink-0">
-                <div class="text-center px-2.5 py-1 rounded-xl border bg-black/40 border-white/10 hidden sm:block">
-                  <div class="text-[9px] font-bold text-slate-300">SPEED</div>
-                  <div class="text-sm font-black text-tangerine-300 font-hud">{{ speed }} <span class="text-[9px] font-sans">km/h</span></div>
-                </div>
                 <button @click="toggleSimulation" class="px-3 py-2 rounded-xl font-black text-xs shadow-md transition"
                         :class="isDriving ? 'bg-rose-500 text-white' : 'bg-gradient-to-r from-tangerine-500 to-tangerine-400 text-slate-950'">
                   <i class="fa-solid" :class="isDriving ? 'fa-pause' : 'fa-play'"></i>
@@ -354,7 +380,6 @@
 
             <div id="map" class="shadow-sm border" :class="isDarkMode ? 'border-darkBorder' : 'border-lightBorder'"></div>
           </div>
-
         </div>
       </section>
 
@@ -461,7 +486,6 @@
         </div>
 
         <div id="printable-sheet" class="space-y-4 sm:space-y-6 text-xs font-bold" :class="isDarkMode ? 'text-slate-200' : 'text-slate-800'">
-          <!-- Meta Info Grid -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3 sm:p-4 rounded-2xl border" :class="isDarkMode ? 'bg-slate-900/60 border-darkBorder' : 'bg-tangerine-50 border-tangerine-200'">
             <div>
               <span class="block text-[10px] uppercase font-extrabold" :class="isDarkMode ? 'text-slate-400' : 'text-slate-600'">รหัสใบงาน</span>
@@ -481,7 +505,6 @@
             </div>
           </div>
 
-          <!-- Megger Test -->
           <div class="border rounded-2xl overflow-hidden" :class="isDarkMode ? 'border-darkBorder bg-slate-900/40' : 'border-lightBorder bg-white'">
             <div class="p-3 font-extrabold border-b flex justify-between items-center text-xs" :class="isDarkMode ? 'bg-[#23202e] text-white border-darkBorder' : 'bg-tangerine-50 text-slate-950 border-lightBorder'">
               <span>1. ค่าความเป็นฉนวน (Megger Test @ 2.5kV)</span>
@@ -489,42 +512,40 @@
             </div>
             <div class="p-3 sm:p-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
-                <label class="block font-bold mb-1" :class="isDarkMode ? 'text-slate-300' : 'text-slate-700'">Primary - Ground (HV - E)</label>
+                <label class="block font-bold mb-1">Primary - Ground (HV - E)</label>
                 <input type="number" v-model="pmFormData.meggerHV_E" class="w-full border rounded-xl p-2 font-mono font-black text-sm text-tangerine-500" :class="isDarkMode ? 'bg-darkBg border-slate-700' : 'bg-white border-lightBorder'">
               </div>
               <div>
-                <label class="block font-bold mb-1" :class="isDarkMode ? 'text-slate-300' : 'text-slate-700'">Secondary - Ground (LV - E)</label>
+                <label class="block font-bold mb-1">Secondary - Ground (LV - E)</label>
                 <input type="number" v-model="pmFormData.meggerLV_E" class="w-full border rounded-xl p-2 font-mono font-black text-sm text-tangerine-500" :class="isDarkMode ? 'bg-darkBg border-slate-700' : 'bg-white border-lightBorder'">
               </div>
               <div>
-                <label class="block font-bold mb-1" :class="isDarkMode ? 'text-slate-300' : 'text-slate-700'">Primary - Secondary (HV - LV)</label>
+                <label class="block font-bold mb-1">Primary - Secondary (HV - LV)</label>
                 <input type="number" v-model="pmFormData.meggerHV_LV" class="w-full border rounded-xl p-2 font-mono font-black text-sm text-tangerine-500" :class="isDarkMode ? 'bg-darkBg border-slate-700' : 'bg-white border-lightBorder'">
               </div>
             </div>
           </div>
 
-          <!-- Ground & Thermo -->
           <div class="border rounded-2xl overflow-hidden" :class="isDarkMode ? 'border-darkBorder bg-slate-900/40' : 'border-lightBorder bg-white'">
             <div class="p-3 font-extrabold border-b flex justify-between items-center text-xs" :class="isDarkMode ? 'bg-[#23202e] text-white border-darkBorder' : 'bg-tangerine-50 text-slate-950 border-lightBorder'">
               <span>2. ความต้านทานดิน & Thermo Scan</span>
             </div>
             <div class="p-3 sm:p-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
-                <label class="block font-bold mb-1" :class="isDarkMode ? 'text-slate-300' : 'text-slate-700'">ความต้านทานดิน (&Omega;)</label>
+                <label class="block font-bold mb-1">ความต้านทานดิน (&Omega;)</label>
                 <input type="number" step="0.1" v-model="pmFormData.groundResistance" class="w-full border rounded-xl p-2 font-mono font-black text-sm text-tangerine-500" :class="isDarkMode ? 'bg-darkBg border-slate-700' : 'bg-white border-lightBorder'">
               </div>
               <div>
-                <label class="block font-bold mb-1" :class="isDarkMode ? 'text-slate-300' : 'text-slate-700'">อุณหภูมิขั้วต่อ (&deg;C)</label>
+                <label class="block font-bold mb-1">อุณหภูมิขั้วต่อ (&deg;C)</label>
                 <input type="number" v-model="pmFormData.thermoTemp" class="w-full border rounded-xl p-2 font-mono font-black text-sm text-tangerine-500" :class="isDarkMode ? 'bg-darkBg border-slate-700' : 'bg-white border-lightBorder'">
               </div>
               <div>
-                <label class="block font-bold mb-1" :class="isDarkMode ? 'text-slate-300' : 'text-slate-700'">แรงดันก๊าซ SF6 (MPa)</label>
+                <label class="block font-bold mb-1">แรงดันก๊าซ SF6 (MPa)</label>
                 <input type="number" step="0.01" v-model="pmFormData.sf6Pressure" class="w-full border rounded-xl p-2 font-mono font-black text-sm text-tangerine-500" :class="isDarkMode ? 'bg-darkBg border-slate-700' : 'bg-white border-lightBorder'">
               </div>
             </div>
           </div>
 
-          <!-- Pass/Fail Banner -->
           <div class="p-4 rounded-2xl flex items-center justify-between border" :class="isFormPassed ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-600' : 'bg-rose-500/10 border-rose-500/40 text-rose-600'">
             <div class="flex items-center gap-2 font-black text-xs sm:text-sm">
               <i class="fa-solid" :class="isFormPassed ? 'fa-circle-check text-emerald-500' : 'fa-circle-xmark text-rose-500'"></i>
@@ -536,7 +557,7 @@
 
     </main>
 
-    <!-- MOBILE BOTTOM NAVIGATION BAR -->
+    <!-- MOBILE BOTTOM NAVIGATION -->
     <nav class="lg:hidden fixed bottom-0 left-0 right-0 border-t z-40 flex items-center justify-around py-2" :class="isDarkMode ? 'bg-[#15131c] border-darkBorder text-slate-400' : 'bg-white border-lightBorder text-slate-600'">
       <button @click="switchTab('schedule')" class="flex flex-col items-center gap-1 text-[10px] font-black" :class="currentTab === 'schedule' ? 'text-tangerine-500' : ''">
         <i class="fa-solid fa-calendar-days text-sm"></i> แผน PM
@@ -558,7 +579,7 @@
     <!-- MODAL: CREATE WORK ORDER -->
     <div v-if="openNewWOModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <div class="border rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl" :class="isDarkMode ? 'bg-darkCard border-darkBorder text-slate-200' : 'bg-white border-lightBorder text-slate-900'">
-        <h3 class="text-base font-black mb-4" :class="isDarkMode ? 'text-white' : 'text-slate-900'">ออกใบสั่งงานบำรุงรักษา</h3>
+        <h3 class="text-base font-black mb-4">ออกใบสั่งงานบำรุงรักษา</h3>
         <div class="space-y-3 text-xs font-semibold">
           <div>
             <label class="block font-bold mb-1">ชื่องาน</label>
@@ -602,7 +623,7 @@
     <!-- MODAL: FIELD PM GEOFENCE -->
     <div v-if="activeFieldPM" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <div class="border rounded-3xl max-w-lg w-full p-5 shadow-2xl space-y-4" :class="isDarkMode ? 'bg-darkCard border-darkBorder text-slate-200' : 'bg-white border-lightBorder text-slate-900'">
-        <div class="flex justify-between items-start border-b pb-3" :class="isDarkMode ? 'border-darkBorder' : 'border-lightBorder'">
+        <div class="flex justify-between items-start border-b pb-3">
           <div>
             <span class="text-[10px] font-black bg-emerald-500/20 text-emerald-500 border border-emerald-500/30 px-2 py-0.5 rounded-full">
               GPS Verified (< 50m)
@@ -611,7 +632,7 @@
           </div>
           <button @click="activeFieldPM = null"><i class="fa-solid fa-xmark text-lg"></i></button>
         </div>
-        <div class="p-3 rounded-2xl border text-xs space-y-2" :class="isDarkMode ? 'bg-slate-900/60 border-darkBorder' : 'bg-tangerine-50 border-tangerine-200'">
+        <div class="p-3 rounded-2xl border text-xs space-y-2">
           <label class="flex items-center gap-2 cursor-pointer">
             <input type="checkbox" checked class="rounded text-tangerine-500">
             <span>ตรวจสภาพภายนอกและรอยรั่วซึม</span>
@@ -639,6 +660,8 @@
         return {
           isDarkMode: false,
           currentTab: 'schedule',
+          selectedYear: 2026,
+          availableYears: [2023, 2024, 2025, 2026, 2027, 2028],
           openNewWOModal: false,
           activeFormWO: null,
           selectedCp: null,
@@ -679,12 +702,45 @@
             sf6Pressure: 0.62
           },
 
-          scheduleMatrix: [
-            { id: 1, name: 'หม้อแปลงไฟฟ้ากำลัง (Power Transformer 22kV)', cycle: 'รายปี (1Y)', months: ['DONE', '-', '-', 'PLANNED', '-', '-', 'DONE', '-', '-', 'PLANNED', '-', '-'] },
-            { id: 2, name: 'ตู้สวิตช์เกียร์และ RMU (Ring Main Unit)', cycle: 'ราย 6 เดือน (6M)', months: ['DONE', '-', '-', '-', '-', 'DONE', '-', '-', '-', '-', '-', 'PLANNED'] },
-            { id: 3, name: 'รีเลย์ป้องกันและตู้คอนโทรล (Protection Relays)', cycle: 'ราย 1 ปี (1Y)', months: ['-', 'DONE', '-', '-', '-', '-', '-', 'PLANNED', '-', '-', '-', '-'] },
-            { id: 4, name: 'คาปาซิเตอร์แบงก์และ MDB แรงต่ำ (Capacitor Bank)', cycle: 'ราย 3 เดือน (3M)', months: ['DONE', '-', '-', 'DONE', '-', '-', 'DONE', '-', '-', 'PLANNED', '-', '-'] }
-          ],
+          // Multi-Year Master Matrix Database
+          multiYearSchedules: {
+            2023: [
+              { id: 1, name: 'หม้อแปลงไฟฟ้ากำลัง 22kV', cycle: 'รายปี (1Y)', months: ['DONE', '-', '-', 'DONE', '-', '-', 'DONE', '-', '-', 'DONE', '-', '-'] },
+              { id: 2, name: 'ตู้สวิตช์เกียร์และ RMU 24kV', cycle: 'ราย 6 เดือน (6M)', months: ['DONE', '-', '-', '-', '-', 'DONE', '-', '-', '-', '-', '-', 'DONE'] },
+              { id: 3, name: 'รีเลย์ป้องกันและตู้คอนโทรล', cycle: 'ราย 1 ปี (1Y)', months: ['-', 'DONE', '-', '-', '-', '-', '-', 'DONE', '-', '-', '-', '-'] },
+              { id: 4, name: 'คาปาซิเตอร์แบงก์และ MDB', cycle: 'ราย 3 เดือน (3M)', months: ['DONE', '-', '-', 'DONE', '-', '-', 'DONE', '-', '-', 'DONE', '-', '-'] }
+            ],
+            2024: [
+              { id: 1, name: 'หม้อแปลงไฟฟ้ากำลัง 22kV', cycle: 'รายปี (1Y)', months: ['DONE', '-', '-', 'DONE', '-', '-', 'DONE', '-', '-', 'OVERDUE', '-', '-'] },
+              { id: 2, name: 'ตู้สวิตช์เกียร์และ RMU 24kV', cycle: 'ราย 6 เดือน (6M)', months: ['DONE', '-', '-', '-', '-', 'DONE', '-', '-', '-', '-', '-', 'DONE'] },
+              { id: 3, name: 'รีเลย์ป้องกันและตู้คอนโทรล', cycle: 'ราย 1 ปี (1Y)', months: ['-', 'DONE', '-', '-', '-', '-', '-', 'DONE', '-', '-', '-', '-'] },
+              { id: 4, name: 'คาปาซิเตอร์แบงก์และ MDB', cycle: 'ราย 3 เดือน (3M)', months: ['DONE', '-', '-', 'DONE', '-', '-', 'DONE', '-', '-', 'DONE', '-', '-'] }
+            ],
+            2025: [
+              { id: 1, name: 'หม้อแปลงไฟฟ้ากำลัง 22kV', cycle: 'รายปี (1Y)', months: ['DONE', '-', '-', 'DONE', '-', '-', 'DONE', '-', '-', 'DONE', '-', '-'] },
+              { id: 2, name: 'ตู้สวิตช์เกียร์และ RMU 24kV', cycle: 'ราย 6 เดือน (6M)', months: ['DONE', '-', '-', '-', '-', 'DONE', '-', '-', '-', '-', '-', 'DONE'] },
+              { id: 3, name: 'รีเลย์ป้องกันและตู้คอนโทรล', cycle: 'ราย 1 ปี (1Y)', months: ['-', 'DONE', '-', '-', '-', '-', '-', 'DONE', '-', '-', '-', '-'] },
+              { id: 4, name: 'คาปาซิเตอร์แบงก์และ MDB', cycle: 'ราย 3 เดือน (3M)', months: ['DONE', '-', '-', 'DONE', '-', '-', 'DONE', '-', '-', 'DONE', '-', '-'] }
+            ],
+            2026: [
+              { id: 1, name: 'หม้อแปลงไฟฟ้ากำลัง 22kV', cycle: 'รายปี (1Y)', months: ['DONE', '-', '-', 'PLANNED', '-', '-', 'DONE', '-', '-', 'PLANNED', '-', '-'] },
+              { id: 2, name: 'ตู้สวิตช์เกียร์และ RMU 24kV', cycle: 'ราย 6 เดือน (6M)', months: ['DONE', '-', '-', '-', '-', 'DONE', '-', '-', '-', '-', '-', 'PLANNED'] },
+              { id: 3, name: 'รีเลย์ป้องกันและตู้คอนโทรล', cycle: 'ราย 1 ปี (1Y)', months: ['-', 'DONE', '-', '-', '-', '-', '-', 'PLANNED', '-', '-', '-', '-'] },
+              { id: 4, name: 'คาปาซิเตอร์แบงก์และ MDB', cycle: 'ราย 3 เดือน (3M)', months: ['DONE', '-', '-', 'DONE', '-', '-', 'DONE', '-', '-', 'PLANNED', '-', '-'] }
+            ],
+            2027: [
+              { id: 1, name: 'หม้อแปลงไฟฟ้ากำลัง 22kV', cycle: 'รายปี (1Y)', months: ['PLANNED', '-', '-', 'PLANNED', '-', '-', 'PLANNED', '-', '-', 'PLANNED', '-', '-'] },
+              { id: 2, name: 'ตู้สวิตช์เกียร์และ RMU 24kV', cycle: 'ราย 6 เดือน (6M)', months: ['PLANNED', '-', '-', '-', '-', 'PLANNED', '-', '-', '-', '-', '-', 'PLANNED'] },
+              { id: 3, name: 'รีเลย์ป้องกันและตู้คอนโทรล', cycle: 'ราย 1 ปี (1Y)', months: ['-', 'PLANNED', '-', '-', '-', '-', '-', 'PLANNED', '-', '-', '-', '-'] },
+              { id: 4, name: 'คาปาซิเตอร์แบงก์และ MDB', cycle: 'ราย 3 เดือน (3M)', months: ['PLANNED', '-', '-', 'PLANNED', '-', '-', 'PLANNED', '-', '-', 'PLANNED', '-', '-'] }
+            ],
+            2028: [
+              { id: 1, name: 'หม้อแปลงไฟฟ้ากำลัง 22kV', cycle: 'รายปี (1Y)', months: ['PLANNED', '-', '-', 'PLANNED', '-', '-', 'PLANNED', '-', '-', 'PLANNED', '-', '-'] },
+              { id: 2, name: 'ตู้สวิตช์เกียร์และ RMU 24kV', cycle: 'ราย 6 เดือน (6M)', months: ['PLANNED', '-', '-', '-', '-', 'PLANNED', '-', '-', '-', '-', '-', 'PLANNED'] },
+              { id: 3, name: 'รีเลย์ป้องกันและตู้คอนโทรล', cycle: 'ราย 1 ปี (1Y)', months: ['-', 'PLANNED', '-', '-', '-', '-', '-', 'PLANNED', '-', '-', '-', '-'] },
+              { id: 4, name: 'คาปาซิเตอร์แบงก์และ MDB', cycle: 'ราย 3 เดือน (3M)', months: ['PLANNED', '-', '-', 'PLANNED', '-', '-', 'PLANNED', '-', '-', 'PLANNED', '-', '-'] }
+            ]
+          },
 
           feeders: [
             { id: 'F-01', name: 'สายป้อนสุขุมวิท (Substation A)', voltage: '22kV', trips: 1, duration: 25, rootCause: 'กิ่งไม้แตะสายช่วงพายุ' },
@@ -722,6 +778,21 @@
         };
       },
       computed: {
+        currentScheduleMatrix() {
+          return this.multiYearSchedules[this.selectedYear] || this.multiYearSchedules[2026];
+        },
+        currentYearStats() {
+          let doneCount = 0;
+          let totalCount = 0;
+          this.currentScheduleMatrix.forEach(row => {
+            row.months.forEach(m => {
+              if (m === 'DONE') { doneCount++; totalCount++; }
+              else if (m === 'PLANNED' || m === 'OVERDUE') { totalCount++; }
+            });
+          });
+          const comp = totalCount ? Math.round((doneCount / totalCount) * 100) : 100;
+          return { compliance: this.selectedYear > 2026 ? 100 : (comp || 94) };
+        },
         isFormPassed() {
           return this.pmFormData.meggerHV_E >= 100 &&
                  this.pmFormData.groundResistance <= 5.0 &&
@@ -850,7 +921,7 @@
           }
         },
         triggerScheduleWO(item) {
-          this.newWO.title = `PM ตามรอบ ${item.cycle} - ${item.name}`;
+          this.newWO.title = `PM ตามรอบ ${item.cycle} ปี ${this.selectedYear} - ${item.name}`;
           this.newWO.asset = item.name;
           this.newWO.tag = 'TAG-AUTO';
           this.openNewWOModal = true;
@@ -865,7 +936,7 @@
         saveNewWorkOrder() {
           if (!this.newWO.title) return;
           this.workOrders.unshift({
-            id: `WO-${this.newWO.type}-2026-${Math.floor(100 + Math.random() * 900)}`,
+            id: `WO-${this.newWO.type}-${this.selectedYear}-${Math.floor(100 + Math.random() * 900)}`,
             type: this.newWO.type,
             title: this.newWO.title,
             asset: this.newWO.asset || 'อุปกรณ์ไฟฟ้า',
@@ -923,8 +994,8 @@
 
         exportScheduleCSV() {
           const header = ['หมวดหมู่อุปกรณ์', 'วงรอบ', 'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
-          const data = this.scheduleMatrix.map(s => [s.name, s.cycle, ...s.months]);
-          this.exportCSV(`Master_PM_Schedule_${new Date().toISOString().slice(0,10)}.csv`, [header, ...data]);
+          const data = this.currentScheduleMatrix.map(s => [s.name, s.cycle, ...s.months]);
+          this.exportCSV(`Master_PM_Schedule_${this.selectedYear}.csv`, [header, ...data]);
         },
 
         exportGISGeoJSON() {
