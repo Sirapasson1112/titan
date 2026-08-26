@@ -9,24 +9,27 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
 <style>
 :root{
-  --bg:#0F1720;
-  --surface:#16212C;
-  --surface-2:#1D2B38;
-  --surface-3:#243646;
-  --border:#2A3B4A;
-  --text:#E8EDF2;
-  --text-dim:#8FA1B0;
-  --text-faint:#5C7180;
-  --amber:#F2A93B;
-  --amber-dim:#4A3A1E;
-  --teal:#2FD4C4;
-  --teal-dim:#173733;
-  --danger:#EF5A5A;
-  --danger-dim:#402323;
-  --success:#33C17A;
-  --font-display:'Space Grotesk',sans-serif;
-  --font-body:'IBM Plex Sans Thai','IBM Plex Sans',sans-serif;
-  --font-mono:'IBM Plex Mono',monospace;
+  /* Modern Soft / Slate Theme - สบายตา ไม่ฉูดฉาด */
+  --bg: #F5F7FB;
+  --surface: #FFFFFF;
+  --surface-2: #F0F3F8;
+  --surface-3: #E4E9F2;
+  --border: #E2E8F0;
+  --text: #1E293B;
+  --text-dim: #64748B;
+  --text-faint: #94A3B8;
+  --amber: #D97706;
+  --amber-dim: #FEF3C7;
+  --teal: #0D9488;
+  --teal-dim: #CCFBF1;
+  --danger: #E11D48;
+  --danger-dim: #FFE4E6;
+  --success: #10B981;
+  --primary-accent: #2563EB;
+  --primary-dim: #DBEAFE;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'IBM Plex Sans Thai', 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{
@@ -40,7 +43,7 @@ body{
 a{color:inherit;text-decoration:none;}
 button{font-family:inherit;cursor:pointer;}
 ::-webkit-scrollbar{width:8px;height:8px;}
-::-webkit-scrollbar-track{background:var(--surface);}
+::-webkit-scrollbar-track{background:var(--bg);}
 ::-webkit-scrollbar-thumb{background:var(--surface-3);border-radius:4px;}
 
 /* ===== Layout shell ===== */
@@ -56,44 +59,45 @@ button{font-family:inherit;cursor:pointer;}
   display:flex;align-items:center;gap:10px;
 }
 .brand-mark{
-  width:34px;height:34px;border-radius:7px;
-  background:linear-gradient(135deg,var(--amber),#c97f1c);
+  width:34px;height:34px;border-radius:8px;
+  background:linear-gradient(135deg, #2563EB, #0D9488);
   display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-display);font-weight:700;color:#1a1206;font-size:15px;
+  font-family:var(--font-display);font-weight:700;color:#FFFFFF;font-size:15px;
   flex-shrink:0;
+  box-shadow:0 2px 8px rgba(37,99,235,0.25);
 }
-.brand-text{font-family:var(--font-display);font-weight:700;font-size:15.5px;letter-spacing:.02em;}
+.brand-text{font-family:var(--font-display);font-weight:700;font-size:15.5px;letter-spacing:.02em;color:var(--text);}
 .brand-sub{font-size:10.5px;color:var(--text-faint);letter-spacing:.06em;text-transform:uppercase;margin-top:1px;}
 
-.nav{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;}
+.nav{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:3px;overflow-y:auto;}
 .nav-item{
   display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:8px;
   color:var(--text-dim);font-size:13.5px;font-weight:500;border:none;background:transparent;
-  width:100%;text-align:left;transition:background .12s, color .12s;
+  width:100%;text-align:left;transition:all .15s ease;
 }
 .nav-item:hover{background:var(--surface-2);color:var(--text);}
-.nav-item.active{background:var(--surface-2);color:var(--amber);}
+.nav-item.active{background:var(--primary-dim);color:var(--primary-accent);font-weight:600;}
 .nav-icon{width:18px;height:18px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
 .nav-item svg{width:100%;height:100%;}
 
 .sidebar-foot{padding:14px 18px;border-top:1px solid var(--border);}
 .status-pill{
-  display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--text-faint);
+  display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--text-dim);
 }
-.dot-live{width:7px;height:7px;border-radius:50%;background:var(--success);box-shadow:0 0 0 3px rgba(51,193,122,.18);}
+.dot-live{width:7px;height:7px;border-radius:50%;background:var(--success);box-shadow:0 0 0 3px rgba(16,185,129,.2);}
 
 .main{flex:1;min-width:0;display:flex;flex-direction:column;}
 .topbar{
   height:58px;flex-shrink:0;border-bottom:1px solid var(--border);
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 22px;background:rgba(15,23,32,.85);backdrop-filter:blur(6px);
+  padding:0 22px;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);
   position:sticky;top:0;z-index:20;
 }
 .page-title{font-family:var(--font-display);font-weight:600;font-size:17px;}
 .page-sub{font-size:11.5px;color:var(--text-faint);margin-top:1px;}
 .topbar-right{display:flex;align-items:center;gap:14px;}
 .hamburger{display:none;background:none;border:1px solid var(--border);border-radius:7px;width:36px;height:36px;color:var(--text);align-items:center;justify-content:center;}
-.avatar{width:32px;height:32px;border-radius:50%;background:var(--surface-3);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:var(--teal);border:1px solid var(--border);}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--primary-dim);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--primary-accent);border:1px solid var(--border);}
 
 .view{padding:22px;flex:1;}
 .view-section{display:none;}
@@ -105,6 +109,7 @@ button{font-family:inherit;cursor:pointer;}
 .kpi-card{
   background:var(--surface);border:1px solid var(--border);border-radius:12px;
   padding:16px 18px;position:relative;overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,0.03);
 }
 .kpi-label{font-size:11.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.05em;font-weight:600;}
 .kpi-value{font-family:var(--font-display);font-size:28px;font-weight:700;margin-top:8px;}
@@ -113,50 +118,54 @@ button{font-family:inherit;cursor:pointer;}
 .kpi-delta.up{color:var(--danger);}
 .kpi-delta.down{color:var(--success);}
 .kpi-delta.flat{color:var(--text-faint);}
-.kpi-accent{position:absolute;left:0;top:0;bottom:0;width:3px;}
+.kpi-accent{position:absolute;left:0;top:0;bottom:0;width:4px;}
 
 /* ===== panel ===== */
-.panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:16px;}
+.panel{
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:18px 20px;margin-bottom:16px;
+  box-shadow:0 1px 3px rgba(0,0,0,0.03);
+}
 .panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
 .panel-title{font-family:var(--font-display);font-weight:600;font-size:14.5px;}
 .panel-title span{color:var(--text-faint);font-family:var(--font-body);font-weight:400;font-size:12px;margin-left:8px;}
 .grid-2{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;}
 
 /* ===== one-line diagram ===== */
-.feeder-strip{margin-bottom:10px;}
+.feeder-strip{margin-bottom:12px;background:var(--surface-2);padding:10px 14px;border-radius:8px;}
 .feeder-strip:last-child{margin-bottom:0;}
 .feeder-strip-label{font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);margin-bottom:7px;display:flex;justify-content:space-between;}
 .feeder-strip-label b{color:var(--text);}
-.line-track{display:flex;align-items:center;height:46px;position:relative;}
+.line-track{display:flex;align-items:center;height:42px;position:relative;}
 .line-seg{flex:1;height:2px;background:var(--border);}
 .line-node{
-  width:15px;height:15px;border-radius:4px;flex-shrink:0;position:relative;
-  border:2px solid var(--surface);cursor:default;
+  width:16px;height:16px;border-radius:4px;flex-shrink:0;position:relative;
+  border:2px solid var(--surface);cursor:default;box-shadow:0 1px 2px rgba(0,0,0,0.1);
 }
 .line-node.ok{background:var(--teal);}
 .line-node.warn{background:var(--amber);}
 .line-node.overdue{background:var(--danger);}
-.line-node.sub{border-radius:50%;width:17px;height:17px;}
+.line-node.sub{border-radius:50%;width:18px;height:18px;}
 .line-node::after{
-  content:attr(data-tip);position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
-  background:var(--surface-3);border:1px solid var(--border);padding:5px 8px;border-radius:6px;
+  content:attr(data-tip);position:absolute;bottom:22px;left:50%;transform:translateX(-50%);
+  background:var(--text);border:1px solid var(--border);padding:4px 8px;border-radius:6px;
   font-size:10.5px;font-family:var(--font-mono);white-space:nowrap;opacity:0;pointer-events:none;
-  transition:opacity .12s;z-index:5;color:var(--text);
+  transition:opacity .12s;z-index:5;color:#FFFFFF;box-shadow:0 4px 10px rgba(0,0,0,0.15);
 }
 .line-node:hover::after{opacity:1;}
-.legend-row{display:flex;gap:16px;margin-top:12px;flex-wrap:wrap;}
-.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-dim);}
-.legend-swatch{width:9px;height:9px;border-radius:2px;}
+.legend-row{display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text-dim);}
+.legend-swatch{width:10px;height:10px;border-radius:3px;}
 
 /* ===== table ===== */
 .table-wrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;font-size:13px;}
 th{
-  text-align:left;padding:9px 12px;color:var(--text-faint);font-weight:600;
+  text-align:left;padding:10px 12px;color:var(--text-dim);font-weight:600;
   font-size:11px;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--border);
-  white-space:nowrap;
+  background:var(--surface-2);white-space:nowrap;
 }
-td{padding:11px 12px;border-bottom:1px solid var(--border);white-space:nowrap;}
+td{padding:12px 12px;border-bottom:1px solid var(--border);white-space:nowrap;}
 tr:last-child td{border-bottom:none;}
 tbody tr{transition:background .1s;}
 tbody tr:hover{background:var(--surface-2);}
@@ -173,24 +182,26 @@ tbody tr:hover{background:var(--surface-2);}
 .badge.overdue{background:var(--danger-dim);color:var(--danger);}
 .badge.overdue .bdot{background:var(--danger);}
 .badge.done{background:var(--teal-dim);color:var(--teal);}
-.badge.pm{background:#1e2c40;color:#7fb8e8;}
+.badge.pm{background:var(--primary-dim);color:var(--primary-accent);}
 .badge.cm{background:var(--amber-dim);color:var(--amber);}
 .badge.em{background:var(--danger-dim);color:var(--danger);}
 
 /* ===== filters / controls ===== */
 .controls-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
 .seg{display:flex;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:3px;gap:2px;}
-.seg button{background:none;border:none;color:var(--text-dim);font-size:12.5px;font-weight:500;padding:6px 12px;border-radius:6px;}
-.seg button.active{background:var(--surface-3);color:var(--text);}
+.seg button{background:none;border:none;color:var(--text-dim);font-size:12.5px;font-weight:500;padding:6px 12px;border-radius:6px;transition:all .15s;}
+.seg button.active{background:var(--surface);color:var(--text);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
 .select, .input{
-  background:var(--surface-2);border:1px solid var(--border);color:var(--text);
+  background:var(--surface);border:1px solid var(--border);color:var(--text);
   border-radius:8px;padding:8px 12px;font-size:12.5px;font-family:inherit;
 }
 .btn{
-  background:var(--amber);color:#1a1206;border:none;border-radius:8px;padding:8px 14px;
-  font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;gap:6px;
+  background:var(--primary-accent);color:#FFFFFF;border:none;border-radius:8px;padding:8px 14px;
+  font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:6px;transition:opacity .15s;
 }
-.btn.ghost{background:var(--surface-2);color:var(--text);border:1px solid var(--border);}
+.btn:hover{opacity:0.9;}
+.btn.ghost{background:var(--surface);color:var(--text);border:1px solid var(--border);}
+.btn.ghost:hover{background:var(--surface-2);}
 
 /* ===== PM checklist cards ===== */
 .pm-cal{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;}
@@ -205,14 +216,14 @@ tbody tr:hover{background:var(--surface-2);}
 
 .tmpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
 .tmpl-card{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
-.tmpl-card h4{font-family:var(--font-display);font-size:13px;margin-bottom:4px;}
-.tmpl-freq{font-size:11px;color:var(--amber);font-family:var(--font-mono);margin-bottom:9px;}
+.tmpl-card h4{font-family:var(--font-display);font-size:13.5px;margin-bottom:4px;color:var(--text);}
+.tmpl-freq{font-size:11px;color:var(--primary-accent);font-family:var(--font-mono);font-weight:600;margin-bottom:9px;}
 .tmpl-card ol{padding-left:16px;font-size:11.5px;color:var(--text-dim);display:flex;flex-direction:column;gap:3px;}
 
 /* ===== cost analysis ===== */
 .chart-box{position:relative;height:260px;}
 .chart-box.short{height:200px;}
-.cost-legend-note{font-size:11px;color:var(--text-faint);margin-top:8px;}
+.cost-legend-note{font-size:11.5px;color:var(--text-dim);margin-top:8px;line-height:1.4;}
 
 /* ===== mobile bottom nav ===== */
 .bottom-nav{display:none;}
@@ -224,7 +235,7 @@ tbody tr:hover{background:var(--surface-2);}
 @media (max-width: 760px){
   .sidebar{
     position:fixed;left:0;top:0;bottom:0;z-index:50;transform:translateX(-100%);
-    transition:transform .2s ease;box-shadow:20px 0 40px rgba(0,0,0,.4);
+    transition:transform .2s ease;box-shadow:10px 0 30px rgba(0,0,0,.15);
   }
   .sidebar.open{transform:translateX(0);}
   .hamburger{display:flex;}
@@ -238,8 +249,8 @@ tbody tr:hover{background:var(--surface-2);}
   }
   .bn-item{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text-faint);background:none;border:none;font-size:9.5px;font-weight:600;padding:6px;flex:1;}
   .bn-item svg{width:19px;height:19px;}
-  .bn-item.active{color:var(--amber);}
-  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:45;}
+  .bn-item.active{color:var(--primary-accent);}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:45;}
   .overlay.show{display:block;}
   .panel-head{align-items:flex-start;}
 }
@@ -423,7 +434,7 @@ function viewDashboard(){
       <div class="kpi-label">ใกล้ครบกำหนด (30 วัน)</div>
       <div class="kpi-value" style="color:var(--amber)">${warn} <small>จุด</small></div>
       <div class="kpi-delta flat">อยู่ในแผนไตรมาสนี้</div></div>
-    <div class="kpi-card"><div class="kpi-accent" style="background:var(--teal)"></div>
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--primary-accent)"></div>
       <div class="kpi-label">ต้นทุนบำรุงรักษาสะสม YTD</div>
       <div class="kpi-value">${thb(ytdCost)}</div>
       <div class="kpi-delta down">PM คิดเป็น ${Math.round(pmCost/ytdCost*100)}% ของต้นทุน</div></div>
@@ -448,7 +459,7 @@ function viewDashboard(){
       <div class="legend-item"><span class="legend-swatch" style="background:var(--teal)"></span>ปกติ</div>
       <div class="legend-item"><span class="legend-swatch" style="background:var(--amber)"></span>ใกล้ครบกำหนด</div>
       <div class="legend-item"><span class="legend-swatch" style="background:var(--danger)"></span>เกินกำหนด</div>
-      <div class="legend-item">● วงกลม = Unit Substation &nbsp; ■ สี่เหลี่ยม = LBS/อุปกรณ์อื่น</div>
+      <div class="legend-item" style="margin-left:auto;">● วงกลม = Unit Substation &nbsp; ■ สี่เหลี่ยม = LBS/อุปกรณ์อื่น</div>
     </div>
   </div>
 
@@ -476,8 +487,8 @@ function mountDashboardCharts(){
     data:{
       labels:['มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.'],
       datasets:[
-        {label:'PM', data:[14200,15800,16200,17100,15600,13600], borderColor:'#2FD4C4', backgroundColor:'rgba(47,212,196,.12)', tension:.35, fill:true, borderWidth:2, pointRadius:3},
-        {label:'CM/ฉุกเฉิน', data:[8200,6100,21400,9800,42300,18500], borderColor:'#F2A93B', backgroundColor:'rgba(242,169,59,.10)', tension:.35, fill:true, borderWidth:2, pointRadius:3},
+        {label:'PM', data:[14200,15800,16200,17100,15600,13600], borderColor:'#0D9488', backgroundColor:'rgba(13,148,136,.08)', tension:.35, fill:true, borderWidth:2, pointRadius:3},
+        {label:'CM/ฉุกเฉิน', data:[8200,6100,21400,9800,42300,18500], borderColor:'#D97706', backgroundColor:'rgba(217,119,6,.06)', tension:.35, fill:true, borderWidth:2, pointRadius:3},
       ]
     },
     options: chartOpts()
@@ -583,11 +594,11 @@ function viewCost(){
 
   return `
   <div class="kpi-grid">
-    <div class="kpi-card"><div class="kpi-accent" style="background:var(--teal)"></div>
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--primary-accent)"></div>
       <div class="kpi-label">ต้นทุนรวม YTD</div><div class="kpi-value">${thb(totalCost)}</div>
       <div class="kpi-delta flat">8 ใบสั่งงานในระบบ</div></div>
-    <div class="kpi-card"><div class="kpi-accent" style="background:#7fb8e8"></div>
-      <div class="kpi-label">ต้นทุน PM (ตามแผน)</div><div class="kpi-value" style="color:#7fb8e8">${thb(pmCost)}</div>
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--teal)"></div>
+      <div class="kpi-label">ต้นทุน PM (ตามแผน)</div><div class="kpi-value" style="color:var(--teal)">${thb(pmCost)}</div>
       <div class="kpi-delta down">${Math.round(pmCost/totalCost*100)}% ของต้นทุนรวม</div></div>
     <div class="kpi-card"><div class="kpi-accent" style="background:var(--amber)"></div>
       <div class="kpi-label">ต้นทุน CM (แก้ไข)</div><div class="kpi-value" style="color:var(--amber)">${thb(cmCost)}</div>
@@ -629,11 +640,13 @@ function viewCost(){
 function chartOpts(extra={}){
   return Object.assign({
     responsive:true, maintainAspectRatio:false,
-    plugins:{ legend:{ labels:{ color:'#8FA1B0', font:{family:"'IBM Plex Sans Thai'",size:11} } },
-      tooltip:{ backgroundColor:'#1D2B38', borderColor:'#2A3B4A', borderWidth:1, titleColor:'#E8EDF2', bodyColor:'#E8EDF2' } },
+    plugins:{
+      legend:{ labels:{ color:'#64748B', font:{family:"'IBM Plex Sans Thai'",size:11} } },
+      tooltip:{ backgroundColor:'#FFFFFF', borderColor:'#E2E8F0', borderWidth:1, titleColor:'#1E293B', bodyColor:'#1E293B', boxShadow:'0 4px 12px rgba(0,0,0,0.1)' }
+    },
     scales:{
-      x:{ ticks:{ color:'#8FA1B0', font:{size:11} }, grid:{ color:'#2A3B4A', drawBorder:false } },
-      y:{ ticks:{ color:'#8FA1B0', font:{size:11} }, grid:{ color:'#2A3B4A', drawBorder:false } }
+      x:{ ticks:{ color:'#64748B', font:{size:11} }, grid:{ color:'#F0F3F8', drawBorder:false } },
+      y:{ ticks:{ color:'#64748B', font:{size:11} }, grid:{ color:'#F0F3F8', drawBorder:false } }
     }
   }, extra);
 }
@@ -649,7 +662,7 @@ function mountCostCharts(){
   if(c1){
     new Chart(c1, { type:'bar',
       data:{ labels:Object.keys(byType), datasets:[{ label:'บาท', data:Object.values(byType),
-        backgroundColor:'#F2A93B', borderRadius:6, maxBarThickness:42 }] },
+        backgroundColor:'#2563EB', borderRadius:6, maxBarThickness:42 }] },
       options: chartOpts({ plugins:{legend:{display:false}} })
     });
   }
@@ -660,9 +673,9 @@ function mountCostCharts(){
     const em = WORK_ORDERS.filter(w=>w.type==='EM').reduce((a,w)=>a+w.cost,0);
     new Chart(c2, { type:'doughnut',
       data:{ labels:['PM ตามแผน','CM แก้ไข','ฉุกเฉิน'], datasets:[{ data:[pm,cm,em],
-        backgroundColor:['#7fb8e8','#F2A93B','#EF5A5A'], borderColor:'#16212C', borderWidth:3 }] },
+        backgroundColor:['#0D9488','#D97706','#E11D48'], borderColor:'#FFFFFF', borderWidth:3 }] },
       options:{ responsive:true, maintainAspectRatio:false, cutout:'62%',
-        plugins:{ legend:{ position:'bottom', labels:{ color:'#8FA1B0', font:{family:"'IBM Plex Sans Thai'",size:11}, padding:14 } } } }
+        plugins:{ legend:{ position:'bottom', labels:{ color:'#64748B', font:{family:"'IBM Plex Sans Thai'",size:11}, padding:14 } } } }
     });
   }
   const c3 = document.getElementById('chartByFeeder');
@@ -672,7 +685,7 @@ function mountCostCharts(){
     WORK_ORDERS.forEach(w=>byFeeder[w.feeder]=(byFeeder[w.feeder]||0)+w.cost);
     new Chart(c3, { type:'bar',
       data:{ labels:FEEDERS.map(f=>f.id+' · '+f.name), datasets:[{ label:'ต้นทุน (บาท)', data:Object.values(byFeeder),
-        backgroundColor:'#2FD4C4', borderRadius:6, maxBarThickness:52 }] },
+        backgroundColor:'#0D9488', borderRadius:6, maxBarThickness:52 }] },
       options: chartOpts({ indexAxis:'y', plugins:{legend:{display:false}} })
     });
   }
