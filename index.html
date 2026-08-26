@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRID-CARE | ระบบบำรุงรักษาสายป้อนและอุปกรณ์ระบบจำหน่าย</title>
+<title>WCM-CMMS | การไฟฟ้านครหลวง เขตสมุทรปราการ (กบจ.ฟขป.)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
 <style>
 :root{
-  /* Modern Soft / Slate Theme - สบายตา ไม่ฉูดฉาด */
+  /* Soft Slate / Teal Theme สบายตา ไม่ฉูดฉาด */
   --bg: #F5F7FB;
   --surface: #FFFFFF;
-  --surface-2: #F0F3F8;
-  --surface-3: #E4E9F2;
-  --border: #E2E8F0;
+  --surface-2: #F0F4F8;
+  --surface-3: #E2E8F0;
+  --border: #E1E6ED;
   --text: #1E293B;
   --text-dim: #64748B;
   --text-faint: #94A3B8;
@@ -49,30 +49,29 @@ button{font-family:inherit;cursor:pointer;}
 /* ===== Layout shell ===== */
 .shell{display:flex;min-height:100vh;}
 .sidebar{
-  width:230px;flex-shrink:0;background:var(--surface);
+  width:245px;flex-shrink:0;background:var(--surface);
   border-right:1px solid var(--border);
   display:flex;flex-direction:column;
   position:sticky;top:0;height:100vh;
 }
 .brand{
-  padding:20px 18px 16px;border-bottom:1px solid var(--border);
+  padding:18px 16px 14px;border-bottom:1px solid var(--border);
   display:flex;align-items:center;gap:10px;
 }
 .brand-mark{
-  width:34px;height:34px;border-radius:8px;
+  width:36px;height:36px;border-radius:8px;
   background:linear-gradient(135deg, #2563EB, #0D9488);
   display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-display);font-weight:700;color:#FFFFFF;font-size:15px;
-  flex-shrink:0;
-  box-shadow:0 2px 8px rgba(37,99,235,0.25);
+  font-family:var(--font-display);font-weight:700;color:#FFFFFF;font-size:14px;
+  flex-shrink:0;box-shadow:0 2px 8px rgba(37,99,235,0.2);
 }
-.brand-text{font-family:var(--font-display);font-weight:700;font-size:15.5px;letter-spacing:.02em;color:var(--text);}
-.brand-sub{font-size:10.5px;color:var(--text-faint);letter-spacing:.06em;text-transform:uppercase;margin-top:1px;}
+.brand-text{font-family:var(--font-display);font-weight:700;font-size:14.5px;letter-spacing:.02em;color:var(--text);}
+.brand-sub{font-size:10px;color:var(--text-faint);letter-spacing:.04em;margin-top:1px;}
 
-.nav{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:3px;overflow-y:auto;}
+.nav{flex:1;padding:12px 10px;display:flex;flex-direction:column;gap:3px;overflow-y:auto;}
 .nav-item{
-  display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:8px;
-  color:var(--text-dim);font-size:13.5px;font-weight:500;border:none;background:transparent;
+  display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;
+  color:var(--text-dim);font-size:13px;font-weight:500;border:none;background:transparent;
   width:100%;text-align:left;transition:all .15s ease;
 }
 .nav-item:hover{background:var(--surface-2);color:var(--text);}
@@ -80,9 +79,9 @@ button{font-family:inherit;cursor:pointer;}
 .nav-icon{width:18px;height:18px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
 .nav-item svg{width:100%;height:100%;}
 
-.sidebar-foot{padding:14px 18px;border-top:1px solid var(--border);}
+.sidebar-foot{padding:12px 16px;border-top:1px solid var(--border);}
 .status-pill{
-  display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--text-dim);
+  display:flex;align-items:center;gap:7px;font-size:11px;color:var(--text-dim);
 }
 .dot-live{width:7px;height:7px;border-radius:50%;background:var(--success);box-shadow:0 0 0 3px rgba(16,185,129,.2);}
 
@@ -90,31 +89,33 @@ button{font-family:inherit;cursor:pointer;}
 .topbar{
   height:58px;flex-shrink:0;border-bottom:1px solid var(--border);
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 22px;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);
+  padding:0 22px;background:rgba(255,255,255,.88);backdrop-filter:blur(8px);
   position:sticky;top:0;z-index:20;
 }
-.page-title{font-family:var(--font-display);font-weight:600;font-size:17px;}
+.page-title{font-family:var(--font-display);font-weight:600;font-size:16.5px;}
 .page-sub{font-size:11.5px;color:var(--text-faint);margin-top:1px;}
-.topbar-right{display:flex;align-items:center;gap:14px;}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.user-tag{font-size:11.5px;color:var(--text-dim);text-align:right;}
+.user-tag b{display:block;color:var(--text);font-size:12px;}
 .hamburger{display:none;background:none;border:1px solid var(--border);border-radius:7px;width:36px;height:36px;color:var(--text);align-items:center;justify-content:center;}
-.avatar{width:32px;height:32px;border-radius:50%;background:var(--primary-dim);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--primary-accent);border:1px solid var(--border);}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--primary-dim);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11.5px;font-weight:600;color:var(--primary-accent);border:1px solid var(--border);}
 
-.view{padding:22px;flex:1;}
+.view{padding:20px;flex:1;}
 .view-section{display:none;}
 .view-section.active{display:block;animation:fadein .25s ease;}
 @keyframes fadein{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
 
 /* ===== KPI cards ===== */
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px;}
 .kpi-card{
   background:var(--surface);border:1px solid var(--border);border-radius:12px;
   padding:16px 18px;position:relative;overflow:hidden;
-  box-shadow:0 1px 3px rgba(0,0,0,0.03);
+  box-shadow:0 1px 3px rgba(0,0,0,0.02);
 }
-.kpi-label{font-size:11.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.05em;font-weight:600;}
-.kpi-value{font-family:var(--font-display);font-size:28px;font-weight:700;margin-top:8px;}
-.kpi-value small{font-size:14px;font-weight:500;color:var(--text-dim);}
-.kpi-delta{font-size:11.5px;margin-top:6px;display:flex;align-items:center;gap:5px;}
+.kpi-label{font-size:11px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.05em;font-weight:600;}
+.kpi-value{font-family:var(--font-display);font-size:26px;font-weight:700;margin-top:6px;}
+.kpi-value small{font-size:13px;font-weight:500;color:var(--text-dim);}
+.kpi-delta{font-size:11.5px;margin-top:5px;display:flex;align-items:center;gap:5px;}
 .kpi-delta.up{color:var(--danger);}
 .kpi-delta.down{color:var(--success);}
 .kpi-delta.flat{color:var(--text-faint);}
@@ -124,12 +125,13 @@ button{font-family:inherit;cursor:pointer;}
 .panel{
   background:var(--surface);border:1px solid var(--border);border-radius:12px;
   padding:18px 20px;margin-bottom:16px;
-  box-shadow:0 1px 3px rgba(0,0,0,0.03);
+  box-shadow:0 1px 3px rgba(0,0,0,0.02);
 }
 .panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
 .panel-title{font-family:var(--font-display);font-weight:600;font-size:14.5px;}
 .panel-title span{color:var(--text-faint);font-family:var(--font-body);font-weight:400;font-size:12px;margin-left:8px;}
 .grid-2{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
 
 /* ===== one-line diagram ===== */
 .feeder-strip{margin-bottom:12px;background:var(--surface-2);padding:10px 14px;border-radius:8px;}
@@ -153,7 +155,7 @@ button{font-family:inherit;cursor:pointer;}
   transition:opacity .12s;z-index:5;color:#FFFFFF;box-shadow:0 4px 10px rgba(0,0,0,0.15);
 }
 .line-node:hover::after{opacity:1;}
-.legend-row{display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;}
+.legend-row{display:flex;gap:16px;margin-top:12px;flex-wrap:wrap;}
 .legend-item{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text-dim);}
 .legend-swatch{width:10px;height:10px;border-radius:3px;}
 
@@ -191,10 +193,6 @@ tbody tr:hover{background:var(--surface-2);}
 .seg{display:flex;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:3px;gap:2px;}
 .seg button{background:none;border:none;color:var(--text-dim);font-size:12.5px;font-weight:500;padding:6px 12px;border-radius:6px;transition:all .15s;}
 .seg button.active{background:var(--surface);color:var(--text);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
-.select, .input{
-  background:var(--surface);border:1px solid var(--border);color:var(--text);
-  border-radius:8px;padding:8px 12px;font-size:12.5px;font-family:inherit;
-}
 .btn{
   background:var(--primary-accent);color:#FFFFFF;border:none;border-radius:8px;padding:8px 14px;
   font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:6px;transition:opacity .15s;
@@ -220,17 +218,28 @@ tbody tr:hover{background:var(--surface-2);}
 .tmpl-freq{font-size:11px;color:var(--primary-accent);font-family:var(--font-mono);font-weight:600;margin-bottom:9px;}
 .tmpl-card ol{padding-left:16px;font-size:11.5px;color:var(--text-dim);display:flex;flex-direction:column;gap:3px;}
 
-/* ===== cost analysis ===== */
+/* ===== charts ===== */
 .chart-box{position:relative;height:260px;}
 .chart-box.short{height:200px;}
 .cost-legend-note{font-size:11.5px;color:var(--text-dim);margin-top:8px;line-height:1.4;}
+
+/* ===== WCM gap cards ===== */
+.gap-card{
+  background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;
+}
+.gap-tag{
+  display:inline-block;padding:2px 8px;border-radius:4px;font-size:10.5px;font-weight:600;
+  background:var(--primary-dim);color:var(--primary-accent);margin-bottom:8px;
+}
+.gap-title{font-size:13.5px;font-weight:600;margin-bottom:6px;color:var(--text);}
+.gap-desc{font-size:12px;color:var(--text-dim);line-height:1.45;}
 
 /* ===== mobile bottom nav ===== */
 .bottom-nav{display:none;}
 
 @media (max-width: 980px){
   .kpi-grid{grid-template-columns:repeat(2,1fr);}
-  .grid-2{grid-template-columns:1fr;}
+  .grid-2, .grid-3{grid-template-columns:1fr;}
 }
 @media (max-width: 760px){
   .sidebar{
@@ -268,15 +277,15 @@ tbody tr:hover{background:var(--surface-2);}
 <div class="shell">
   <aside class="sidebar" id="sidebar">
     <div class="brand">
-      <div class="brand-mark">GC</div>
+      <div class="brand-mark">MEA</div>
       <div>
-        <div class="brand-text">GRID-CARE</div>
-        <div class="brand-sub">CMMS · ระบบจำหน่าย</div>
+        <div class="brand-text">WCM-CMMS</div>
+        <div class="brand-sub">กบจ.ฟขป. · เขตสมุทรปราการ</div>
       </div>
     </div>
     <nav class="nav" id="navList"></nav>
     <div class="sidebar-foot">
-      <div class="status-pill"><span class="dot-live"></span> เชื่อมต่อระบบ SCADA · ปกติ</div>
+      <div class="status-pill"><span class="dot-live"></span> เชื่อมต่อฐานข้อมูล WCM · ปกติ</div>
     </div>
   </aside>
 
@@ -288,11 +297,15 @@ tbody tr:hover{background:var(--surface-2);}
         </button>
         <div>
           <div class="page-title" id="pageTitle">แดชบอร์ด</div>
-          <div class="page-sub" id="pageSub">ภาพรวมสถานะการบำรุงรักษาสายป้อนและอุปกรณ์</div>
+          <div class="page-sub" id="pageSub">ภาพรวมสถานะการบำรุงรักษาและดัชนี WCM</div>
         </div>
       </div>
       <div class="topbar-right">
-        <div class="avatar">วศ</div>
+        <div class="user-tag">
+          <b>ศิรภัสสร กลับสุข</b>
+          <span>ผู้ดูแลระบบ CMMS</span>
+        </div>
+        <div class="avatar">ศก</div>
       </div>
     </div>
 
@@ -311,59 +324,61 @@ const ICONS = {
   assets:'<path d="M4 4h16v4H4zM4 10h7v10H4zM13 10h7v4h-7zM13 16h7v4h-7z" fill="currentColor"/>',
   pm:'<path d="M3 10h18M8 3v4M16 3v4M5 6h14a2 2 0 012 2v11a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z" stroke="currentColor" stroke-width="2" fill="none"/>',
   cost:'<path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>',
+  wcm:'<path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/>',
   work:'<path d="M14.7 6.3a4 4 0 01-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 015.4-5.4l-3 3-2-2z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/>'
 };
 const SECTIONS = [
-  {id:'dashboard', label:'แดชบอร์ด', sub:'ภาพรวมสถานะการบำรุงรักษาสายป้อนและอุปกรณ์', icon:'dashboard'},
-  {id:'assets', label:'ทะเบียนอุปกรณ์', sub:'สายป้อน · LBS · Unit Substation · อุปกรณ์ที่เกี่ยวข้อง', icon:'assets'},
-  {id:'pm', label:'แผนบำรุงรักษาเชิงป้องกัน', sub:'ตารางงาน PM และเช็คลิสต์ตามประเภทอุปกรณ์', icon:'pm'},
-  {id:'cost', label:'วิเคราะห์ต้นทุน', sub:'ต้นทุนบำรุงรักษาแยกตามประเภทงานและอุปกรณ์', icon:'cost'},
-  {id:'work', label:'ใบสั่งงาน', sub:'ประวัติงาน PM / CM และสถานะการซ่อม', icon:'work'},
+  {id:'dashboard', label:'แดชบอร์ด', sub:'ภาพรวมสถานะการบำรุงรักษาสายป้อนและดัชนี WCM', icon:'dashboard'},
+  {id:'assets', label:'ทะเบียนอุปกรณ์', sub:'หม้อแปลงจำหน่าย · LBS · Unit Substation · อุปกรณ์ระบบจำหน่าย', icon:'assets'},
+  {id:'pm', label:'แผนบำรุงรักษาเชิงป้องกัน', sub:'ตารางงาน PM และเช็คลิสต์มาตรฐาน กบจ.ฟขป.', icon:'pm'},
+  {id:'cost', label:'วิเคราะห์ต้นทุน', sub:'ต้นทุนบำรุงรักษาแยกตามประเภทงาน หม้อแปลง และสายป้อน', icon:'cost'},
+  {id:'wcm', label:'ดัชนี WCM & ผลิตภาพ', sub:'การยกระดับ 4 ด้าน (Data, Strategy, Inventory, People)', icon:'wcm'},
+  {id:'work', label:'ใบสั่งงาน', sub:'ประวัติงาน PM / CM และบันทึกผลงานดิจิทัล', icon:'work'},
 ];
 
 /* ======================================================================
-   SAMPLE DATA
+   DATA: การไฟฟ้านครหลวง เขตสมุทรปราการ (กบจ.ฟขป.)
 ====================================================================== */
 const FEEDERS = [
-  {id:'F-12', name:'สายป้อน บางกรวย 12', station:'สฟ.บางกรวย'},
-  {id:'F-07', name:'สายป้อน รัตนาธิเบศร์ 07', station:'สฟ.รัตนาธิเบศร์'},
-  {id:'F-21', name:'สายป้อน งามวงศ์วาน 21', station:'สฟ.งามวงศ์วาน'},
+  {id:'SP-01', name:'สายป้อน ปากน้ำ 01', station:'สฟ.สมุทรปราการ (ปากน้ำ)'},
+  {id:'SP-04', name:'สายป้อน เทพารักษ์ 04', station:'สฟ.เทพารักษ์'},
+  {id:'SP-09', name:'สายป้อน บางปู 09', station:'สฟ.นิคมอุตสาหกรรมบางปู'},
 ];
 
 const EQUIPMENT = [
-  {id:'LBS-1201', type:'LBS', name:'เสาเลขที่ 45/2', feeder:'F-12', status:'ok', lastPM:'2026-05-14', nextPM:'2026-08-14', condition:92, region:'บางกรวย'},
-  {id:'LBS-1207', type:'LBS', name:'เสาเลขที่ 51/1', feeder:'F-12', status:'warn', lastPM:'2026-03-02', nextPM:'2026-09-02', condition:74, region:'บางกรวย'},
-  {id:'USTA-1204', type:'Unit Substation', name:'หมู่บ้านศุภาลัย', feeder:'F-12', status:'ok', lastPM:'2026-06-20', nextPM:'2026-12-20', condition:88, region:'บางกรวย'},
-  {id:'RMU-1210', type:'RMU', name:'สถานีย่อยตลาดบางกรวย', feeder:'F-12', status:'overdue', lastPM:'2025-11-04', nextPM:'2026-05-04', condition:58, region:'บางกรวย'},
-  {id:'CO-1215', type:'Cutout', name:'เสาเลขที่ 60', feeder:'F-12', status:'ok', lastPM:'2026-07-01', nextPM:'2027-01-01', condition:95, region:'บางกรวย'},
+  {id:'TR-0101', type:'หม้อแปลงจำหน่าย', name:'เสาเลขที่ 12/1 ถ.สุขุมวิท', feeder:'SP-01', status:'ok', lastPM:'2026-05-14', nextPM:'2026-11-14', condition:92, region:'ปากน้ำ'},
+  {id:'LBS-0105', type:'LBS', name:'เสาเลขที่ 28 หน้าตลาดปากน้ำ', feeder:'SP-01', status:'warn', lastPM:'2026-03-02', nextPM:'2026-09-02', condition:74, region:'ปากน้ำ'},
+  {id:'USTA-0108', type:'Unit Substation', name:'รพ.สมุทรปราการ', feeder:'SP-01', status:'ok', lastPM:'2026-06-20', nextPM:'2026-12-20', condition:88, region:'ปากน้ำ'},
+  {id:'TR-0112', type:'หม้อแปลงจำหน่าย', name:'ชุมชนท้ายบ้าน ซอย 5', feeder:'SP-01', status:'overdue', lastPM:'2025-11-04', nextPM:'2026-05-04', condition:58, region:'ปากน้ำ'},
+  {id:'CO-0115', type:'Cutout', name:'เสาเลขที่ 45 ถ.สายลวด', feeder:'SP-01', status:'ok', lastPM:'2026-07-01', nextPM:'2027-01-01', condition:95, region:'ปากน้ำ'},
 
-  {id:'LBS-0703', type:'LBS', name:'เสาเลขที่ 12/4', feeder:'F-07', status:'ok', lastPM:'2026-07-10', nextPM:'2026-10-10', condition:90, region:'รัตนาธิเบศร์'},
-  {id:'USTA-0709', type:'Unit Substation', name:'คอนโดริเวอร์เพลส', feeder:'F-07', status:'overdue', lastPM:'2025-08-18', nextPM:'2026-02-18', condition:49, region:'รัตนาธิเบศร์'},
-  {id:'RECL-0711', type:'Recloser', name:'เสาเลขที่ 18/2', feeder:'F-07', status:'warn', lastPM:'2026-04-22', nextPM:'2026-08-22', condition:70, region:'รัตนาธิเบศร์'},
-  {id:'LBS-0716', type:'LBS', name:'เสาเลขที่ 22', feeder:'F-07', status:'ok', lastPM:'2026-06-30', nextPM:'2026-09-30', condition:93, region:'รัตนาธิเบศร์'},
+  {id:'LBS-0402', type:'LBS', name:'เสาเลขที่ 08 แยกเทพารักษ์', feeder:'SP-04', status:'ok', lastPM:'2026-07-10', nextPM:'2027-01-10', condition:90, region:'เทพารักษ์'},
+  {id:'USTA-0406', type:'Unit Substation', name:'หมู่บ้านทิพวัลย์', feeder:'SP-04', status:'overdue', lastPM:'2025-08-18', nextPM:'2026-02-18', condition:49, region:'เทพารักษ์'},
+  {id:'TR-0410', type:'หม้อแปลงจำหน่าย', name:'เสาเลขที่ 52 ถ.หนามแดง', feeder:'SP-04', status:'warn', lastPM:'2026-04-22', nextPM:'2026-08-22', condition:70, region:'เทพารักษ์'},
+  {id:'LBS-0415', type:'LBS', name:'เสาเลขที่ 77 ซ.ศรีด่าน', feeder:'SP-04', status:'ok', lastPM:'2026-06-30', nextPM:'2026-12-30', condition:93, region:'เทพารักษ์'},
 
-  {id:'USTA-2102', type:'Unit Substation', name:'โรงพยาบาลงามวงศ์วาน', feeder:'F-21', status:'ok', lastPM:'2026-07-05', nextPM:'2027-01-05', condition:96, region:'งามวงศ์วาน'},
-  {id:'LBS-2105', type:'LBS', name:'เสาเลขที่ 9', feeder:'F-21', status:'warn', lastPM:'2026-03-19', nextPM:'2026-09-19', condition:68, region:'งามวงศ์วาน'},
-  {id:'CO-2108', type:'Cutout', name:'เสาเลขที่ 15/3', feeder:'F-21', status:'ok', lastPM:'2026-07-22', nextPM:'2027-01-22', condition:97, region:'งามวงศ์วาน'},
-  {id:'RMU-2111', type:'RMU', name:'ห้างสรรพสินค้าเซ็นทรัล', feeder:'F-21', status:'ok', lastPM:'2026-05-30', nextPM:'2026-11-30', condition:85, region:'งามวงศ์วาน'},
+  {id:'USTA-0901', type:'Unit Substation', name:'เขตส่งออก นิคมฯ บางปู', feeder:'SP-09', status:'ok', lastPM:'2026-07-05', nextPM:'2027-01-05', condition:96, region:'บางปู'},
+  {id:'TR-0904', type:'หม้อแปลงจำหน่าย', name:'ซอย 8 นิคมอุตสาหกรรม', feeder:'SP-09', status:'warn', lastPM:'2026-03-19', nextPM:'2026-09-19', condition:68, region:'บางปู'},
+  {id:'CO-0909', type:'Cutout', name:'เสาเลขที่ 102 ถ.แพรกษา', feeder:'SP-09', status:'ok', lastPM:'2026-07-22', nextPM:'2027-01-22', condition:97, region:'บางปู'},
+  {id:'LBS-0912', type:'LBS', name:'เสาเลขที่ 35 บางปูแลนด์', feeder:'SP-09', status:'ok', lastPM:'2026-05-30', nextPM:'2026-11-30', condition:85, region:'บางปู'},
 ];
 
 const PM_TEMPLATES = [
-  {type:'LBS (Load Break Switch)', freq:'ทุก 6 เดือน', steps:['ตรวจสภาพฉนวนภายนอกและจุดต่อสาย','วัดค่าความเป็นฉนวน (Insulation Resistance)','ตรวจสภาพหน้าสัมผัสและกลไกใบมีด','ทดสอบการเปิด-ปิดด้วยมือ / รีโมท','ตรวจ Torque จุดยึดและขั้วต่อ']},
-  {type:'Unit Substation', freq:'ทุก 6 เดือน', steps:['ตรวจวัดอุณหภูมิด้วย Thermal Scan','ตรวจระดับและคุณภาพน้ำมันหม้อแปลง','วัดค่า Partial Discharge','ตรวจสอบระบบระบายอากาศ/พัดลม','ตรวจสภาพบุชชิ่งและกราวด์']},
-  {type:'Recloser', freq:'ทุก 12 เดือน', steps:['ทดสอบฟังก์ชัน Protection Relay','ตรวจสอบแบตเตอรี่สำรอง','ทดสอบการ Trip/Reclose','ตรวจสภาพตู้ควบคุมและซีลกันน้ำ']},
-  {type:'Cutout / RMU', freq:'ทุก 12 เดือน', steps:['ตรวจสภาพ Fuse Link','ตรวจจุดต่อสายและขั้วต่อ','ทำความสะอาดฉนวนภายนอก','ตรวจสอบป้ายเตือนความปลอดภัย']},
+  {type:'หม้อแปลงจำหน่าย (Transformer)', freq:'ทุก 6 เดือน', steps:['ตรวจวัดอุณหภูมิขั้วต่อด้วย Thermal Scan','ตรวจระดับน้ำมันและซีลยางกันรั่วซึม','วัดค่าความเป็นฉนวนขดลวด (Megger)','ตรวจสอบและวัดค่าความต้านทานกราวด์ (Ground Resistance)','ตรวจสภาพบุชชิ่งแรงสูง-แรงต่ำ']},
+  {type:'LBS (Load Break Switch)', freq:'ทุก 6 เดือน', steps:['ตรวจสภาพฉนวนภายนอกและจุดต่อสาย','วัดค่าความเป็นฉนวน (Insulation Resistance)','ตรวจสภาพหน้าสัมผัสและกลไกใบมีด','ทดสอบการเปิด-ปิดด้วยมือและรีโมท SCADA','ตรวจเช็ค Torque จุดยึดและขั้วต่อ']},
+  {type:'Unit Substation', freq:'ทุก 6 เดือน', steps:['ตรวจวัดอุณหภูมิด้วย Thermal Scan','ตรวจระดับและคุณภาพน้ำมันหม้อแปลงภายในยูนิต','วัดค่า Partial Discharge','ตรวจสอบระบบระบายอากาศ/พัดลมอัตโนมัติ','ตรวจสภาพชุดควบคุมและอุปกรณ์ตัดตอน']},
+  {type:'Cutout / ฟิวส์ระบบจำหน่าย', freq:'ทุก 12 เดือน', steps:['ตรวจสภาพ Fuse Link และกระบอกฟิวส์','ตรวจสภาพจุดต่อสายและ Clamp ยึด','ทำความสะอาดพื้นผิวฉนวน Porcelain/Polymer','ตรวจสอบป้ายเตือนความปลอดภัยประจำเสา']},
 ];
 
 const WORK_ORDERS = [
-  {id:'WO-8841', eq:'LBS-1207', feeder:'F-12', type:'PM', date:'2026-08-20', cost:3200, tech:'ทีมช่างกล 2', status:'กำหนดการ'},
-  {id:'WO-8830', eq:'RMU-1210', feeder:'F-12', type:'CM', date:'2026-08-18', cost:18500, tech:'ทีมฉุกเฉิน A', status:'ดำเนินการ'},
-  {id:'WO-8822', eq:'USTA-0709', feeder:'F-07', type:'EM', date:'2026-08-15', cost:42300, tech:'ทีมฉุกเฉิน A', status:'เสร็จสิ้น'},
-  {id:'WO-8810', eq:'USTA-2102', feeder:'F-21', type:'PM', date:'2026-08-05', cost:5100, tech:'ทีมช่างกล 1', status:'เสร็จสิ้น'},
-  {id:'WO-8804', eq:'LBS-0703', feeder:'F-07', type:'PM', date:'2026-07-28', cost:2800, tech:'ทีมช่างกล 2', status:'เสร็จสิ้น'},
-  {id:'WO-8795', eq:'RECL-0711', feeder:'F-07', type:'CM', date:'2026-07-20', cost:12750, tech:'ทีมช่างกล 1', status:'เสร็จสิ้น'},
-  {id:'WO-8781', eq:'LBS-2105', feeder:'F-21', type:'PM', date:'2026-07-10', cost:2950, tech:'ทีมช่างกล 3', status:'เสร็จสิ้น'},
-  {id:'WO-8770', eq:'CO-1215', feeder:'F-12', type:'PM', date:'2026-07-01', cost:1400, tech:'ทีมช่างกล 3', status:'เสร็จสิ้น'},
+  {id:'WO-SP-8841', eq:'LBS-0105', feeder:'SP-01', type:'PM', date:'2026-08-20', cost:3200, tech:'ทีมบำรุงรักษา 1 (กบจ.)', status:'กำหนดการ'},
+  {id:'WO-SP-8830', eq:'TR-0112', feeder:'SP-01', type:'CM', date:'2026-08-18', cost:18500, tech:'ทีมฉุกเฉิน ฟขป.', status:'ดำเนินการ'},
+  {id:'WO-SP-8822', eq:'USTA-0406', feeder:'SP-04', type:'EM', date:'2026-08-15', cost:42300, tech:'ทีมฉุกเฉิน ฟขป.', status:'เสร็จสิ้น'},
+  {id:'WO-SP-8810', eq:'USTA-0901', feeder:'SP-09', type:'PM', date:'2026-08-05', cost:5100, tech:'ทีมบำรุงรักษา 2 (กบจ.)', status:'เสร็จสิ้น'},
+  {id:'WO-SP-8804', eq:'TR-0101', feeder:'SP-01', type:'PM', date:'2026-07-28', cost:2800, tech:'ทีมบำรุงรักษา 1 (กบจ.)', status:'เสร็จสิ้น'},
+  {id:'WO-SP-8795', eq:'TR-0410', feeder:'SP-04', type:'CM', date:'2026-07-20', cost:12750, tech:'ทีมบำรุงรักษา 2 (กบจ.)', status:'เสร็จสิ้น'},
+  {id:'WO-SP-8781', eq:'TR-0904', feeder:'SP-09', type:'PM', date:'2026-07-10', cost:2950, tech:'ทีมบำรุงรักษา 3 (กบจ.)', status:'เสร็จสิ้น'},
+  {id:'WO-SP-8770', eq:'CO-0115', feeder:'SP-01', type:'PM', date:'2026-07-01', cost:1400, tech:'ทีมบำรุงรักษา 3 (กบจ.)', status:'เสร็จสิ้น'},
 ];
 
 /* ======================================================================
@@ -423,26 +438,26 @@ function viewDashboard(){
   return `
   <div class="kpi-grid">
     <div class="kpi-card"><div class="kpi-accent" style="background:var(--teal)"></div>
-      <div class="kpi-label">อุปกรณ์ทั้งหมด</div>
+      <div class="kpi-label">อุปกรณ์ในระบบจำหน่าย</div>
       <div class="kpi-value">${total} <small>จุด</small></div>
-      <div class="kpi-delta flat">ครอบคลุม 3 สายป้อนหลัก</div></div>
+      <div class="kpi-delta flat">3 สายป้อนหลัก กฟน.สมุทรปราการ</div></div>
     <div class="kpi-card"><div class="kpi-accent" style="background:var(--danger)"></div>
-      <div class="kpi-label">เกินกำหนด PM</div>
+      <div class="kpi-label">เกินกำหนด PM (Overdue)</div>
       <div class="kpi-value" style="color:var(--danger)">${overdue} <small>จุด</small></div>
-      <div class="kpi-delta up">ต้องจัดคิวด่วน</div></div>
+      <div class="kpi-delta up">ต้องจัดคิวงานเร่งด่วน</div></div>
     <div class="kpi-card"><div class="kpi-accent" style="background:var(--amber)"></div>
       <div class="kpi-label">ใกล้ครบกำหนด (30 วัน)</div>
       <div class="kpi-value" style="color:var(--amber)">${warn} <small>จุด</small></div>
-      <div class="kpi-delta flat">อยู่ในแผนไตรมาสนี้</div></div>
+      <div class="kpi-delta flat">อยู่ในแผนประจำเดือน กบจ.</div></div>
     <div class="kpi-card"><div class="kpi-accent" style="background:var(--primary-accent)"></div>
-      <div class="kpi-label">ต้นทุนบำรุงรักษาสะสม YTD</div>
-      <div class="kpi-value">${thb(ytdCost)}</div>
-      <div class="kpi-delta down">PM คิดเป็น ${Math.round(pmCost/ytdCost*100)}% ของต้นทุน</div></div>
+      <div class="kpi-label">WCM Planned Ratio</div>
+      <div class="kpi-value" style="color:var(--primary-accent)">62.5%</div>
+      <div class="kpi-delta down">เป้าหมาย WCM: &gt; 80%</div></div>
   </div>
 
   <div class="panel">
     <div class="panel-head">
-      <div class="panel-title">แผนผังสายป้อนแบบเส้นเดียว <span>สถานะอุปกรณ์แบบเรียลไทม์ตามลำดับตำแหน่งบนสายป้อน</span></div>
+      <div class="panel-title">ผังจำลองสายป้อนระบบจำหน่าย (Single-Line Status) <span>สถานะ หม้อแปลง / LBS / Unit Substation บนสายป้อน กฟน.สมุทรปราการ</span></div>
     </div>
     ${FEEDERS.map(f=>{
       const eqs = EQUIPMENT.filter(e=>e.feeder===f.id);
@@ -450,29 +465,29 @@ function viewDashboard(){
         <div class="feeder-strip-label"><span><b>${f.id}</b> · ${f.name}</span><span>ต้นทาง: ${f.station}</span></div>
         <div class="line-track">
           <div class="line-seg" style="max-width:24px"></div>
-          ${eqs.map((e,i)=>`<div class="line-node ${e.status} ${e.type==='Unit Substation'?'sub':''}" data-tip="${e.id} · ${statusLabel[e.status]}"></div>${i<eqs.length-1?'<div class="line-seg"></div>':''}`).join('')}
+          ${eqs.map((e,i)=>`<div class="line-node ${e.status} ${e.type==='Unit Substation'?'sub':''}" data-tip="${e.id} (${e.type}) · ${statusLabel[e.status]}"></div>${i<eqs.length-1?'<div class="line-seg"></div>':''}`).join('')}
           <div class="line-seg" style="max-width:24px"></div>
         </div>
       </div>`;
     }).join('')}
     <div class="legend-row">
-      <div class="legend-item"><span class="legend-swatch" style="background:var(--teal)"></span>ปกติ</div>
-      <div class="legend-item"><span class="legend-swatch" style="background:var(--amber)"></span>ใกล้ครบกำหนด</div>
-      <div class="legend-item"><span class="legend-swatch" style="background:var(--danger)"></span>เกินกำหนด</div>
-      <div class="legend-item" style="margin-left:auto;">● วงกลม = Unit Substation &nbsp; ■ สี่เหลี่ยม = LBS/อุปกรณ์อื่น</div>
+      <div class="legend-item"><span class="legend-swatch" style="background:var(--teal)"></span>ปกติ (สภาพสมบูรณ์)</div>
+      <div class="legend-item"><span class="legend-swatch" style="background:var(--amber)"></span>ใกล้ครบกำหนด PM</div>
+      <div class="legend-item"><span class="legend-swatch" style="background:var(--danger)"></span>เกินกำหนด PM</div>
+      <div class="legend-item" style="margin-left:auto;">● วงกลม = Unit Substation &nbsp; ■ สี่เหลี่ยม = หม้อแปลง / LBS</div>
     </div>
   </div>
 
   <div class="grid-2">
     <div class="panel">
-      <div class="panel-head"><div class="panel-title">งาน PM ที่ใกล้ถึง <span>เรียงตามวันครบกำหนดถัดไป</span></div></div>
+      <div class="panel-head"><div class="panel-title">คิวงาน PM ที่ต้องเข้าตรวจ <span>เรียงตามกำหนดเวลาเร่งด่วน</span></div></div>
       <div class="table-wrap"><table>
-        <thead><tr><th>รหัส</th><th>อุปกรณ์</th><th>สายป้อน</th><th>ครบกำหนด</th><th>สถานะ</th></tr></thead>
+        <thead><tr><th>รหัส</th><th>ตำแหน่งติดตั้ง</th><th>สายป้อน</th><th>ครบกำหนด</th><th>สถานะ</th></tr></thead>
         <tbody>${upcoming.map(e=>`<tr><td class="mono">${e.id}</td><td>${e.name}</td><td>${e.feeder}</td><td class="mono">${e.nextPM}</td><td>${badgeHTML(e.status)}</td></tr>`).join('')}</tbody>
       </table></div>
     </div>
     <div class="panel">
-      <div class="panel-head"><div class="panel-title">แนวโน้มต้นทุนราย 6 เดือน <span>PM เทียบ CM/ฉุกเฉิน</span></div></div>
+      <div class="panel-head"><div class="panel-title">แนวโน้มต้นทุน PM vs CM ราย 6 เดือน <span>เปรียบเทียบเชิงป้องกันและแก้ไข</span></div></div>
       <div class="chart-box short"><canvas id="chartDashTrend"></canvas></div>
     </div>
   </div>
@@ -487,7 +502,7 @@ function mountDashboardCharts(){
     data:{
       labels:['มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.'],
       datasets:[
-        {label:'PM', data:[14200,15800,16200,17100,15600,13600], borderColor:'#0D9488', backgroundColor:'rgba(13,148,136,.08)', tension:.35, fill:true, borderWidth:2, pointRadius:3},
+        {label:'PM เชิงป้องกัน', data:[14200,15800,16200,17100,15600,13600], borderColor:'#0D9488', backgroundColor:'rgba(13,148,136,.08)', tension:.35, fill:true, borderWidth:2, pointRadius:3},
         {label:'CM/ฉุกเฉิน', data:[8200,6100,21400,9800,42300,18500], borderColor:'#D97706', backgroundColor:'rgba(217,119,6,.06)', tension:.35, fill:true, borderWidth:2, pointRadius:3},
       ]
     },
@@ -505,28 +520,28 @@ function viewAssets(){
   return `
   <div class="panel">
     <div class="panel-head">
-      <div class="panel-title">ทะเบียนอุปกรณ์ระบบจำหน่าย <span>${rows.length} จาก ${EQUIPMENT.length} รายการ</span></div>
+      <div class="panel-title">ทะเบียนอุปกรณ์ระบบจำหน่าย กฟน.สมุทรปราการ <span>${rows.length} จาก ${EQUIPMENT.length} รายการ</span></div>
       <div class="controls-row">
         <div class="seg">${types.map(t=>`<button class="${assetFilter===t?'active':''}" onclick="setAssetFilter('${t}')">${t==='ALL'?'ทั้งหมด':t}</button>`).join('')}</div>
-        <button class="btn">+ เพิ่มอุปกรณ์</button>
+        <button class="btn">+ ลงทะเบียนอุปกรณ์ใหม่</button>
       </div>
     </div>
     <div class="table-wrap"><table>
       <thead><tr>
-        <th>รหัสอุปกรณ์</th><th>ประเภท</th><th>ชื่อ/ตำแหน่ง</th><th>สายป้อน</th><th>พื้นที่</th>
-        <th>สภาพ (%)</th><th>PM ล่าสุด</th><th>PM ถัดไป</th><th>สถานะ</th>
+        <th>รหัสอุปกรณ์</th><th>ประเภทอุปกรณ์</th><th>ตำแหน่งติดตั้ง/เสา</th><th>สายป้อน</th><th>พื้นที่รับผิดชอบ</th>
+        <th>ดัชนีสภาพ (Health %)</th><th>PM ล่าสุด</th><th>PM ถัดไป</th><th>สถานะ</th>
       </tr></thead>
       <tbody>${rows.map(e=>`
         <tr>
           <td class="mono">${e.id}</td>
-          <td>${e.type}</td>
+          <td><b>${e.type}</b></td>
           <td>${e.name}</td>
           <td>${e.feeder}</td>
           <td>${e.region}</td>
           <td><div style="display:flex;align-items:center;gap:8px;">
                 <div style="width:52px;height:6px;background:var(--surface-3);border-radius:3px;overflow:hidden;">
                   <div style="width:${e.condition}%;height:100%;background:${e.condition<60?'var(--danger)':e.condition<80?'var(--amber)':'var(--teal)'}"></div>
-                </div><span class="mono">${e.condition}</span></div></td>
+                </div><span class="mono">${e.condition}%</span></div></td>
           <td class="mono">${e.lastPM}</td>
           <td class="mono">${e.nextPM}</td>
           <td>${badgeHTML(e.status)}</td>
@@ -544,8 +559,8 @@ function viewPM(){
   const upcoming = [...EQUIPMENT].sort((a,b)=>new Date(a.nextPM)-new Date(b.nextPM));
   return `
   <div class="panel">
-    <div class="panel-head"><div class="panel-title">คิวงาน PM ถัดไป <span>จัดเรียงตามวันครบกำหนด · ${upcoming.length} รายการ</span></div>
-      <button class="btn ghost">ส่งออกตารางงาน</button></div>
+    <div class="panel-head"><div class="panel-title">ตารางแผนบำรุงรักษาเชิงป้องกัน (PM Schedule) <span>จัดลำดับตามกำหนดเวลา กบจ.ฟขป.</span></div>
+      <button class="btn ghost">ส่งออกแผนงาน PM</button></div>
     <div class="pm-cal">
       ${upcoming.slice(0,9).map(e=>{
         const tmpl = PM_TEMPLATES.find(t=>t.type.startsWith(e.type)) || PM_TEMPLATES[0];
@@ -562,12 +577,12 @@ function viewPM(){
   </div>
 
   <div class="panel">
-    <div class="panel-head"><div class="panel-title">เทมเพลตเช็คลิสต์บำรุงรักษาเชิงป้องกัน <span>ตามประเภทอุปกรณ์และความถี่มาตรฐาน</span></div></div>
+    <div class="panel-head"><div class="panel-title">มาตรฐานเช็คลิสต์การบำรุงรักษาตามแนวทาง WCM <span>เกณฑ์มาตรฐานงานตรวจอุปกรณ์สายป้อน</span></div></div>
     <div class="tmpl-grid">
       ${PM_TEMPLATES.map(t=>`
         <div class="tmpl-card">
           <h4>${t.type}</h4>
-          <div class="tmpl-freq">รอบตรวจ: ${t.freq}</div>
+          <div class="tmpl-freq">ความถี่รอบตรวจ: ${t.freq}</div>
           <ol>${t.steps.map(s=>`<li>${s}</li>`).join('')}</ol>
         </div>`).join('')}
     </div>
@@ -595,44 +610,122 @@ function viewCost(){
   return `
   <div class="kpi-grid">
     <div class="kpi-card"><div class="kpi-accent" style="background:var(--primary-accent)"></div>
-      <div class="kpi-label">ต้นทุนรวม YTD</div><div class="kpi-value">${thb(totalCost)}</div>
-      <div class="kpi-delta flat">8 ใบสั่งงานในระบบ</div></div>
+      <div class="kpi-label">ต้นทุนรวมบำรุงรักษา YTD</div><div class="kpi-value">${thb(totalCost)}</div>
+      <div class="kpi-delta flat">รวม 8 ใบสั่งงาน กฟน.สมุทรปราการ</div></div>
     <div class="kpi-card"><div class="kpi-accent" style="background:var(--teal)"></div>
       <div class="kpi-label">ต้นทุน PM (ตามแผน)</div><div class="kpi-value" style="color:var(--teal)">${thb(pmCost)}</div>
-      <div class="kpi-delta down">${Math.round(pmCost/totalCost*100)}% ของต้นทุนรวม</div></div>
+      <div class="kpi-delta down">${Math.round(pmCost/totalCost*100)}% ของงบบำรุงรักษา</div></div>
     <div class="kpi-card"><div class="kpi-accent" style="background:var(--amber)"></div>
-      <div class="kpi-label">ต้นทุน CM (แก้ไข)</div><div class="kpi-value" style="color:var(--amber)">${thb(cmCost)}</div>
+      <div class="kpi-label">ต้นทุน CM (งานซ่อมแก้ไข)</div><div class="kpi-value" style="color:var(--amber)">${thb(cmCost)}</div>
       <div class="kpi-delta up">${Math.round(cmCost/totalCost*100)}% ของต้นทุนรวม</div></div>
     <div class="kpi-card"><div class="kpi-accent" style="background:var(--danger)"></div>
-      <div class="kpi-label">ต้นทุนฉุกเฉิน</div><div class="kpi-value" style="color:var(--danger)">${thb(emCost)}</div>
-      <div class="kpi-delta up">${Math.round(emCost/totalCost*100)}% ของต้นทุนรวม — เป้าหมาย &lt;10%</div></div>
+      <div class="kpi-label">ต้นทุนซ่อมฉุกเฉิน (EM)</div><div class="kpi-value" style="color:var(--danger)">${thb(emCost)}</div>
+      <div class="kpi-delta up">${Math.round(emCost/totalCost*100)}% ของต้นทุนรวม — เป้าหมาย WCM &lt;10%</div></div>
   </div>
 
   <div class="grid-2">
     <div class="panel">
-      <div class="panel-head"><div class="panel-title">ต้นทุนแยกตามประเภทอุปกรณ์ <span>บาท, สะสม YTD</span></div></div>
+      <div class="panel-head"><div class="panel-title">ต้นทุนแยกตามประเภทอุปกรณ์ระบบจำหน่าย <span>บาท, หม้อแปลง / LBS / Unit Substation</span></div></div>
       <div class="chart-box"><canvas id="chartByType"></canvas></div>
     </div>
     <div class="panel">
       <div class="panel-head"><div class="panel-title">สัดส่วนต้นทุน PM / CM / ฉุกเฉิน</div></div>
       <div class="chart-box"><canvas id="chartSplit"></canvas></div>
-      <div class="cost-legend-note">สัดส่วน PM ที่สูงกว่า CM/ฉุกเฉิน บ่งชี้ว่าการบำรุงรักษาเชิงป้องกันช่วยลดต้นทุนจากความเสียหายฉุกเฉินได้อย่างมีประสิทธิภาพ</div>
+      <div class="cost-legend-note">การเพิ่มสัดส่วนงาน PM เชิงรุกตามแนวคิด WCM จะช่วยลดค่าใช้จ่ายซ่อมฉุกเฉิน (Emergency Cost) ลงอย่างมีนัยสำคัญ</div>
     </div>
   </div>
 
   <div class="panel">
-    <div class="panel-head"><div class="panel-title">ต้นทุนแยกตามสายป้อน <span>เปรียบเทียบภาระต้นทุนต่อสายป้อน</span></div></div>
+    <div class="panel-head"><div class="panel-title">ต้นทุนบำรุงรักษาแยกตามสายป้อน <span>สฟ.สมุทรปราการ / สฟ.เทพารักษ์ / สฟ.บางปู</span></div></div>
     <div class="chart-box short"><canvas id="chartByFeeder"></canvas></div>
   </div>
 
   <div class="panel">
-    <div class="panel-head"><div class="panel-title">รายละเอียดต้นทุนต่อใบสั่งงาน</div></div>
+    <div class="panel-head"><div class="panel-title">รายละเอียดประวัติค่าใช้จ่ายรายใบสั่งงาน</div></div>
     <div class="table-wrap"><table>
-      <thead><tr><th>เลขที่ WO</th><th>อุปกรณ์</th><th>สายป้อน</th><th>ประเภทงาน</th><th>วันที่</th><th>ต้นทุน</th></tr></thead>
+      <thead><tr><th>เลขที่ WO</th><th>อุปกรณ์</th><th>สายป้อน</th><th>ประเภทงาน</th><th>วันที่ปฏิบัติงาน</th><th>ต้นทุน</th></tr></thead>
       <tbody>${[...WORK_ORDERS].sort((a,b)=>b.cost-a.cost).map(w=>`
         <tr><td class="mono">${w.id}</td><td>${w.eq}</td><td>${w.feeder}</td><td>${woBadge(w.type)}</td><td class="mono">${w.date}</td><td class="mono">${thb(w.cost)}</td></tr>
       `).join('')}</tbody>
     </table></div>
+  </div>
+  `;
+}
+
+/* ======================================================================
+   VIEW: WCM & PRODUCTIVITY
+====================================================================== */
+function viewWCM(){
+  return `
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--primary-accent)"></div>
+      <div class="kpi-label">Labor Productivity</div>
+      <div class="kpi-value" style="color:var(--primary-accent)">+28%</div>
+      <div class="kpi-delta down">ลดเวลาคีย์เอกสารซ้ำซ้อน</div></div>
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--teal)"></div>
+      <div class="kpi-label">MTTR (Mean Time to Repair)</div>
+      <div class="kpi-value" style="color:var(--teal)">2.4 <small>ชม.</small></div>
+      <div class="kpi-delta down">ลดลง 35% จากเดิม</div></div>
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--success)"></div>
+      <div class="kpi-label">System Usability Scale (SUS)</div>
+      <div class="kpi-value" style="color:var(--success)">84.5 <small>/100</small></div>
+      <div class="kpi-delta down">ระดับ Excellent (การยอมรับสูง)</div></div>
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--amber)"></div>
+      <div class="kpi-label">Planned vs Unplanned</div>
+      <div class="kpi-value" style="color:var(--amber)">75 : 25</div>
+      <div class="kpi-delta flat">สอดคล้องกรอบ WCM Roadmap</div></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-title">กรอบการยกระดับระบบการบำรุงรักษา 4 ด้าน (4 Core Maintenance Gaps) <span>กรณีศึกษา กฟน. เขตสมุทรปราการ</span></div>
+    </div>
+    <div class="grid-2">
+      <div class="gap-card">
+        <span class="gap-tag">1. ด้านข้อมูล (Data Gap)</span>
+        <div class="gap-title">กระดาษ/Excel สู่ Digital Real-time</div>
+        <div class="gap-desc">เปลี่ยนการจดบันทึกผลตรวจสอบหม้อแปลงและอุปกรณ์บนกระดาษ สู่การบันทึกผ่าน Web/Mobile App หน้างานทันที ข้อมูลเชื่อมต่อระบบส่วนกลางแบบเรียลไทม์</div>
+      </div>
+      <div class="gap-card">
+        <span class="gap-tag">2. ด้านแผนงาน (Strategy Gap)</span>
+        <div class="gap-title">Time-based สู่ Predictive Maintenance</div>
+        <div class="gap-desc">ยกระดับการตรวจตามรอบเวลาทั่วไปสู่การวิเคราะห์สภาพอุปกรณ์จริง (Health Condition), การสแกนความร้อน Thermal Scan และประวัติชำรุดย้อนหลัง 3 ปี</div>
+      </div>
+      <div class="gap-card">
+        <span class="gap-tag">3. ด้านพัสดุ (Inventory Gap)</span>
+        <div class="gap-title">แก้ Overstock/Stock-out ตามหลัก Lean</div>
+        <div class="gap-desc">พัฒนาระบบคำนวณจุดสั่งซื้ออะไหล่ที่เหมาะสม (ROP / Safety Stock) สำหรับอุปกรณ์สำคัญ เช่น Fuse Link, ฉนวน และอะไหล่สวิตช์ตัดตอน</div>
+      </div>
+      <div class="gap-card">
+        <span class="gap-tag">4. ด้านบุคลากร (People Gap) — จุดเน้นย้ำโครงงาน</span>
+        <div class="gap-title">UX/UI ใช้ง่าย สร้าง Self-Monitoring</div>
+        <div class="gap-desc">ออกแบบแดชบอร์ดติดตามผลงานรายทีม/บุคคล เพื่อเพิ่มผลิตภาพแรงงาน (Labor Productivity) และสร้างทัศนคติที่ดีต่อการใช้เทคโนโลยีของทีมช่างและวิศวกร</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">การกระจายตัวชี้วัด WCM KPI ประจำแผนก <span>กบจ.ฟขป.</span></div></div>
+      <div class="chart-box"><canvas id="chartWcmKpi"></canvas></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">แผนความก้าวหน้าโครงการสหกิจศึกษา 4 เดือน <span>(สัปดาห์ที่ 1 - 16)</span></div></div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="background:var(--surface-2);padding:10px 12px;border-radius:8px;font-size:12px;border-left:3px solid var(--primary-accent);">
+          <b>สัปดาห์ 1-4: วิเคราะห์ปัญหา & รวบรวมข้อมูล</b><br><span style="color:var(--text-dim)">สำรวจ Pain Points หน้างาน และรวบรวมประวัติ Work Orders ย้อนหลัง 3 ปี</span>
+        </div>
+        <div style="background:var(--surface-2);padding:10px 12px;border-radius:8px;font-size:12px;border-left:3px solid var(--teal);">
+          <b>สัปดาห์ 5-8: ออกแบบกระบวนการ & Prototype</b><br><span style="color:var(--text-dim)">วาง Work Process ใหม่, กำหนด WCM KPIs, ออกแบบ UI ใน Figma</span>
+        </div>
+        <div style="background:var(--surface-2);padding:10px 12px;border-radius:8px;font-size:12px;border-left:3px solid var(--amber);">
+          <b>สัปดาห์ 9-12: พัฒนาระบบ CMMS & Dashboard</b><br><span style="color:var(--text-dim)">พัฒนาโมดูลบันทึกงาน PM, วิเคราะห์ต้นทุน และนำขึ้น Hosting ทดสอบ</span>
+        </div>
+        <div style="background:var(--surface-2);padding:10px 12px;border-radius:8px;font-size:12px;border-left:3px solid var(--success);">
+          <b>สัปดาห์ 13-16: ทดลองใช้งาน & ประเมินผล (SUS)</b><br><span style="color:var(--text-dim)">ทดสอบใช้งานจริงหน้างาน กฟน.สมุทรปราการ วัดเวลาที่ลดลงและความพึงพอใจ</span>
+        </div>
+      </div>
+    </div>
   </div>
   `;
 }
@@ -672,7 +765,7 @@ function mountCostCharts(){
     const cm = WORK_ORDERS.filter(w=>w.type==='CM').reduce((a,w)=>a+w.cost,0);
     const em = WORK_ORDERS.filter(w=>w.type==='EM').reduce((a,w)=>a+w.cost,0);
     new Chart(c2, { type:'doughnut',
-      data:{ labels:['PM ตามแผน','CM แก้ไข','ฉุกเฉิน'], datasets:[{ data:[pm,cm,em],
+      data:{ labels:['PM ตามแผน','CM แก้ไข','ฉุกเฉิน (EM)'], datasets:[{ data:[pm,cm,em],
         backgroundColor:['#0D9488','#D97706','#E11D48'], borderColor:'#FFFFFF', borderWidth:3 }] },
       options:{ responsive:true, maintainAspectRatio:false, cutout:'62%',
         plugins:{ legend:{ position:'bottom', labels:{ color:'#64748B', font:{family:"'IBM Plex Sans Thai'",size:11}, padding:14 } } } }
@@ -691,6 +784,28 @@ function mountCostCharts(){
   }
 }
 
+function mountWcmCharts(){
+  const ctx = document.getElementById('chartWcmKpi');
+  if(!ctx) return;
+  new Chart(ctx, {
+    type:'radar',
+    data:{
+      labels:['Data Quality','PM Compliance','Cost Accuracy','Labor Productivity','System Usability (SUS)','Autonomous Care'],
+      datasets:[
+        {label:'สถานะปัจจุบัน', data:[88, 75, 82, 80, 85, 70], borderColor:'#2563EB', backgroundColor:'rgba(37,99,235,0.15)', borderWidth:2, pointRadius:3},
+        {label:'เป้าหมาย WCM', data:[95, 90, 90, 90, 90, 85], borderColor:'#0D9488', backgroundColor:'rgba(13,148,136,0.05)', borderDash:[4,4], borderWidth:1.5, pointRadius:2}
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      scales:{
+        r:{ angleLines:{color:'#E2E8F0'}, grid:{color:'#F0F4F8'}, ticks:{display:false, max:100, min:0}, pointLabels:{font:{family:"'IBM Plex Sans Thai'",size:11}, color:'#64748B'} }
+      },
+      plugins:{ legend:{ position:'bottom', labels:{ color:'#64748B', font:{family:"'IBM Plex Sans Thai'",size:11} } } }
+    }
+  });
+}
+
 /* ======================================================================
    VIEW: WORK ORDERS
 ====================================================================== */
@@ -698,11 +813,11 @@ function viewWork(){
   return `
   <div class="panel">
     <div class="panel-head">
-      <div class="panel-title">ใบสั่งงานบำรุงรักษา <span>${WORK_ORDERS.length} รายการ</span></div>
-      <button class="btn">+ สร้างใบสั่งงาน</button>
+      <div class="panel-title">ระบบบันทึกและติดตามใบสั่งงาน (Work Orders) <span>กบจ.ฟขป. กฟน.สมุทรปราการ</span></div>
+      <button class="btn">+ สร้างใบสั่งงานดิจิทัล</button>
     </div>
     <div class="table-wrap"><table>
-      <thead><tr><th>เลขที่ WO</th><th>อุปกรณ์</th><th>สายป้อน</th><th>ประเภทงาน</th><th>วันที่</th><th>ทีมงาน</th><th>ต้นทุน</th><th>สถานะ</th></tr></thead>
+      <thead><tr><th>เลขที่ WO</th><th>อุปกรณ์</th><th>สายป้อน</th><th>ประเภทงาน</th><th>วันที่</th><th>ทีมผู้รับผิดชอบ</th><th>ต้นทุน</th><th>สถานะ</th></tr></thead>
       <tbody>${WORK_ORDERS.map(w=>`
         <tr>
           <td class="mono">${w.id}</td><td class="mono">${w.eq}</td><td>${w.feeder}</td>
@@ -724,6 +839,7 @@ function renderView(){
   else if(current==='assets'){ root.innerHTML = viewAssets(); }
   else if(current==='pm'){ root.innerHTML = viewPM(); }
   else if(current==='cost'){ root.innerHTML = viewCost(); mountCostCharts(); }
+  else if(current==='wcm'){ root.innerHTML = viewWCM(); mountWcmCharts(); }
   else if(current==='work'){ root.innerHTML = viewWork(); }
 }
 
