@@ -101,7 +101,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;}
 .header-bar{
   height:60px;flex-shrink:0;border-bottom:1px solid var(--border-light);
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 24px;background:rgba(255,255,255,0.85);backdrop-filter:blur(10px);
+  padding:0 24px;background:rgba(255,255,255,0.85);backdrop-filter:blur(100px);
   position:sticky;top:0;z-index:20;
 }
 .headline-title{font-family:var(--font-heading);font-weight:700;font-size:17px;letter-spacing:-0.01em;}
@@ -250,10 +250,21 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;}
   display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;
 }
 
+/* Modal Popup for Record View */
+.modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(15,23,42,0.45);backdrop-filter:blur(4px);
+  z-index:100;align-items:center;justify-content:center;padding:18px;
+}
+.modal-overlay.active{display:flex;}
+.modal-content{
+  background:#FFF;border-radius:var(--radius-md);width:100%;max-width:760px;max-height:90vh;
+  overflow-y:auto;box-shadow:var(--shadow-float);padding:24px;border:1px solid var(--border-light);
+}
+
 /* Print Specifics */
 @media print{
   body{background:#FFF;color:#000;font-size:10pt;}
-  .side-panel, .header-bar, .bottom-nav, .btn-action, .no-print{display:none !important;}
+  .side-panel, .header-bar, .bottom-nav, .btn-action, .no-print, .modal-overlay{display:none !important;}
   .main-stage{width:100%;margin:0;padding:0;}
   .workspace{padding:0;}
   .studio-box, .modern-card{border:1px solid #000;box-shadow:none;page-break-inside:avoid;padding:12px;}
@@ -319,6 +330,11 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;}
   </main>
 </div>
 
+<!-- Modal รายละเอียดประวัติการบันทึกงาน -->
+<div class="modal-overlay" id="recordModal" onclick="closeModal(event)">
+  <div class="modal-content" id="recordModalContent"></div>
+</div>
+
 <nav class="bottom-nav" id="mobileBottomNav"></nav>
 
 <script>
@@ -331,6 +347,7 @@ const NAVIGATION = [
   {id:'outages', label:'ดัชนีไฟฟ้าดับรายสายป้อน', sub:'บันทึก SAIFI / SAIDI และสถิติไฟดับแยกตามสายป้อน กฟน.สมุทรปราการ', icon:'<path d="M13 10V3L4 14h7v7l9-11h-7z"/>'},
   {id:'smart_route', label:'เส้นทาง & นำทางภาคสนาม', sub:'การจัดลำดับจุดตรวจอัจฉริยะ พร้อมพิกัด GPS นำทางรถตรวจการณ์', icon:'<path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>'},
   {id:'inspection_studio', label:'แบบตรวจหม้อแปลง (Studio)', sub:'ฟอร์มบันทึกผลตรวจสอบหม้อแปลงไฟฟ้าดิจิทัล (แก้ไข & ส่งออกได้)', icon:'<path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>'},
+  {id:'history_records', label:'ประวัติการบันทึกงาน', sub:'คลังประวัติผลการตรวจบำรุงรักษาภาคสนาม (สามารถกดเปิดดูรายละเอียดได้)', icon:'<path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>'},
   {id:'anomaly_lab', label:'วิเคราะห์ความผิดปกติ WO', sub:'ระบบตรวจจับ Cost Outliers, ความล่าช้า และความผิดปกติซ้ำซ้อน', icon:'<path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>'},
   {id:'assets_registry', label:'ทะเบียนอุปกรณ์', sub:'ฐานข้อมูลหม้อแปลงจำหน่าย, สวิตช์ LBS, Unit Substation และอุปกรณ์', icon:'<path d="M4 4h16v4H4zM4 10h7v10H4zM13 10h7v4h-7zM13 16h7v4h-7z"/>'},
   {id:'cost_analytics', label:'วิเคราะห์ต้นทุนบำรุงรักษา', sub:'ต้นทุนรวม PM vs CM และการจัดสรรงบประมาณบำรุงรักษา', icon:'<path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>'}
@@ -357,6 +374,55 @@ const EQUIPMENT = [
   {id:'USTA-0901', type:'Unit Substation', name:'เขตส่งออก นิคมฯ บางปู', feeder:'SP-09', lat:13.5450, lng:100.6550, status:'ok', lastPM:'2026-07-05', nextPM:'2027-01-05', health:96, region:'บางปู', mea:'UST-0901', brand:'SIEMENS', size:'1250 kVA'},
   {id:'TR-0904', type:'หม้อแปลงจำหน่าย', name:'ซอย 8 นิคมอุตสาหกรรม', feeder:'SP-09', lat:13.5410, lng:100.6620, status:'warn', lastPM:'2026-03-19', nextPM:'2026-09-19', health:68, region:'บางปู', mea:'4EE-0904', brand:'EKARAT', size:'500 kVA'},
   {id:'CO-0909', type:'Cutout', name:'เสาเลขที่ 102 ถ.แพรกษา', feeder:'SP-09', lat:13.5600, lng:100.6400, status:'ok', lastPM:'2026-07-22', nextPM:'2027-01-22', health:97, region:'บางปู', mea:'CO-0909', brand:'CHANCE', size:'100 A'},
+];
+
+// ประวัติการบันทึกผลการตรวจสอบภาคสนามที่จัดเก็บในระบบ
+let INSPECTION_RECORDS = [
+  {
+    recordId: 'REC-2026-0826-01',
+    stationId: 'MBT-0101',
+    location: 'เสาเลขที่ 12/1 ถ.สุขุมวิท (ปากน้ำ)',
+    date: '2026-08-26',
+    time: '10:30',
+    inspector: 'ว่าที่ รต. อภิสิทธิ์ ประดิษฐธรรม',
+    position: 'ชทอ.5',
+    overallResult: 'ปกติ',
+    v1n: '235', v2n: '234', v3n: '235',
+    v12: '398', v23: '399', v13: '397',
+    in_c: '34', i1: '21', i2: '26', i3: '19',
+    notes: 'วงจรตามแบบ อป. สภาพตัวถังสมบูรณ์ มีคราบฝุ่นเกาะเล็กน้อย',
+    actions: 'ขันกวดจุดต่อสายและทำความสะอาดผิวฉนวนแล้ว'
+  },
+  {
+    recordId: 'REC-2026-0818-03',
+    stationId: 'MBT0399',
+    location: 'ถ.ประเสริฐมนูกิจ (351)',
+    date: '2026-08-18',
+    time: '14:15',
+    inspector: 'ว่าที่ รต. อภิสิทธิ์ ประดิษฐธรรม',
+    position: 'ชทอ.5',
+    overallResult: 'ปกติ',
+    v1n: '235', v2n: '234', v3n: '-',
+    v12: '236', v23: '399', v13: '-',
+    in_c: '34', i1: '21', i2: '26', i3: '19',
+    notes: 'วงจรตามแบบ อป. หน้าหม้อแปลง',
+    actions: 'ดำเนินการขันกวดจุดต่อและทำความสะอาดแล้ว'
+  },
+  {
+    recordId: 'REC-2026-0728-02',
+    stationId: 'TR-0410',
+    location: 'เสาเลขที่ 52 ถ.หนามแดง (เทพารักษ์)',
+    date: '2026-07-28',
+    time: '11:00',
+    inspector: 'นายสมศักดิ์ มั่นคง',
+    position: 'ชทอ.4',
+    overallResult: 'พบข้อบกพร่องเล็กน้อย',
+    v1n: '232', v2n: '233', v3n: '231',
+    v12: '395', v23: '396', v13: '394',
+    in_c: '42', i1: '30', i2: '28', i3: '32',
+    notes: 'พบซีลยางบุชชิ่งเริ่มมีคราบน้ำมันซึมเล็กน้อย',
+    actions: 'ทำความสะอาดคราบน้ำมัน และบันทึกส่งต่อฝ่ายซ่อมบำรุง'
+  }
 ];
 
 const WORK_ORDERS = [
@@ -902,6 +968,25 @@ function saveStudioData(){
   studioForm.actions = document.getElementById('st_actions').value;
   studioForm.inspector = document.getElementById('st_inspector').value;
   studioForm.date = document.getElementById('st_date').value;
+
+  // เพิ่มข้อมูลลงในประวัติการบันทึกงาน
+  const newRec = {
+    recordId: 'REC-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + Math.floor(10 + Math.random()*90),
+    stationId: studioForm.stationId,
+    location: studioForm.location,
+    date: studioForm.date,
+    time: new Date().toLocaleTimeString('th-TH', {hour:'2-digit', minute:'2-digit'}),
+    inspector: studioForm.inspector,
+    position: studioForm.position,
+    overallResult: 'ปกติ',
+    v1n: studioForm.v1n, v2n: studioForm.v2n, v3n: studioForm.v3n,
+    v12: studioForm.v12, v23: studioForm.v23, v13: studioForm.v13,
+    in_c: studioForm.in_c, i1: studioForm.i1, i2: studioForm.i2, i3: studioForm.i3,
+    notes: studioForm.notes,
+    actions: studioForm.actions
+  };
+  INSPECTION_RECORDS.unshift(newRec);
+
   alert('บันทึกผลการตรวจหม้อแปลง ' + studioForm.stationId + ' เข้าสู่ระบบ CMMS เรียบร้อยแล้ว!');
 }
 
@@ -982,7 +1067,140 @@ function loadIntoStudio(eqId){
 }
 
 /* ======================================================================
-   VIEW 6: ANOMALY LAB (วิเคราะห์ความผิดปกติ WO)
+   VIEW 6: HISTORY RECORDS (ประวัติการบันทึกงาน - กดดูได้)
+====================================================================== */
+function viewHistoryRecords(){
+  return `
+  <div class="fade-in">
+    <div class="modern-card">
+      <div class="card-header">
+        <div class="card-header-left">
+          <h3>คลังประวัติการบันทึกผลการตรวจสอบภาคสนาม (Inspection Records History)</h3>
+          <p>รายการบันทึกผลตรวจหม้อแปลงและอุปกรณ์ไฟฟ้าที่บันทึกแล้วในระบบ (${INSPECTION_RECORDS.length} รายการ) — คลิกเพื่อดูรายละเอียดฉบับเต็ม</p>
+        </div>
+        <button class="btn-action btn-soft" onclick="exportHistoryExcel()">📊 ส่งออกประวัติ Excel</button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="clean-table">
+          <thead>
+            <tr>
+              <th>รหัสใบตรวจ (Record ID)</th>
+              <th>รหัสอุปกรณ์</th>
+              <th>สถานที่ / สายป้อน</th>
+              <th>วันที่บันทึก</th>
+              <th>เวลา</th>
+              <th>ผู้ตรวจสอบ</th>
+              <th>ผลการตรวจ</th>
+              <th>รายละเอียด</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${INSPECTION_RECORDS.map((r, idx)=>`
+              <tr>
+                <td class="code-tag"><b>${r.recordId}</b></td>
+                <td class="code-tag">${r.stationId}</td>
+                <td>${r.location}</td>
+                <td class="code-tag">${r.date}</td>
+                <td class="code-tag">${r.time} น.</td>
+                <td>${r.inspector} <small style="color:var(--text-tertiary)">(${r.position})</small></td>
+                <td><span class="chip ${r.overallResult==='ปกติ'?'ok':'warn'}">${r.overallResult}</span></td>
+                <td>
+                  <button class="btn-action btn-soft" style="padding:4px 10px; font-size:11.5px;" onclick="openRecordModal(${idx})">
+                    🔍 เปิดดู
+                  </button>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  `;
+}
+
+function openRecordModal(index){
+  const r = INSPECTION_RECORDS[index];
+  if(!r) return;
+
+  const content = `
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; border-bottom:1px solid var(--border-light); padding-bottom:12px;">
+      <div>
+        <h3 style="font-size:16px; font-weight:800; color:var(--text-main);">${r.recordId}</h3>
+        <p style="font-size:12px; color:var(--text-tertiary);">ผลการตรวจสอบอุปกรณ์: ${r.stationId} (${r.location})</p>
+      </div>
+      <button class="btn-action btn-soft" onclick="document.getElementById('recordModal').classList.remove('active')">✕ ปิด</button>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; background:var(--surface-subtle); padding:14px; border-radius:var(--radius-sm); font-size:12.5px;">
+      <div><b>วันที่ตรวจ:</b> ${r.date} เวลา ${r.time} น.</div>
+      <div><b>ผู้ตรวจสอบ:</b> ${r.inspector} (${r.position})</div>
+      <div><b>สถานะผลตรวจ:</b> <span class="chip ${r.overallResult==='ปกติ'?'ok':'warn'}">${r.overallResult}</span></div>
+      <div><b>การดำเนินการ:</b> ${r.actions || '-'}</div>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <h4 style="font-size:13px; font-weight:700; color:var(--accent-primary); margin-bottom:8px;">ค่าทางไฟฟ้าที่บันทึก (Measurements)</h4>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px; font-size:12px; background:#FFF; border:1px solid var(--border-light); padding:10px; border-radius:var(--radius-sm);">
+        <div>V1-N: <b>${r.v1n || '-'} V</b></div>
+        <div>V2-N: <b>${r.v2n || '-'} V</b></div>
+        <div>V3-N: <b>${r.v3n || '-'} V</b></div>
+        <div>V1-2: <b>${r.v12 || '-'} V</b></div>
+        <div>V2-3: <b>${r.v23 || '-'} V</b></div>
+        <div>V1-3: <b>${r.v13 || '-'} V</b></div>
+        <div>IN: <b>${r.in_c || '-'} A</b></div>
+        <div>I1: <b>${r.i1 || '-'} A</b></div>
+        <div>I2: <b>${r.i2 || '-'} A</b></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <h4 style="font-size:13px; font-weight:700; color:var(--accent-primary); margin-bottom:6px;">ข้อเสนอแนะและรายละเอียดสภาพหน้างาน</h4>
+      <p style="font-size:12.5px; background:var(--surface-subtle); padding:10px 12px; border-radius:var(--radius-sm); color:var(--text-secondary);">${r.notes || 'ไม่มีบันทึกเพิ่มเติม'}</p>
+    </div>
+
+    <div style="display:flex; justify-content:flex-end; gap:8px;">
+      <button class="btn-action btn-soft" onclick="window.print()">🖨️ พิมพ์ใบนี้</button>
+      <button class="btn-action btn-primary" onclick="document.getElementById('recordModal').classList.remove('active')">ตกลง</button>
+    </div>
+  `;
+
+  document.getElementById('recordModalContent').innerHTML = content;
+  document.getElementById('recordModal').classList.add('active');
+}
+
+function closeModal(event){
+  if(event.target.id === 'recordModal'){
+    document.getElementById('recordModal').classList.remove('active');
+  }
+}
+
+function exportHistoryExcel(){
+  const headers = ["Record ID", "Station ID", "สถานที่", "วันที่", "เวลา", "ผู้ตรวจสอบ", "ผลตรวจ", "ข้อเสนอแนะ"];
+  const rows = INSPECTION_RECORDS.map(r => [
+    r.recordId,
+    r.stationId,
+    `"${r.location}"`,
+    r.date,
+    r.time,
+    `"${r.inspector}"`,
+    r.overallResult,
+    `"${r.notes}"`
+  ]);
+
+  const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `Inspection_History_Records.csv`);
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+}
+
+/* ======================================================================
+   VIEW 7: ANOMALY LAB (วิเคราะห์ความผิดปกติ WO)
 ====================================================================== */
 function viewAnomalyLab(){
   const anomalies = WORK_ORDERS.filter(w=>w.anomaly);
@@ -1049,7 +1267,7 @@ function viewAnomalyLab(){
 }
 
 /* ======================================================================
-   VIEW 7: ASSETS REGISTRY
+   VIEW 8: ASSETS REGISTRY
 ====================================================================== */
 let assetTypeFilter = 'ALL';
 function viewAssets(){
@@ -1111,7 +1329,7 @@ function viewAssets(){
 function setAssetType(t){assetTypeFilter=t; renderActiveView();}
 
 /* ======================================================================
-   VIEW 8: COST ANALYTICS
+   VIEW 9: COST ANALYTICS
 ====================================================================== */
 function viewCost(){
   const total = WORK_ORDERS.reduce((a,w)=>a+w.cost,0);
@@ -1198,6 +1416,7 @@ function renderActiveView(){
   else if(activeTab==='outages'){ root.innerHTML = viewOutages(); mountOutagesChart(); }
   else if(activeTab==='smart_route'){ root.innerHTML = viewSmartRoute(); }
   else if(activeTab==='inspection_studio'){ root.innerHTML = viewInspectionStudio(); }
+  else if(activeTab==='history_records'){ root.innerHTML = viewHistoryRecords(); }
   else if(activeTab==='anomaly_lab'){ root.innerHTML = viewAnomalyLab(); }
   else if(activeTab==='assets_registry'){ root.innerHTML = viewAssets(); }
   else if(activeTab==='cost_analytics'){ root.innerHTML = viewCost(); mountCostCharts(); }
