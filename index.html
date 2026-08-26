@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WCM-CMMS | การไฟฟ้านครหลวง เขตสมุทรปราการ (กบจ.ฟขป.)</title>
+<title>WCM-CMMS | ระบบบริหารจัดการงานบำรุงรักษา กฟน. เขตสมุทรปราการ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
 <style>
 :root{
   /* Soft Slate / Teal Theme สบายตา ไม่ฉูดฉาด */
-  --bg: #F5F7FB;
+  --bg: #F4F7FB;
   --surface: #FFFFFF;
-  --surface-2: #F0F4F8;
-  --surface-3: #E2E8F0;
-  --border: #E1E6ED;
+  --surface-2: #EEF3F8;
+  --surface-3: #E1E8F2;
+  --border: #DCE3ED;
   --text: #1E293B;
   --text-dim: #64748B;
   --text-faint: #94A3B8;
@@ -25,8 +25,11 @@
   --danger: #E11D48;
   --danger-dim: #FFE4E6;
   --success: #10B981;
+  --success-dim: #D1FAE5;
   --primary-accent: #2563EB;
   --primary-dim: #DBEAFE;
+  --purple: #7C3AED;
+  --purple-dim: #EDE9FE;
   --font-display: 'Space Grotesk', sans-serif;
   --font-body: 'IBM Plex Sans Thai', 'IBM Plex Sans', sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
@@ -36,26 +39,26 @@ body{
   background:var(--bg);
   color:var(--text);
   font-family:var(--font-body);
-  font-size:14px;
+  font-size:13.5px;
   line-height:1.5;
   -webkit-font-smoothing:antialiased;
 }
 a{color:inherit;text-decoration:none;}
 button{font-family:inherit;cursor:pointer;}
-::-webkit-scrollbar{width:8px;height:8px;}
+::-webkit-scrollbar{width:7px;height:7px;}
 ::-webkit-scrollbar-track{background:var(--bg);}
 ::-webkit-scrollbar-thumb{background:var(--surface-3);border-radius:4px;}
 
 /* ===== Layout shell ===== */
 .shell{display:flex;min-height:100vh;}
 .sidebar{
-  width:245px;flex-shrink:0;background:var(--surface);
+  width:260px;flex-shrink:0;background:var(--surface);
   border-right:1px solid var(--border);
   display:flex;flex-direction:column;
   position:sticky;top:0;height:100vh;
 }
 .brand{
-  padding:18px 16px 14px;border-bottom:1px solid var(--border);
+  padding:16px 16px 14px;border-bottom:1px solid var(--border);
   display:flex;align-items:center;gap:10px;
 }
 .brand-mark{
@@ -65,13 +68,13 @@ button{font-family:inherit;cursor:pointer;}
   font-family:var(--font-display);font-weight:700;color:#FFFFFF;font-size:14px;
   flex-shrink:0;box-shadow:0 2px 8px rgba(37,99,235,0.2);
 }
-.brand-text{font-family:var(--font-display);font-weight:700;font-size:14.5px;letter-spacing:.02em;color:var(--text);}
-.brand-sub{font-size:10px;color:var(--text-faint);letter-spacing:.04em;margin-top:1px;}
+.brand-text{font-family:var(--font-display);font-weight:700;font-size:14px;letter-spacing:.02em;color:var(--text);}
+.brand-sub{font-size:10px;color:var(--text-faint);letter-spacing:.03em;margin-top:1px;}
 
 .nav{flex:1;padding:12px 10px;display:flex;flex-direction:column;gap:3px;overflow-y:auto;}
 .nav-item{
-  display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;
-  color:var(--text-dim);font-size:13px;font-weight:500;border:none;background:transparent;
+  display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;
+  color:var(--text-dim);font-size:12.5px;font-weight:500;border:none;background:transparent;
   width:100%;text-align:left;transition:all .15s ease;
 }
 .nav-item:hover{background:var(--surface-2);color:var(--text);}
@@ -87,13 +90,13 @@ button{font-family:inherit;cursor:pointer;}
 
 .main{flex:1;min-width:0;display:flex;flex-direction:column;}
 .topbar{
-  height:58px;flex-shrink:0;border-bottom:1px solid var(--border);
+  height:56px;flex-shrink:0;border-bottom:1px solid var(--border);
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 22px;background:rgba(255,255,255,.88);backdrop-filter:blur(8px);
+  padding:0 22px;background:rgba(255,255,255,.9);backdrop-filter:blur(8px);
   position:sticky;top:0;z-index:20;
 }
-.page-title{font-family:var(--font-display);font-weight:600;font-size:16.5px;}
-.page-sub{font-size:11.5px;color:var(--text-faint);margin-top:1px;}
+.page-title{font-family:var(--font-display);font-weight:600;font-size:16px;}
+.page-sub{font-size:11px;color:var(--text-faint);margin-top:1px;}
 .topbar-right{display:flex;align-items:center;gap:12px;}
 .user-tag{font-size:11.5px;color:var(--text-dim);text-align:right;}
 .user-tag b{display:block;color:var(--text);font-size:12px;}
@@ -106,16 +109,16 @@ button{font-family:inherit;cursor:pointer;}
 @keyframes fadein{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
 
 /* ===== KPI cards ===== */
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px;}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px;}
 .kpi-card{
   background:var(--surface);border:1px solid var(--border);border-radius:12px;
   padding:16px 18px;position:relative;overflow:hidden;
   box-shadow:0 1px 3px rgba(0,0,0,0.02);
 }
 .kpi-label{font-size:11px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.05em;font-weight:600;}
-.kpi-value{font-family:var(--font-display);font-size:26px;font-weight:700;margin-top:6px;}
-.kpi-value small{font-size:13px;font-weight:500;color:var(--text-dim);}
-.kpi-delta{font-size:11.5px;margin-top:5px;display:flex;align-items:center;gap:5px;}
+.kpi-value{font-family:var(--font-display);font-size:24px;font-weight:700;margin-top:6px;}
+.kpi-value small{font-size:12.5px;font-weight:500;color:var(--text-dim);}
+.kpi-delta{font-size:11px;margin-top:5px;display:flex;align-items:center;gap:5px;}
 .kpi-delta.up{color:var(--danger);}
 .kpi-delta.down{color:var(--success);}
 .kpi-delta.flat{color:var(--text-faint);}
@@ -129,15 +132,16 @@ button{font-family:inherit;cursor:pointer;}
 }
 .panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
 .panel-title{font-family:var(--font-display);font-weight:600;font-size:14.5px;}
-.panel-title span{color:var(--text-faint);font-family:var(--font-body);font-weight:400;font-size:12px;margin-left:8px;}
-.grid-2{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;}
+.panel-title span{color:var(--text-faint);font-family:var(--font-body);font-weight:400;font-size:11.5px;margin-left:8px;}
+.grid-2{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
 
 /* ===== one-line diagram ===== */
 .feeder-strip{margin-bottom:12px;background:var(--surface-2);padding:10px 14px;border-radius:8px;}
 .feeder-strip:last-child{margin-bottom:0;}
-.feeder-strip-label{font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);margin-bottom:7px;display:flex;justify-content:space-between;}
+.feeder-strip-label{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);margin-bottom:7px;display:flex;justify-content:space-between;}
 .feeder-strip-label b{color:var(--text);}
-.line-track{display:flex;align-items:center;height:42px;position:relative;}
+.line-track{display:flex;align-items:center;height:40px;position:relative;}
 .line-seg{flex:1;height:2px;background:var(--border);}
 .line-node{
   width:16px;height:16px;border-radius:4px;flex-shrink:0;position:relative;
@@ -150,32 +154,32 @@ button{font-family:inherit;cursor:pointer;}
 .line-node::after{
   content:attr(data-tip);position:absolute;bottom:22px;left:50%;transform:translateX(-50%);
   background:var(--text);border:1px solid var(--border);padding:4px 8px;border-radius:6px;
-  font-size:10.5px;font-family:var(--font-mono);white-space:nowrap;opacity:0;pointer-events:none;
+  font-size:10px;font-family:var(--font-mono);white-space:nowrap;opacity:0;pointer-events:none;
   transition:opacity .12s;z-index:5;color:#FFFFFF;box-shadow:0 4px 10px rgba(0,0,0,0.15);
 }
 .line-node:hover::after{opacity:1;}
 .legend-row{display:flex;gap:16px;margin-top:12px;flex-wrap:wrap;}
-.legend-item{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text-dim);}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-dim);}
 .legend-swatch{width:10px;height:10px;border-radius:3px;}
 
 /* ===== table ===== */
 .table-wrap{overflow-x:auto;}
-table{width:100%;border-collapse:collapse;font-size:13px;}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
 th{
-  text-align:left;padding:10px 12px;color:var(--text-dim);font-weight:600;
+  text-align:left;padding:9px 12px;color:var(--text-dim);font-weight:600;
   font-size:11px;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--border);
   background:var(--surface-2);white-space:nowrap;
 }
-td{padding:12px 12px;border-bottom:1px solid var(--border);white-space:nowrap;}
+td{padding:10px 12px;border-bottom:1px solid var(--border);white-space:nowrap;}
 tr:last-child td{border-bottom:none;}
 tbody tr{transition:background .1s;}
 tbody tr:hover{background:var(--surface-2);}
-.mono{font-family:var(--font-mono);font-size:12.5px;color:var(--text-dim);}
+.mono{font-family:var(--font-mono);font-size:12px;color:var(--text-dim);}
 .badge{
-  display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;
-  font-size:11px;font-weight:600;white-space:nowrap;
+  display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:20px;
+  font-size:10.5px;font-weight:600;white-space:nowrap;
 }
-.badge .bdot{width:6px;height:6px;border-radius:50%;}
+.badge .bdot{width:5px;height:5px;border-radius:50%;}
 .badge.ok{background:var(--teal-dim);color:var(--teal);}
 .badge.ok .bdot{background:var(--teal);}
 .badge.warn{background:var(--amber-dim);color:var(--amber);}
@@ -186,48 +190,56 @@ tbody tr:hover{background:var(--surface-2);}
 .badge.pm{background:var(--primary-dim);color:var(--primary-accent);}
 .badge.cm{background:var(--amber-dim);color:var(--amber);}
 .badge.em{background:var(--danger-dim);color:var(--danger);}
+.badge.anomaly{background:var(--purple-dim);color:var(--purple);}
 
-/* ===== filters / controls ===== */
+/* ===== controls & buttons ===== */
 .controls-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
 .seg{display:flex;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:3px;gap:2px;}
-.seg button{background:none;border:none;color:var(--text-dim);font-size:12.5px;font-weight:500;padding:6px 12px;border-radius:6px;transition:all .15s;}
+.seg button{background:none;border:none;color:var(--text-dim);font-size:12px;font-weight:500;padding:5px 11px;border-radius:6px;transition:all .15s;}
 .seg button.active{background:var(--surface);color:var(--text);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
 .btn{
-  background:var(--primary-accent);color:#FFFFFF;border:none;border-radius:8px;padding:8px 14px;
-  font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:6px;transition:opacity .15s;
+  background:var(--primary-accent);color:#FFFFFF;border:none;border-radius:8px;padding:7px 13px;
+  font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;transition:opacity .15s;
 }
 .btn:hover{opacity:0.9;}
+.btn.teal{background:var(--teal);}
 .btn.ghost{background:var(--surface);color:var(--text);border:1px solid var(--border);}
 .btn.ghost:hover{background:var(--surface-2);}
 
-/* ===== PM checklist cards ===== */
-.pm-cal{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;}
-.pm-task{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:13px 14px;}
-.pm-task-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;}
-.pm-task-eq{font-weight:600;font-size:13px;}
-.pm-task-id{font-family:var(--font-mono);font-size:10.5px;color:var(--text-faint);margin-top:2px;}
-.pm-task-date{font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);margin-bottom:8px;}
-.pm-checklist{list-style:none;display:flex;flex-direction:column;gap:4px;}
-.pm-checklist li{font-size:11.5px;color:var(--text-dim);display:flex;gap:6px;align-items:flex-start;}
-.pm-checklist li::before{content:'—';color:var(--text-faint);flex-shrink:0;}
+/* ===== form styles ===== */
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-label{font-size:11.5px;font-weight:600;color:var(--text);}
+.form-control{
+  background:var(--surface-2);border:1px solid var(--border);border-radius:7px;
+  padding:8px 12px;font-family:inherit;font-size:12.5px;color:var(--text);outline:none;
+}
+.form-control:focus{border-color:var(--primary-accent);background:#FFFFFF;}
+.check-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-dim);padding:5px 0;}
 
-.tmpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
-.tmpl-card{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
-.tmpl-card h4{font-family:var(--font-display);font-size:13.5px;margin-bottom:4px;color:var(--text);}
-.tmpl-freq{font-size:11px;color:var(--primary-accent);font-family:var(--font-mono);font-weight:600;margin-bottom:9px;}
-.tmpl-card ol{padding-left:16px;font-size:11.5px;color:var(--text-dim);display:flex;flex-direction:column;gap:3px;}
+/* ===== route navigation card ===== */
+.route-step{
+  display:flex;gap:14px;padding:12px 14px;background:var(--surface-2);border-radius:8px;margin-bottom:10px;
+  border-left:3px solid var(--teal);
+}
+.route-num{
+  width:26px;height:26px;border-radius:50%;background:var(--teal);color:#FFFFFF;
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;
+}
+.route-info{flex:1;}
+.route-title{font-weight:600;font-size:13px;margin-bottom:2px;}
+.route-meta{font-size:11px;color:var(--text-dim);font-family:var(--font-mono);}
 
 /* ===== charts ===== */
-.chart-box{position:relative;height:260px;}
-.chart-box.short{height:200px;}
-.cost-legend-note{font-size:11.5px;color:var(--text-dim);margin-top:8px;line-height:1.4;}
+.chart-box{position:relative;height:250px;}
+.chart-box.short{height:190px;}
 
 /* ===== mobile bottom nav ===== */
 .bottom-nav{display:none;}
 
 @media (max-width: 980px){
   .kpi-grid{grid-template-columns:repeat(2,1fr);}
-  .grid-2{grid-template-columns:1fr;}
+  .grid-2, .grid-3, .form-grid{grid-template-columns:1fr;}
 }
 @media (max-width: 760px){
   .sidebar{
@@ -242,19 +254,13 @@ tbody tr:hover{background:var(--surface-2);}
   .bottom-nav{
     display:flex;position:fixed;bottom:0;left:0;right:0;height:60px;
     background:var(--surface);border-top:1px solid var(--border);z-index:40;
-    justify-content:space-around;align-items:center;padding-bottom:env(safe-area-inset-bottom);
+    justify-content:space-around;align-items:center;padding-bottom:env(safe-area-inset-bottom);overflow-x:auto;
   }
-  .bn-item{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text-faint);background:none;border:none;font-size:9.5px;font-weight:600;padding:6px;flex:1;}
-  .bn-item svg{width:19px;height:19px;}
+  .bn-item{display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--text-faint);background:none;border:none;font-size:9px;font-weight:600;padding:6px;min-width:55px;}
+  .bn-item svg{width:18px;height:18px;}
   .bn-item.active{color:var(--primary-accent);}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:45;}
   .overlay.show{display:block;}
-  .panel-head{align-items:flex-start;}
-}
-@media (max-width: 480px){
-  .kpi-grid{grid-template-columns:1fr 1fr;}
-  .kpi-value{font-size:22px;}
-  table{font-size:12px;}
 }
 </style>
 </head>
@@ -273,7 +279,7 @@ tbody tr:hover{background:var(--surface-2);}
     </div>
     <nav class="nav" id="navList"></nav>
     <div class="sidebar-foot">
-      <div class="status-pill"><span class="dot-live"></span> เชื่อมต่อระบบ SCADA · ปกติ</div>
+      <div class="status-pill"><span class="dot-live"></span> เชื่อมต่อ SCADA & GPS · ปกติ</div>
     </div>
   </aside>
 
@@ -309,62 +315,65 @@ tbody tr:hover{background:var(--surface-2);}
 ====================================================================== */
 const ICONS = {
   dashboard:'<path d="M3 3h8v8H3V3zm10 0h8v5h-8V3zM3 13h8v8H3v-8zm10 3h8v5h-8v-5z" fill="currentColor"/>',
+  pm_plan:'<path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>',
+  outage:'<path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
+  route:'<path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
+  form:'<path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
+  anomaly:'<path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
   assets:'<path d="M4 4h16v4H4zM4 10h7v10H4zM13 10h7v4h-7zM13 16h7v4h-7z" fill="currentColor"/>',
-  pm:'<path d="M3 10h18M8 3v4M16 3v4M5 6h14a2 2 0 012 2v11a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z" stroke="currentColor" stroke-width="2" fill="none"/>',
   cost:'<path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>',
   work:'<path d="M14.7 6.3a4 4 0 01-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 015.4-5.4l-3 3-2-2z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/>'
 };
+
 const SECTIONS = [
-  {id:'dashboard', label:'แดชบอร์ด', sub:'ภาพรวมสถานะการบำรุงรักษาสายป้อนและอุปกรณ์', icon:'dashboard'},
-  {id:'assets', label:'ทะเบียนอุปกรณ์', sub:'หม้อแปลงจำหน่าย · LBS · Unit Substation · อุปกรณ์ระบบจำหน่าย', icon:'assets'},
-  {id:'pm', label:'แผนบำรุงรักษาเชิงป้องกัน', sub:'ตารางงาน PM และเช็คลิสต์มาตรฐาน กบจ.ฟขป.', icon:'pm'},
+  {id:'dashboard', label:'แดชบอร์ดภาพรวม', sub:'ภาพรวมสถานะการบำรุงรักษาสายป้อนและอุปกรณ์', icon:'dashboard'},
+  {id:'pm_plan', label:'ตารางวางแผน PM', sub:'ปฏิทินและแผนการเข้าตรวจบำรุงรักษาเชิงป้องกันประจำปี 2026', icon:'pm_plan'},
+  {id:'outage', label:'สถิติไฟฟ้าดับรายสายป้อน', sub:'บันทึก SAIFI / SAIDI และสถิติไฟดับแยกตามสายป้อน', icon:'outage'},
+  {id:'route', label:'เส้นทาง & นำทางภาคสนาม', sub:'วางแผนเส้นทางตรวจอุปกรณ์และระบบ GPS นำทางภาคสนาม', icon:'route'},
+  {id:'form', label:'ฟอร์มเอกสารตรวจบำรุงรักษา', sub:'ฟอร์มบันทึกผลการตรวจสอบอุปกรณ์ดิจิทัลหน้างาน', icon:'form'},
+  {id:'anomaly', label:'วิเคราะห์ความผิดปกติ WO', sub:'ระบบตรวจจับ Cost Outliers และงานซ้ำซ้อนผิดปกติ', icon:'anomaly'},
+  {id:'assets', label:'ทะเบียนอุปกรณ์', sub:'หม้อแปลงจำหน่าย · LBS · Unit Substation · Cutout', icon:'assets'},
   {id:'cost', label:'วิเคราะห์ต้นทุน', sub:'ต้นทุนบำรุงรักษาแยกตามประเภทงาน หม้อแปลง และสายป้อน', icon:'cost'},
-  {id:'work', label:'ใบสั่งงาน', sub:'ประวัติงาน PM / CM และบันทึกผลงานดิจิทัล', icon:'work'},
+  {id:'work', label:'ใบสั่งงาน (Work Orders)', sub:'ประวัติงาน PM / CM และติดตามสถานะการซ่อม', icon:'work'},
 ];
 
 /* ======================================================================
-   DATA: การไฟฟ้านครหลวง เขตสมุทรปราการ (กบจ.ฟขป.)
+   DATA
 ====================================================================== */
 const FEEDERS = [
-  {id:'SP-01', name:'สายป้อน ปากน้ำ 01', station:'สฟ.สมุทรปราการ (ปากน้ำ)'},
-  {id:'SP-04', name:'สายป้อน เทพารักษ์ 04', station:'สฟ.เทพารักษ์'},
-  {id:'SP-09', name:'สายป้อน บางปู 09', station:'สฟ.นิคมอุตสาหกรรมบางปู'},
+  {id:'SP-01', name:'สายป้อน ปากน้ำ 01', station:'สฟ.สมุทรปราการ (ปากน้ำ)', outages: 4, duration: 145, saifi: 0.85, saidi: 32.4},
+  {id:'SP-04', name:'สายป้อน เทพารักษ์ 04', station:'สฟ.เทพารักษ์', outages: 7, duration: 280, saifi: 1.42, saidi: 58.6},
+  {id:'SP-09', name:'สายป้อน บางปู 09', station:'สฟ.นิคมอุตสาหกรรมบางปู', outages: 2, duration: 60, saifi: 0.38, saidi: 14.2},
 ];
 
 const EQUIPMENT = [
-  {id:'TR-0101', type:'หม้อแปลงจำหน่าย', name:'เสาเลขที่ 12/1 ถ.สุขุมวิท', feeder:'SP-01', status:'ok', lastPM:'2026-05-14', nextPM:'2026-11-14', condition:92, region:'ปากน้ำ'},
-  {id:'LBS-0105', type:'LBS', name:'เสาเลขที่ 28 หน้าตลาดปากน้ำ', feeder:'SP-01', status:'warn', lastPM:'2026-03-02', nextPM:'2026-09-02', condition:74, region:'ปากน้ำ'},
-  {id:'USTA-0108', type:'Unit Substation', name:'รพ.สมุทรปราการ', feeder:'SP-01', status:'ok', lastPM:'2026-06-20', nextPM:'2026-12-20', condition:88, region:'ปากน้ำ'},
-  {id:'TR-0112', type:'หม้อแปลงจำหน่าย', name:'ชุมชนท้ายบ้าน ซอย 5', feeder:'SP-01', status:'overdue', lastPM:'2025-11-04', nextPM:'2026-05-04', condition:58, region:'ปากน้ำ'},
-  {id:'CO-0115', type:'Cutout', name:'เสาเลขที่ 45 ถ.สายลวด', feeder:'SP-01', status:'ok', lastPM:'2026-07-01', nextPM:'2027-01-01', condition:95, region:'ปากน้ำ'},
+  {id:'TR-0101', type:'หม้อแปลงจำหน่าย', name:'เสาเลขที่ 12/1 ถ.สุขุมวิท', feeder:'SP-01', lat: 13.5990, lng: 100.5970, status:'ok', lastPM:'2026-05-14', nextPM:'2026-11-14', condition:92, region:'ปากน้ำ'},
+  {id:'LBS-0105', type:'LBS', name:'เสาเลขที่ 28 หน้าตลาดปากน้ำ', feeder:'SP-01', lat: 13.5955, lng: 100.5995, status:'warn', lastPM:'2026-03-02', nextPM:'2026-09-02', condition:74, region:'ปากน้ำ'},
+  {id:'USTA-0108', type:'Unit Substation', name:'รพ.สมุทรปราการ', feeder:'SP-01', lat: 13.5920, lng: 100.6050, status:'ok', lastPM:'2026-06-20', nextPM:'2026-12-20', condition:88, region:'ปากน้ำ'},
+  {id:'TR-0112', type:'หม้อแปลงจำหน่าย', name:'ชุมชนท้ายบ้าน ซอย 5', feeder:'SP-01', lat: 13.5850, lng: 100.6010, status:'overdue', lastPM:'2025-11-04', nextPM:'2026-05-04', condition:58, region:'ปากน้ำ'},
+  {id:'CO-0115', type:'Cutout', name:'เสาเลขที่ 45 ถ.สายลวด', feeder:'SP-01', lat: 13.5890, lng: 100.5940, status:'ok', lastPM:'2026-07-01', nextPM:'2027-01-01', condition:95, region:'ปากน้ำ'},
 
-  {id:'LBS-0402', type:'LBS', name:'เสาเลขที่ 08 แยกเทพารักษ์', feeder:'SP-04', status:'ok', lastPM:'2026-07-10', nextPM:'2027-01-10', condition:90, region:'เทพารักษ์'},
-  {id:'USTA-0406', type:'Unit Substation', name:'หมู่บ้านทิพวัลย์', feeder:'SP-04', status:'overdue', lastPM:'2025-08-18', nextPM:'2026-02-18', condition:49, region:'เทพารักษ์'},
-  {id:'TR-0410', type:'หม้อแปลงจำหน่าย', name:'เสาเลขที่ 52 ถ.หนามแดง', feeder:'SP-04', status:'warn', lastPM:'2026-04-22', nextPM:'2026-08-22', condition:70, region:'เทพารักษ์'},
-  {id:'LBS-0415', type:'LBS', name:'เสาเลขที่ 77 ซ.ศรีด่าน', feeder:'SP-04', status:'ok', lastPM:'2026-06-30', nextPM:'2026-12-30', condition:93, region:'เทพารักษ์'},
+  {id:'LBS-0402', type:'LBS', name:'เสาเลขที่ 08 แยกเทพารักษ์', feeder:'SP-04', lat: 13.6330, lng: 100.6120, status:'ok', lastPM:'2026-07-10', nextPM:'2027-01-10', condition:90, region:'เทพารักษ์'},
+  {id:'USTA-0406', type:'Unit Substation', name:'หมู่บ้านทิพวัลย์', feeder:'SP-04', lat: 13.6270, lng: 100.6050, status:'overdue', lastPM:'2025-08-18', nextPM:'2026-02-18', condition:49, region:'เทพารักษ์'},
+  {id:'TR-0410', type:'หม้อแปลงจำหน่าย', name:'เสาเลขที่ 52 ถ.หนามแดง', feeder:'SP-04', lat: 13.6210, lng: 100.6350, status:'warn', lastPM:'2026-04-22', nextPM:'2026-08-22', condition:70, region:'เทพารักษ์'},
+  {id:'LBS-0415', type:'LBS', name:'เสาเลขที่ 77 ซ.ศรีด่าน', feeder:'SP-04', lat: 13.6410, lng: 100.6400, status:'ok', lastPM:'2026-06-30', nextPM:'2026-12-30', condition:93, region:'เทพารักษ์'},
 
-  {id:'USTA-0901', type:'Unit Substation', name:'เขตส่งออก นิคมฯ บางปู', feeder:'SP-09', status:'ok', lastPM:'2026-07-05', nextPM:'2027-01-05', condition:96, region:'บางปู'},
-  {id:'TR-0904', type:'หม้อแปลงจำหน่าย', name:'ซอย 8 นิคมอุตสาหกรรม', feeder:'SP-09', status:'warn', lastPM:'2026-03-19', nextPM:'2026-09-19', condition:68, region:'บางปู'},
-  {id:'CO-0909', type:'Cutout', name:'เสาเลขที่ 102 ถ.แพรกษา', feeder:'SP-09', status:'ok', lastPM:'2026-07-22', nextPM:'2027-01-22', condition:97, region:'บางปู'},
-  {id:'LBS-0912', type:'LBS', name:'เสาเลขที่ 35 บางปูแลนด์', feeder:'SP-09', status:'ok', lastPM:'2026-05-30', nextPM:'2026-11-30', condition:85, region:'บางปู'},
-];
-
-const PM_TEMPLATES = [
-  {type:'หม้อแปลงจำหน่าย (Transformer)', freq:'ทุก 6 เดือน', steps:['ตรวจวัดอุณหภูมิขั้วต่อด้วย Thermal Scan','ตรวจระดับน้ำมันและซีลยางกันรั่วซึม','วัดค่าความเป็นฉนวนขดลวด (Megger)','ตรวจสอบและวัดค่าความต้านทานกราวด์ (Ground Resistance)','ตรวจสภาพบุชชิ่งแรงสูง-แรงต่ำ']},
-  {type:'LBS (Load Break Switch)', freq:'ทุก 6 เดือน', steps:['ตรวจสภาพฉนวนภายนอกและจุดต่อสาย','วัดค่าความเป็นฉนวน (Insulation Resistance)','ตรวจสภาพหน้าสัมผัสและกลไกใบมีด','ทดสอบการเปิด-ปิดด้วยมือและรีโมท SCADA','ตรวจเช็ค Torque จุดยึดและขั้วต่อ']},
-  {type:'Unit Substation', freq:'ทุก 6 เดือน', steps:['ตรวจวัดอุณหภูมิด้วย Thermal Scan','ตรวจระดับและคุณภาพน้ำมันหม้อแปลงภายในยูนิต','วัดค่า Partial Discharge','ตรวจสอบระบบระบายอากาศ/พัดลมอัตโนมัติ','ตรวจสภาพชุดควบคุมและอุปกรณ์ตัดตอน']},
-  {type:'Cutout / ฟิวส์ระบบจำหน่าย', freq:'ทุก 12 เดือน', steps:['ตรวจสภาพ Fuse Link และกระบอกฟิวส์','ตรวจสภาพจุดต่อสายและ Clamp ยึด','ทำความสะอาดพื้นผิวฉนวน Porcelain/Polymer','ตรวจสอบป้ายเตือนความปลอดภัยประจำเสา']},
+  {id:'USTA-0901', type:'Unit Substation', name:'เขตส่งออก นิคมฯ บางปู', feeder:'SP-09', lat: 13.5450, lng: 100.6550, status:'ok', lastPM:'2026-07-05', nextPM:'2027-01-05', condition:96, region:'บางปู'},
+  {id:'TR-0904', type:'หม้อแปลงจำหน่าย', name:'ซอย 8 นิคมอุตสาหกรรม', feeder:'SP-09', lat: 13.5410, lng: 100.6620, status:'warn', lastPM:'2026-03-19', nextPM:'2026-09-19', condition:68, region:'บางปู'},
+  {id:'CO-0909', type:'Cutout', name:'เสาเลขที่ 102 ถ.แพรกษา', feeder:'SP-09', lat: 13.5600, lng: 100.6400, status:'ok', lastPM:'2026-07-22', nextPM:'2027-01-22', condition:97, region:'บางปู'},
+  {id:'LBS-0912', type:'LBS', name:'เสาเลขที่ 35 บางปูแลนด์', feeder:'SP-09', lat: 13.5350, lng: 100.6700, status:'ok', lastPM:'2026-05-30', nextPM:'2026-11-30', condition:85, region:'บางปู'},
 ];
 
 const WORK_ORDERS = [
-  {id:'WO-SP-8841', eq:'LBS-0105', feeder:'SP-01', type:'PM', date:'2026-08-20', cost:3200, tech:'ทีมบำรุงรักษา 1 (กบจ.)', status:'กำหนดการ'},
-  {id:'WO-SP-8830', eq:'TR-0112', feeder:'SP-01', type:'CM', date:'2026-08-18', cost:18500, tech:'ทีมฉุกเฉิน ฟขป.', status:'ดำเนินการ'},
-  {id:'WO-SP-8822', eq:'USTA-0406', feeder:'SP-04', type:'EM', date:'2026-08-15', cost:42300, tech:'ทีมฉุกเฉิน ฟขป.', status:'เสร็จสิ้น'},
-  {id:'WO-SP-8810', eq:'USTA-0901', feeder:'SP-09', type:'PM', date:'2026-08-05', cost:5100, tech:'ทีมบำรุงรักษา 2 (กบจ.)', status:'เสร็จสิ้น'},
-  {id:'WO-SP-8804', eq:'TR-0101', feeder:'SP-01', type:'PM', date:'2026-07-28', cost:2800, tech:'ทีมบำรุงรักษา 1 (กบจ.)', status:'เสร็จสิ้น'},
-  {id:'WO-SP-8795', eq:'TR-0410', feeder:'SP-04', type:'CM', date:'2026-07-20', cost:12750, tech:'ทีมบำรุงรักษา 2 (กบจ.)', status:'เสร็จสิ้น'},
-  {id:'WO-SP-8781', eq:'TR-0904', feeder:'SP-09', type:'PM', date:'2026-07-10', cost:2950, tech:'ทีมบำรุงรักษา 3 (กบจ.)', status:'เสร็จสิ้น'},
-  {id:'WO-SP-8770', eq:'CO-0115', feeder:'SP-01', type:'PM', date:'2026-07-01', cost:1400, tech:'ทีมบำรุงรักษา 3 (กบจ.)', status:'เสร็จสิ้น'},
+  {id:'WO-SP-8841', eq:'LBS-0105', feeder:'SP-01', type:'PM', date:'2026-08-20', cost:3200, stdCost:3000, durationHours:2.5, tech:'ทีมบำรุงรักษา 1 (กบจ.)', status:'กำหนดการ', anomaly:false, anomalyReason:'-'},
+  {id:'WO-SP-8830', eq:'TR-0112', feeder:'SP-01', type:'CM', date:'2026-08-18', cost:38500, stdCost:15000, durationHours:8.5, tech:'ทีมฉุกเฉิน ฟขป.', status:'ดำเนินการ', anomaly:true, anomalyReason:'ต้นทุนซ่อมสูงกว่าปกติ +156% (เปลี่ยนซีล+ถ่ายน้ำมันด่วน)'},
+  {id:'WO-SP-8822', eq:'USTA-0406', feeder:'SP-04', type:'EM', date:'2026-08-15', cost:42300, stdCost:20000, durationHours:11.0, tech:'ทีมฉุกเฉิน ฟขป.', status:'เสร็จสิ้น', anomaly:true, anomalyReason:'เวลาซ่อม (Duration) นานเกินมาตรฐาน +120% จากสายป้อนตัดไฟล่าช้า'},
+  {id:'WO-SP-8810', eq:'USTA-0901', feeder:'SP-09', type:'PM', date:'2026-08-05', cost:5100, stdCost:5000, durationHours:3.0, tech:'ทีมบำรุงรักษา 2 (กบจ.)', status:'เสร็จสิ้น', anomaly:false, anomalyReason:'-'},
+  {id:'WO-SP-8804', eq:'TR-0101', feeder:'SP-01', type:'PM', date:'2026-07-28', cost:2800, stdCost:3000, durationHours:2.0, tech:'ทีมบำรุงรักษา 1 (กบจ.)', status:'เสร็จสิ้น', anomaly:false, anomalyReason:'-'},
+  {id:'WO-SP-8795', eq:'TR-0410', feeder:'SP-04', type:'CM', date:'2026-07-20', cost:12750, stdCost:12000, durationHours:4.0, tech:'ทีมบำรุงรักษา 2 (กบจ.)', status:'เสร็จสิ้น', anomaly:false, anomalyReason:'-'},
+  {id:'WO-SP-8781', eq:'TR-0904', feeder:'SP-09', type:'PM', date:'2026-07-10', cost:2950, stdCost:3000, durationHours:2.2, tech:'ทีมบำรุงรักษา 3 (กบจ.)', status:'เสร็จสิ้น', anomaly:false, anomalyReason:'-'},
+  {id:'WO-SP-8770', eq:'CO-0115', feeder:'SP-01', type:'PM', date:'2026-07-01', cost:1400, stdCost:1500, durationHours:1.5, tech:'ทีมบำรุงรักษา 3 (กบจ.)', status:'เสร็จสิ้น', anomaly:false, anomalyReason:'-'},
+  {id:'WO-SP-8762', eq:'LBS-0105', feeder:'SP-01', type:'CM', date:'2026-06-25', cost:8900, stdCost:4000, durationHours:5.0, tech:'ทีมบำรุงรักษา 1 (กบจ.)', status:'เสร็จสิ้น', anomaly:true, anomalyReason:'อุปกรณ์เดิมถูกเปิดซ่อมซ้ำภายในรอบ 60 วัน (Repeat Failure)'},
 ];
 
 /* ======================================================================
@@ -417,16 +426,15 @@ function viewDashboard(){
   const total = EQUIPMENT.length;
   const overdue = EQUIPMENT.filter(e=>e.status==='overdue').length;
   const warn = EQUIPMENT.filter(e=>e.status==='warn').length;
-  const ytdCost = WORK_ORDERS.reduce((a,w)=>a+w.cost,0);
-  const pmCost = WORK_ORDERS.filter(w=>w.type==='PM').reduce((a,w)=>a+w.cost,0);
-  const upcoming = [...EQUIPMENT].sort((a,b)=>new Date(a.nextPM)-new Date(b.nextPM)).slice(0,6);
+  const anomalies = WORK_ORDERS.filter(w=>w.anomaly).length;
+  const upcoming = [...EQUIPMENT].sort((a,b)=>new Date(a.nextPM)-new Date(b.nextPM)).slice(0,5);
 
   return `
   <div class="kpi-grid">
     <div class="kpi-card"><div class="kpi-accent" style="background:var(--teal)"></div>
       <div class="kpi-label">อุปกรณ์ในระบบจำหน่าย</div>
       <div class="kpi-value">${total} <small>จุด</small></div>
-      <div class="kpi-delta flat">3 สายป้อนหลัก กฟน.สมุทรปราการ</div></div>
+      <div class="kpi-delta flat">3 สายป้อน กฟน.สมุทรปราการ</div></div>
     <div class="kpi-card"><div class="kpi-accent" style="background:var(--danger)"></div>
       <div class="kpi-label">เกินกำหนด PM</div>
       <div class="kpi-value" style="color:var(--danger)">${overdue} <small>จุด</small></div>
@@ -434,16 +442,17 @@ function viewDashboard(){
     <div class="kpi-card"><div class="kpi-accent" style="background:var(--amber)"></div>
       <div class="kpi-label">ใกล้ครบกำหนด (30 วัน)</div>
       <div class="kpi-value" style="color:var(--amber)">${warn} <small>จุด</small></div>
-      <div class="kpi-delta flat">อยู่ในแผนประจำเดือน กบจ.</div></div>
-    <div class="kpi-card"><div class="kpi-accent" style="background:var(--primary-accent)"></div>
-      <div class="kpi-label">ต้นทุนบำรุงรักษาสะสม YTD</div>
-      <div class="kpi-value">${thb(ytdCost)}</div>
-      <div class="kpi-delta down">PM คิดเป็น ${Math.round(pmCost/ytdCost*100)}% ของต้นทุน</div></div>
+      <div class="kpi-delta flat">อยู่ในแผนงาน กบจ.</div></div>
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--purple)"></div>
+      <div class="kpi-label">WO ผิดปกติ (Anomalies)</div>
+      <div class="kpi-value" style="color:var(--purple)">${anomalies} <small>รายการ</small></div>
+      <div class="kpi-delta up">ตรวจพบ Cost/Repeat Outliers</div></div>
   </div>
 
   <div class="panel">
     <div class="panel-head">
-      <div class="panel-title">ผังจำลองสายป้อนระบบจำหน่าย (Single-Line Status) <span>สถานะ หม้อแปลง / LBS / Unit Substation บนสายป้อน กฟน.สมุทรปราการ</span></div>
+      <div class="panel-title">ผังจำลองสายป้อนระบบจำหน่าย (Single-Line Status) <span>สถานะ หม้อแปลง / LBS / Unit Substation กฟน.สมุทรปราการ</span></div>
+      <button class="btn" onclick="go('route')">📍 เปิดโหมดนำทางตรวจอุปกรณ์</button>
     </div>
     ${FEEDERS.map(f=>{
       const eqs = EQUIPMENT.filter(e=>e.feeder===f.id);
@@ -473,27 +482,328 @@ function viewDashboard(){
       </table></div>
     </div>
     <div class="panel">
-      <div class="panel-head"><div class="panel-title">แนวโน้มต้นทุน PM vs CM ราย 6 เดือน <span>เปรียบเทียบเชิงป้องกันและแก้ไข</span></div></div>
-      <div class="chart-box short"><canvas id="chartDashTrend"></canvas></div>
+      <div class="panel-head"><div class="panel-title">สถิติความถี่ไฟดับ (SAIFI รายสายป้อน) <span>ครั้ง/ผู้ใช้บริการ</span></div></div>
+      <div class="chart-box short"><canvas id="chartDashSaifi"></canvas></div>
     </div>
   </div>
   `;
 }
 
 function mountDashboardCharts(){
-  const ctx = document.getElementById('chartDashTrend');
+  const ctx = document.getElementById('chartDashSaifi');
   if(!ctx) return;
   new Chart(ctx, {
-    type:'line',
+    type:'bar',
     data:{
-      labels:['มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.'],
-      datasets:[
-        {label:'PM เชิงป้องกัน', data:[14200,15800,16200,17100,15600,13600], borderColor:'#0D9488', backgroundColor:'rgba(13,148,136,.08)', tension:.35, fill:true, borderWidth:2, pointRadius:3},
-        {label:'CM/ฉุกเฉิน', data:[8200,6100,21400,9800,42300,18500], borderColor:'#D97706', backgroundColor:'rgba(217,119,6,.06)', tension:.35, fill:true, borderWidth:2, pointRadius:3},
-      ]
+      labels: FEEDERS.map(f=>f.id),
+      datasets:[{label:'SAIFI (ครั้ง/ราย)', data:FEEDERS.map(f=>f.saifi), backgroundColor:'#2563EB', borderRadius:6, maxBarThickness:38}]
     },
-    options: chartOpts()
+    options: chartOpts({plugins:{legend:{display:false}}})
   });
+}
+
+/* ======================================================================
+   VIEW: PM PLANNING (ตารางวางแผน PM)
+====================================================================== */
+function viewPMPlan(){
+  return `
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-title">ตารางวางแผนบำรุงรักษาเชิงป้องกันรายเดือน (PM Master Schedule 2026-2027) <span>กบจ.ฟขป.</span></div>
+      <div class="controls-row">
+        <button class="btn ghost">📥 ส่งออกไฟล์ Excel</button>
+        <button class="btn">+ จัดตารางงานใหม่</button>
+      </div>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr>
+        <th>รหัสอุปกรณ์</th><th>ประเภท</th><th>สายป้อน / พื้นที่</th><th>รอบตรวจ</th><th>ส.ค. 26</th><th>ก.ย. 26</th><th>ต.ค. 26</th><th>พ.ย. 26</th><th>ธ.ค. 26</th><th>ม.ค. 27</th><th>ผู้รับผิดชอบ</th>
+      </tr></thead>
+      <tbody>
+        ${EQUIPMENT.map(e=>{
+          const nextM = new Date(e.nextPM).getMonth();
+          return `<tr>
+            <td class="mono"><b>${e.id}</b></td>
+            <td>${e.type}</td>
+            <td>${e.feeder} · ${e.region}</td>
+            <td><span class="badge ${e.status}">${e.status==='overdue'?'ด่วนพิเศษ':'6 เดือน'}</span></td>
+            <td>${e.status==='overdue'?'<span class="badge overdue">PM ด่วน</span>':'-'}</td>
+            <td>${nextM===8?'<span class="badge warn">มีแผน PM</span>':'-'}</td>
+            <td>${nextM===9?'<span class="badge ok">มีแผน PM</span>':'-'}</td>
+            <td>${nextM===10?'<span class="badge ok">มีแผน PM</span>':'-'}</td>
+            <td>${nextM===11?'<span class="badge ok">มีแผน PM</span>':'-'}</td>
+            <td>${nextM===0?'<span class="badge ok">มีแผน PM</span>':'-'}</td>
+            <td>ทีมบำรุงรักษา ${e.feeder==='SP-01'?'1':e.feeder==='SP-04'?'2':'3'}</td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table></div>
+  </div>
+  `;
+}
+
+/* ======================================================================
+   VIEW: OUTAGE STATS (สถิติไฟฟ้าดับรายสายป้อน)
+====================================================================== */
+function viewOutage(){
+  return `
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--danger)"></div>
+      <div class="kpi-label">จำนวนครั้งไฟดับรวม YTD</div><div class="kpi-value" style="color:var(--danger)">13 <small>ครั้ง</small></div>
+      <div class="kpi-delta down">-18% เทียบกับปีก่อนหน้า</div></div>
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--amber)"></div>
+      <div class="kpi-label">ระยะเวลาดับรวม (Duration)</div><div class="kpi-value" style="color:var(--amber)">485 <small>นาที</small></div>
+      <div class="kpi-delta down">เฉลี่ย 37 นาที/ครั้ง</div></div>
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--primary-accent)"></div>
+      <div class="kpi-label">ค่า SAIFI เฉลี่ยเขต</div><div class="kpi-value">0.88 <small>ครั้ง/ราย</small></div>
+      <div class="kpi-delta down">เกณฑ์เป้าหมาย &lt; 1.20</div></div>
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--teal)"></div>
+      <div class="kpi-label">ค่า SAIDI เฉลี่ยเขต</div><div class="kpi-value" style="color:var(--teal)">35.0 <small>นาที/ราย</small></div>
+      <div class="kpi-delta down">เกณฑ์เป้าหมาย &lt; 45.0</div></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">สถิติจำนวนครั้งและระยะเวลาไฟดับรายสายป้อน</div></div>
+      <div class="chart-box"><canvas id="chartOutageStats"></canvas></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">สาเหตุไฟฟ้าดับสะสม <span>จำแนกตามอุปกรณ์และสภาพแวดล้อม</span></div></div>
+      <div class="chart-box"><canvas id="chartOutageCause"></canvas></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><div class="panel-title">ตารางดัชนีความเชื่อถือได้ (Reliability Indices) รายสายป้อน กฟน.สมุทรปราการ</div></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>รหัสสายป้อน</th><th>ชื่อสายป้อน</th><th>สถานีต้นทาง</th><th>จำนวนครั้ง (ครั้ง)</th><th>ระยะเวลารวม (นาที)</th><th>SAIFI</th><th>SAIDI</th><th>การประเมิน</th></tr></thead>
+      <tbody>
+        ${FEEDERS.map(f=>`
+          <tr>
+            <td class="mono"><b>${f.id}</b></td>
+            <td>${f.name}</td>
+            <td>${f.station}</td>
+            <td class="mono">${f.outages}</td>
+            <td class="mono">${f.duration}</td>
+            <td class="mono">${f.saifi}</td>
+            <td class="mono">${f.saidi}</td>
+            <td><span class="badge ${f.outages>5?'warn':'ok'}">${f.outages>5?'เฝ้าระวังพิเศษ':'ผ่านเกณฑ์มาตรฐาน'}</span></td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table></div>
+  </div>
+  `;
+}
+
+function mountOutageCharts(){
+  const c1 = document.getElementById('chartOutageStats');
+  if(c1){
+    new Chart(c1, {
+      type:'bar',
+      data:{
+        labels: FEEDERS.map(f=>f.name.replace('สายป้อน ','')),
+        datasets:[
+          {label:'จำนวนครั้งดับ (ครั้ง)', data:FEEDERS.map(f=>f.outages), backgroundColor:'#D97706', yAxisID:'y'},
+          {label:'ระยะเวลารวม (นาที)', data:FEEDERS.map(f=>f.duration), backgroundColor:'#2563EB', yAxisID:'y1'}
+        ]
+      },
+      options: chartOpts({
+        scales:{
+          y:{type:'linear', position:'left', ticks:{color:'#64748B'}, grid:{color:'#F0F4F8'}},
+          y1:{type:'linear', position:'right', ticks:{color:'#64748B'}, grid:{drawOnChartArea:false}}
+        }
+      })
+    });
+  }
+  const c2 = document.getElementById('chartOutageCause');
+  if(c2){
+    new Chart(c2, {
+      type:'doughnut',
+      data:{
+        labels:['สัตว์/กิ่งไม้แตะสาย','อุปกรณ์เสื่อมสภาพ/ชำรุด','สวิตชิ่งสลับโหลด','อุบัติเหตุรถชนเสา'],
+        datasets:[{data:[40, 30, 20, 10], backgroundColor:['#0D9488','#D97706','#2563EB','#E11D48'], borderColor:'#FFFFFF', borderWidth:2}]
+      },
+      options:{responsive:true, maintainAspectRatio:false, cutout:'60%', plugins:{legend:{position:'bottom', labels:{font:{family:"'IBM Plex Sans Thai'",size:11}, color:'#64748B'}}}}
+    });
+  }
+}
+
+/* ======================================================================
+   VIEW: ROUTE & FIELD NAVIGATION (วางแผนเส้นทาง & นำทาง)
+====================================================================== */
+function viewRoute(){
+  const targetFeeder = 'SP-01';
+  const routeEqs = EQUIPMENT.filter(e=>e.feeder===targetFeeder);
+  return `
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-title">วางแผนเส้นทางตรวจอุปกรณ์ & ระบบนำทางภาคสนาม (Smart Patrol Routing) <span>สายป้อน ปากน้ำ 01 (SP-01)</span></div>
+      <div class="controls-row">
+        <select class="form-control" style="padding:4px 10px; font-size:12px;">
+          <option>สายป้อน ปากน้ำ 01 (SP-01) - 5 อุปกรณ์</option>
+          <option>สายป้อน เทพารักษ์ 04 (SP-04) - 4 อุปกรณ์</option>
+          <option>สายป้อน บางปู 09 (SP-09) - 4 อุปกรณ์</option>
+        </select>
+        <button class="btn teal">🚗 เริ่มระบบนำทาง GPS ทั้งหมด</button>
+      </div>
+    </div>
+    
+    <div class="grid-2">
+      <div>
+        <div style="font-weight:600; font-size:13px; margin-bottom:10px; color:var(--text);">ลำดับเส้นทางตรวจที่เหมาะสมที่สุด (Optimized Route Sequence):</div>
+        ${routeEqs.map((e, idx)=>`
+          <div class="route-step" style="border-left-color:${e.status==='overdue'?'var(--danger)':e.status==='warn'?'var(--amber)':'var(--teal)'};">
+            <div class="route-num" style="background:${e.status==='overdue'?'var(--danger)':e.status==='warn'?'var(--amber)':'var(--teal)'}">${idx+1}</div>
+            <div class="route-info">
+              <div class="route-title">${e.name} <small style="color:var(--text-dim)">(${e.type})</small></div>
+              <div class="route-meta">พิกัด GPS: ${e.lat}, ${e.lng} · รหัส: ${e.id}</div>
+              <div style="margin-top:4px; display:flex; gap:6px; align-items:center;">
+                ${badgeHTML(e.status)}
+                <span style="font-size:11px; color:var(--text-faint)">ระยะห่างจุดก่อนหน้า ~650 ม.</span>
+              </div>
+            </div>
+            <div>
+              <a href="https://maps.google.com/?q=${e.lat},${e.lng}" target="_blank" class="btn ghost" style="padding:4px 9px; font-size:11px;">📍 นำทาง</a>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+
+      <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+          <div style="font-weight:600; font-size:13.5px; margin-bottom:8px;">สรุปข้อมูลแผนการเดินทางตรวจภาคสนาม</div>
+          <p style="font-size:12px; color:var(--text-dim); line-height:1.6;">
+            • <b>ระยะทางรวมโดยประมาณ:</b> 4.2 กิโลเมตร<br>
+            • <b>เวลาเดินทางรวมโดยประมาณ:</b> 18 นาที (ไม่รวมเวลาตรวจหน้างาน)<br>
+            • <b>อุปกรณ์เป้าหมาย:</b> 5 จุด (หม้อแปลง 2, LBS 1, Substation 1, Cutout 1)<br>
+            • <b>จุดเร่งด่วน:</b> <span style="color:var(--danger); font-weight:600;">TR-0112 (เกินกำหนด PM)</span> ต้องเข้าเป็นจุดแรก
+          </p>
+        </div>
+        <div style="margin-top:16px; background:#FFFFFF; border:1px dashed var(--border); border-radius:8px; padding:14px; text-align:center;">
+          <div style="font-size:12px; font-weight:600; color:var(--primary-accent); margin-bottom:4px;">📲 เชื่อมต่อพิกัดเข้ามือถือช่างหน้างาน</div>
+          <div style="font-size:11px; color:var(--text-faint)">รองรับ Google Maps & Apple Maps อัตโนมัติ</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  `;
+}
+
+/* ======================================================================
+   VIEW: FORM (ฟอร์มเอกสารการบำรุงรักษาอุปกรณ์ไฟฟ้า)
+====================================================================== */
+function viewForm(){
+  return `
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-title">ฟอร์มบันทึกผลการตรวจสอบบำรุงรักษาเชิงป้องกัน (Digital PM Inspection Form) <span>กบจ.ฟขป.</span></div>
+      <button class="btn ghost" onclick="alert('บันทึกร่างเอกสารสำเร็จ')">💾 บันทึกร่าง</button>
+    </div>
+    
+    <form onsubmit="event.preventDefault(); alert('ส่งผลการตรวจบำรุงรักษาเข้าสู่ระบบ CMMS เรียบร้อยแล้ว');">
+      <div class="form-grid" style="margin-bottom:16px;">
+        <div class="form-group">
+          <label class="form-label">อุปกรณ์ที่เข้าตรวจ</label>
+          <select class="form-control">
+            <option>TR-0112 | หม้อแปลงจำหน่าย - ชุมชนท้ายบ้าน ซอย 5 (สายป้อน SP-01)</option>
+            <option>LBS-0105 | LBS - เสาเลขที่ 28 หน้าตลาดปากน้ำ (สายป้อน SP-01)</option>
+            <option>USTA-0406 | Unit Substation - หมู่บ้านทิพวัลย์ (สายป้อน SP-04)</option>
+            <option>TR-0410 | หม้อแปลงจำหน่าย - เสาเลขที่ 52 ถ.หนามแดง (สายป้อน SP-04)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">วันที่และเวลาตรวจหน้างาน</label>
+          <input type="datetime-local" class="form-control" value="2026-08-26T10:30">
+        </div>
+        <div class="form-group">
+          <label class="form-label">หัวหน้าทีมช่างผู้รับผิดชอบ</label>
+          <input type="text" class="form-control" value="นายสมศักดิ์ มั่นคง (ทีมบำรุงรักษา 1)">
+        </div>
+        <div class="form-group">
+          <label class="form-label">อุณหภูมิขั้วต่อสูงสุดจากการ Thermal Scan (°C)</label>
+          <input type="number" class="form-control" placeholder="เช่น 45.5" value="48.2">
+        </div>
+      </div>
+
+      <div style="font-weight:600; font-size:13px; margin:16px 0 10px; color:var(--text); border-bottom:1px solid var(--border); padding-bottom:6px;">
+        รายการตรวจสอบมาตรฐาน (Inspection Checklist)
+      </div>
+
+      <div class="grid-2" style="margin-bottom:16px;">
+        <div>
+          <label class="check-item"><input type="checkbox" checked> ตรวจสภาพฉนวนภายนอกและไม่พบคราบแตกร้าว</label>
+          <label class="check-item"><input type="checkbox" checked> ตรวจระดับน้ำมันหม้อแปลง/สวิตช์อยู่ในเกณฑ์ปกติ</label>
+          <label class="check-item"><input type="checkbox" checked> ขันกวด Torque จุดต่อสายและขั้วต่อแรงสูง-ต่ำ</label>
+        </div>
+        <div>
+          <label class="check-item"><input type="checkbox" checked> ตรวจวัดค่าความต้านทานกราวด์ (&lt; 5 โอห์ม)</label>
+          <label class="check-item"><input type="checkbox"> ตรวจสอบการทำงานของรีโมทควบคุม SCADA</label>
+          <label class="check-item"><input type="checkbox" checked> ทำความสะอาดฝุ่นและตรวจป้ายเตือนความปลอดภัย</label>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:16px;">
+        <label class="form-label">ผลการประเมินสภาพและข้อเสนอแนะเพิ่มเติม</label>
+        <textarea class="form-control" rows="3" placeholder="ระบุสภาพความผิดปกติที่พบ หรืออะไหล่ที่ต้องเตรียมเปลี่ยนในรอบถัดไป...">พบซีลยางขั้วต่อเริ่มแข็งตัวเล็กน้อย ควรจัดแผนเปลี่ยนซีลในรอบ 6 เดือนข้างหน้า</textarea>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:10px;">
+        <button type="reset" class="btn ghost">ล้างข้อมูล</button>
+        <button type="submit" class="btn">ยืนยันส่งผลตรวจดิจิทัล (Submit PM Form)</button>
+      </div>
+    </form>
+  </div>
+  `;
+}
+
+/* ======================================================================
+   VIEW: ANOMALY (วิเคราะห์ความผิดปกติของ Work Order)
+====================================================================== */
+function viewAnomaly(){
+  const anomalies = WORK_ORDERS.filter(w=>w.anomaly);
+  return `
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--purple)"></div>
+      <div class="kpi-label">WO ที่ตรวจพบความผิดปกติ</div><div class="kpi-value" style="color:var(--purple)">${anomalies.length} <small>ใบงาน</small></div>
+      <div class="kpi-delta up">จากทั้งหมด ${WORK_ORDERS.length} รายการ</div></div>
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--danger)"></div>
+      <div class="kpi-label">Cost Outlier (เกินงบ &gt;50%)</div><div class="kpi-value" style="color:var(--danger)">1 <small>รายการ</small></div>
+      <div class="kpi-delta up">WO-SP-8830</div></div>
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--amber)"></div>
+      <div class="kpi-label">Duration Outlier (ซ่อมนานผิดปกติ)</div><div class="kpi-value" style="color:var(--amber)">1 <small>รายการ</small></div>
+      <div class="kpi-delta up">WO-SP-8822</div></div>
+    <div class="kpi-card"><div class="kpi-accent" style="background:var(--teal)"></div>
+      <div class="kpi-label">Repeat Failure (&lt; 60 วัน)</div><div class="kpi-value" style="color:var(--teal)">1 <small>รายการ</small></div>
+      <div class="kpi-delta flat">WO-SP-8762 (LBS-0105)</div></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-title">ตารางวิเคราะห์ความผิดปกติของใบสั่งงาน (Work Order Anomaly Detection) <span>อัลกอริทึมคัดกรองต้นทุน เวลา และการเกิดซ้ำ</span></div>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr>
+        <th>เลขที่ WO</th><th>อุปกรณ์</th><th>ประเภท</th><th>ต้นทุนจริง</th><th>ต้นทุนมาตรฐาน</th><th>ผลต่าง</th><th>เวลาซ่อมจริง</th><th>สาเหตุความผิดปกติที่ตรวจพบ</th><th>การดำเนินการ</th>
+      </tr></thead>
+      <tbody>
+        ${WORK_ORDERS.map(w=>`
+          <tr style="${w.anomaly?'background:rgba(237,233,254,0.3);':''}">
+            <td class="mono"><b>${w.id}</b></td>
+            <td class="mono">${w.eq}</td>
+            <td>${woBadge(w.type)}</td>
+            <td class="mono"><b>${thb(w.cost)}</b></td>
+            <td class="mono">${thb(w.stdCost)}</td>
+            <td class="mono" style="color:${w.cost>w.stdCost?'var(--danger)':'var(--success)'}">${w.cost>w.stdCost?'+'+Math.round((w.cost-w.stdCost)/w.stdCost*100)+'%':'-'}</td>
+            <td class="mono">${w.durationHours} ชม.</td>
+            <td>${w.anomaly?`<span class="badge anomaly">${w.anomalyReason}</span>`:'<span style="color:var(--text-faint)">ปกติ</span>'}</td>
+            <td>${w.anomaly?'<button class="btn ghost" style="padding:3px 8px; font-size:11px;" onclick="alert(\'ส่งคำขอทบทวนงบประมาณและกระบวนการซ่อมเรียบร้อย\')">🔍 ตรวจสอบ</button>':'-'}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table></div>
+  </div>
+  `;
 }
 
 /* ======================================================================
@@ -514,7 +824,7 @@ function viewAssets(){
     </div>
     <div class="table-wrap"><table>
       <thead><tr>
-        <th>รหัสอุปกรณ์</th><th>ประเภทอุปกรณ์</th><th>ตำแหน่งติดตั้ง/เสา</th><th>สายป้อน</th><th>พื้นที่รับผิดชอบ</th>
+        <th>รหัสอุปกรณ์</th><th>ประเภทอุปกรณ์</th><th>ตำแหน่งติดตั้ง/เสา</th><th>สายป้อน</th><th>พื้นที่</th>
         <th>ดัชนีสภาพ (Health %)</th><th>PM ล่าสุด</th><th>PM ถัดไป</th><th>สถานะ</th>
       </tr></thead>
       <tbody>${rows.map(e=>`
@@ -539,43 +849,6 @@ function viewAssets(){
 function setAssetFilter(t){assetFilter=t; renderView();}
 
 /* ======================================================================
-   VIEW: PM PLANNING
-====================================================================== */
-function viewPM(){
-  const upcoming = [...EQUIPMENT].sort((a,b)=>new Date(a.nextPM)-new Date(b.nextPM));
-  return `
-  <div class="panel">
-    <div class="panel-head"><div class="panel-title">ตารางแผนบำรุงรักษาเชิงป้องกัน (PM Schedule) <span>จัดลำดับตามกำหนดเวลา กบจ.ฟขป.</span></div>
-      <button class="btn ghost">ส่งออกแผนงาน PM</button></div>
-    <div class="pm-cal">
-      ${upcoming.slice(0,9).map(e=>{
-        const tmpl = PM_TEMPLATES.find(t=>t.type.startsWith(e.type)) || PM_TEMPLATES[0];
-        return `<div class="pm-task">
-          <div class="pm-task-top">
-            <div><div class="pm-task-eq">${e.name}</div><div class="pm-task-id">${e.id} · ${e.feeder}</div></div>
-            ${badgeHTML(e.status)}
-          </div>
-          <div class="pm-task-date">📅 กำหนดตรวจ: ${e.nextPM}</div>
-          <ul class="pm-checklist">${tmpl.steps.slice(0,3).map(s=>`<li>${s}</li>`).join('')}</ul>
-        </div>`;
-      }).join('')}
-    </div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-head"><div class="panel-title">มาตรฐานเช็คลิสต์การบำรุงรักษา <span>เกณฑ์มาตรฐานงานตรวจอุปกรณ์สายป้อน</span></div></div>
-    <div class="tmpl-grid">
-      ${PM_TEMPLATES.map(t=>`
-        <div class="tmpl-card">
-          <h4>${t.type}</h4>
-          <div class="tmpl-freq">ความถี่รอบตรวจ: ${t.freq}</div>
-          <ol>${t.steps.map(s=>`<li>${s}</li>`).join('')}</ol>
-        </div>`).join('')}
-    </div>
-  </div>`;
-}
-
-/* ======================================================================
    VIEW: COST ANALYSIS
 ====================================================================== */
 function viewCost(){
@@ -589,20 +862,17 @@ function viewCost(){
   const pmCost = WORK_ORDERS.filter(w=>w.type==='PM').reduce((a,w)=>a+w.cost,0);
   const cmCost = WORK_ORDERS.filter(w=>w.type==='CM').reduce((a,w)=>a+w.cost,0);
   const emCost = WORK_ORDERS.filter(w=>w.type==='EM').reduce((a,w)=>a+w.cost,0);
-  const byFeeder = {};
-  FEEDERS.forEach(f=>byFeeder[f.id]=0);
-  WORK_ORDERS.forEach(w=>byFeeder[w.feeder]=(byFeeder[w.feeder]||0)+w.cost);
 
   return `
   <div class="kpi-grid">
     <div class="kpi-card"><div class="kpi-accent" style="background:var(--primary-accent)"></div>
       <div class="kpi-label">ต้นทุนรวมบำรุงรักษา YTD</div><div class="kpi-value">${thb(totalCost)}</div>
-      <div class="kpi-delta flat">รวม 8 ใบสั่งงาน กฟน.สมุทรปราการ</div></div>
+      <div class="kpi-delta flat">${WORK_ORDERS.length} ใบสั่งงาน</div></div>
     <div class="kpi-card"><div class="kpi-accent" style="background:var(--teal)"></div>
       <div class="kpi-label">ต้นทุน PM (ตามแผน)</div><div class="kpi-value" style="color:var(--teal)">${thb(pmCost)}</div>
       <div class="kpi-delta down">${Math.round(pmCost/totalCost*100)}% ของงบบำรุงรักษา</div></div>
     <div class="kpi-card"><div class="kpi-accent" style="background:var(--amber)"></div>
-      <div class="kpi-label">ต้นทุน CM (งานซ่อมแก้ไข)</div><div class="kpi-value" style="color:var(--amber)">${thb(cmCost)}</div>
+      <div class="kpi-label">ต้นทุน CM (ซ่อมแก้ไข)</div><div class="kpi-value" style="color:var(--amber)">${thb(cmCost)}</div>
       <div class="kpi-delta up">${Math.round(cmCost/totalCost*100)}% ของต้นทุนรวม</div></div>
     <div class="kpi-card"><div class="kpi-accent" style="background:var(--danger)"></div>
       <div class="kpi-label">ต้นทุนซ่อมฉุกเฉิน (EM)</div><div class="kpi-value" style="color:var(--danger)">${thb(emCost)}</div>
@@ -611,29 +881,13 @@ function viewCost(){
 
   <div class="grid-2">
     <div class="panel">
-      <div class="panel-head"><div class="panel-title">ต้นทุนแยกตามประเภทอุปกรณ์ระบบจำหน่าย <span>บาท, หม้อแปลง / LBS / Unit Substation</span></div></div>
+      <div class="panel-head"><div class="panel-title">ต้นทุนแยกตามประเภทอุปกรณ์ระบบจำหน่าย</div></div>
       <div class="chart-box"><canvas id="chartByType"></canvas></div>
     </div>
     <div class="panel">
       <div class="panel-head"><div class="panel-title">สัดส่วนต้นทุน PM / CM / ฉุกเฉิน</div></div>
       <div class="chart-box"><canvas id="chartSplit"></canvas></div>
-      <div class="cost-legend-note">การเพิ่มสัดส่วนงาน PM เชิงรุกช่วยลดค่าใช้จ่ายซ่อมฉุกเฉิน (Emergency Cost) ลงได้อย่างมีประสิทธิภาพ</div>
     </div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-head"><div class="panel-title">ต้นทุนบำรุงรักษาแยกตามสายป้อน <span>สฟ.สมุทรปราการ / สฟ.เทพารักษ์ / สฟ.บางปู</span></div></div>
-    <div class="chart-box short"><canvas id="chartByFeeder"></canvas></div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-head"><div class="panel-title">รายละเอียดประวัติค่าใช้จ่ายรายใบสั่งงาน</div></div>
-    <div class="table-wrap"><table>
-      <thead><tr><th>เลขที่ WO</th><th>อุปกรณ์</th><th>สายป้อน</th><th>ประเภทงาน</th><th>วันที่ปฏิบัติงาน</th><th>ต้นทุน</th></tr></thead>
-      <tbody>${[...WORK_ORDERS].sort((a,b)=>b.cost-a.cost).map(w=>`
-        <tr><td class="mono">${w.id}</td><td>${w.eq}</td><td>${w.feeder}</td><td>${woBadge(w.type)}</td><td class="mono">${w.date}</td><td class="mono">${thb(w.cost)}</td></tr>
-      `).join('')}</tbody>
-    </table></div>
   </div>
   `;
 }
@@ -662,8 +916,7 @@ function mountCostCharts(){
   const c1 = document.getElementById('chartByType');
   if(c1){
     new Chart(c1, { type:'bar',
-      data:{ labels:Object.keys(byType), datasets:[{ label:'บาท', data:Object.values(byType),
-        backgroundColor:'#2563EB', borderRadius:6, maxBarThickness:42 }] },
+      data:{ labels:Object.keys(byType), datasets:[{ label:'บาท', data:Object.values(byType), backgroundColor:'#2563EB', borderRadius:6, maxBarThickness:42 }] },
       options: chartOpts({ plugins:{legend:{display:false}} })
     });
   }
@@ -673,21 +926,8 @@ function mountCostCharts(){
     const cm = WORK_ORDERS.filter(w=>w.type==='CM').reduce((a,w)=>a+w.cost,0);
     const em = WORK_ORDERS.filter(w=>w.type==='EM').reduce((a,w)=>a+w.cost,0);
     new Chart(c2, { type:'doughnut',
-      data:{ labels:['PM ตามแผน','CM แก้ไข','ฉุกเฉิน (EM)'], datasets:[{ data:[pm,cm,em],
-        backgroundColor:['#0D9488','#D97706','#E11D48'], borderColor:'#FFFFFF', borderWidth:3 }] },
-      options:{ responsive:true, maintainAspectRatio:false, cutout:'62%',
-        plugins:{ legend:{ position:'bottom', labels:{ color:'#64748B', font:{family:"'IBM Plex Sans Thai'",size:11}, padding:14 } } } }
-    });
-  }
-  const c3 = document.getElementById('chartByFeeder');
-  if(c3){
-    const byFeeder = {};
-    FEEDERS.forEach(f=>byFeeder[f.id]=0);
-    WORK_ORDERS.forEach(w=>byFeeder[w.feeder]=(byFeeder[w.feeder]||0)+w.cost);
-    new Chart(c3, { type:'bar',
-      data:{ labels:FEEDERS.map(f=>f.id+' · '+f.name), datasets:[{ label:'ต้นทุน (บาท)', data:Object.values(byFeeder),
-        backgroundColor:'#0D9488', borderRadius:6, maxBarThickness:52 }] },
-      options: chartOpts({ indexAxis:'y', plugins:{legend:{display:false}} })
+      data:{ labels:['PM ตามแผน','CM แก้ไข','ฉุกเฉิน (EM)'], datasets:[{ data:[pm,cm,em], backgroundColor:['#0D9488','#D97706','#E11D48'], borderColor:'#FFFFFF', borderWidth:3 }] },
+      options:{ responsive:true, maintainAspectRatio:false, cutout:'62%', plugins:{ legend:{ position:'bottom', labels:{ color:'#64748B', font:{family:"'IBM Plex Sans Thai'",size:11}, padding:14 } } } }
     });
   }
 }
@@ -699,7 +939,7 @@ function viewWork(){
   return `
   <div class="panel">
     <div class="panel-head">
-      <div class="panel-title">ระบบบันทึกและติดตามใบสั่งงาน (Work Orders) <span>กบจ.ฟขป. กฟน.สมุทรปราการ</span></div>
+      <div class="panel-title">ระบบบันทึกและติดตามใบสั่งงาน (Work Orders) <span>กบจ.ฟขป.</span></div>
       <button class="btn">+ สร้างใบสั่งงานดิจิทัล</button>
     </div>
     <div class="table-wrap"><table>
@@ -722,8 +962,12 @@ function viewWork(){
 function renderView(){
   const root = document.getElementById('viewRoot');
   if(current==='dashboard'){ root.innerHTML = viewDashboard(); mountDashboardCharts(); }
+  else if(current==='pm_plan'){ root.innerHTML = viewPMPlan(); }
+  else if(current==='outage'){ root.innerHTML = viewOutage(); mountOutageCharts(); }
+  else if(current==='route'){ root.innerHTML = viewRoute(); }
+  else if(current==='form'){ root.innerHTML = viewForm(); }
+  else if(current==='anomaly'){ root.innerHTML = viewAnomaly(); }
   else if(current==='assets'){ root.innerHTML = viewAssets(); }
-  else if(current==='pm'){ root.innerHTML = viewPM(); }
   else if(current==='cost'){ root.innerHTML = viewCost(); mountCostCharts(); }
   else if(current==='work'){ root.innerHTML = viewWork(); }
 }
