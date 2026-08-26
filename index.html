@@ -131,7 +131,6 @@ button{font-family:inherit;cursor:pointer;}
 .panel-title{font-family:var(--font-display);font-weight:600;font-size:14.5px;}
 .panel-title span{color:var(--text-faint);font-family:var(--font-body);font-weight:400;font-size:12px;margin-left:8px;}
 .grid-2{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;}
-.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
 
 /* ===== one-line diagram ===== */
 .feeder-strip{margin-bottom:12px;background:var(--surface-2);padding:10px 14px;border-radius:8px;}
@@ -223,23 +222,12 @@ tbody tr:hover{background:var(--surface-2);}
 .chart-box.short{height:200px;}
 .cost-legend-note{font-size:11.5px;color:var(--text-dim);margin-top:8px;line-height:1.4;}
 
-/* ===== WCM gap cards ===== */
-.gap-card{
-  background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;
-}
-.gap-tag{
-  display:inline-block;padding:2px 8px;border-radius:4px;font-size:10.5px;font-weight:600;
-  background:var(--primary-dim);color:var(--primary-accent);margin-bottom:8px;
-}
-.gap-title{font-size:13.5px;font-weight:600;margin-bottom:6px;color:var(--text);}
-.gap-desc{font-size:12px;color:var(--text-dim);line-height:1.45;}
-
 /* ===== mobile bottom nav ===== */
 .bottom-nav{display:none;}
 
 @media (max-width: 980px){
   .kpi-grid{grid-template-columns:repeat(2,1fr);}
-  .grid-2, .grid-3{grid-template-columns:1fr;}
+  .grid-2{grid-template-columns:1fr;}
 }
 @media (max-width: 760px){
   .sidebar{
@@ -285,7 +273,7 @@ tbody tr:hover{background:var(--surface-2);}
     </div>
     <nav class="nav" id="navList"></nav>
     <div class="sidebar-foot">
-      <div class="status-pill"><span class="dot-live"></span> เชื่อมต่อฐานข้อมูล WCM · ปกติ</div>
+      <div class="status-pill"><span class="dot-live"></span> เชื่อมต่อระบบ SCADA · ปกติ</div>
     </div>
   </aside>
 
@@ -297,7 +285,7 @@ tbody tr:hover{background:var(--surface-2);}
         </button>
         <div>
           <div class="page-title" id="pageTitle">แดชบอร์ด</div>
-          <div class="page-sub" id="pageSub">ภาพรวมสถานะการบำรุงรักษาและดัชนี WCM</div>
+          <div class="page-sub" id="pageSub">ภาพรวมสถานะการบำรุงรักษาสายป้อนและอุปกรณ์</div>
         </div>
       </div>
       <div class="topbar-right">
@@ -324,15 +312,13 @@ const ICONS = {
   assets:'<path d="M4 4h16v4H4zM4 10h7v10H4zM13 10h7v4h-7zM13 16h7v4h-7z" fill="currentColor"/>',
   pm:'<path d="M3 10h18M8 3v4M16 3v4M5 6h14a2 2 0 012 2v11a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z" stroke="currentColor" stroke-width="2" fill="none"/>',
   cost:'<path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>',
-  wcm:'<path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/>',
   work:'<path d="M14.7 6.3a4 4 0 01-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 015.4-5.4l-3 3-2-2z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/>'
 };
 const SECTIONS = [
-  {id:'dashboard', label:'แดชบอร์ด', sub:'ภาพรวมสถานะการบำรุงรักษาสายป้อนและดัชนี WCM', icon:'dashboard'},
+  {id:'dashboard', label:'แดชบอร์ด', sub:'ภาพรวมสถานะการบำรุงรักษาสายป้อนและอุปกรณ์', icon:'dashboard'},
   {id:'assets', label:'ทะเบียนอุปกรณ์', sub:'หม้อแปลงจำหน่าย · LBS · Unit Substation · อุปกรณ์ระบบจำหน่าย', icon:'assets'},
   {id:'pm', label:'แผนบำรุงรักษาเชิงป้องกัน', sub:'ตารางงาน PM และเช็คลิสต์มาตรฐาน กบจ.ฟขป.', icon:'pm'},
   {id:'cost', label:'วิเคราะห์ต้นทุน', sub:'ต้นทุนบำรุงรักษาแยกตามประเภทงาน หม้อแปลง และสายป้อน', icon:'cost'},
-  {id:'wcm', label:'ดัชนี WCM & ผลิตภาพ', sub:'การยกระดับ 4 ด้าน (Data, Strategy, Inventory, People)', icon:'wcm'},
   {id:'work', label:'ใบสั่งงาน', sub:'ประวัติงาน PM / CM และบันทึกผลงานดิจิทัล', icon:'work'},
 ];
 
@@ -442,7 +428,7 @@ function viewDashboard(){
       <div class="kpi-value">${total} <small>จุด</small></div>
       <div class="kpi-delta flat">3 สายป้อนหลัก กฟน.สมุทรปราการ</div></div>
     <div class="kpi-card"><div class="kpi-accent" style="background:var(--danger)"></div>
-      <div class="kpi-label">เกินกำหนด PM (Overdue)</div>
+      <div class="kpi-label">เกินกำหนด PM</div>
       <div class="kpi-value" style="color:var(--danger)">${overdue} <small>จุด</small></div>
       <div class="kpi-delta up">ต้องจัดคิวงานเร่งด่วน</div></div>
     <div class="kpi-card"><div class="kpi-accent" style="background:var(--amber)"></div>
@@ -450,9 +436,9 @@ function viewDashboard(){
       <div class="kpi-value" style="color:var(--amber)">${warn} <small>จุด</small></div>
       <div class="kpi-delta flat">อยู่ในแผนประจำเดือน กบจ.</div></div>
     <div class="kpi-card"><div class="kpi-accent" style="background:var(--primary-accent)"></div>
-      <div class="kpi-label">WCM Planned Ratio</div>
-      <div class="kpi-value" style="color:var(--primary-accent)">62.5%</div>
-      <div class="kpi-delta down">เป้าหมาย WCM: &gt; 80%</div></div>
+      <div class="kpi-label">ต้นทุนบำรุงรักษาสะสม YTD</div>
+      <div class="kpi-value">${thb(ytdCost)}</div>
+      <div class="kpi-delta down">PM คิดเป็น ${Math.round(pmCost/ytdCost*100)}% ของต้นทุน</div></div>
   </div>
 
   <div class="panel">
@@ -577,7 +563,7 @@ function viewPM(){
   </div>
 
   <div class="panel">
-    <div class="panel-head"><div class="panel-title">มาตรฐานเช็คลิสต์การบำรุงรักษาตามแนวทาง WCM <span>เกณฑ์มาตรฐานงานตรวจอุปกรณ์สายป้อน</span></div></div>
+    <div class="panel-head"><div class="panel-title">มาตรฐานเช็คลิสต์การบำรุงรักษา <span>เกณฑ์มาตรฐานงานตรวจอุปกรณ์สายป้อน</span></div></div>
     <div class="tmpl-grid">
       ${PM_TEMPLATES.map(t=>`
         <div class="tmpl-card">
@@ -620,7 +606,7 @@ function viewCost(){
       <div class="kpi-delta up">${Math.round(cmCost/totalCost*100)}% ของต้นทุนรวม</div></div>
     <div class="kpi-card"><div class="kpi-accent" style="background:var(--danger)"></div>
       <div class="kpi-label">ต้นทุนซ่อมฉุกเฉิน (EM)</div><div class="kpi-value" style="color:var(--danger)">${thb(emCost)}</div>
-      <div class="kpi-delta up">${Math.round(emCost/totalCost*100)}% ของต้นทุนรวม — เป้าหมาย WCM &lt;10%</div></div>
+      <div class="kpi-delta up">${Math.round(emCost/totalCost*100)}% ของต้นทุนรวม</div></div>
   </div>
 
   <div class="grid-2">
@@ -631,7 +617,7 @@ function viewCost(){
     <div class="panel">
       <div class="panel-head"><div class="panel-title">สัดส่วนต้นทุน PM / CM / ฉุกเฉิน</div></div>
       <div class="chart-box"><canvas id="chartSplit"></canvas></div>
-      <div class="cost-legend-note">การเพิ่มสัดส่วนงาน PM เชิงรุกตามแนวคิด WCM จะช่วยลดค่าใช้จ่ายซ่อมฉุกเฉิน (Emergency Cost) ลงอย่างมีนัยสำคัญ</div>
+      <div class="cost-legend-note">การเพิ่มสัดส่วนงาน PM เชิงรุกช่วยลดค่าใช้จ่ายซ่อมฉุกเฉิน (Emergency Cost) ลงได้อย่างมีประสิทธิภาพ</div>
     </div>
   </div>
 
@@ -648,84 +634,6 @@ function viewCost(){
         <tr><td class="mono">${w.id}</td><td>${w.eq}</td><td>${w.feeder}</td><td>${woBadge(w.type)}</td><td class="mono">${w.date}</td><td class="mono">${thb(w.cost)}</td></tr>
       `).join('')}</tbody>
     </table></div>
-  </div>
-  `;
-}
-
-/* ======================================================================
-   VIEW: WCM & PRODUCTIVITY
-====================================================================== */
-function viewWCM(){
-  return `
-  <div class="kpi-grid">
-    <div class="kpi-card"><div class="kpi-accent" style="background:var(--primary-accent)"></div>
-      <div class="kpi-label">Labor Productivity</div>
-      <div class="kpi-value" style="color:var(--primary-accent)">+28%</div>
-      <div class="kpi-delta down">ลดเวลาคีย์เอกสารซ้ำซ้อน</div></div>
-    <div class="kpi-card"><div class="kpi-accent" style="background:var(--teal)"></div>
-      <div class="kpi-label">MTTR (Mean Time to Repair)</div>
-      <div class="kpi-value" style="color:var(--teal)">2.4 <small>ชม.</small></div>
-      <div class="kpi-delta down">ลดลง 35% จากเดิม</div></div>
-    <div class="kpi-card"><div class="kpi-accent" style="background:var(--success)"></div>
-      <div class="kpi-label">System Usability Scale (SUS)</div>
-      <div class="kpi-value" style="color:var(--success)">84.5 <small>/100</small></div>
-      <div class="kpi-delta down">ระดับ Excellent (การยอมรับสูง)</div></div>
-    <div class="kpi-card"><div class="kpi-accent" style="background:var(--amber)"></div>
-      <div class="kpi-label">Planned vs Unplanned</div>
-      <div class="kpi-value" style="color:var(--amber)">75 : 25</div>
-      <div class="kpi-delta flat">สอดคล้องกรอบ WCM Roadmap</div></div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-head">
-      <div class="panel-title">กรอบการยกระดับระบบการบำรุงรักษา 4 ด้าน (4 Core Maintenance Gaps) <span>กรณีศึกษา กฟน. เขตสมุทรปราการ</span></div>
-    </div>
-    <div class="grid-2">
-      <div class="gap-card">
-        <span class="gap-tag">1. ด้านข้อมูล (Data Gap)</span>
-        <div class="gap-title">กระดาษ/Excel สู่ Digital Real-time</div>
-        <div class="gap-desc">เปลี่ยนการจดบันทึกผลตรวจสอบหม้อแปลงและอุปกรณ์บนกระดาษ สู่การบันทึกผ่าน Web/Mobile App หน้างานทันที ข้อมูลเชื่อมต่อระบบส่วนกลางแบบเรียลไทม์</div>
-      </div>
-      <div class="gap-card">
-        <span class="gap-tag">2. ด้านแผนงาน (Strategy Gap)</span>
-        <div class="gap-title">Time-based สู่ Predictive Maintenance</div>
-        <div class="gap-desc">ยกระดับการตรวจตามรอบเวลาทั่วไปสู่การวิเคราะห์สภาพอุปกรณ์จริง (Health Condition), การสแกนความร้อน Thermal Scan และประวัติชำรุดย้อนหลัง 3 ปี</div>
-      </div>
-      <div class="gap-card">
-        <span class="gap-tag">3. ด้านพัสดุ (Inventory Gap)</span>
-        <div class="gap-title">แก้ Overstock/Stock-out ตามหลัก Lean</div>
-        <div class="gap-desc">พัฒนาระบบคำนวณจุดสั่งซื้ออะไหล่ที่เหมาะสม (ROP / Safety Stock) สำหรับอุปกรณ์สำคัญ เช่น Fuse Link, ฉนวน และอะไหล่สวิตช์ตัดตอน</div>
-      </div>
-      <div class="gap-card">
-        <span class="gap-tag">4. ด้านบุคลากร (People Gap) — จุดเน้นย้ำโครงงาน</span>
-        <div class="gap-title">UX/UI ใช้ง่าย สร้าง Self-Monitoring</div>
-        <div class="gap-desc">ออกแบบแดชบอร์ดติดตามผลงานรายทีม/บุคคล เพื่อเพิ่มผลิตภาพแรงงาน (Labor Productivity) และสร้างทัศนคติที่ดีต่อการใช้เทคโนโลยีของทีมช่างและวิศวกร</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="grid-2">
-    <div class="panel">
-      <div class="panel-head"><div class="panel-title">การกระจายตัวชี้วัด WCM KPI ประจำแผนก <span>กบจ.ฟขป.</span></div></div>
-      <div class="chart-box"><canvas id="chartWcmKpi"></canvas></div>
-    </div>
-    <div class="panel">
-      <div class="panel-head"><div class="panel-title">แผนความก้าวหน้าโครงการสหกิจศึกษา 4 เดือน <span>(สัปดาห์ที่ 1 - 16)</span></div></div>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <div style="background:var(--surface-2);padding:10px 12px;border-radius:8px;font-size:12px;border-left:3px solid var(--primary-accent);">
-          <b>สัปดาห์ 1-4: วิเคราะห์ปัญหา & รวบรวมข้อมูล</b><br><span style="color:var(--text-dim)">สำรวจ Pain Points หน้างาน และรวบรวมประวัติ Work Orders ย้อนหลัง 3 ปี</span>
-        </div>
-        <div style="background:var(--surface-2);padding:10px 12px;border-radius:8px;font-size:12px;border-left:3px solid var(--teal);">
-          <b>สัปดาห์ 5-8: ออกแบบกระบวนการ & Prototype</b><br><span style="color:var(--text-dim)">วาง Work Process ใหม่, กำหนด WCM KPIs, ออกแบบ UI ใน Figma</span>
-        </div>
-        <div style="background:var(--surface-2);padding:10px 12px;border-radius:8px;font-size:12px;border-left:3px solid var(--amber);">
-          <b>สัปดาห์ 9-12: พัฒนาระบบ CMMS & Dashboard</b><br><span style="color:var(--text-dim)">พัฒนาโมดูลบันทึกงาน PM, วิเคราะห์ต้นทุน และนำขึ้น Hosting ทดสอบ</span>
-        </div>
-        <div style="background:var(--surface-2);padding:10px 12px;border-radius:8px;font-size:12px;border-left:3px solid var(--success);">
-          <b>สัปดาห์ 13-16: ทดลองใช้งาน & ประเมินผล (SUS)</b><br><span style="color:var(--text-dim)">ทดสอบใช้งานจริงหน้างาน กฟน.สมุทรปราการ วัดเวลาที่ลดลงและความพึงพอใจ</span>
-        </div>
-      </div>
-    </div>
   </div>
   `;
 }
@@ -784,28 +692,6 @@ function mountCostCharts(){
   }
 }
 
-function mountWcmCharts(){
-  const ctx = document.getElementById('chartWcmKpi');
-  if(!ctx) return;
-  new Chart(ctx, {
-    type:'radar',
-    data:{
-      labels:['Data Quality','PM Compliance','Cost Accuracy','Labor Productivity','System Usability (SUS)','Autonomous Care'],
-      datasets:[
-        {label:'สถานะปัจจุบัน', data:[88, 75, 82, 80, 85, 70], borderColor:'#2563EB', backgroundColor:'rgba(37,99,235,0.15)', borderWidth:2, pointRadius:3},
-        {label:'เป้าหมาย WCM', data:[95, 90, 90, 90, 90, 85], borderColor:'#0D9488', backgroundColor:'rgba(13,148,136,0.05)', borderDash:[4,4], borderWidth:1.5, pointRadius:2}
-      ]
-    },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      scales:{
-        r:{ angleLines:{color:'#E2E8F0'}, grid:{color:'#F0F4F8'}, ticks:{display:false, max:100, min:0}, pointLabels:{font:{family:"'IBM Plex Sans Thai'",size:11}, color:'#64748B'} }
-      },
-      plugins:{ legend:{ position:'bottom', labels:{ color:'#64748B', font:{family:"'IBM Plex Sans Thai'",size:11} } } }
-    }
-  });
-}
-
 /* ======================================================================
    VIEW: WORK ORDERS
 ====================================================================== */
@@ -839,7 +725,6 @@ function renderView(){
   else if(current==='assets'){ root.innerHTML = viewAssets(); }
   else if(current==='pm'){ root.innerHTML = viewPM(); }
   else if(current==='cost'){ root.innerHTML = viewCost(); mountCostCharts(); }
-  else if(current==='wcm'){ root.innerHTML = viewWCM(); mountWcmCharts(); }
   else if(current==='work'){ root.innerHTML = viewWork(); }
 }
 
