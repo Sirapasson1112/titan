@@ -3,284 +3,950 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MEA PM Management - Web Workspace</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts & Lucide Icons -->
+  <title>MEA PM System - วัตถุประสงค์และขอบเขตงาน</title>
+  <!-- Google Fonts: Prompt & Sarabun สำหรับภาษาไทยสบายตา -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Prompt', 'sans-serif'],
-          },
-          colors: {
-            brand: {
-              50: '#fff7ed',
-              100: '#ffedd5',
-              200: '#fed7aa',
-              300: '#fdba74',
-              400: '#fb923c',
-              500: '#f97316',
-              600: '#ea580c',
-              700: '#c2410c',
-            }
-          }
-        }
+  <style>
+    :root {
+      --primary: #f97316;
+      --primary-hover: #ea580c;
+      --primary-light: #fff7ed;
+      --primary-subtle: #ffedd5;
+      --accent: #fb923c;
+      --bg-warm: #fcf9f5;
+      --card-bg: #ffffff;
+      --text-main: #27272a;
+      --text-muted: #71717a;
+      --border-color: #fed7aa;
+      --shadow-sm: 0 2px 8px rgba(249, 115, 22, 0.06);
+      --shadow-md: 0 10px 25px -5px rgba(249, 115, 22, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Sarabun', sans-serif;
+      background-color: var(--bg-warm);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Prompt', sans-serif;
+    }
+
+    /* Top Navigation Bar */
+    header {
+      background: #ffffff;
+      border-bottom: 1px solid #fce7d2;
+      padding: 0.85rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-badge {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, #f97316, #fb923c);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #c2410c;
+    }
+
+    .brand-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.55rem 1.15rem;
+      border-radius: 10px;
+      font-family: 'Prompt', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+      text-decoration: none;
+    }
+
+    .btn-secondary {
+      background-color: var(--primary-light);
+      color: #c2410c;
+      border-color: #fdba74;
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--primary-subtle);
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(249, 115, 22, 0.25);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-edit-active {
+      background: #16a34a !important;
+      color: white !important;
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25) !important;
+    }
+
+    /* Dropdown Export */
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: calc(100% + 8px);
+      background: white;
+      min-width: 190px;
+      border-radius: 12px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid #ffedd5;
+      padding: 6px;
+      z-index: 200;
+    }
+
+    .dropdown-content.show {
+      display: block;
+      animation: fadeIn 0.15s ease-out;
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      font-size: 0.88rem;
+      color: var(--text-main);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .dropdown-item:hover {
+      background-color: var(--primary-light);
+      color: var(--primary-hover);
+    }
+
+    /* Main Container Layout */
+    .app-layout {
+      display: flex;
+      flex: 1;
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem;
+      gap: 1.5rem;
+    }
+
+    /* Sidebar Slides navigation */
+    .sidebar {
+      width: 220px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sidebar-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding-left: 4px;
+    }
+
+    .slide-thumb-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .slide-thumb {
+      background: white;
+      border: 2px solid #fed7aa;
+      border-radius: 12px;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .slide-thumb:hover {
+      border-color: var(--primary);
+      transform: translateX(4px);
+    }
+
+    .slide-thumb.active {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .thumb-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: #fed7aa;
+      color: #9a3412;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    .slide-thumb.active .thumb-num {
+      background: var(--primary);
+      color: white;
+    }
+
+    .thumb-info {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Main Slide Presentation Canvas */
+    .canvas-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .edit-indicator {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      background: #dcfce7;
+      color: #15803d;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .slide-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid #fed7aa;
+      padding: 2.5rem;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 540px;
+    }
+
+    /* Decorative Geometric Background */
+    .slide-card::before {
+      content: "";
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(251, 146, 60, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .slide-card::after {
+      content: "";
+      position: absolute;
+      bottom: -30px;
+      left: -30px;
+      width: 160px;
+      height: 160px;
+      background: linear-gradient(135deg, rgba(254, 215, 170, 0.3) 0%, transparent 70%);
+      border-radius: 30px;
+      transform: rotate(45deg);
+      pointer-events: none;
+    }
+
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+      border-bottom: 2px dashed #ffedd5;
+      padding-bottom: 1.2rem;
+    }
+
+    .slide-project-tag {
+      display: inline-block;
+      background: #ffedd5;
+      color: #9a3412;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+    }
+
+    .slide-main-title {
+      font-size: 1.65rem;
+      color: #9a3412;
+      font-weight: 700;
+    }
+
+    /* Two Columns Section Grid */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .section-box {
+      background: #fffdfa;
+      border: 1px solid #ffedd5;
+      border-radius: 14px;
+      padding: 1.6rem;
+      box-shadow: 0 4px 12px rgba(249, 115, 22, 0.03);
+      transition: border-color 0.2s;
+    }
+
+    .section-box:hover {
+      border-color: #fdba74;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.4rem;
+    }
+
+    .section-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: #ffedd5;
+      color: #ea580c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .section-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #7c2d12;
+    }
+
+    .dots-deco {
+      display: flex;
+      gap: 4px;
+      margin-left: 6px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      background: #fdba74;
+      border-radius: 50%;
+    }
+
+    /* List items */
+    .items-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+    }
+
+    .list-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.98rem;
+      line-height: 1.65;
+      color: #374151;
+      position: relative;
+    }
+
+    .bullet-point {
+      width: 8px;
+      height: 8px;
+      background: var(--primary);
+      border-radius: 50%;
+      margin-top: 8px;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 3px #ffedd5;
+    }
+
+    .item-text {
+      flex: 1;
+      padding: 2px 4px;
+      border-radius: 4px;
+      outline: none;
+    }
+
+    /* Edit Mode Active Styles */
+    .editing .item-text, 
+    .editing [contenteditable="true"] {
+      background: #fffbeb;
+      border: 1px dashed #f59e0b;
+      cursor: text;
+    }
+
+    .editing .item-text:focus {
+      background: #ffffff;
+      border: 1px solid #ea580c;
+      box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.15);
+    }
+
+    .delete-item-btn {
+      display: none;
+      color: #ef4444;
+      background: #fee2e2;
+      border: none;
+      border-radius: 6px;
+      width: 24px;
+      height: 24px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .editing .delete-item-btn {
+      display: flex;
+    }
+
+    .add-item-btn {
+      display: none;
+      margin-top: 1rem;
+      width: 100%;
+      padding: 8px;
+      border: 1px dashed #fdba74;
+      background: #fff7ed;
+      color: #ea580c;
+      border-radius: 8px;
+      font-family: 'Prompt', sans-serif;
+      font-size: 0.85rem;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .editing .add-item-btn {
+      display: flex;
+    }
+
+    .add-item-btn:hover {
+      background: #ffedd5;
+    }
+
+    /* Toast Notifications */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #18181b;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1000;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Print / PDF Styling */
+    @media print {
+      header, .sidebar, .nav-actions, .status-bar, .delete-item-btn, .add-item-btn {
+        display: none !important;
+      }
+      body {
+        background: white;
+      }
+      .app-layout {
+        padding: 0;
+        margin: 0;
+        max-width: 100%;
+      }
+      .slide-card {
+        border: none;
+        box-shadow: none;
+        padding: 0;
       }
     }
-  </script>
-</head>
-<body class="bg-[#FFFDFB] text-slate-800 font-sans h-screen flex flex-col overflow-hidden select-none">
 
-  <!-- Header / Top Navbar -->
-  <header class="h-16 bg-white border-b border-orange-100 flex items-center justify-between px-6 z-20 shadow-sm">
-    <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white shadow-md shadow-orange-500/20">
-        <i data-lucide="zap" class="w-5 h-5"></i>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .app-layout {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+      }
+      .slide-thumb-list {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 8px;
+      }
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top App Navigation Bar -->
+  <header>
+    <div class="brand">
+      <div class="logo-badge">
+        <i data-lucide="zap"></i>
       </div>
       <div>
-        <h1 class="font-semibold text-slate-800 text-base leading-tight">ระบบบริหารจัดการงานบำรุงรักษา (PM)</h1>
-        <p class="text-xs text-orange-600/80 font-medium">การไฟฟ้านครหลวง เขตสมุทรปราการ</p>
+        <div class="brand-title">MEA PM Management System</div>
+        <div class="brand-subtitle">ระบบบริหารจัดการงานบำรุงรักษา กฟน. เขตสมุทรปราการ</div>
       </div>
     </div>
 
-    <!-- Action Toolbar -->
-    <div class="flex items-center gap-3">
-      <!-- Edit Mode Toggle -->
-      <button id="editToggleBtn" onclick="toggleEditMode()" class="flex items-center gap-2 px-4 py-2 bg-orange-50 hover:bg-orange-100 text-brand-600 border border-brand-200 rounded-xl font-medium text-sm transition-all duration-200">
-        <i data-lucide="edit-3" class="w-4 h-4"></i>
-        <span id="editText">โหมดแก้ไข</span>
+    <div class="nav-actions">
+      <!-- Edit Mode Toggle Button -->
+      <button class="btn btn-secondary" id="toggleEditBtn" onclick="toggleEditMode()">
+        <i data-lucide="pencil" id="editIcon"></i>
+        <span id="editText">แก้ไขข้อมูล</span>
       </button>
 
-      <!-- Export Dropdown Button -->
-      <div class="relative">
-        <button onclick="toggleExportMenu()" class="flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-xl font-medium text-sm shadow-md shadow-brand-500/25 transition-all duration-200">
-          <i data-lucide="download" class="w-4 h-4"></i>
-          <span>ส่งออกข้อมูล</span>
-          <i data-lucide="chevron-down" class="w-4 h-4"></i>
-        </button>
+      <!-- Save Button (visible during edit) -->
+      <button class="btn btn-secondary" id="saveBtn" style="display: none;" onclick="saveContent()">
+        <i data-lucide="save"></i>
+        <span>บันทึก</span>
+      </button>
 
-        <!-- Dropdown Menu -->
-        <div id="exportMenu" class="hidden absolute right-0 mt-2 w-48 bg-white border border-orange-100 rounded-2xl shadow-xl py-2 z-30">
-          <button onclick="handleExport('PDF')" class="w-full px-4 py-2.5 text-left text-sm text-slate-700 hover:bg-orange-50 hover:text-brand-600 flex items-center gap-3 transition">
-            <i data-lucide="file-text" class="w-4 h-4 text-orange-500"></i>
-            <span>ส่งออกเป็น PDF</span>
-          </button>
-          <button onclick="handleExport('PowerPoint')" class="w-full px-4 py-2.5 text-left text-sm text-slate-700 hover:bg-orange-50 hover:text-brand-600 flex items-center gap-3 transition">
-            <i data-lucide="presentation" class="w-4 h-4 text-orange-500"></i>
-            <span>ส่งออกเป็น PPTX</span>
-          </button>
-          <button onclick="handleExport('รูปภาพ PNG')" class="w-full px-4 py-2.5 text-left text-sm text-slate-700 hover:bg-orange-50 hover:text-brand-600 flex items-center gap-3 transition">
-            <i data-lucide="image" class="w-4 h-4 text-orange-500"></i>
-            <span>ส่งออกเป็นรูปภาพ</span>
-          </button>
+      <!-- Export Dropdown -->
+      <div class="dropdown">
+        <button class="btn btn-primary" onclick="toggleDropdown()">
+          <i data-lucide="download"></i>
+          <span>ส่งออก</span>
+          <i data-lucide="chevron-down" style="width: 16px;"></i>
+        </button>
+        <div class="dropdown-content" id="exportDropdown">
+          <div class="dropdown-item" onclick="exportPDF()">
+            <i data-lucide="file-text" style="width: 16px; color: #ef4444;"></i>
+            <span>ส่งออกเป็น PDF (พิมพ์)</span>
+          </div>
+          <div class="dropdown-item" onclick="exportJSON()">
+            <i data-lucide="code" style="width: 16px; color: #f97316;"></i>
+            <span>ดาวน์โหลด JSON Data</span>
+          </div>
+          <div class="dropdown-item" onclick="copySlideText()">
+            <i data-lucide="copy" style="width: 16px; color: #3b82f6;"></i>
+            <span>คัดลอกข้อความทั้งหมด</span>
+          </div>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- Main Body Layout -->
-  <div class="flex-1 flex overflow-hidden">
+  <!-- Main Content Layout -->
+  <div class="app-layout">
     
-    <!-- Sidebar / Slide Thumbnails -->
-    <aside class="w-64 bg-orange-50/40 border-r border-orange-100 p-4 flex flex-col gap-3 overflow-y-auto">
-      <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-2">หน้าเอกสาร</span>
-      
-      <!-- Slide Item 1 -->
-      <div class="p-3 bg-white hover:bg-white/80 border border-orange-100/60 rounded-xl cursor-pointer transition">
-        <div class="flex justify-between items-center mb-1">
-          <span class="text-xs font-bold text-slate-400">01</span>
+    <!-- Slide Thumbnails Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-title">โครงร่างสไลด์ (Slides)</div>
+      <div class="slide-thumb-list">
+        <div class="slide-thumb">
+          <div class="thumb-num">1</div>
+          <div class="thumb-info">บทนำ & ภาพรวม</div>
         </div>
-        <div class="h-12 bg-orange-100/50 rounded-lg flex items-center justify-center text-xs text-orange-400 font-medium">
-          หน้าปกโครงการ
+        <div class="slide-thumb active">
+          <div class="thumb-num">2</div>
+          <div class="thumb-info">วัตถุประสงค์ & ขอบเขต</div>
         </div>
-      </div>
-
-      <!-- Slide Item 2 (Active) -->
-      <div class="p-3 bg-white border-2 border-brand-500 rounded-xl shadow-sm cursor-pointer relative">
-        <div class="absolute -left-1 top-4 w-2 h-6 bg-brand-500 rounded-r"></div>
-        <div class="flex justify-between items-center mb-1">
-          <span class="text-xs font-bold text-brand-600">02</span>
-          <span class="text-[10px] bg-brand-100 text-brand-700 px-2 py-0.5 rounded-full font-semibold">กำลังดู</span>
+        <div class="slide-thumb">
+          <div class="thumb-num">3</div>
+          <div class="thumb-info">กรอบแนวคิด WCM</div>
         </div>
-        <div class="h-12 bg-gradient-to-r from-orange-100 to-amber-100 rounded-lg flex items-center justify-center text-xs text-brand-700 font-semibold">
-          วัตถุประสงค์ & ขอบเขต
+        <div class="slide-thumb">
+          <div class="thumb-num">4</div>
+          <div class="thumb-info">ขั้นตอนการดำเนินงาน</div>
         </div>
-      </div>
-
-      <!-- Slide Item 3 -->
-      <div class="p-3 bg-white hover:bg-white/80 border border-orange-100/60 rounded-xl cursor-pointer transition">
-        <div class="flex justify-between items-center mb-1">
-          <span class="text-xs font-bold text-slate-400">03</span>
-        </div>
-        <div class="h-12 bg-orange-100/50 rounded-lg flex items-center justify-center text-xs text-orange-400 font-medium">
-          แนวทางการดำเนินงาน
+        <div class="slide-thumb">
+          <div class="thumb-num">5</div>
+          <div class="thumb-info">Dashboard & ติดตามผล</div>
         </div>
       </div>
     </aside>
 
-    <!-- Content Workspace -->
-    <main class="flex-1 bg-gradient-to-br from-[#FFFDFB] via-[#FFF9F2] to-[#FFF4E8] p-8 overflow-y-auto flex justify-center items-center">
-      
-      <!-- Slide Canvas Container -->
-      <div class="w-full max-w-5xl bg-white rounded-3xl shadow-xl shadow-orange-950/5 border border-orange-100/80 p-10 relative overflow-hidden transition-all">
-        
-        <!-- Subtle Background Graphics -->
-        <div class="absolute -top-16 -right-16 w-56 h-56 bg-gradient-to-bl from-orange-200/40 to-transparent rounded-full blur-2xl pointer-events-none"></div>
-        <div class="absolute -bottom-16 -left-16 w-56 h-56 bg-gradient-to-tr from-amber-200/40 to-transparent rounded-full blur-2xl pointer-events-none"></div>
-
-        <!-- Notification Banner when in Edit Mode -->
-        <div id="editBanner" class="hidden mb-6 p-3 bg-amber-50 border border-amber-200 text-amber-800 text-xs rounded-xl flex items-center justify-between">
-          <span class="flex items-center gap-2">
-            <i data-lucide="info" class="w-4 h-4 text-amber-600"></i>
-            อยู่ในโหมดแก้ไข: คลิกข้อความในกล่องด้านล่างเพื่อพิมพ์แก้ไขได้โดยตรง
-          </span>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
-          
-          <!-- Column 1: วัตถุประสงค์ -->
-          <section class="space-y-6">
-            <div class="flex items-center gap-3 border-b border-orange-100 pb-4">
-              <div class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-brand-500">
-                <i data-lucide="lightbulb" class="w-6 h-6"></i>
-              </div>
-              <h2 class="text-2xl font-bold text-slate-800">วัตถุประสงค์</h2>
-            </div>
-
-            <div class="space-y-4">
-              <div class="flex items-start gap-3">
-                <span class="w-2.5 h-2.5 rounded-full bg-brand-500 mt-2 shrink-0"></span>
-                <p class="editable-content text-slate-600 leading-relaxed rounded p-1 transition" contenteditable="false">
-                  วิเคราะห์ขั้นตอนการทำงาน ปัญหา และต้นทุนในกระบวนการบำรุงรักษาเชิงป้องกัน (PM) อุปกรณ์ระบบจำหน่ายสายป้อน (หม้อแปลง, LBS, UNIT SUBSTATION) เทียบกับแนวทางมาตรฐาน/WCM
-                </p>
-              </div>
-
-              <div class="flex items-start gap-3">
-                <span class="w-2.5 h-2.5 rounded-full bg-brand-500 mt-2 shrink-0"></span>
-                <p class="editable-content text-slate-600 leading-relaxed rounded p-1 transition" contenteditable="false">
-                  พัฒนาระบบ/แอปพลิเคชันเพื่อช่วยในการวางแผนจัดเก็บข้อมูลหน้างาน และวิเคราะห์ต้นทุนการบำรุงรักษาเชิงป้องกัน เพื่อลดความซ้ำซ้อนของงานเอกสาร
-                </p>
-              </div>
-
-              <div class="flex items-start gap-3">
-                <span class="w-2.5 h-2.5 rounded-full bg-brand-500 mt-2 shrink-0"></span>
-                <p class="editable-content text-slate-600 leading-relaxed rounded p-1 transition" contenteditable="false">
-                  ออกแบบตัวชี้วัดประสิทธิภาพงานบำรุงรักษาที่เหมาะสมสำหรับแผนก พร้อมสร้าง DASHBOARD ติดตามผลงานรายบุคคล/ทีม และเพิ่มประสิทธิภาพการทำงาน (LABOR PRODUCTIVITY)
-                </p>
-              </div>
-
-              <div class="flex items-start gap-3">
-                <span class="w-2.5 h-2.5 rounded-full bg-brand-500 mt-2 shrink-0"></span>
-                <p class="editable-content text-slate-600 leading-relaxed rounded p-1 transition" contenteditable="false">
-                  ประเมินประสิทธิภาพการทำงาน ความแม่นยำในการควบคุมต้นทุน และระดับความพึงพอใจการยอมรับเทคโนโลยีของผู้ใช้งานจริง
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <!-- Column 2: ขอบเขต -->
-          <section class="space-y-6">
-            <div class="flex items-center gap-3 border-b border-orange-100 pb-4">
-              <div class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-brand-500">
-                <i data-lucide="target" class="w-6 h-6"></i>
-              </div>
-              <h2 class="text-2xl font-bold text-slate-800">ขอบเขต</h2>
-            </div>
-
-            <div class="space-y-4">
-              <div class="flex items-start gap-3">
-                <span class="w-2.5 h-2.5 rounded-full bg-amber-500 mt-2 shrink-0"></span>
-                <p class="editable-content text-slate-600 leading-relaxed rounded p-1 transition" contenteditable="false">
-                  <strong class="text-slate-800">กลุ่มเป้าหมายและพื้นที่:</strong> บุคลากรของการไฟฟ้านครหลวง เขตสมุทรปราการ
-                </p>
-              </div>
-
-              <div class="flex items-start gap-3">
-                <span class="w-2.5 h-2.5 rounded-full bg-amber-500 mt-2 shrink-0"></span>
-                <p class="editable-content text-slate-600 leading-relaxed rounded p-1 transition" contenteditable="false">
-                  พัฒนา Application ในกระบวนการวางแผนบำรุงรักษาเชิงป้องกัน และวิเคราะห์ต้นทุนการบำรุงรักษา
-                </p>
-              </div>
-
-              <div class="flex items-start gap-3">
-                <span class="w-2.5 h-2.5 rounded-full bg-amber-500 mt-2 shrink-0"></span>
-                <p class="editable-content text-slate-600 leading-relaxed rounded p-1 transition" contenteditable="false">
-                  พัฒนาดัชนีชี้วัดงานบำรุงรักษาที่เหมาะสมและวัดประสิทธิภาพแผนกบำรุงรักษาระบบจำหน่าย
-                </p>
-              </div>
-
-              <div class="flex items-start gap-3">
-                <span class="w-2.5 h-2.5 rounded-full bg-amber-500 mt-2 shrink-0"></span>
-                <p class="editable-content text-slate-600 leading-relaxed rounded p-1 transition" contenteditable="false">
-                  ศึกษาการบำรุงรักษาสายป้อนและอุปกรณ์จำหน่ายไฟฟ้า ได้แก่ หม้อแปลงจำหน่าย, LBS, UNIT SUBSTATION และอุปกรณ์ที่เกี่ยวข้อง
-                </p>
-              </div>
-            </div>
-          </section>
-
+    <!-- Canvas Area -->
+    <main class="canvas-wrapper">
+      <div class="status-bar">
+        <span>สไลด์ที่ 2 จากทั้งหมด 7 สไลด์</span>
+        <div class="edit-indicator" id="editIndicator">
+          <i data-lucide="edit-3" style="width: 14px;"></i> โหมดกำลังแก้ไขเนื้อหา
         </div>
       </div>
+
+      <!-- Slide Card Canvas -->
+      <section class="slide-card" id="slideCard">
+        
+        <!-- Header of slide -->
+        <div class="slide-header">
+          <div>
+            <span class="slide-project-tag">โครงการยกระดับระบบบริหารจัดการงานบำรุงรักษา</span>
+            <h1 class="slide-main-title">เป้าหมายและขอบเขตการดำเนินโครงการ</h1>
+          </div>
+        </div>
+
+        <!-- 2 Columns Grid: วัตถุประสงค์ & ขอบเขต -->
+        <div class="content-grid">
+          
+          <!-- Column 1: วัตถุประสงค์ -->
+          <div class="section-box">
+            <div class="section-heading">
+              <div class="section-icon-wrap">
+                <i data-lucide="lightbulb" style="width: 24px; height: 24px;"></i>
+              </div>
+              <h2 class="section-title">วัตถุประสงค์</h2>
+              <div class="dots-deco">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+              </div>
+            </div>
+
+            <ul class="items-list" id="objectivesList">
+              <li class="list-item">
+                <div class="bullet-point"></div>
+                <div class="item-text" contenteditable="false">วิเคราะห์ขั้นตอนการทำงาน ปัญหา และต้นทุนในกระบวนการบำรุงรักษาเชิงป้องกัน (PM) อุปกรณ์ระบบจำหน่ายสายป้อน (หม้อแปลง, LBS, UNIT SUBSTATION) เทียบกับแนวทางมาตรฐาน/WCM</div>
+                <button class="delete-item-btn" onclick="deleteItem(this)"><i data-lucide="trash-2" style="width: 14px;"></i></button>
+              </li>
+              <li class="list-item">
+                <div class="bullet-point"></div>
+                <div class="item-text" contenteditable="false">พัฒนาระบบ/แอปพลิเคชันเพื่อช่วยในการวางแผนจัดเก็บข้อมูลหน้างาน และวิเคราะห์ต้นทุนการบำรุงรักษาเชิงป้องกัน เพื่อลดความซ้ำซ้อนของงานเอกสาร</div>
+                <button class="delete-item-btn" onclick="deleteItem(this)"><i data-lucide="trash-2" style="width: 14px;"></i></button>
+              </li>
+              <li class="list-item">
+                <div class="bullet-point"></div>
+                <div class="item-text" contenteditable="false">ออกแบบตัวชี้วัดประสิทธิภาพงานบำรุงรักษาที่เหมาะสมสำหรับแผนก พร้อมสร้าง DASHBOARD สำหรับติดตามผลงานรายบุคคล/ทีม และเพิ่มประสิทธิภาพการทำงาน (LABOR PRODUCTIVITY)</div>
+                <button class="delete-item-btn" onclick="deleteItem(this)"><i data-lucide="trash-2" style="width: 14px;"></i></button>
+              </li>
+              <li class="list-item">
+                <div class="bullet-point"></div>
+                <div class="item-text" contenteditable="false">ประเมินประสิทธิภาพการทำงาน ความแม่นยำในการควบคุมต้นทุน และระดับความพึงพอใจ/การยอมรับเทคโนโลยีของผู้ใช้งานจริงในการไฟฟ้านครหลวง เขตสมุทรปราการ</div>
+                <button class="delete-item-btn" onclick="deleteItem(this)"><i data-lucide="trash-2" style="width: 14px;"></i></button>
+              </li>
+            </ul>
+
+            <button class="add-item-btn" onclick="addNewItem('objectivesList')">
+              <i data-lucide="plus" style="width: 16px;"></i> เพิ่มวัตถุประสงค์
+            </button>
+          </div>
+
+          <!-- Column 2: ขอบเขต -->
+          <div class="section-box">
+            <div class="section-heading">
+              <div class="section-icon-wrap">
+                <i data-lucide="compass" style="width: 24px; height: 24px;"></i>
+              </div>
+              <h2 class="section-title">ขอบเขต</h2>
+              <div class="dots-deco">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+              </div>
+            </div>
+
+            <ul class="items-list" id="scopeList">
+              <li class="list-item">
+                <div class="bullet-point"></div>
+                <div class="item-text" contenteditable="false"><strong>กลุ่มเป้าหมายและพื้นที่:</strong> สำหรับบุคลากรของการไฟฟ้านครหลวง เขตสมุทรปราการ</div>
+                <button class="delete-item-btn" onclick="deleteItem(this)"><i data-lucide="trash-2" style="width: 14px;"></i></button>
+              </li>
+              <li class="list-item">
+                <div class="bullet-point"></div>
+                <div class="item-text" contenteditable="false">พัฒนา APP. ในกระบวนการวางแผนบำรุงรักษาเชิงป้องกัน และ วิเคราะห์ต้นทุนการบำรุงรักษา</div>
+                <button class="delete-item-btn" onclick="deleteItem(this)"><i data-lucide="trash-2" style="width: 14px;"></i></button>
+              </li>
+              <li class="list-item">
+                <div class="bullet-point"></div>
+                <div class="item-text" contenteditable="false">พัฒนาดัชนีชี้วัดงานบำรุงรักษา ที่เหมาะสมและวัดประสิทธิภาพแผนกบำรุงรักษาระบบจำหน่าย. กบจ.ฟขป.</div>
+                <button class="delete-item-btn" onclick="deleteItem(this)"><i data-lucide="trash-2" style="width: 14px;"></i></button>
+              </li>
+              <li class="list-item">
+                <div class="bullet-point"></div>
+                <div class="item-text" contenteditable="false">ศึกษาการบำรุงรักษาสายป้อน และ อุปกรณ์ระบบจำหน่ายไฟฟ้า ประกอบด้วย หม้อแปลงจำหน่าย LBS, UNIT SUBSTATION และอุปกรณ์ที่เกี่ยวข้อง</div>
+                <button class="delete-item-btn" onclick="deleteItem(this)"><i data-lucide="trash-2" style="width: 14px;"></i></button>
+              </li>
+            </ul>
+
+            <button class="add-item-btn" onclick="addNewItem('scopeList')">
+              <i data-lucide="plus" style="width: 16px;"></i> เพิ่มขอบเขต
+            </button>
+          </div>
+
+        </div>
+      </section>
     </main>
   </div>
 
-  <!-- Interactive Logic Script -->
+  <!-- Toast Notification Alert -->
+  <div class="toast" id="toast">
+    <i data-lucide="check-circle" style="color: #4ade80;"></i>
+    <span id="toastMsg">บันทึกข้อมูลเรียบร้อยแล้ว</span>
+  </div>
+
+  <!-- JavaScript Logic -->
   <script>
+    // Initialize Lucide Icons
     lucide.createIcons();
 
     let isEditMode = false;
 
+    // Toggle Dropdown menu
+    function toggleDropdown() {
+      document.getElementById("exportDropdown").classList.toggle("show");
+    }
+
+    // Close dropdown if clicked outside
+    window.onclick = function(e) {
+      if (!e.target.closest('.dropdown')) {
+        const dropdown = document.getElementById("exportDropdown");
+        if (dropdown && dropdown.classList.contains('show')) {
+          dropdown.classList.remove('show');
+        }
+      }
+    };
+
+    // Toggle Inline Edit Mode
     function toggleEditMode() {
       isEditMode = !isEditMode;
-      const editables = document.querySelectorAll('.editable-content');
-      const editBtn = document.getElementById('editToggleBtn');
-      const editText = document.getElementById('editText');
-      const banner = document.getElementById('editBanner');
-
-      editables.forEach(el => {
-        el.contentEditable = isEditMode;
-        if (isEditMode) {
-          el.classList.add('bg-orange-50', 'ring-2', 'ring-brand-400', 'cursor-text');
-        } else {
-          el.classList.remove('bg-orange-50', 'ring-2', 'ring-brand-400', 'cursor-text');
-        }
-      });
+      const slideCard = document.getElementById("slideCard");
+      const editBtn = document.getElementById("toggleEditBtn");
+      const saveBtn = document.getElementById("saveBtn");
+      const editIcon = document.getElementById("editIcon");
+      const editText = document.getElementById("editText");
+      const editIndicator = document.getElementById("editIndicator");
+      const textElements = document.querySelectorAll(".item-text");
 
       if (isEditMode) {
-        editText.innerText = 'บันทึกการแก้ไข';
-        editBtn.className = 'flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-medium text-sm transition-all duration-200 shadow-md shadow-emerald-500/20';
-        banner.classList.remove('hidden');
+        slideCard.classList.add("editing");
+        editBtn.classList.add("btn-edit-active");
+        editText.innerText = "สิ้นสุดการแก้ไข";
+        editIndicator.style.display = "flex";
+        saveBtn.style.display = "inline-flex";
+        textElements.forEach(el => el.setAttribute("contenteditable", "true"));
+        showToast("✏️ เข้าสู่โหมดแก้ไข: คลิกข้อความเพื่อพิมพ์แก้ไขได้เลย");
       } else {
-        editText.innerText = 'โหมดแก้ไข';
-        editBtn.className = 'flex items-center gap-2 px-4 py-2 bg-orange-50 hover:bg-orange-100 text-brand-600 border border-brand-200 rounded-xl font-medium text-sm transition-all duration-200';
-        banner.classList.add('hidden');
+        slideCard.classList.remove("editing");
+        editBtn.classList.remove("btn-edit-active");
+        editText.innerText = "แก้ไขข้อมูล";
+        editIndicator.style.display = "none";
+        saveBtn.style.display = "none";
+        textElements.forEach(el => el.setAttribute("contenteditable", "false"));
+        saveContent();
       }
+      lucide.createIcons();
     }
 
-    function toggleExportMenu() {
-      const menu = document.getElementById('exportMenu');
-      menu.classList.toggle('hidden');
+    // Add new bullet item
+    function addNewItem(listId) {
+      const list = document.getElementById(listId);
+      const li = document.createElement("li");
+      li.className = "list-item";
+      li.innerHTML = `
+        <div class="bullet-point"></div>
+        <div class="item-text" contenteditable="true">ระบุรายละเอียดข้อความใหม่ที่นี่...</div>
+        <button class="delete-item-btn" onclick="deleteItem(this)"><i data-lucide="trash-2" style="width: 14px;"></i></button>
+      `;
+      list.appendChild(li);
+      lucide.createIcons();
+      li.querySelector(".item-text").focus();
     }
 
-    function handleExport(format) {
-      toggleExportMenu();
-      alert(`เตรียมข้อมูลสำหรับส่งออกเป็นไฟล์ ${format} เรียบร้อยแล้ว`);
+    // Delete item
+    function deleteItem(btn) {
+      const li = btn.closest(".list-item");
+      li.remove();
+      showToast("ลบรายการแล้ว");
     }
 
-    // ปิด Dropdown เมื่อคลิกนอกพื้นที่
-    window.onclick = function(event) {
-      if (!event.target.closest('button[onclick="toggleExportMenu()"]')) {
-        const dropdown = document.getElementById('exportMenu');
-        if (!dropdown.classList.contains('hidden')) {
-          dropdown.classList.add('hidden');
+    // Save to LocalStorage
+    function saveContent() {
+      const data = {
+        objectives: Array.from(document.querySelectorAll("#objectivesList .item-text")).map(el => el.innerHTML),
+        scope: Array.from(document.querySelectorAll("#scopeList .item-text")).map(el => el.innerHTML)
+      };
+      localStorage.setItem("mea_slide_content", JSON.stringify(data));
+      showToast("💾 บันทึกการเปลี่ยนแปลงเรียบร้อย");
+    }
+
+    // Load saved content on startup
+    window.addEventListener("DOMContentLoaded", () => {
+      const saved = localStorage.getItem("mea_slide_content");
+      if (saved) {
+        try {
+          const data = JSON.parse(saved);
+          if (data.objectives) {
+            renderList("objectivesList", data.objectives);
+          }
+          if (data.scope) {
+            renderList("scopeList", data.scope);
+          }
+        } catch (e) {
+          console.error(e);
         }
       }
+    });
+
+    function renderList(listId, items) {
+      const list = document.getElementById(listId);
+      list.innerHTML = "";
+      items.forEach(text => {
+        const li = document.createElement("li");
+        li.className = "list-item";
+        li.innerHTML = `
+          <div class="bullet-point"></div>
+          <div class="item-text" contenteditable="false">${text}</div>
+          <button class="delete-item-btn" onclick="deleteItem(this)"><i data-lucide="trash-2" style="width: 14px;"></i></button>
+        `;
+        list.appendChild(li);
+      });
+      lucide.createIcons();
+    }
+
+    // Export PDF (Using Browser Print Preview)
+    function exportPDF() {
+      toggleDropdown();
+      window.print();
+    }
+
+    // Export JSON Data
+    function exportJSON() {
+      toggleDropdown();
+      const data = {
+        title: "วัตถุประสงค์และขอบเขตงาน",
+        project: "การยกระดับระบบบริหารจัดการงานบำรุงรักษา กฟน. เขตสมุทรปราการ",
+        objectives: Array.from(document.querySelectorAll("#objectivesList .item-text")).map(el => el.innerText),
+        scope: Array.from(document.querySelectorAll("#scopeList .item-text")).map(el => el.innerText),
+        exportedAt: new Date().toLocaleString("th-TH")
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "MEA_Objectives_Scope.json";
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast("📥 ส่งออกไฟล์ JSON สำเร็จ");
+    }
+
+    // Copy formatted text to clipboard
+    function copySlideText() {
+      toggleDropdown();
+      let text = "📌 วัตถุประสงค์:\n";
+      document.querySelectorAll("#objectivesList .item-text").forEach((el, idx) => {
+        text += `${idx + 1}. ${el.innerText}\n`;
+      });
+      text += "\n📌 ขอบเขต:\n";
+      document.querySelectorAll("#scopeList .item-text").forEach((el, idx) => {
+        text += `${idx + 1}. ${el.innerText}\n`;
+      });
+
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("📋 คัดลอกข้อความทั้งหมดลง Clipboard แล้ว");
+      });
+    }
+
+    // Toast alert helper
+    function showToast(msg) {
+      const toast = document.getElementById("toast");
+      document.getElementById("toastMsg").innerText = msg;
+      toast.classList.add("show");
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3000);
     }
   </script>
 </body>
