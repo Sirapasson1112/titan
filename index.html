@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asset Inspection App - SF-07-0-015 (Geo-Location)</title>
+    <title>Asset Inspection App - SF-07-0-015 (Complete)</title>
     <style>
         :root {
             --primary-color: #2563eb;
@@ -128,6 +128,105 @@
             background: var(--primary-color);
             color: white;
             font-weight: 600;
+        }
+
+        /* --- Extra Panels (Saved Records, Images, Criticality) --- */
+        .panel-box {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .search-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-input-group {
+            position: relative;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-input-group input {
+            width: 100%;
+            padding: 8px 12px 8px 32px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .search-input-group span {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .saved-content-placeholder {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Image Upload Panel */
+        .image-upload-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .image-status {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Criticality Panel */
+        .criticality-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .criticality-badge {
+            background: #e2e8f0;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .criticality-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            border-top: 1px dashed var(--border-color);
+            padding-top: 10px;
         }
 
         /* --- Sheet Container --- */
@@ -319,6 +418,110 @@
         <button class="tab" onclick="switchTab(this, 'SF-07-0-019')">SF-07-0-019</button>
     </div>
 
+    <!-- ข้อมูลที่บันทึกไว้ Panel -->
+    <div class="panel-box">
+        <div class="panel-header">
+            <span>🗂️ ข้อมูลที่บันทึกไว้ (0)</span>
+            <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.8rem;" onclick="refreshRecords()">🔄 รีเฟรช</button>
+        </div>
+        <div class="search-row">
+            <div class="search-input-group">
+                <span>🔍</span>
+                <input type="text" class="form-control" placeholder="Plant">
+            </div>
+            <div class="search-input-group">
+                <span>🔍</span>
+                <input type="text" class="form-control" placeholder="Work Order">
+            </div>
+            <button class="btn btn-secondary" onclick="clearSearch()">ล้าง</button>
+        </div>
+        <div class="saved-content-placeholder">
+            เข้าสู่ระบบเพื่อดูรายการที่บันทึกไว้
+        </div>
+    </div>
+
+    <!-- รูปภาพประกอบการตรวจสอบ Panel -->
+    <div class="panel-box">
+        <div class="panel-header">
+            <span>📷 รูปภาพประกอบการตรวจสอบ</span>
+            <span class="image-status" id="imageSizeStatus">0 KB</span>
+        </div>
+        <div class="image-upload-area">
+            <span class="image-status" id="imageDesc">ยังไม่มีรูปภาพ — กด "เพิ่มรูป" เพื่อถ่ายหรือเลือกจากคลังภาพ</span>
+            <label class="btn btn-primary" style="cursor: pointer;">
+                + เพิ่มรูป <input type="file" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+            </label>
+        </div>
+    </div>
+
+    <!-- การประเมินความสำคัญของอุปกรณ์ Panel -->
+    <div class="panel-box">
+        <div class="panel-header">
+            <span>🎯 การประเมินความสำคัญของอุปกรณ์ (Criticality)</span>
+            <span class="criticality-badge" id="criticalityBadge">ยังไม่ประเมิน</span>
+        </div>
+        <div class="criticality-grid">
+            <div class="form-group">
+                <label>SAF — ความปลอดภัย</label>
+                <select class="form-control criticality-select" onchange="calculateCriticality()">
+                    <option value="0">- เลือก -</option>
+                    <option value="20">ระดับ 1 (ต่ำ)</option>
+                    <option value="40">ระดับ 2 (ปานกลาง)</option>
+                    <option value="60">ระดับ 3 (สูง)</option>
+                    <option value="80">ระดับ 4 (สูงมาก)</option>
+                    <option value="100">ระดับ 5 (วิกฤต)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>REL — ความต่อเนื่องจ่ายไฟ</label>
+                <select class="form-control criticality-select" onchange="calculateCriticality()">
+                    <option value="0">- เลือก -</option>
+                    <option value="20">ระดับ 1 (ต่ำ)</option>
+                    <option value="40">ระดับ 2 (ปานกลาง)</option>
+                    <option value="60">ระดับ 3 (สูง)</option>
+                    <option value="80">ระดับ 4 (สูงมาก)</option>
+                    <option value="100">ระดับ 5 (วิกฤต)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>OPR — การปฏิบัติงาน/ภารกิจ</label>
+                <select class="form-control criticality-select" onchange="calculateCriticality()">
+                    <option value="0">- เลือก -</option>
+                    <option value="20">ระดับ 1 (ต่ำ)</option>
+                    <option value="40">ระดับ 2 (ปานกลาง)</option>
+                    <option value="60">ระดับ 3 (สูง)</option>
+                    <option value="80">ระดับ 4 (สูงมาก)</option>
+                    <option value="100">ระดับ 5 (วิกฤต)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>CON — แนวโน้มขัดข้อง</label>
+                <select class="form-control criticality-select" onchange="calculateCriticality()">
+                    <option value="0">- เลือก -</option>
+                    <option value="20">ระดับ 1 (ต่ำ)</option>
+                    <option value="40">ระดับ 2 (ปานกลาง)</option>
+                    <option value="60">ระดับ 3 (สูง)</option>
+                    <option value="80">ระดับ 4 (สูงมาก)</option>
+                    <option value="100">ระดับ 5 (วิกฤต)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>REC — ความยากในการกู้คืน</label>
+                <select class="form-control criticality-select" onchange="calculateCriticality()">
+                    <option value="0">- เลือก -</option>
+                    <option value="20">ระดับ 1 (ต่ำ)</option>
+                    <option value="40">ระดับ 2 (ปานกลาง)</option>
+                    <option value="60">ระดับ 3 (สูง)</option>
+                    <option value="80">ระดับ 4 (สูงมาก)</option>
+                    <option value="100">ระดับ 5 (วิกฤต)</option>
+                </select>
+            </div>
+        </div>
+        <div class="criticality-footer">
+            <span id="totalScoreText">คะแนนรวม: — / 100</span>
+        </div>
+    </div>
+
     <!-- Main Inspection Sheet Body -->
     <div class="sheet-container" id="inspectionForm">
         <div class="sheet-header">
@@ -502,6 +705,48 @@
         }
     }
 
+    // ฟังก์ชันอัปโหลดรูปภาพ
+    function handleImageUpload(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const fileSizeKB = (file.size / 1024).toFixed(1);
+            document.getElementById('imageSizeStatus').innerText = `${fileSizeKB} KB`;
+            document.getElementById('imageDesc').innerText = `อัปโหลดรูปภาพสำเร็จ: ${file.name}`;
+        }
+    }
+
+    // ฟังก์ชันคำนวณคะแนนความสำคัญของอุปกรณ์ (Criticality)
+    function calculateCriticality() {
+        const selects = document.querySelectorAll('.criticality-select');
+        let sum = 0;
+        let count = 0;
+
+        selects.forEach(select => {
+            const val = parseInt(select.value);
+            if (val > 0) {
+                sum += val;
+                count++;
+            }
+        });
+
+        // คิดค่าเฉลี่ยหรือคะแนนรวมเทียบจาก 100 ตามสัดส่วน (ตัวอย่างนี้คิดค่าเฉลี่ยจากหัวข้อที่ประเมิน)
+        const badge = document.getElementById('criticalityBadge');
+        const scoreText = document.getElementById('totalScoreText');
+
+        if (count > 0) {
+            const avgScore = Math.round(sum / selects.length);
+            scoreText.innerText = `คะแนนรวม: ${avgScore} / 100`;
+            badge.innerText = `ประเมินแล้ว (${avgScore} คะแนน)`;
+            badge.style.background = '#dbeafe';
+            badge.style.color = '#1e40af';
+        } else {
+            scoreText.innerText = `คะแนนรวม: — / 100`;
+            badge.innerText = `ยังไม่ประเมิน`;
+            badge.style.background = '#e2e8f0';
+            badge.style.color = '#64748b';
+        }
+    }
+
     // ฟังก์ชันเปลี่ยนแท็บฟอร์ม
     function switchTab(element, formCode) {
         document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
@@ -512,6 +757,14 @@
     // ฟังก์ชันปุ่มต่างๆ
     function handleGoogleLogin() {
         alert("กำลังเชื่อมต่อเข้าสู่ระบบด้วย Google Account...");
+    }
+
+    function refreshRecords() {
+        alert("รีเฟรชข้อมูลที่บันทึกไว้แล้ว");
+    }
+
+    function clearSearch() {
+        document.querySelectorAll('.search-input-group input').forEach(input => input.value = '');
     }
 
     function saveNewRecord() {
@@ -541,6 +794,10 @@
                 input.value = '';
             }
         });
+        document.querySelectorAll('.criticality-select').forEach(select => select.value = "0");
+        calculateCriticality();
+        document.getElementById('imageSizeStatus').innerText = "0 KB";
+        document.getElementById('imageDesc').innerText = 'ยังไม่มีรูปภาพ — กด "เพิ่มรูป" เพื่อถ่ายหรือเลือกจากคลังภาพ';
         alert("ล้างฟอร์มเรียบร้อยแล้ว");
     }
 
