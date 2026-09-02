@@ -270,15 +270,15 @@
                 border: none;
                 padding: 0;
                 width: 100%;
-                font-size: 0.68rem;
+                font-size: 0.65rem;
             }
             .grid-form { gap: 2px; margin-bottom: 2px; }
-            .form-control { padding: 2px 4px; font-size: 0.68rem; }
-            .section-header { padding: 2px 5px; margin-top: 4px; margin-bottom: 2px; font-size: 0.68rem; }
-            table.inspection-table th, table.inspection-table td { padding: 2px 4px; font-size: 0.65rem; }
-            textarea.form-control { height: 20px; }
-            .signature-grid { gap: 6px; margin-top: 4px; padding-top: 3px; }
-            .sig-box { padding: 4px; gap: 2px; }
+            .form-control { padding: 1px 3px; font-size: 0.65rem; }
+            .section-header { padding: 2px 4px; margin-top: 3px; margin-bottom: 2px; font-size: 0.65rem; }
+            table.inspection-table th, table.inspection-table td { padding: 2px 4px; font-size: 0.6rem; }
+            textarea.form-control { height: 18px; }
+            .signature-grid { gap: 4px; margin-top: 3px; padding-top: 2px; }
+            .sig-box { padding: 3px; gap: 2px; }
         }
     </style>
 </head>
@@ -315,109 +315,103 @@
             <button class="tab" onclick="switchTab(this, 'SF-07-0-020')">SF-07-0-020</button>
             <button class="tab" onclick="switchTab(this, 'SF-07-0-021')">SF-07-0-021</button>
             <button class="tab" onclick="switchTab(this, 'SF-07-0-022')">SF-07-0-022</button>
-            <button class="tab active" onclick="switchTab(this, 'SF-07-0-023')">SF-07-0-023</button>
-            <button class="tab" onclick="switchTab(this, 'SF-07-0-024')">SF-07-0-024</button>
+            <button class="tab" onclick="switchTab(this, 'SF-07-0-023')">SF-07-0-023</button>
+            <button class="tab active" onclick="switchTab(this, 'SF-07-0-024')">SF-07-0-024</button>
             <button class="tab" onclick="switchTab(this, 'SF-07-0-025')">SF-07-0-025</button>
         </div>
     </div>
 
-    <!-- ส่วนล่าง: พื้นที่แสดงใบตรวจสอบ (ค่าเริ่มต้น SF-07-0-023 ตามที่คุณเลือก) -->
+    <!-- ส่วนล่าง: พื้นที่แสดงใบตรวจสอบ (ค่าเริ่มต้น SF-07-0-024 ตามที่คุณเลือก) -->
     <div id="formContentArea">
         <div class="official-sheet" id="printArea">
             <div class="sheet-title-container">
-                <div><h1 id="formTitle">แบบตรวจสอบบำรุงรักษาทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย</h1></div>
-                <div class="sheet-code" id="formCode">SF-07-0-023</div>
+                <div><h1 id="formTitle">รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)</h1></div>
+                <div class="sheet-code" id="formCode">SF-07-0-024</div>
             </div>
-            
-            <div class="section-header">ข้อมูลทั่วไป</div>
+
+            <!-- ผู้ตรวจ -->
+            <div class="grid-form" style="margin-bottom: 6px;">
+                <div class="field-group span-2"><label>ผู้ตรวจ 1:</label><input type="text" class="form-control" placeholder="ชื่อ-นามสกุล ผู้ตรวจคนที่ 1">[cite: 25]</div>
+                <div class="field-group span-2"><label>ผู้ตรวจ 2:</label><input type="text" class="form-control" placeholder="ชื่อ-นามสกุล ผู้ตรวจคนที่ 2">[cite: 25]</div>
+            </div>
+
+            <!-- 1. ข้อมูลภาพถ่าย -->
+            <div class="section-header">1. ข้อมูลภาพถ่าย[cite: 25]</div>
             <div class="grid-form">
-                <div class="field-group"><label>สถานที่</label><input type="text" class="form-control"></div>
-                <div class="field-group"><label>STATION ID</label><input type="text" class="form-control"></div>
-                <div class="field-group"><label>SW. ยี่ห้อ / TR. MEA No.</label><input type="text" class="form-control"></div>
-                <div class="field-group"><label>GIS Lat/Long <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></label><input type="text" id="latInput" class="form-control" style="display:inline-block; width:48%;"> <input type="text" id="longInput" class="form-control" style="display:inline-block; width:48%;"></div>
+                <div class="field-group"><label>ชื่อภาพ[cite: 25]</label><input type="text" class="form-control"></div>
+                <div class="field-group"><label>Station ID[cite: 25]</label><input type="text" class="form-control"></div>
+                <div class="field-group span-2"><label>สถานที่[cite: 25]</label><input type="text" class="form-control"></div>
+                <div class="field-group"><label>อุปกรณ์[cite: 25]</label><input type="text" class="form-control"></div>
+                <div class="field-group"><label>MEA No.[cite: 25]</label><input type="text" class="form-control"></div>
+                <div class="field-group"><label>สายป้อน[cite: 25]</label><input type="text" class="form-control"></div>
+                <div class="field-group"><label>วันที่ตรวจ[cite: 25]</label><input type="date" class="form-control" id="dateField1"></div>
+                <div class="field-group span-2"><label>ตำแหน่งติดตั้ง[cite: 25]</label><input type="text" class="form-control"></div>
+                <div class="field-group span-2"><label>GIS Lat/Long <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></label><input type="text" id="latInput" class="form-control" style="display:inline-block; width:48%;"> <input type="text" id="longInput" class="form-control" style="display:inline-block; width:48%;">[cite: 25]</div>
+                <div class="field-group span-2"><label>Emissivity[cite: 25]</label><input type="text" class="form-control"></div>
+                <div class="field-group span-2"><label>อุณหภูมิแวดล้อม (°C)</label><input type="text" class="form-control"></div>
             </div>
 
-            <div class="section-header">ขั้นตอนการกรองน้ำมัน</div>
-            
-            <div style="font-size:0.75rem; margin-bottom:4px; color:var(--text-secondary);">
-                1. ทดสอบน้ำมันหม้อแปลงด้วยเครื่องทดสอบ โดยทดสอบ 5 ครั้ง ห่างครั้งละ 5 นาที (*ครั้งที่ 1 ถ้าต่ำกว่า 26 kV ดำเนินการกรองน้ำมัน หากเกินกว่า 26 kV ทดสอบให้ครบ 5 ครั้ง แล้วหาค่าเฉลี่ย ถ้ายังต่ำกว่า 26 kV ดำเนินการกรองน้ำมัน)[cite: 24]
+            <!-- ช่องรูปภาพจำลอง -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 4px 0;">
+                <div style="border: 1px dashed var(--border-color); padding: 6px; text-align: center; background: #fafaf9; border-radius: 4px;">
+                    <label style="font-size:0.7rem; color:var(--text-secondary); font-weight:600;">🖼️ ภาพถ่ายจริง (Visual Photo)[cite: 25]</label>
+                    <input type="file" accept="image/*" style="font-size: 0.65rem; display:block; margin: 4px auto;">
+                </div>
+                <div style="border: 1px dashed var(--border-color); padding: 6px; text-align: center; background: #fafaf9; border-radius: 4px;">
+                    <label style="font-size:0.7rem; color:var(--text-secondary); font-weight:600;">🌡️ ภาพถ่ายความร้อน (Thermal Image)[cite: 25]</label>
+                    <input type="file" accept="image/*" style="font-size: 0.65rem; display:block; margin: 4px auto;">
+                </div>
             </div>
+
+            <!-- 2. อุณหภูมิสูงสุดที่จุดวัดฯ & เกณฑ์ Delta T -->
+            <div class="section-header">2. อุณหภูมิสูงสุดที่จุดวัดฯ & เกณฑ์ความสำคัญ (Standard for Infrared Inspection)[cite: 25]</div>
             <table class="inspection-table">
                 <thead>
                     <tr>
-                        <th style="text-align: left;">Breakdown Voltage (kV)[cite: 24]</th>
-                        <th>ครั้งที่ 1[cite: 24]</th>
-                        <th>ครั้งที่ 2[cite: 24]</th>
-                        <th>ครั้งที่ 3[cite: 24]</th>
-                        <th>ครั้งที่ 4[cite: 24]</th>
-                        <th>ครั้งที่ 5[cite: 24]</th>
-                        <th>ค่าเฉลี่ย[cite: 24]</th>
+                        <th style="width: 50px;">ความสำคัญ[cite: 25]</th>
+                        <th>Delta T (°C)[cite: 25]</th>
+                        <th style="text-align: left;">ข้อเสนอแนะการดำเนินการ[cite: 25]</th>
+                        <th style="width: 80px;">เลือกจุดวัด</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>ทดสอบครั้งแรก</td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td></tr>
+                    <tr><td style="text-align:center; font-weight:bold; color:#059669;">4[cite: 25]</td><td>0 - 10°C[cite: 25]</td><td>อุปกรณ์ปกติ[cite: 25]</td><td style="text-align:center;"><input type="checkbox"></td></tr>
+                    <tr><td style="text-align:center; font-weight:bold; color:#d97706;">3[cite: 25]</td><td>> 10 - 20°C[cite: 25]</td><td>แก้ไขในการบำรุงรักษาครั้งต่อไป[cite: 25]</td><td style="text-align:center;"><input type="checkbox"></td></tr>
+                    <tr><td style="text-align:center; font-weight:bold; color:#ea580c;">2[cite: 25]</td><td>> 20 - 40°C[cite: 25]</td><td>ควรแก้ไขภายใน 1 เดือน[cite: 25]</td><td style="text-align:center;"><input type="checkbox"></td></tr>
+                    <tr><td style="text-align:center; font-weight:bold; color:#dc2626;">1[cite: 25]</td><td>> 40°C[cite: 25]</td><td>ควรได้รับการแก้ไขเร่งด่วน[cite: 25]</td><td style="text-align:center;"><input type="checkbox"></td></tr>
                 </tbody>
             </table>
 
-            <div style="font-size:0.75rem; margin:6px 0 4px 0; color:var(--text-secondary);">
-                2. กรองน้ำมันครั้งที่ 1 แล้วดำเนินการทดสอบใหม่ (*ครั้งที่ 1 ถ้าต่ำกว่า 26 kV ดำเนินการกรองน้ำมัน หากเกินกว่า 26 kV ทดสอบให้ครบ 5 ครั้ง แล้วหาค่าเฉลี่ย)[cite: 24]
+            <!-- 3. รายละเอียดการตรวจสอบ -->
+            <div class="section-header">3. รายละเอียดการตรวจสอบ[cite: 25]</div>
+            <div class="field-group" style="margin-bottom: 4px;"><textarea class="form-control" placeholder="ระบุรายละเอียดการตรวจสอบ..."></textarea></div>
+
+            <!-- 4. การส่งต่อดำเนินการแก้ไข -->
+            <div class="section-header">4. การส่งต่อดำเนินการแก้ไข[cite: 25]</div>
+            <div class="grid-form">
+                <div class="field-group span-2"><label>ส่งต่อให้กลุ่มงาน[cite: 25]</label><input type="text" class="form-control" placeholder="ระบุชื่อกลุ่มงาน"></div>
+                <div class="field-group span-2"><label>ข้อแนะนำการแก้ไข[cite: 25]</label><input type="text" class="form-control" placeholder="ระบุข้อแนะนำ"></div>
             </div>
-            <table class="inspection-table">
-                <thead>
-                    <tr>
-                        <th style="text-align: left;">Breakdown Voltage (kV)[cite: 24]</th>
-                        <th>ครั้งที่ 1[cite: 24]</th>
-                        <th>ครั้งที่ 2[cite: 24]</th>
-                        <th>ครั้งที่ 3[cite: 24]</th>
-                        <th>ครั้งที่ 4[cite: 24]</th>
-                        <th>ครั้งที่ 5[cite: 24]</th>
-                        <th>ค่าเฉลี่ย[cite: 24]</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>หลังกรองน้ำมันครั้งที่ 1</td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td></tr>
-                </tbody>
-            </table>
 
-            <div style="font-size:0.75rem; margin:6px 0 4px 0; color:var(--text-secondary);">
-                3. กรองน้ำมันครั้งที่ 2 แล้วดำเนินการทดสอบใหม่ (ถ้ายังต่ำกว่า 26 kV ดำเนินการกรองน้ำมันครั้งที่ 2 *ทดสอบครบ 5 ครั้ง ถ้าต่ำกว่า 26 kV ให้หาแนวทางแก้ไขต่อไป)[cite: 24]
-            </div>
-            <table class="inspection-table">
-                <thead>
-                    <tr>
-                        <th style="text-align: left;">Breakdown Voltage (kV)[cite: 24]</th>
-                        <th>ครั้งที่ 1[cite: 24]</th>
-                        <th>ครั้งที่ 2[cite: 24]</th>
-                        <th>ครั้งที่ 3[cite: 24]</th>
-                        <th>ครั้งที่ 4[cite: 24]</th>
-                        <th>ครั้งที่ 5[cite: 24]</th>
-                        <th>ค่าเฉลี่ย[cite: 24]</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>หลังกรองน้ำมันครั้งที่ 2</td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td></tr>
-                </tbody>
-            </table>
-
-            <div class="section-header">ข้อเสนอแนะ/ข้อมูลเพิ่มเติม :</div>
-            <div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
-
-            <div class="signature-grid">
+            <!-- ลงนาม 3 ส่วน (ผู้ตรวจ, ผู้ตรวจสอบ/หผบจ., ผู้ดำเนินการปรับปรุง) -->
+            <div class="signature-grid" style="grid-template-columns: repeat(3, 1fr);">
                 <div class="sig-box">
-                    <div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div>
-                    <div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div>
-                    <div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div>
+                    <div class="field-group"><label>ผู้ตรวจสอบ / หผบจ./ชผบจ.[cite: 25]</label><input type="text" class="form-control" placeholder="โปรดดำเนินการแก้ไข"></div>
+                    <div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div>
                 </div>
                 <div class="sig-box">
-                    <div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div>
-                    <div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div>
-                    <div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div>
+                    <div class="field-group"><label>ผู้ดำเนินการปรับปรุง[cite: 25]</label><input type="text" class="form-control" placeholder="ชื่อผู้ปฏิบัติงาน"></div>
+                    <div class="field-group"><label>วันที่แก้ไข</label><input type="date" class="form-control"></div>
+                </div>
+                <div class="sig-box">
+                    <div class="field-group"><label>ผู้บริหารทราบ (หผบจ./ชผบจ.)[cite: 25]</label><input type="text" class="form-control" placeholder="ลงนามรับทราบ"></div>
+                    <div class="field-group"><label>วันที่</label><input type="date" class="form-control"></div>
                 </div>
             </div>
 
             <div class="sheet-footer-note">
                 <span>ปรับปรุงครั้งที่ 0 วันที่....</span>
-                <span id="footerCode">SF-07-0-023</span>
+                <span id="footerCode">SF-07-0-024</span>
             </div>
         </div>
     </div>
@@ -1006,26 +1000,87 @@
             </div>`,
 
         'SF-07-0-024': `
-            <div class="sheet-title-container"><div><h1 id="formTitle">รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)</h1></div><div class="sheet-code" id="formCode">SF-07-0-024</div></div>
-            <div class="section-header">1 ข้อมูลภาพถ่าย & อุณหภูมิ (Standard for Infrared Inspection)[cite: 15]</div>
+            <div class="sheet-title-container">
+                <div><h1 id="formTitle">รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)</h1></div>
+                <div class="sheet-code" id="formCode">SF-07-0-024</div>
+            </div>
+            
+            <div class="grid-form" style="margin-bottom: 6px;">
+                <div class="field-group span-2"><label>ผู้ตรวจ 1:[cite: 25]</label><input type="text" class="form-control" placeholder="ชื่อ-นามสกุล"></div>
+                <div class="field-group span-2"><label>ผู้ตรวจ 2:[cite: 25]</label><input type="text" class="form-control" placeholder="ชื่อ-นามสกุล"></div>
+            </div>
+
+            <div class="section-header">1. ข้อมูลภาพถ่าย[cite: 25]</div>
             <div class="grid-form">
-                <div class="field-group"><label>Station ID / ชื่อภาพ</label><input type="text" class="form-control"></div>
-                <div class="field-group"><label>สถานที่ / อุปกรณ์</label><input type="text" class="form-control"></div>
-                <div class="field-group"><label>MEA No. / สายป้อน</label><input type="text" class="form-control"></div>
-                <div class="field-group"><label>วันที่ตรวจ</label><input type="date" class="form-control" id="dateField1"></div>
-                <div class="field-group span-4"><label>GIS Lat/Long <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></label><input type="text" id="latInput" class="form-control" style="display:inline-block; width:48%;"> <input type="text" id="longInput" class="form-control" style="display:inline-block; width:48%;"></div>
+                <div class="field-group"><label>ชื่อภาพ[cite: 25]</label><input type="text" class="form-control"></div>
+                <div class="field-group"><label>Station ID[cite: 25]</label><input type="text" class="form-control"></div>
+                <div class="field-group span-2"><label>สถานที่[cite: 25]</label><input type="text" class="form-control"></div>
+                <div class="field-group"><label>อุปกรณ์[cite: 25]</label><input type="text" class="form-control"></div>
+                <div class="field-group"><label>MEA No.[cite: 25]</label><input type="text" class="form-control"></div>
+                <div class="field-group"><label>สายป้อน[cite: 25]</label><input type="text" class="form-control"></div>
+                <div class="field-group"><label>วันที่ตรวจ[cite: 25]</label><input type="date" class="form-control" id="dateField1"></div>
+                <div class="field-group span-2"><label>ตำแหน่ง[cite: 25]</label><input type="text" class="form-control"></div>
+                <div class="field-group span-2"><label>GIS Lat/Long <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></label><input type="text" id="latInput" class="form-control" style="display:inline-block; width:48%;"> <input type="text" id="longInput" class="form-control" style="display:inline-block; width:48%;">[cite: 25]</div>
+                <div class="field-group span-2"><label>Emissivity[cite: 25]</label><input type="text" class="form-control"></div>
             </div>
-            <div style="font-size: 0.68rem; background:#fafaf9; padding:2px 4px; border:1px solid var(--border-color); border-radius:3px; margin: 2px 0;">
-                <b>เกณฑ์ความสำคัญ Delta T (°C):</b> 
-                [ ] 0-10°C (ปกติ) | [ ] >10-20°C (บำรุงรักษาถัดไป) | [ ] >20-40°C (ใน 1 เดือน) | [ ] >40°C (เร่งด่วน)[cite: 15]
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 4px 0;">
+                <div style="border: 1px dashed var(--border-color); padding: 6px; text-align: center; background: #fafaf9; border-radius: 4px;">
+                    <label style="font-size:0.7rem; color:var(--text-secondary); font-weight:600;">🖼️ ภาพถ่ายจริง (Visual Photo)[cite: 25]</label>
+                    <input type="file" accept="image/*" style="font-size: 0.65rem; display:block; margin: 4px auto;">
+                </div>
+                <div style="border: 1px dashed var(--border-color); padding: 6px; text-align: center; background: #fafaf9; border-radius: 4px;">
+                    <label style="font-size:0.7rem; color:var(--text-secondary); font-weight:600;">🌡️ ภาพถ่ายความร้อน (Thermal Image)[cite: 25]</label>
+                    <input type="file" accept="image/*" style="font-size: 0.65rem; display:block; margin: 4px auto;">
+                </div>
             </div>
-            <div class="section-header">3-4 รายการตรวจสอบ & การส่งต่อดำเนินการแก้ไข[cite: 15]</div>
-            <div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control" placeholder="ระบุข้อเสนอแนะการแก้ไข และกลุ่มงานที่ส่งต่อ..."></textarea></div>
-            <div class="signature-grid">
-                <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ (1 และ 2)</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div></div>
-                <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ / หผบจ.</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
+
+            <div class="section-header">2. อุณหภูมิสูงสุดที่จุดวัดฯ & เกณฑ์ความสำคัญ (Standard for Infrared Inspection)[cite: 25]</div>
+            <table class="inspection-table">
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">ความสำคัญ[cite: 25]</th>
+                        <th>Delta T (°C)[cite: 25]</th>
+                        <th style="text-align: left;">ข้อเสนอแนะการดำเนินการ[cite: 25]</th>
+                        <th style="width: 80px;">เลือกจุดวัด</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td style="text-align:center; font-weight:bold; color:#059669;">4[cite: 25]</td><td>0 - 10°C[cite: 25]</td><td>อุปกรณ์ปกติ[cite: 25]</td><td style="text-align:center;"><input type="checkbox"></td></tr>
+                    <tr><td style="text-align:center; font-weight:bold; color:#d97706;">3[cite: 25]</td><td>> 10 - 20°C[cite: 25]</td><td>แก้ไขในการบำรุงรักษาครั้งต่อไป[cite: 25]</td><td style="text-align:center;"><input type="checkbox"></td></tr>
+                    <tr><td style="text-align:center; font-weight:bold; color:#ea580c;">2[cite: 25]</td><td>> 20 - 40°C[cite: 25]</td><td>ควรแก้ไขภายใน 1 เดือน[cite: 25]</td><td style="text-align:center;"><input type="checkbox"></td></tr>
+                    <tr><td style="text-align:center; font-weight:bold; color:#dc2626;">1[cite: 25]</td><td>> 40°C[cite: 25]</td><td>ควรได้รับการแก้ไขเร่งด่วน[cite: 25]</td><td style="text-align:center;"><input type="checkbox"></td></tr>
+                </tbody>
+            </table>
+
+            <div class="section-header">3. รายละเอียดการตรวจสอบ[cite: 25]</div>
+            <div class="field-group" style="margin-bottom: 4px;"><textarea class="form-control" placeholder="ระบุรายละเอียดการตรวจสอบ..."></textarea></div>
+
+            <div class="section-header">4. การส่งต่อดำเนินการแก้ไข[cite: 25]</div>
+            <div class="grid-form">
+                <div class="field-group span-2"><label>ส่งต่อให้กลุ่มงาน[cite: 25]</label><input type="text" class="form-control" placeholder="ระบุชื่อกลุ่มงาน"></div>
+                <div class="field-group span-2"><label>ข้อแนะนำการแก้ไข[cite: 25]</label><input type="text" class="form-control" placeholder="ระบุข้อแนะนำ"></div>
             </div>
-            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-024</span></div>`,
+
+            <div class="signature-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="sig-box">
+                    <div class="field-group"><label>ผู้ตรวจสอบ / หผบจ./ชผบจ.[cite: 25]</label><input type="text" class="form-control" placeholder="โปรดดำเนินการแก้ไข"></div>
+                    <div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div>
+                </div>
+                <div class="sig-box">
+                    <div class="field-group"><label>ผู้ดำเนินการปรับปรุง[cite: 25]</label><input type="text" class="form-control" placeholder="ชื่อผู้ปฏิบัติงาน"></div>
+                    <div class="field-group"><label>วันที่แก้ไข</label><input type="date" class="form-control"></div>
+                </div>
+                <div class="sig-box">
+                    <div class="field-group"><label>ผู้บริหารทราบ (หผบจ./ชผบจ.)[cite: 25]</label><input type="text" class="form-control" placeholder="ลงนามรับทราบ"></div>
+                    <div class="field-group"><label>วันที่</label><input type="date" class="form-control"></div>
+                </div>
+            </div>
+
+            <div class="sheet-footer-note">
+                <span>ปรับปรุงครั้งที่ 0 วันที่....</span>
+                <span id="footerCode">SF-07-0-024</span>
+            </div>`,
 
         'SF-07-0-025': `
             <div class="sheet-title-container"><div><h1 id="formTitle">รายงานผลการตรวจสอบการคายประจุไฟฟ้า (Partial Discharge)</h1></div><div class="sheet-code" id="formCode">SF-07-0-025</div></div>
