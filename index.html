@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asset Inspection App - SF-07-0-015 (Interactive)</title>
+    <title>Asset Inspection App - SF-07-0-015 (Geo-Location)</title>
     <style>
         :root {
             --primary-color: #2563eb;
@@ -101,6 +101,8 @@
         .btn-secondary:hover { background: #cbd5e1; }
         .btn-danger { background: #fee2e2; color: #dc2626; }
         .btn-danger:hover { background: #fecaca; }
+        .btn-geo { background: #10b981; color: white; font-size: 0.8rem; padding: 4px 8px; border-radius: 4px; cursor: pointer; border: none; margin-top: 4px; display: inline-flex; align-items: center; gap: 4px;}
+        .btn-geo:hover { background: #059669; }
 
         /* --- Tabs --- */
         .tab-container {
@@ -329,8 +331,12 @@
         <div class="grid-4">
             <div class="form-group"><label>Station ID</label><input type="text" class="form-control" placeholder="ระบุ Station ID"></div>
             <div class="form-group"><label>สถานที่</label><input type="text" class="form-control" placeholder="ระบุสถานที่"></div>
-            <div class="form-group"><label>GIS (Lat.)</label><input type="text" class="form-control" placeholder="ละติจูด"></div>
-            <div class="form-group"><label>GIS (Long.)</label><input type="text" class="form-control" placeholder="ลองจิจูด"></div>
+            <div class="form-group"><label>GIS (Lat.)</label><input type="text" id="latInput" class="form-control" placeholder="ละติจูด"></div>
+            <div class="form-group">
+                <label>GIS (Long.)</label>
+                <input type="text" id="longInput" class="form-control" placeholder="ลองจิจูด">
+                <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 พิกัดปัจจุบัน</button>
+            </div>
         </div>
         <div class="grid-4">
             <div class="form-group"><label>MEA No.1</label><input type="text" class="form-control"></div>
@@ -475,12 +481,32 @@
         if(dateInput) dateInput.value = today;
     });
 
+    // ฟังก์ชันดึงพิกัดตำแหน่งปัจจุบัน (GPS)
+    function getCurrentLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    document.getElementById('latInput').value = lat.toFixed(6);
+                    document.getElementById('longInput').value = lon.toFixed(6);
+                    alert("ดึงพิกัดตำแหน่งปัจจุบันสำเร็จ!");
+                },
+                (error) => {
+                    alert("ไม่สามารถดึงพิกัดได้: กรุณาอนุญาตการเข้าถึงตำแหน่ง (GPS) ในเบราว์เซอร์ของคุณ");
+                },
+                { enableHighAccuracy: true }
+            );
+        } else {
+            alert("เบราว์เซอร์ของคุณไม่รองรับการระบุตำแหน่ง Geolocation");
+        }
+    }
+
     // ฟังก์ชันเปลี่ยนแท็บฟอร์ม
     function switchTab(element, formCode) {
         document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
         element.classList.add('active');
         document.getElementById('formCode').innerText = `รหัสแบบฟอร์ม: ${formCode}`;
-        // จำลองการโหลดข้อมูลฟอร์มนั้นๆ (สามารถเพิ่มตรรกะดึงข้อมูลจริงได้ที่นี่)
     }
 
     // ฟังก์ชันปุ่มต่างๆ
