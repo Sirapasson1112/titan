@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asset Inspection App - SF-07-0-015 (Full Version)</title>
+    <title>Asset Inspection App - SF-07-0-015 (Interactive)</title>
     <style>
         :root {
             --primary-color: #2563eb;
@@ -119,6 +119,7 @@
             cursor: pointer;
             white-space: nowrap;
             border: none;
+            transition: background 0.2s;
         }
 
         .tab.active {
@@ -189,10 +190,12 @@
             outline: none;
             transition: border-color 0.2s;
             width: 100%;
+            background-color: #fff;
         }
 
         .form-control:focus {
             border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
         }
 
         /* Inspection Table */
@@ -284,7 +287,7 @@
             <span>ระบบตรวจสอบและบันทึกข้อมูลอุปกรณ์ไฟฟ้าภาคสนาม</span>
         </div>
         <div class="auth-section">
-            <button class="google-btn">
+            <button class="google-btn" onclick="handleGoogleLogin()">
                 <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.19v3.15C3.17 21.32 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.19C.43 8.13 0 9.87 0 11.7s.43 3.57 1.19 5.1l4.08-2.56z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.68 1.19 6.6l4.08 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
                 เข้าสู่ระบบด้วย Google
             </button>
@@ -293,47 +296,47 @@
 
     <!-- Toolbar Options -->
     <div class="toolbar">
-        <button class="btn btn-primary">💾 บันทึกเป็นรายการใหม่</button>
-        <button class="btn btn-secondary">🔄 บันทึกทับรายการปัจจุบัน</button>
-        <button class="btn btn-secondary">📄 คัดลอกเป็นฉบับใหม่</button>
-        <button class="btn btn-secondary">➕ ฟอร์มใหม่</button>
-        <button class="btn btn-danger">🗑️ ล้างฟอร์ม</button>
+        <button class="btn btn-primary" onclick="saveNewRecord()">💾 บันทึกเป็นรายการใหม่</button>
+        <button class="btn btn-secondary" onclick="saveCurrentRecord()">🔄 บันทึกทับรายการปัจจุบัน</button>
+        <button class="btn btn-secondary" onclick="copyAsNewRecord()">📄 คัดลอกเป็นฉบับใหม่</button>
+        <button class="btn btn-secondary" onclick="newForm()">➕ ฟอร์มใหม่</button>
+        <button class="btn btn-danger" onclick="clearForm()">🗑️ ล้างฟอร์ม</button>
         <div style="flex-grow: 1;"></div>
-        <button class="btn btn-secondary">🖨️ พิมพ์ / PDF</button>
+        <button class="btn btn-secondary" onclick="printPDF()">🖨️ พิมพ์ / PDF</button>
     </div>
 
     <!-- Record Quick Selector Tabs -->
-    <div class="tab-container">
-        <button class="tab active">SF-07-0-015</button>
-        <button class="tab">SF-07-0-022</button>
-        <button class="tab">SF-07-0-023</button>
-        <button class="tab">SF-07-0-021</button>
-        <button class="tab">SF-07-0-016</button>
-        <button class="tab">SF-07-0-017</button>
-        <button class="tab">SF-07-0-018</button>
-        <button class="tab">SF-07-0-019</button>
+    <div class="tab-container" id="tabContainer">
+        <button class="tab active" onclick="switchTab(this, 'SF-07-0-015')">SF-07-0-015</button>
+        <button class="tab" onclick="switchTab(this, 'SF-07-0-022')">SF-07-0-022</button>
+        <button class="tab" onclick="switchTab(this, 'SF-07-0-023')">SF-07-0-023</button>
+        <button class="tab" onclick="switchTab(this, 'SF-07-0-021')">SF-07-0-021</button>
+        <button class="tab" onclick="switchTab(this, 'SF-07-0-016')">SF-07-0-016</button>
+        <button class="tab" onclick="switchTab(this, 'SF-07-0-017')">SF-07-0-017</button>
+        <button class="tab" onclick="switchTab(this, 'SF-07-0-018')">SF-07-0-018</button>
+        <button class="tab" onclick="switchTab(this, 'SF-07-0-019')">SF-07-0-019</button>
     </div>
 
     <!-- Main Inspection Sheet Body -->
-    <div class="sheet-container">
+    <div class="sheet-container" id="inspectionForm">
         <div class="sheet-header">
-            <h2>แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย</h2>
-            <span>รหัสแบบฟอร์ม: SF-07-0-015</span>
+            <h2 id="formTitle">แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย</h2>
+            <span id="formCode">รหัสแบบฟอร์ม: SF-07-0-015</span>
         </div>
 
         <!-- Section 1: ข้อมูลทั่วไป -->
         <div class="section-title">1. ข้อมูลทั่วไป</div>
         <div class="grid-4">
-            <div class="form-group"><label>Station ID</label><input type="text" class="form-control"></div>
-            <div class="form-group"><label>สถานที่</label><input type="text" class="form-control"></div>
-            <div class="form-group"><label>GIS (Lat.)</label><input type="text" class="form-control"></div>
-            <div class="form-group"><label>GIS (Long.)</label><input type="text" class="form-control"></div>
+            <div class="form-group"><label>Station ID</label><input type="text" class="form-control" placeholder="ระบุ Station ID"></div>
+            <div class="form-group"><label>สถานที่</label><input type="text" class="form-control" placeholder="ระบุสถานที่"></div>
+            <div class="form-group"><label>GIS (Lat.)</label><input type="text" class="form-control" placeholder="ละติจูด"></div>
+            <div class="form-group"><label>GIS (Long.)</label><input type="text" class="form-control" placeholder="ลองจิจูด"></div>
         </div>
         <div class="grid-4">
             <div class="form-group"><label>MEA No.1</label><input type="text" class="form-control"></div>
             <div class="form-group"><label>MEA No.2</label><input type="text" class="form-control"></div>
             <div class="form-group"><label>MEA No.3</label><input type="text" class="form-control"></div>
-            <div class="form-group"><label>จำนวนเฟส</label><input type="text" class="form-control"></div>
+            <div class="form-group"><label>จำนวนเฟส</label><input type="text" class="form-control" placeholder="เช่น 3 เฟส"></div>
         </div>
         <div class="grid-4">
             <div class="form-group"><label>ยี่ห้อ (หม้อแปลง)</label><input type="text" class="form-control"></div>
@@ -355,20 +358,20 @@
                 </tr>
             </thead>
             <tbody>
-                <tr><td>2.1 Drop Fuse</td><td><input type="radio" name="chk_1"></td><td><input type="radio" name="chk_1"></td><td><input type="radio" name="chk_1"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.2 Station Post Type Insulator</td><td><input type="radio" name="chk_2"></td><td><input type="radio" name="chk_2"></td><td><input type="radio" name="chk_2"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.3 สายเข้า-ออก Drop Fuse</td><td><input type="radio" name="chk_3"></td><td><input type="radio" name="chk_3"></td><td><input type="radio" name="chk_3"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.4 คอนสาย</td><td><input type="radio" name="chk_4"></td><td><input type="radio" name="chk_4"></td><td><input type="radio" name="chk_4"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.5 อุปกรณ์ป้องกันสัตว์</td><td><input type="radio" name="chk_5"></td><td><input type="radio" name="chk_5"></td><td><input type="radio" name="chk_5"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.6 Low Voltage Capacitor</td><td><input type="radio" name="chk_6"></td><td><input type="radio" name="chk_6"></td><td><input type="radio" name="chk_6"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.7 กับดักฟ้าผ่า (L/A)</td><td><input type="radio" name="chk_7"></td><td><input type="radio" name="chk_7"></td><td><input type="radio" name="chk_7"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.8 ตัวถังหม้อแปลง</td><td><input type="radio" name="chk_8"></td><td><input type="radio" name="chk_8"></td><td><input type="radio" name="chk_8"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.9 Bushing HV-LV</td><td><input type="radio" name="chk_9"></td><td><input type="radio" name="chk_9"></td><td><input type="radio" name="chk_9"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.10 Cover (Bushing, L/A, Term. kit)</td><td><input type="radio" name="chk_10"></td><td><input type="radio" name="chk_10"></td><td><input type="radio" name="chk_10"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.11 สายหน้าหม้อแปลง LV</td><td><input type="radio" name="chk_11"></td><td><input type="radio" name="chk_11"></td><td><input type="radio" name="chk_11"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.12 LV Ground</td><td><input type="radio" name="chk_12"></td><td><input type="radio" name="chk_12"></td><td><input type="radio" name="chk_12"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.13 HV Ground</td><td><input type="radio" name="chk_13"></td><td><input type="radio" name="chk_13"></td><td><input type="radio" name="chk_13"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.14 CT-TLM Meter (ถ้ามี)</td><td><input type="radio" name="chk_14"></td><td><input type="radio" name="chk_14"></td><td><input type="radio" name="chk_14"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
+                <tr><td>2.1 Drop Fuse</td><td><input type="radio" name="chk_1" value="ปกติ"></td><td><input type="radio" name="chk_1" value="ชำรุด"></td><td><input type="radio" name="chk_1" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.2 Station Post Type Insulator</td><td><input type="radio" name="chk_2" value="ปกติ"></td><td><input type="radio" name="chk_2" value="ชำรุด"></td><td><input type="radio" name="chk_2" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.3 สายเข้า-ออก Drop Fuse</td><td><input type="radio" name="chk_3" value="ปกติ"></td><td><input type="radio" name="chk_3" value="ชำรุด"></td><td><input type="radio" name="chk_3" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.4 คอนสาย</td><td><input type="radio" name="chk_4" value="ปกติ"></td><td><input type="radio" name="chk_4" value="ชำรุด"></td><td><input type="radio" name="chk_4" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.5 อุปกรณ์ป้องกันสัตว์</td><td><input type="radio" name="chk_5" value="ปกติ"></td><td><input type="radio" name="chk_5" value="ชำรุด"></td><td><input type="radio" name="chk_5" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.6 Low Voltage Capacitor</td><td><input type="radio" name="chk_6" value="ปกติ"></td><td><input type="radio" name="chk_6" value="ชำรุด"></td><td><input type="radio" name="chk_6" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.7 กับดักฟ้าผ่า (L/A)</td><td><input type="radio" name="chk_7" value="ปกติ"></td><td><input type="radio" name="chk_7" value="ชำรุด"></td><td><input type="radio" name="chk_7" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.8 ตัวถังหม้อแปลง</td><td><input type="radio" name="chk_8" value="ปกติ"></td><td><input type="radio" name="chk_8" value="ชำรุด"></td><td><input type="radio" name="chk_8" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.9 Bushing HV-LV</td><td><input type="radio" name="chk_9" value="ปกติ"></td><td><input type="radio" name="chk_9" value="ชำรุด"></td><td><input type="radio" name="chk_9" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.10 Cover (Bushing, L/A, Term. kit)</td><td><input type="radio" name="chk_10" value="ปกติ"></td><td><input type="radio" name="chk_10" value="ชำรุด"></td><td><input type="radio" name="chk_10" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.11 สายหน้าหม้อแปลง LV</td><td><input type="radio" name="chk_11" value="ปกติ"></td><td><input type="radio" name="chk_11" value="ชำรุด"></td><td><input type="radio" name="chk_11" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.12 LV Ground</td><td><input type="radio" name="chk_12" value="ปกติ"></td><td><input type="radio" name="chk_12" value="ชำรุด"></td><td><input type="radio" name="chk_12" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.13 HV Ground</td><td><input type="radio" name="chk_13" value="ปกติ"></td><td><input type="radio" name="chk_13" value="ชำรุด"></td><td><input type="radio" name="chk_13" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.14 CT-TLM Meter (ถ้ามี)</td><td><input type="radio" name="chk_14" value="ปกติ"></td><td><input type="radio" name="chk_14" value="ชำรุด"></td><td><input type="radio" name="chk_14" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
             </tbody>
         </table>
 
@@ -379,19 +382,19 @@
                 <div class="form-group">
                     <label>ช่วงเวลาตรวจสอบ</label>
                     <div style="display: flex; gap: 15px; margin-top: 5px;">
-                        <label><input type="checkbox"> กลางวัน</label>
-                        <label><input type="checkbox"> กลางคืน</label>
+                        <label><input type="checkbox" name="time_period" value="กลางวัน"> กลางวัน</label>
+                        <label><input type="checkbox" name="time_period" value="กลางคืน"> กลางคืน</label>
                     </div>
                 </div>
                 <div class="form-group">
                     <label>เวลา</label>
-                    <input type="time" class="form-control">
+                    <input type="time" class="form-control" id="inspectTime">
                 </div>
                 <div class="form-group">
                     <label>วิธีการ</label>
                     <div style="display: flex; gap: 15px; margin-top: 5px;">
-                        <label><input type="checkbox"> วัดหน้างาน</label>
-                        <label><input type="checkbox"> TLM</label>
+                        <label><input type="checkbox" name="method" value="วัดหน้างาน"> วัดหน้างาน</label>
+                        <label><input type="checkbox" name="method" value="TLM"> TLM</label>
                     </div>
                 </div>
             </div>
@@ -457,12 +460,68 @@
             </div>
             <div class="form-group">
                 <label>วันที่</label>
-                <input type="date" class="form-control">
+                <input type="date" class="form-control" id="currentDate">
             </div>
         </div>
 
     </div>
 </div>
+
+<script>
+    // ตั้งค่าวันที่ปัจจุบันในช่องวันที่อัตโนมัติ
+    document.addEventListener("DOMContentLoaded", () => {
+        const today = new Date().toISOString().split('T')[0];
+        const dateInput = document.getElementById('currentDate');
+        if(dateInput) dateInput.value = today;
+    });
+
+    // ฟังก์ชันเปลี่ยนแท็บฟอร์ม
+    function switchTab(element, formCode) {
+        document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+        element.classList.add('active');
+        document.getElementById('formCode').innerText = `รหัสแบบฟอร์ม: ${formCode}`;
+        // จำลองการโหลดข้อมูลฟอร์มนั้นๆ (สามารถเพิ่มตรรกะดึงข้อมูลจริงได้ที่นี่)
+    }
+
+    // ฟังก์ชันปุ่มต่างๆ
+    function handleGoogleLogin() {
+        alert("กำลังเชื่อมต่อเข้าสู่ระบบด้วย Google Account...");
+    }
+
+    function saveNewRecord() {
+        alert("บันทึกข้อมูลเป็นรายการใหม่เรียบร้อยแล้ว!");
+    }
+
+    function saveCurrentRecord() {
+        alert("บันทึกทับรายการปัจจุบันสำเร็จ!");
+    }
+
+    function copyAsNewRecord() {
+        alert("คัดลอกข้อมูลเป็นฉบับใหม่สำเร็จ!");
+    }
+
+    function newForm() {
+        if(confirm("คุณต้องการเปิดฟอร์มใหม่ใช่หรือไม่? ข้อมูลที่ยังไม่บันทึกจะหายไป")) {
+            clearForm();
+        }
+    }
+
+    function clearForm() {
+        const inputs = document.querySelectorAll('#inspectionForm input, #inspectionForm textarea');
+        inputs.forEach(input => {
+            if(input.type === 'checkbox' || input.type === 'radio') {
+                input.checked = false;
+            } else {
+                input.value = '';
+            }
+        });
+        alert("ล้างฟอร์มเรียบร้อยแล้ว");
+    }
+
+    function printPDF() {
+        window.print();
+    }
+</script>
 
 </body>
 </html>
