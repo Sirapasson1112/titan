@@ -337,7 +337,6 @@
             <button class="btn btn-primary" onclick="window.print()">🖨️ พิมพ์ A4 หน้าเดียว</button>
         </div>
 
-        <!-- แท็บฟอร์ม SF-07-0-015 ถึง SF-07-0-025 เรียงจากน้อยไปมาก -->
         <div class="tab-container" id="tabContainer">
             <button class="tab active" onclick="switchTab(this, 'SF-07-0-015')">SF-07-0-015</button>
             <button class="tab" onclick="switchTab(this, 'SF-07-0-016')">SF-07-0-016</button>
@@ -393,9 +392,9 @@
         </div>
     </div>
 
-    <!-- ส่วนล่าง: พื้นที่แสดงใบตรวจสอบ (จะเปลี่ยนฟอร์มตามปุ่มที่เลือกอัตโนมัติ) -->
+    <!-- ส่วนล่าง: พื้นที่แสดงใบตรวจสอบ -->
     <div id="formContentArea">
-        <!-- ค่าเริ่มต้น: SF-07-0-015 -->
+        <!-- ค่าเริ่มต้น SF-07-0-015 -->
         <div class="official-sheet" id="printArea">
             <div class="sheet-title-container">
                 <div><h1 id="formTitle">แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย</h1></div>
@@ -437,19 +436,13 @@
                 </tbody>
             </table>
             <div class="section-header">3 ตรวจสอบวัดกระแสและแรงดันไฟฟ้า</div>
-            <div style="display: flex; gap: 15px; margin-bottom: 4px; font-size: 0.75rem; align-items: center; flex-wrap: wrap;">
-                <div><label><input type="checkbox"> กลางวัน</label> &nbsp; <label><input type="checkbox"> กลางคืน</label></div>
-                <div>เวลา : <input type="time" class="form-control" style="display: inline-block; width: 85px; padding: 1px;"></div>
-                <div>วิธีการ: <label><input type="checkbox"> วัดหน้างาน</label> &nbsp; <label><input type="checkbox"> TLM</label></div>
-            </div>
+            <div style="display: flex; gap: 15px; margin-bottom: 4px; font-size: 0.75rem; align-items: center; flex-wrap: wrap;"><div><label><input type="checkbox"> กลางวัน</label> &nbsp; <label><input type="checkbox"> กลางคืน</label></div><div>เวลา : <input type="time" class="form-control" style="display: inline-block; width: 85px; padding: 1px;"></div><div>วิธีการ: <label><input type="checkbox"> วัดหน้างาน</label> &nbsp; <label><input type="checkbox"> TLM</label></div></div>
             <div class="measure-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 4px 8px; background: #fafaf9; border: 1px solid var(--border-color); border-radius: 3px; margin-bottom: 3px;">
                 <div><strong style="font-size: 0.72rem;">แรงดันไฟฟ้า (V)</strong><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin-top: 2px;"><div class="field-group"><label>V1-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-2</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-3</label><input type="text" class="form-control"></div><div class="field-group"><label>V3-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-3</label><input type="text" class="form-control"></div></div></div>
                 <div><strong style="font-size: 0.72rem;">กระแสไฟฟ้า (A)</strong><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin-top: 2px;"><div class="field-group"><label>IN</label><input type="text" class="form-control"></div><div class="field-group"><label>I1</label><input type="text" class="form-control"></div><div class="field-group"><label>I2</label><input type="text" class="form-control"></div><div class="field-group"><label>I3</label><input type="text" class="form-control"></div></div><div class="field-group" style="margin-top: 2px;"><label>ผลรวมกระแสหน้าหม้อแปลงฯ ทั้งหมด</label><input type="text" class="form-control"></div></div>
             </div>
-            <div class="section-header">4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div>
-            <div class="field-group" style="margin-bottom: 3px;"><textarea class="form-control"></textarea></div>
-            <div class="section-header">5 การปรับปรุงข้อบกพร่อง :</div>
-            <div class="field-group" style="margin-bottom: 3px;"><textarea class="form-control"></textarea></div>
+            <div class="section-header">4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 3px;"><textarea class="form-control"></textarea></div>
+            <div class="section-header">5 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 3px;"><textarea class="form-control"></textarea></div>
             <div class="signature-grid">
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
@@ -466,12 +459,15 @@
         if(document.getElementById('dateField2')) document.getElementById('dateField2').value = today;
     });
 
+    // ฟังก์ชันดึงพิกัด GPS ใช้ร่วมกันได้ทุกใบตรวจ
     function getCurrentLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
-                    if(document.getElementById('latInput')) document.getElementById('latInput').value = pos.coords.latitude.toFixed(6);
-                    if(document.getElementById('longInput')) document.getElementById('longInput').value = pos.coords.longitude.toFixed(6);
+                    const latEl = document.getElementById('latInput');
+                    const longEl = document.getElementById('longInput');
+                    if(latEl) latEl.value = pos.coords.latitude.toFixed(6);
+                    if(longEl) longEl.value = pos.coords.longitude.toFixed(6);
                     alert("ดึงพิกัด GPS สำเร็จ!");
                 },
                 () => { alert("ไม่สามารถดึงพิกัดได้: กรุณาอนุญาตการเข้าถึงตำแหน่ง GPS"); },
@@ -482,7 +478,7 @@
         }
     }
 
-    // แม่แบบ HTML ของฟอร์มแต่ละตัว (SF-07-0-015 ถึง SF-07-0-025) ตามเอกสารต้นฉบับ
+    // แม่แบบฟอร์มทั้งหมดตั้งแต่ 015 ถึง 025
     const formTemplates = {
         'SF-07-0-015': `
             <div class="sheet-title-container"><div><h1 id="formTitle">แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย</h1></div><div class="sheet-code" id="formCode">SF-07-0-015</div></div>
@@ -776,7 +772,7 @@
                 <div class="field-group"><label>MEA NO.</label><input type="text" class="form-control"></div>
                 <div class="field-group"><label>ACB NO.</label><input type="text" class="form-control"></div>
                 <div class="field-group span-2"><label>RELAY NO. / TYPE</label><input type="text" class="form-control" placeholder="MPCR / MPCV / ETI"></div>
-                <div class="field-group"><label>GIS Lat / Long</label><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div>
+                <div class="field-group"><label>GIS Lat/Long <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></label><input type="text" id="latInput" class="form-control" style="display:none;"><input type="text" id="longInput" class="form-control" style="display:none;"></div>
             </div>
             <div class="section-header">2 รายการตรวจสอบบำรุงรักษา</div>
             <table class="inspection-table">
@@ -807,6 +803,7 @@
                 <div class="field-group"><label>FIX ID</label><input type="text" class="form-control"></div>
                 <div class="field-group"><label>WLN</label><input type="text" class="form-control"></div>
                 <div class="field-group"><label>TR. MEA NO.</label><input type="text" class="form-control"></div>
+                <div class="field-group span-4"><label>GIS Lat/Long <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></label><input type="text" id="latInput" class="form-control" style="display:inline-block; width:48%;"> <input type="text" id="longInput" class="form-control" style="display:inline-block; width:48%;"></div>
             </div>
             <div class="section-header">2 รายการตรวจสอบบำรุงรักษา</div>
             <table class="inspection-table">
@@ -831,6 +828,7 @@
             <div class="grid-form">
                 <div class="field-group span-2"><label>STATION ID</label><input type="text" class="form-control"></div>
                 <div class="field-group span-2"><label>SW.ยี่ห้อ / TR.MEA No.</label><input type="text" class="form-control"></div>
+                <div class="field-group span-4"><label>GIS Lat/Long <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></label><input type="text" id="latInput" class="form-control" style="display:inline-block; width:48%;"> <input type="text" id="longInput" class="form-control" style="display:inline-block; width:48%;"></div>
             </div>
             <div class="section-header">ขั้นตอนการกรองน้ำมัน</div>
             <table class="inspection-table">
@@ -855,10 +853,10 @@
                 <div class="field-group"><label>Station ID</label><input type="text" class="form-control"></div>
                 <div class="field-group"><label>ชื่อภาพ</label><input type="text" class="form-control"></div>
                 <div class="field-group span-2"><label>สถานที่</label><input type="text" class="form-control"></div>
-                <div class="field-group"><label>GIS Lat / Long</label><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div>
+                <div class="field-group span-2"><label>GIS Lat / Long <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></label><input type="text" id="latInput" class="form-control" style="display:inline-block; width:48%;"> <input type="text" id="longInput" class="form-control" style="display:inline-block; width:48%;"></div>
                 <div class="field-group"><label>อุปกรณ์ / สายป้อน</label><input type="text" class="form-control"></div>
                 <div class="field-group"><label>วันที่ตรวจ</label><input type="date" class="form-control" id="dateField1"></div>
-                <div class="field-group"><label>Delta T (°C)</label><input type="text" class="form-control" placeholder="เช่น >40°C"></div>
+                <div class="field-group span-2"><label>Delta T (°C)</label><input type="text" class="form-control" placeholder="เช่น >40°C"></div>
             </div>
             <div class="section-header">3-4 การตรวจสอบและส่งต่อดำเนินการแก้ไข</div>
             <div class="field-group" style="margin-bottom: 3px;"><textarea class="form-control" placeholder="ระบุข้อเสนอแนะการแก้ไข และกลุ่มงานที่ส่งต่อ..."></textarea></div>
@@ -874,7 +872,7 @@
             <div class="grid-form">
                 <div class="field-group"><label>Station ID</label><input type="text" class="form-control"></div>
                 <div class="field-group span-3"><label>สถานที่ / อุปกรณ์</label><input type="text" class="form-control"></div>
-                <div class="field-group span-2"><label>GIS Lat / Long</label><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div>
+                <div class="field-group span-2"><label>GIS Lat / Long <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></label><input type="text" id="latInput" class="form-control" style="display:inline-block; width:48%;"> <input type="text" id="longInput" class="form-control" style="display:inline-block; width:48%;"></div>
                 <div class="field-group"><label>ระดับความเข้มเสียง (dB)</label><input type="text" class="form-control"></div>
                 <div class="field-group"><label>วันที่ตรวจ</label><input type="date" class="form-control" id="dateField1"></div>
             </div>
@@ -895,7 +893,6 @@
         document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
         element.classList.add('active');
 
-        // ดึงโค้ด HTML ของฟอร์มนั้นๆ มาแสดง
         if(formTemplates[formCode]) {
             document.getElementById('formContentArea').innerHTML = `
                 <div class="official-sheet" id="printArea">
