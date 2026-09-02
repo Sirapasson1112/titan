@@ -338,8 +338,8 @@
     <!-- ส่วนบน: แผงควบคุมและเมนูเว็บแอป (ซ่อนเวลาพิมพ์) -->
     <div class="no-print">
         <div class="auth-bar">
-            <span>👤 ยังไม่ได้เข้าสู่ระบบ — ข้อมูลจะไม่ถูกบันทึก</span>
-            <button class="google-btn" onclick="alert('กำลังเชื่อมต่อ Google...')">
+            <span id="authStatus">👤 ยังไม่ได้เข้าสู่ระบบ — ข้อมูลจะไม่ถูกบันทึก</span>
+            <button class="google-btn" onclick="handleGoogleLogin()">
                 <svg width="14" height="14" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.19v3.15C3.17 21.32 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.19C.43 8.13 0 9.87 0 11.7s.43 3.57 1.19 5.1l4.08-2.56z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.68 1.19 6.6l4.08 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
                 เข้าสู่ระบบด้วย Google
             </button>
@@ -347,47 +347,47 @@
 
         <div class="toolbar">
             <span style="font-size: 0.85rem; font-weight: 600;">สถานะ: พร้อมใช้งาน</span>
-            <button class="btn btn-primary">💾 บันทึกใหม่</button>
-            <button class="btn btn-secondary">🔄 บันทึกทับ</button>
-            <button class="btn btn-secondary">📄 คัดลอก</button>
-            <button class="btn btn-secondary">➕ ฟอร์มใหม่</button>
+            <button class="btn btn-primary" onclick="saveNewRecord()">💾 บันทึกใหม่</button>
+            <button class="btn btn-secondary" onclick="saveCurrentRecord()">🔄 บันทึกทับ</button>
+            <button class="btn btn-secondary" onclick="copyAsNewRecord()">📄 คัดลอก</button>
+            <button class="btn btn-secondary" onclick="newForm()">➕ ฟอร์มใหม่</button>
             <button class="btn btn-danger" onclick="clearForm()">🗑️ ล้าง</button>
             <div style="flex-grow: 1;"></div>
             <button class="btn btn-primary" onclick="window.print()">🖨️ พิมพ์ A4 หน้าเดียว</button>
         </div>
 
-        <div class="tab-container">
-            <button class="tab active">SF-07-0-015</button>
-            <button class="tab">SF-07-0-022</button>
-            <button class="tab">SF-07-0-023</button>
-            <button class="tab">SF-07-0-021</button>
-            <button class="tab">SF-07-0-016</button>
-            <button class="tab">SF-07-0-017</button>
-            <button class="tab">SF-07-0-018</button>
-            <button class="tab">SF-07-0-019</button>
+        <div class="tab-container" id="tabContainer">
+            <button class="tab active" onclick="switchTab(this, 'SF-07-0-015')">SF-07-0-015</button>
+            <button class="tab" onclick="switchTab(this, 'SF-07-0-022')">SF-07-0-022</button>
+            <button class="tab" onclick="switchTab(this, 'SF-07-0-023')">SF-07-0-023</button>
+            <button class="tab" onclick="switchTab(this, 'SF-07-0-021')">SF-07-0-021</button>
+            <button class="tab" onclick="switchTab(this, 'SF-07-0-016')">SF-07-0-016</button>
+            <button class="tab" onclick="switchTab(this, 'SF-07-0-017')">SF-07-0-017</button>
+            <button class="tab" onclick="switchTab(this, 'SF-07-0-018')">SF-07-0-018</button>
+            <button class="tab" onclick="switchTab(this, 'SF-07-0-019')">SF-07-0-019</button>
         </div>
 
         <div class="panel-box">
             <div class="panel-header">
-                <span>🗂️ ข้อมูลที่บันทึกไว้ (0)</span>
-                <button class="btn btn-secondary" style="padding: 2px 8px; font-size: 0.75rem;">🔄 รีเฟรช</button>
+                <span id="recordCountHeader">🗂️ ข้อมูลที่บันทึกไว้ (0)</span>
+                <button class="btn btn-secondary" style="padding: 2px 8px; font-size: 0.75rem;" onclick="refreshRecords()">🔄 รีเฟรช</button>
             </div>
             <div class="search-row">
-                <input type="text" class="form-control" placeholder="Plant">
-                <input type="text" class="form-control" placeholder="Work Order">
-                <button class="btn btn-secondary" style="font-size: 0.75rem;">ล้าง</button>
+                <input type="text" class="form-control" id="searchPlant" placeholder="Plant">
+                <input type="text" class="form-control" id="searchWorkOrder" placeholder="Work Order">
+                <button class="btn btn-secondary" style="font-size: 0.75rem;" onclick="clearSearch()">ล้าง</button>
             </div>
         </div>
 
         <div class="panel-box">
             <div class="panel-header">
                 <span>📷 รูปภาพประกอบการตรวจสอบ</span>
-                <span style="font-size: 0.75rem; color: var(--text-secondary);">0 KB</span>
+                <span id="imageSizeStatus" style="font-size: 0.75rem; color: var(--text-secondary);">0 KB</span>
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 0.8rem; color: var(--text-secondary);">ยังไม่มีรูปภาพประกอบ</span>
+                <span id="imageDesc" style="font-size: 0.8rem; color: var(--text-secondary);">ยังไม่มีรูปภาพประกอบ</span>
                 <label class="btn btn-primary" style="cursor: pointer; font-size: 0.75rem; padding: 4px 10px;">
-                    + เพิ่มรูป <input type="file" accept="image/*" style="display: none;">
+                    + เพิ่มรูป <input type="file" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
                 </label>
             </div>
         </div>
@@ -395,16 +395,16 @@
         <div class="panel-box">
             <div class="panel-header">
                 <span>🎯 การประเมินความสำคัญของอุปกรณ์ (Criticality)</span>
-                <span style="background: #f5f5f4; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; border: 1px solid var(--border-color);">ยังไม่ประเมิน</span>
+                <span id="criticalityBadge" style="background: #f5f5f4; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; border: 1px solid var(--border-color);">ยังไม่ประเมิน</span>
             </div>
             <div class="criticality-grid">
-                <div class="field-group"><label>SAF — ความปลอดภัย</label><select class="form-control"><option>- เลือก -</option></select></div>
-                <div class="field-group"><label>REL — ความต่อเนื่อง</label><select class="form-control"><option>- เลือก -</option></select></div>
-                <div class="field-group"><label>OPR — ภารกิจ</label><select class="form-control"><option>- เลือก -</option></select></div>
-                <div class="field-group"><label>CON — แนวโน้มขัดข้อง</label><select class="form-control"><option>- เลือก -</option></select></div>
-                <div class="field-group"><label>REC — ความยากกู้คืน</label><select class="form-control"><option>- เลือก -</option></select></div>
+                <div class="field-group"><label>SAF — ความปลอดภัย</label><select class="form-control criticality-select" onchange="calculateCriticality()"><option value="0">- เลือก -</option><option value="20">ระดับ 1</option><option value="40">ระดับ 2</option><option value="60">ระดับ 3</option><option value="80">ระดับ 4</option><option value="100">ระดับ 5</option></select></div>
+                <div class="field-group"><label>REL — ความต่อเนื่อง</label><select class="form-control criticality-select" onchange="calculateCriticality()"><option value="0">- เลือก -</option><option value="20">ระดับ 1</option><option value="40">ระดับ 2</option><option value="60">ระดับ 3</option><option value="80">ระดับ 4</option><option value="100">ระดับ 5</option></select></div>
+                <div class="field-group"><label>OPR — ภารกิจ</label><select class="form-control criticality-select" onchange="calculateCriticality()"><option value="0">- เลือก -</option><option value="20">ระดับ 1</option><option value="40">ระดับ 2</option><option value="60">ระดับ 3</option><option value="80">ระดับ 4</option><option value="100">ระดับ 5</option></select></div>
+                <div class="field-group"><label>CON — แนวโน้มขัดข้อง</label><select class="form-control criticality-select" onchange="calculateCriticality()"><option value="0">- เลือก -</option><option value="20">ระดับ 1</option><option value="40">ระดับ 2</option><option value="60">ระดับ 3</option><option value="80">ระดับ 4</option><option value="100">ระดับ 5</option></select></div>
+                <div class="field-group"><label>REC — ความยากกู้คืน</label><select class="form-control criticality-select" onchange="calculateCriticality()"><option value="0">- เลือก -</option><option value="20">ระดับ 1</option><option value="40">ระดับ 2</option><option value="60">ระดับ 3</option><option value="80">ระดับ 4</option><option value="100">ระดับ 5</option></select></div>
             </div>
-            <div style="margin-top: 8px; font-size: 0.8rem; font-weight: 600; border-top: 1px dashed var(--border-color); padding-top: 6px;">คะแนนรวม: — / 100</div>
+            <div id="totalScoreText" style="margin-top: 8px; font-size: 0.8rem; font-weight: 600; border-top: 1px dashed var(--border-color); padding-top: 6px;">คะแนนรวม: — / 100</div>
         </div>
     </div>
 
@@ -413,9 +413,9 @@
         
         <div class="sheet-title-container">
             <div>
-                <h1>แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย</h1>
+                <h1 id="formTitle">แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย</h1>
             </div>
-            <div class="sheet-code">SF-07-0-015</div>
+            <div class="sheet-code" id="formCode">SF-07-0-015</div>
         </div>
 
         <!-- 1. ข้อมูลทั่วไป -->
@@ -451,29 +451,29 @@
                 </tr>
             </thead>
             <tbody>
-                <tr><td>2.1 Drop Fuse</td><td><input type="radio" name="c1"></td><td><input type="radio" name="c1"></td><td><input type="radio" name="c1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.2 Station Post Type Insulator</td><td><input type="radio" name="c2"></td><td><input type="radio" name="c2"></td><td><input type="radio" name="c2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.3 สายเข้า-ออก Drop Fuse</td><td><input type="radio" name="c3"></td><td><input type="radio" name="c3"></td><td><input type="radio" name="c3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.4 คอนสาย</td><td><input type="radio" name="c4"></td><td><input type="radio" name="c4"></td><td><input type="radio" name="c4"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.5 อุปกรณ์ป้องกันสัตว์</td><td><input type="radio" name="c5"></td><td><input type="radio" name="c5"></td><td><input type="radio" name="c5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.6 Low Voltage Capacitor</td><td><input type="radio" name="c6"></td><td><input type="radio" name="c6"></td><td><input type="radio" name="c6"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.7 กับดักฟ้าผ่า (L/A)</td><td><input type="radio" name="c7"></td><td><input type="radio" name="c7"></td><td><input type="radio" name="c7"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.8 ตัวถังหม้อแปลง</td><td><input type="radio" name="c8"></td><td><input type="radio" name="c8"></td><td><input type="radio" name="c8"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.9 Bushing HV-LV</td><td><input type="radio" name="c9"></td><td><input type="radio" name="c9"></td><td><input type="radio" name="c9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.10 Cover (Bushing, L/A, Term. kit)</td><td><input type="radio" name="c10"></td><td><input type="radio" name="c10"></td><td><input type="radio" name="c10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.11 สายหน้าหม้อแปลง LV</td><td><input type="radio" name="c11"></td><td><input type="radio" name="c11"></td><td><input type="radio" name="c11"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.12 LV Ground</td><td><input type="radio" name="c12"></td><td><input type="radio" name="c12"></td><td><input type="radio" name="c12"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.13 HV Ground</td><td><input type="radio" name="c13"></td><td><input type="radio" name="c13"></td><td><input type="radio" name="c13"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.14 CT-TLM Meter (ถ้ามี)</td><td><input type="radio" name="c14"></td><td><input type="radio" name="c14"></td><td><input type="radio" name="c14"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.1 Drop Fuse</td><td><input type="radio" name="c1" value="ปกติ"></td><td><input type="radio" name="c1" value="ชำรุด"></td><td><input type="radio" name="c1" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.2 Station Post Type Insulator</td><td><input type="radio" name="c2" value="ปกติ"></td><td><input type="radio" name="c2" value="ชำรุด"></td><td><input type="radio" name="c2" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.3 สายเข้า-ออก Drop Fuse</td><td><input type="radio" name="c3" value="ปกติ"></td><td><input type="radio" name="c3" value="ชำรุด"></td><td><input type="radio" name="c3" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.4 คอนสาย</td><td><input type="radio" name="c4" value="ปกติ"></td><td><input type="radio" name="c4" value="ชำรุด"></td><td><input type="radio" name="c4" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.5 อุปกรณ์ป้องกันสัตว์</td><td><input type="radio" name="c5" value="ปกติ"></td><td><input type="radio" name="c5" value="ชำรุด"></td><td><input type="radio" name="c5" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.6 Low Voltage Capacitor</td><td><input type="radio" name="c6" value="ปกติ"></td><td><input type="radio" name="c6" value="ชำรุด"></td><td><input type="radio" name="c6" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.7 กับดักฟ้าผ่า (L/A)</td><td><input type="radio" name="c7" value="ปกติ"></td><td><input type="radio" name="c7" value="ชำรุด"></td><td><input type="radio" name="c7" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.8 ตัวถังหม้อแปลง</td><td><input type="radio" name="c8" value="ปกติ"></td><td><input type="radio" name="c8" value="ชำรุด"></td><td><input type="radio" name="c8" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.9 Bushing HV-LV</td><td><input type="radio" name="c9" value="ปกติ"></td><td><input type="radio" name="c9" value="ชำรุด"></td><td><input type="radio" name="c9" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.10 Cover (Bushing, L/A, Term. kit)</td><td><input type="radio" name="c10" value="ปกติ"></td><td><input type="radio" name="c10" value="ชำรุด"></td><td><input type="radio" name="c10" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.11 สายหน้าหม้อแปลง LV</td><td><input type="radio" name="c11" value="ปกติ"></td><td><input type="radio" name="c11" value="ชำรุด"></td><td><input type="radio" name="c11" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.12 LV Ground</td><td><input type="radio" name="c12" value="ปกติ"></td><td><input type="radio" name="c12" value="ชำรุด"></td><td><input type="radio" name="c12" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.13 HV Ground</td><td><input type="radio" name="c13" value="ปกติ"></td><td><input type="radio" name="c13" value="ชำรุด"></td><td><input type="radio" name="c13" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.14 CT-TLM Meter (ถ้ามี)</td><td><input type="radio" name="c14" value="ปกติ"></td><td><input type="radio" name="c14" value="ชำรุด"></td><td><input type="radio" name="c14" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
             </tbody>
         </table>
 
         <!-- 3. ตรวจสอบวัดกระแสและแรงดันไฟฟ้า -->
         <div class="section-header">3 ตรวจสอบวัดกระแสและแรงดันไฟฟ้า</div>
         <div style="display: flex; gap: 15px; margin-bottom: 4px; font-size: 0.78rem; align-items: center; flex-wrap: wrap;">
-            <div><label><input type="checkbox"> กลางวัน</label> &nbsp; <label><input type="checkbox"> กลางคืน</label></div>
-            <div>เวลา : <input type="time" class="form-control" style="display: inline-block; width: 90px; padding: 1px;"></div>
-            <div>วิธีการ: <label><input type="checkbox"> วัดหน้างาน</label> &nbsp; <label><input type="checkbox"> TLM</label></div>
+            <div><label><input type="checkbox" name="period" value="กลางวัน"> กลางวัน</label> &nbsp; <label><input type="checkbox" name="period" value="กลางคืน"> กลางคืน</label></div>
+            <div>เวลา : <input type="time" class="form-control" id="inspectTime" style="display: inline-block; width: 90px; padding: 1px;"></div>
+            <div>วิธีการ: <label><input type="checkbox" name="method" value="วัดหน้างาน"> วัดหน้างาน</label> &nbsp; <label><input type="checkbox" name="method" value="TLM"> TLM</label></div>
         </div>
 
         <div class="measure-container">
@@ -506,12 +506,12 @@
         <!-- 4 & 5. ส่วนปรับปรุง -->
         <div class="section-header">4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div>
         <div class="field-group" style="margin-bottom: 4px;">
-            <textarea class="form-control"></textarea>
+            <textarea class="form-control" placeholder="ระบุสิ่งที่ต้องปรับปรุง..."></textarea>
         </div>
 
         <div class="section-header">5 การปรับปรุงข้อบกพร่อง :</div>
         <div class="field-group" style="margin-bottom: 4px;">
-            <textarea class="form-control"></textarea>
+            <textarea class="form-control" placeholder="ระบุการปรับปรุงข้อบกพร่อง..."></textarea>
         </div>
 
         <!-- ลายมือชื่อ -->
@@ -519,42 +519,137 @@
             <div class="sig-box">
                 <div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div>
                 <div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div>
-                <div class="field-group"><label>วันที่</label><input type="date" class="form-control"></div>
+                <div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div>
             </div>
             <div class="sig-box">
                 <div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div>
                 <div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div>
-                <div class="field-group"><label>วันที่</label><input type="date" class="form-control"></div>
+                <div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div>
             </div>
         </div>
 
         <div class="sheet-footer-note">
             <span>ปรับปรุงครั้งที่ 0 วันที่...</span>
-            <span>SF-07-0-015</span>
+            <span id="footerCode">SF-07-0-015</span>
         </div>
 
     </div>
 </div>
 
 <script>
+    // ตั้งค่าวันที่ปัจจุบันอัตโนมัติ
+    document.addEventListener("DOMContentLoaded", () => {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('dateField1').value = today;
+        document.getElementById('dateField2').value = today;
+    });
+
+    // ดึงพิกัด GPS ปัจจุบัน
     function getCurrentLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
                     document.getElementById('latInput').value = pos.coords.latitude.toFixed(6);
                     document.getElementById('longInput').value = pos.coords.longitude.toFixed(6);
+                    alert("ดึงพิกัด GPS สำเร็จ!");
                 },
-                () => { alert("ไม่สามารถดึงพิกัดได้"); },
+                () => { alert("ไม่สามารถดึงพิกัดได้: กรุณาอนุญาตการเข้าถึงตำแหน่ง GPS"); },
                 { enableHighAccuracy: true }
             );
+        } else {
+            alert("เบราว์เซอร์ไม่รองรับ Geolocation");
         }
     }
 
-    function clearForm() {
-        if(confirm("ล้างข้อมูลทั้งหมด?")) {
-            document.querySelectorAll('input[type="text"], textarea').forEach(el => el.value = '');
-            document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(el => el.checked = false);
+    // ระบบเปลี่ยนแท็บฟอร์ม
+    function switchTab(element, formCode) {
+        document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+        element.classList.add('active');
+        document.getElementById('formTitle').innerText = "แบบตรวจสอบบำรุงรักษาอุปกรณ์";
+        document.getElementById('formCode').innerText = formCode;
+        document.getElementById('footerCode').innerText = formCode;
+    }
+
+    // ฟังก์ชันระบบล็อกอิน Google
+    function handleGoogleLogin() {
+        document.getElementById('authStatus').innerText = "👤 เข้าสู่ระบบด้วย Google สำเร็จ (ผู้ใช้งานระบบ)";
+        alert("เข้าสู่ระบบสำเร็จ!");
+    }
+
+    // ฟังก์ชันบันทึกข้อมูล
+    function saveNewRecord() {
+        alert("💾 บันทึกข้อมูลเป็นรายการใหม่เรียบร้อยแล้ว!");
+        document.getElementById('recordCountHeader').innerText = "🗂️ ข้อมูลที่บันทึกไว้ (1)";
+    }
+
+    function saveCurrentRecord() {
+        alert("🔄 บันทึกทับรายการปัจจุบันสำเร็จ!");
+    }
+
+    function copyAsNewRecord() {
+        alert("📄 คัดลอกข้อมูลเป็นฉบับใหม่สำเร็จ!");
+    }
+
+    function newForm() {
+        if(confirm("ต้องการสร้างฟอร์มใหม่ใช่หรือไม่?")) {
+            clearForm();
         }
+    }
+
+    // ฟังก์ชันเคลียร์ข้อมูลในฟอร์ม
+    function clearForm() {
+        document.querySelectorAll('input[type="text"], textarea, input[type="time"]').forEach(el => el.value = '');
+        document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(el => el.checked = false);
+        document.querySelectorAll('.criticality-select').forEach(el => el.value = "0");
+        calculateCriticality();
+        document.getElementById('imageSizeStatus').innerText = "0 KB";
+        document.getElementById('imageDesc').innerText = "ยังไม่มีรูปภาพประกอบ";
+        alert("ล้างฟอร์มเรียบร้อยแล้ว");
+    }
+
+    // ฟังก์ชันอัปโหลดรูปภาพ
+    function handleImageUpload(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const sizeKB = (file.size / 1024).toFixed(1);
+            document.getElementById('imageSizeStatus').innerText = `${sizeKB} KB`;
+            document.getElementById('imageDesc').innerText = `อัปโหลดรูปสำเร็จ: ${file.name}`;
+        }
+    }
+
+    // ฟังก์ชันคำนวณคะแนน Criticality
+    function calculateCriticality() {
+        const selects = document.querySelectorAll('.criticality-select');
+        let sum = 0, count = 0;
+        selects.forEach(sel => {
+            const val = parseInt(sel.value);
+            if(val > 0) { sum += val; count++; }
+        });
+
+        const badge = document.getElementById('criticalityBadge');
+        const scoreText = document.getElementById('totalScoreText');
+
+        if(count > 0) {
+            const avg = Math.round(sum / selects.length);
+            scoreText.innerText = `คะแนนรวม: ${avg} / 100`;
+            badge.innerText = `ประเมินแล้ว (${avg} คะแนน)`;
+            badge.style.background = '#fef3c7';
+            badge.style.color = '#b45309';
+        } else {
+            scoreText.innerText = `คะแนนรวม: — / 100`;
+            badge.innerText = `ยังไม่ประเมิน`;
+            badge.style.background = '#f5f5f4';
+            badge.style.color = '#78716c';
+        }
+    }
+
+    function refreshRecords() {
+        alert("🔄 รีเฟรชรายการข้อมูลที่บันทึกแล้ว");
+    }
+
+    function clearSearch() {
+        document.getElementById('searchPlant').value = '';
+        document.getElementById('searchWorkOrder').value = '';
     }
 </script>
 
