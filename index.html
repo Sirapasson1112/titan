@@ -139,7 +139,7 @@
         }
 
         .sheet-title-container h1 {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: var(--text-main);
         }
@@ -203,24 +203,6 @@
             box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
         }
 
-        table.inspection-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 8px;
-        }
-
-        table.inspection-table th, table.inspection-table td {
-            border: 1px solid var(--border-color);
-            padding: 5px 8px;
-            font-size: 0.82rem;
-        }
-
-        table.inspection-table th {
-            background-color: #f5f5f4;
-            text-align: center;
-            font-weight: 600;
-        }
-
         textarea.form-control {
             resize: vertical;
             height: 45px;
@@ -228,8 +210,8 @@
 
         .signature-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
             margin-top: 15px;
             border-top: 1px dashed var(--border-color);
             padding-top: 10px;
@@ -275,7 +257,6 @@
             .grid-form { gap: 2px; margin-bottom: 2px; }
             .form-control { padding: 1px 3px; font-size: 0.65rem; }
             .section-header { padding: 2px 4px; margin-top: 3px; margin-bottom: 2px; font-size: 0.65rem; }
-            table.inspection-table th, table.inspection-table td { padding: 2px 4px; font-size: 0.6rem; }
             textarea.form-control { height: 18px; }
             .signature-grid { gap: 4px; margin-top: 3px; padding-top: 2px; }
             .sig-box { padding: 3px; gap: 2px; }
@@ -316,102 +297,100 @@
             <button class="tab" onclick="switchTab(this, 'SF-07-0-021')">SF-07-0-021</button>
             <button class="tab" onclick="switchTab(this, 'SF-07-0-022')">SF-07-0-022</button>
             <button class="tab" onclick="switchTab(this, 'SF-07-0-023')">SF-07-0-023</button>
-            <button class="tab active" onclick="switchTab(this, 'SF-07-0-024')">SF-07-0-024</button>
-            <button class="tab" onclick="switchTab(this, 'SF-07-0-025')">SF-07-0-025</button>
+            <button class="tab" onclick="switchTab(this, 'SF-07-0-024')">SF-07-0-024</button>
+            <button class="tab active" onclick="switchTab(this, 'SF-07-0-025')">SF-07-0-025</button>
         </div>
     </div>
 
-    <!-- ส่วนล่าง: พื้นที่แสดงใบตรวจสอบ (ค่าเริ่มต้น SF-07-0-024 ตามที่คุณเลือก) -->
+    <!-- ส่วนล่าง: พื้นที่แสดงใบตรวจสอบ (ค่าเริ่มต้น SF-07-0-025 ตามที่คุณเลือก) -->
     <div id="formContentArea">
         <div class="official-sheet" id="printArea">
             <div class="sheet-title-container">
-                <div><h1 id="formTitle">รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)</h1></div>
-                <div class="sheet-code" id="formCode">SF-07-0-024</div>
+                <div>
+                    <h1 id="formTitle">รายงานผลการตรวจสอบการคายประจุไฟฟ้าบางส่วน (Partial Discharge)</h1>
+                    <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-top: 2px;">โดยใช้กล้อง Acoustic Camera[cite: 26]</div>
+                </div>
+                <div class="sheet-code" id="formCode">SF-07-0-025</div>
             </div>
 
-            <!-- ผู้ตรวจ -->
+            <!-- ข้อมูลผู้ตรวจ 2 คน -->
             <div class="grid-form" style="margin-bottom: 6px;">
-                <div class="field-group span-2"><label>ผู้ตรวจ 1:</label><input type="text" class="form-control" placeholder="ชื่อ-นามสกุล ผู้ตรวจคนที่ 1">[cite: 25]</div>
-                <div class="field-group span-2"><label>ผู้ตรวจ 2:</label><input type="text" class="form-control" placeholder="ชื่อ-นามสกุล ผู้ตรวจคนที่ 2">[cite: 25]</div>
+                <div class="field-group span-2"><label>ผู้ตรวจ 1:[cite: 26]</label><input type="text" class="form-control" placeholder="ชื่อ-นามสกุล ผู้ตรวจคนที่ 1"></div>
+                <div class="field-group span-2"><label>ตำแหน่ง 1:[cite: 26]</label><input type="text" class="form-control" placeholder="ตำแหน่ง ผู้ตรวจคนที่ 1"></div>
+                <div class="field-group span-2"><label>ผู้ตรวจ 2:[cite: 26]</label><input type="text" class="form-control" placeholder="ชื่อ-นามสกุล ผู้ตรวจคนที่ 2"></div>
+                <div class="field-group span-2"><label>ตำแหน่ง 2:[cite: 26]</label><input type="text" class="form-control" placeholder="ตำแหน่ง ผู้ตรวจคนที่ 2"></div>
+                <div class="field-group span-2"><label>วันที่ตรวจ[cite: 26]</label><input type="date" class="form-control" id="dateField1"></div>
             </div>
 
             <!-- 1. ข้อมูลภาพถ่าย -->
-            <div class="section-header">1. ข้อมูลภาพถ่าย[cite: 25]</div>
+            <div class="section-header">1. ข้อมูลภาพถ่าย[cite: 26]</div>
             <div class="grid-form">
-                <div class="field-group"><label>ชื่อภาพ[cite: 25]</label><input type="text" class="form-control"></div>
-                <div class="field-group"><label>Station ID[cite: 25]</label><input type="text" class="form-control"></div>
-                <div class="field-group span-2"><label>สถานที่[cite: 25]</label><input type="text" class="form-control"></div>
-                <div class="field-group"><label>อุปกรณ์[cite: 25]</label><input type="text" class="form-control"></div>
-                <div class="field-group"><label>MEA No.[cite: 25]</label><input type="text" class="form-control"></div>
-                <div class="field-group"><label>สายป้อน[cite: 25]</label><input type="text" class="form-control"></div>
-                <div class="field-group"><label>วันที่ตรวจ[cite: 25]</label><input type="date" class="form-control" id="dateField1"></div>
-                <div class="field-group span-2"><label>ตำแหน่งติดตั้ง[cite: 25]</label><input type="text" class="form-control"></div>
-                <div class="field-group span-2"><label>GIS Lat/Long <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></label><input type="text" id="latInput" class="form-control" style="display:inline-block; width:48%;"> <input type="text" id="longInput" class="form-control" style="display:inline-block; width:48%;">[cite: 25]</div>
-                <div class="field-group span-2"><label>Emissivity[cite: 25]</label><input type="text" class="form-control"></div>
-                <div class="field-group span-2"><label>อุณหภูมิแวดล้อม (°C)</label><input type="text" class="form-control"></div>
+                <div class="field-group"><label>Station ID[cite: 26]</label><input type="text" class="form-control"></div>
+                <div class="field-group"><label>อุปกรณ์[cite: 26]</label><input type="text" class="form-control"></div>
+                <div class="field-group"><label>MEA No.[cite: 26]</label><input type="text" class="form-control"></div>
+                <div class="field-group"><label>สายป้อน[cite: 26]</label><input type="text" class="form-control"></div>
+                <div class="field-group span-2"><label>สถานที่[cite: 26]</label><input type="text" class="form-control"></div>
+                <div class="field-group span-2"><label>GIS Lat/Long <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></label><input type="text" id="latInput" class="form-control" style="display:inline-block; width:48%;"> <input type="text" id="longInput" class="form-control" style="display:inline-block; width:48%;">[cite: 26]</div>
+                <div class="field-group span-4"><label>จุดที่ผิดปกติ[cite: 26]</label><input type="text" class="form-control" placeholder="ระบุตำแหน่งจุดที่ผิดปกติ"></div>
             </div>
 
-            <!-- ช่องรูปภาพจำลอง -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 4px 0;">
-                <div style="border: 1px dashed var(--border-color); padding: 6px; text-align: center; background: #fafaf9; border-radius: 4px;">
-                    <label style="font-size:0.7rem; color:var(--text-secondary); font-weight:600;">🖼️ ภาพถ่ายจริง (Visual Photo)[cite: 25]</label>
-                    <input type="file" accept="image/*" style="font-size: 0.65rem; display:block; margin: 4px auto;">
+            <!-- ระดับความเข้มเสียง และความรุนแรง NL Cloud -->
+            <div style="font-size: 0.8rem; margin: 6px 0; background:#fafaf9; padding:8px 12px; border:1px solid var(--border-color); border-radius:6px;">
+                <div style="display:flex; gap:15px; align-items:center; margin-bottom:6px;">
+                    <div><b>ระดับความเข้มเสียงที่ตรวจวัดได้:</b> <input type="text" class="form-control" style="display:inline-block; width:80px; padding:2px;" placeholder="dB">[cite: 26]</div>
                 </div>
-                <div style="border: 1px dashed var(--border-color); padding: 6px; text-align: center; background: #fafaf9; border-radius: 4px;">
-                    <label style="font-size:0.7rem; color:var(--text-secondary); font-weight:600;">🌡️ ภาพถ่ายความร้อน (Thermal Image)[cite: 25]</label>
-                    <input type="file" accept="image/*" style="font-size: 0.65rem; display:block; margin: 4px auto;">
+                <div>
+                    <b>ระดับความรุนแรง * (ประเมินจาก software ของ NL CLOUD[cite: 26]):</b>
+                    <div style="display:flex; gap:15px; margin-top:4px;">
+                        <label><input type="checkbox"> สูงมาก[cite: 26]</label>
+                        <label><input type="checkbox"> สูง[cite: 26]</label>
+                        <label><input type="checkbox"> ปานกลาง[cite: 26]</label>
+                        <label><input type="checkbox"> ต่ำ[cite: 26]</label>
+                    </div>
                 </div>
             </div>
 
-            <!-- 2. อุณหภูมิสูงสุดที่จุดวัดฯ & เกณฑ์ Delta T -->
-            <div class="section-header">2. อุณหภูมิสูงสุดที่จุดวัดฯ & เกณฑ์ความสำคัญ (Standard for Infrared Inspection)[cite: 25]</div>
-            <table class="inspection-table">
-                <thead>
-                    <tr>
-                        <th style="width: 50px;">ความสำคัญ[cite: 25]</th>
-                        <th>Delta T (°C)[cite: 25]</th>
-                        <th style="text-align: left;">ข้อเสนอแนะการดำเนินการ[cite: 25]</th>
-                        <th style="width: 80px;">เลือกจุดวัด</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td style="text-align:center; font-weight:bold; color:#059669;">4[cite: 25]</td><td>0 - 10°C[cite: 25]</td><td>อุปกรณ์ปกติ[cite: 25]</td><td style="text-align:center;"><input type="checkbox"></td></tr>
-                    <tr><td style="text-align:center; font-weight:bold; color:#d97706;">3[cite: 25]</td><td>> 10 - 20°C[cite: 25]</td><td>แก้ไขในการบำรุงรักษาครั้งต่อไป[cite: 25]</td><td style="text-align:center;"><input type="checkbox"></td></tr>
-                    <tr><td style="text-align:center; font-weight:bold; color:#ea580c;">2[cite: 25]</td><td>> 20 - 40°C[cite: 25]</td><td>ควรแก้ไขภายใน 1 เดือน[cite: 25]</td><td style="text-align:center;"><input type="checkbox"></td></tr>
-                    <tr><td style="text-align:center; font-weight:bold; color:#dc2626;">1[cite: 25]</td><td>> 40°C[cite: 25]</td><td>ควรได้รับการแก้ไขเร่งด่วน[cite: 25]</td><td style="text-align:center;"><input type="checkbox"></td></tr>
-                </tbody>
-            </table>
+            <!-- ช่องรูปภาพ 2 ช่อง (ภาพถ่ายกล้องปกติ และ Acoustic Camera) -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 6px 0;">
+                <div style="border: 1px dashed var(--border-color); padding: 8px; text-align: center; background: #fafaf9; border-radius: 6px;">
+                    <label style="font-size:0.75rem; color:var(--text-secondary); font-weight:600;">📷 ภาพถ่ายจากกล้องปกติ[cite: 26]</label>
+                    <input type="file" accept="image/*" style="font-size: 0.7rem; display:block; margin: 6px auto;">
+                </div>
+                <div style="border: 1px dashed var(--border-color); padding: 8px; text-align: center; background: #fafaf9; border-radius: 6px;">
+                    <label style="font-size:0.75rem; color:var(--text-secondary); font-weight:600;">📷 ภาพถ่ายจาก Acoustic Camera[cite: 26]</label>
+                    <input type="file" accept="image/*" style="font-size: 0.7rem; display:block; margin: 6px auto;">
+                </div>
+            </div>
 
-            <!-- 3. รายละเอียดการตรวจสอบ -->
-            <div class="section-header">3. รายละเอียดการตรวจสอบ[cite: 25]</div>
-            <div class="field-group" style="margin-bottom: 4px;"><textarea class="form-control" placeholder="ระบุรายละเอียดการตรวจสอบ..."></textarea></div>
-
-            <!-- 4. การส่งต่อดำเนินการแก้ไข -->
-            <div class="section-header">4. การส่งต่อดำเนินการแก้ไข[cite: 25]</div>
+            <!-- 2. การส่งต่อดำเนินการแก้ไข -->
+            <div class="section-header">2. การส่งต่อดำเนินการแก้ไข[cite: 26]</div>
             <div class="grid-form">
-                <div class="field-group span-2"><label>ส่งต่อให้กลุ่มงาน[cite: 25]</label><input type="text" class="form-control" placeholder="ระบุชื่อกลุ่มงาน"></div>
-                <div class="field-group span-2"><label>ข้อแนะนำการแก้ไข[cite: 25]</label><input type="text" class="form-control" placeholder="ระบุข้อแนะนำ"></div>
+                <div class="field-group span-4"><label>ส่งต่อให้กลุ่มงาน[cite: 26]</label><input type="text" class="form-control" placeholder="ระบุกลุ่มงานที่ต้องรับไปดำเนินการต่อ"></div>
             </div>
 
-            <!-- ลงนาม 3 ส่วน (ผู้ตรวจ, ผู้ตรวจสอบ/หผบจ., ผู้ดำเนินการปรับปรุง) -->
-            <div class="signature-grid" style="grid-template-columns: repeat(3, 1fr);">
+            <!-- 3. การดำเนินการปรับปรุง -->
+            <div class="section-header">3. การดำเนินการปรับปรุง[cite: 26]</div>
+            <div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control" placeholder="ระบุผลการดำเนินการแก้ไขปรับปรุง..."></textarea></div>
+
+            <!-- ลงนาม 3 ส่วน -->
+            <div class="signature-grid">
                 <div class="sig-box">
-                    <div class="field-group"><label>ผู้ตรวจสอบ / หผบจ./ชผบจ.[cite: 25]</label><input type="text" class="form-control" placeholder="โปรดดำเนินการแก้ไข"></div>
+                    <div class="field-group"><label>โปรดดำเนินการแก้ไข (หผบจ./ชผบจ.)[cite: 26]</label><input type="text" class="form-control" placeholder="ลงนามสั่งการ"></div>
                     <div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div>
                 </div>
                 <div class="sig-box">
-                    <div class="field-group"><label>ผู้ดำเนินการปรับปรุง[cite: 25]</label><input type="text" class="form-control" placeholder="ชื่อผู้ปฏิบัติงาน"></div>
+                    <div class="field-group"><label>ผู้ดำเนินการปรับปรุง[cite: 26]</label><input type="text" class="form-control" placeholder="ชื่อผู้ปฏิบัติงาน"></div>
                     <div class="field-group"><label>วันที่แก้ไข</label><input type="date" class="form-control"></div>
                 </div>
                 <div class="sig-box">
-                    <div class="field-group"><label>ผู้บริหารทราบ (หผบจ./ชผบจ.)[cite: 25]</label><input type="text" class="form-control" placeholder="ลงนามรับทราบ"></div>
+                    <div class="field-group"><label>ทราบ (หผบจ./ชผบจ.)[cite: 26]</label><input type="text" class="form-control" placeholder="ลงนามรับทราบ"></div>
                     <div class="field-group"><label>วันที่</label><input type="date" class="form-control"></div>
                 </div>
             </div>
 
             <div class="sheet-footer-note">
                 <span>ปรับปรุงครั้งที่ 0 วันที่....</span>
-                <span id="footerCode">SF-07-0-024</span>
+                <span id="footerCode">SF-07-0-025</span>
             </div>
         </div>
     </div>
@@ -488,7 +467,7 @@
             </div>
             <div class="section-header">4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
             <div class="section-header">5 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
-            <div class="signature-grid">
+            <div class="signature-grid" style="grid-template-columns: 1fr 1fr;">
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
             </div>
@@ -539,7 +518,7 @@
             </table>
             <div class="section-header">3 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
             <div class="section-header">4 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
-            <div class="signature-grid">
+            <div class="signature-grid" style="grid-template-columns: 1fr 1fr;">
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
             </div>
@@ -583,7 +562,7 @@
             </table>
             <div class="section-header">3 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
             <div class="section-header">4 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
-            <div class="signature-grid">
+            <div class="signature-grid" style="grid-template-columns: 1fr 1fr;">
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
             </div>
@@ -630,7 +609,7 @@
             </table>
             <div class="section-header">3 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
             <div class="section-header">4 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
-            <div class="signature-grid">
+            <div class="signature-grid" style="grid-template-columns: 1fr 1fr;">
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
             </div>
@@ -670,7 +649,7 @@
             </div>
             <div class="section-header">4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
             <div class="section-header">5 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
-            <div class="signature-grid">
+            <div class="signature-grid" style="grid-template-columns: 1fr 1fr;">
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
             </div>
@@ -722,7 +701,7 @@
             </div>
             <div class="section-header">3 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
             <div class="section-header">4 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
-            <div class="signature-grid">
+            <div class="signature-grid" style="grid-template-columns: 1fr 1fr;">
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
             </div>
@@ -803,7 +782,7 @@
                 </tbody>
             </table>
             <div class="section-header">ข้อเสนอแนะ / ข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
-            <div class="signature-grid">
+            <div class="signature-grid" style="grid-template-columns: 1fr 1fr;">
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
             </div>
@@ -896,7 +875,7 @@
             </table>
 
             <div class="section-header">ข้อเสนอแนะ / ข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
-            <div class="signature-grid">
+            <div class="signature-grid" style="grid-template-columns: 1fr 1fr;">
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
             </div>
@@ -981,7 +960,7 @@
             <div class="section-header">ข้อเสนอแนะ/ข้อมูลเพิ่มเติม :</div>
             <div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
 
-            <div class="signature-grid">
+            <div class="signature-grid" style="grid-template-columns: 1fr 1fr;">
                 <div class="sig-box">
                     <div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div>
                     <div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div>
@@ -1083,26 +1062,86 @@
             </div>`,
 
         'SF-07-0-025': `
-            <div class="sheet-title-container"><div><h1 id="formTitle">รายงานผลการตรวจสอบการคายประจุไฟฟ้า (Partial Discharge)</h1></div><div class="sheet-code" id="formCode">SF-07-0-025</div></div>
-            <div class="section-header">1 ข้อมูลภาพถ่าย Acoustic Camera</div>
+            <div class="sheet-title-container">
+                <div>
+                    <h1 id="formTitle">รายงานผลการตรวจสอบการคายประจุไฟฟ้าบางส่วน (Partial Discharge)</h1>
+                    <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-top: 2px;">โดยใช้กล้อง Acoustic Camera[cite: 26]</div>
+                </div>
+                <div class="sheet-code" id="formCode">SF-07-0-025</div>
+            </div>
+
+            <div class="grid-form" style="margin-bottom: 6px;">
+                <div class="field-group span-2"><label>ผู้ตรวจ 1:[cite: 26]</label><input type="text" class="form-control" placeholder="ชื่อ-นามสกุล ผู้ตรวจคนที่ 1"></div>
+                <div class="field-group span-2"><label>ตำแหน่ง 1:[cite: 26]</label><input type="text" class="form-control" placeholder="ตำแหน่ง ผู้ตรวจคนที่ 1"></div>
+                <div class="field-group span-2"><label>ผู้ตรวจ 2:[cite: 26]</label><input type="text" class="form-control" placeholder="ชื่อ-นามสกุล ผู้ตรวจคนที่ 2"></div>
+                <div class="field-group span-2"><label>ตำแหน่ง 2:[cite: 26]</label><input type="text" class="form-control" placeholder="ตำแหน่ง ผู้ตรวจคนที่ 2"></div>
+                <div class="field-group span-2"><label>วันที่ตรวจ[cite: 26]</label><input type="date" class="form-control" id="dateField1"></div>
+            </div>
+
+            <div class="section-header">1. ข้อมูลภาพถ่าย[cite: 26]</div>
             <div class="grid-form">
-                <div class="field-group"><label>Station ID</label><input type="text" class="form-control"></div>
-                <div class="field-group"><label>อุปกรณ์ / MEA No.</label><input type="text" class="form-control"></div>
-                <div class="field-group"><label>สถานที่ / สายป้อน</label><input type="text" class="form-control"></div>
-                <div class="field-group"><label>วันที่ตรวจ</label><input type="date" class="form-control" id="dateField1"></div>
-                <div class="field-group span-4"><label>GIS Lat/Long <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></label><input type="text" id="latInput" class="form-control" style="display:inline-block; width:48%;"> <input type="text" id="longInput" class="form-control" style="display:inline-block; width:48%;"></div>
+                <div class="field-group"><label>Station ID[cite: 26]</label><input type="text" class="form-control"></div>
+                <div class="field-group"><label>อุปกรณ์[cite: 26]</label><input type="text" class="form-control"></div>
+                <div class="field-group"><label>MEA No.[cite: 26]</label><input type="text" class="form-control"></div>
+                <div class="field-group"><label>สายป้อน[cite: 26]</label><input type="text" class="form-control"></div>
+                <div class="field-group span-2"><label>สถานที่[cite: 26]</label><input type="text" class="form-control"></div>
+                <div class="field-group span-2"><label>GIS Lat/Long <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></label><input type="text" id="latInput" class="form-control" style="display:inline-block; width:48%;"> <input type="text" id="longInput" class="form-control" style="display:inline-block; width:48%;">[cite: 26]</div>
+                <div class="field-group span-4"><label>จุดที่ผิดปกติ[cite: 26]</label><input type="text" class="form-control" placeholder="ระบุตำแหน่งจุดที่ผิดปกติ"></div>
             </div>
-            <div style="font-size: 0.75rem; margin: 6px 0; background:#fafaf9; padding:6px 10px; border:1px solid var(--border-color); border-radius:5px;">
-                <b>ระดับความเข้มเสียง:</b> <input type="text" class="form-control" style="display:inline-block; width:80px; padding:2px;" placeholder="dB"> &nbsp;&nbsp;
-                <b>ระดับความรุนแรง (NL Cloud):</b> <label><input type="checkbox"> สูงมาก</label> <label><input type="checkbox"> สูง</label> <label><input type="checkbox"> ปานกลาง</label> <label><input type="checkbox"> ต่ำ</label>[cite: 16]
+
+            <div style="font-size: 0.8rem; margin: 6px 0; background:#fafaf9; padding:8px 12px; border:1px solid var(--border-color); border-radius:6px;">
+                <div style="display:flex; gap:15px; align-items:center; margin-bottom:6px;">
+                    <div><b>ระดับความเข้มเสียงที่ตรวจวัดได้:</b> <input type="text" class="form-control" style="display:inline-block; width:80px; padding:2px;" placeholder="dB">[cite: 26]</div>
+                </div>
+                <div>
+                    <b>ระดับความรุนแรง * (ประเมินจาก software ของ NL CLOUD[cite: 26]):</b>
+                    <div style="display:flex; gap:15px; margin-top:4px;">
+                        <label><input type="checkbox"> สูงมาก[cite: 26]</label>
+                        <label><input type="checkbox"> สูง[cite: 26]</label>
+                        <label><input type="checkbox"> ปานกลาง[cite: 26]</label>
+                        <label><input type="checkbox"> ต่ำ[cite: 26]</label>
+                    </div>
+                </div>
             </div>
-            <div class="section-header">2-3 การส่งต่อดำเนินการแก้ไข & ผลการปรับปรุง[cite: 16]</div>
-            <div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control" placeholder="ระบุการส่งต่อกลุ่มงานเพื่อแก้ไข..."></textarea></div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 6px 0;">
+                <div style="border: 1px dashed var(--border-color); padding: 8px; text-align: center; background: #fafaf9; border-radius: 6px;">
+                    <label style="font-size:0.75rem; color:var(--text-secondary); font-weight:600;">📷 ภาพถ่ายจากกล้องปกติ[cite: 26]</label>
+                    <input type="file" accept="image/*" style="font-size: 0.7rem; display:block; margin: 6px auto;">
+                </div>
+                <div style="border: 1px dashed var(--border-color); padding: 8px; text-align: center; background: #fafaf9; border-radius: 6px;">
+                    <label style="font-size:0.75rem; color:var(--text-secondary); font-weight:600;">📷 ภาพถ่ายจาก Acoustic Camera[cite: 26]</label>
+                    <input type="file" accept="image/*" style="font-size: 0.7rem; display:block; margin: 6px auto;">
+                </div>
+            </div>
+
+            <div class="section-header">2. การส่งต่อดำเนินการแก้ไข[cite: 26]</div>
+            <div class="grid-form">
+                <div class="field-group span-4"><label>ส่งต่อให้กลุ่มงาน[cite: 26]</label><input type="text" class="form-control" placeholder="ระบุกลุ่มงานที่ต้องรับไปดำเนินการต่อ"></div>
+            </div>
+
+            <div class="section-header">3. การดำเนินการปรับปรุง[cite: 26]</div>
+            <div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control" placeholder="ระบุผลการดำเนินการแก้ไขปรับปรุง..."></textarea></div>
+
             <div class="signature-grid">
-                <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ (1 และ 2)</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div></div>
-                <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ / หผบจ. (ลงนามรับทราบ)</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
+                <div class="sig-box">
+                    <div class="field-group"><label>โปรดดำเนินการแก้ไข (หผบจ./ชผบจ.)[cite: 26]</label><input type="text" class="form-control" placeholder="ลงนามสั่งการ"></div>
+                    <div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div>
+                </div>
+                <div class="sig-box">
+                    <div class="field-group"><label>ผู้ดำเนินการปรับปรุง[cite: 26]</label><input type="text" class="form-control" placeholder="ชื่อผู้ปฏิบัติงาน"></div>
+                    <div class="field-group"><label>วันที่แก้ไข</label><input type="date" class="form-control"></div>
+                </div>
+                <div class="sig-box">
+                    <div class="field-group"><label>ทราบ (หผบจ./ชผบจ.)[cite: 26]</label><input type="text" class="form-control" placeholder="ลงนามรับทราบ"></div>
+                    <div class="field-group"><label>วันที่</label><input type="date" class="form-control"></div>
+                </div>
             </div>
-            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-025</span></div>`
+
+            <div class="sheet-footer-note">
+                <span>ปรับปรุงครั้งที่ 0 วันที่....</span>
+                <span id="footerCode">SF-07-0-025</span>
+            </div>`
     };
 
     function switchTab(element, formCode) {
