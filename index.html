@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asset Inspection App - SF-07-0-015</title>
+    <title>Asset Inspection App - SF-07-0-015 (Full Version)</title>
     <style>
         :root {
             --primary-color: #2563eb;
@@ -72,7 +72,7 @@
             background: #f1f5f9;
         }
 
-        /* --- Action Toolbar --- */
+        /* --- Toolbar --- */
         .toolbar {
             display: flex;
             flex-wrap: wrap;
@@ -102,7 +102,7 @@
         .btn-danger { background: #fee2e2; color: #dc2626; }
         .btn-danger:hover { background: #fecaca; }
 
-        /* --- Tabs & Quick Select --- */
+        /* --- Tabs --- */
         .tab-container {
             display: flex;
             gap: 8px;
@@ -127,7 +127,7 @@
             font-weight: 600;
         }
 
-        /* --- Form Sheet Container (The Inspection Sheet) --- */
+        /* --- Sheet Container --- */
         .sheet-container {
             background: var(--card-bg);
             padding: 30px;
@@ -153,22 +153,20 @@
             color: var(--text-secondary);
         }
 
-        /* Form Sections */
         .section-title {
             font-size: 1rem;
             font-weight: 600;
             color: var(--primary-color);
-            margin: 20px 0 10px 0;
+            margin: 25px 0 12px 0;
             border-left: 4px solid var(--primary-color);
             padding-left: 8px;
         }
 
-        /* Grid Layouts for General Info */
         .grid-4 {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 12px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .form-group {
@@ -190,6 +188,7 @@
             font-size: 0.9rem;
             outline: none;
             transition: border-color 0.2s;
+            width: 100%;
         }
 
         .form-control:focus {
@@ -207,7 +206,6 @@
         table.inspection-table th, table.inspection-table td {
             border: 1px solid var(--border-color);
             padding: 10px;
-            text-align: left;
             font-size: 0.9rem;
         }
 
@@ -221,34 +219,45 @@
         table.inspection-table td:nth-child(3),
         table.inspection-table td:nth-child(4) {
             text-align: center;
-            width: 90px;
+            width: 80px;
         }
 
-        /* Voltage & Current Section */
-        .measurement-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+        /* Measurement Section */
+        .measurement-wrapper {
             background: #f8fafc;
-            padding: 15px;
-            border-radius: 8px;
             border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 8px;
             margin-bottom: 20px;
         }
 
-        .sub-box h4 {
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-            color: var(--text-main);
-        }
-
-        .inline-inputs {
+        .measurement-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
 
-        /* Remarks & Footers */
+        @media (max-width: 768px) {
+            .measurement-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .sub-box h4 {
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 6px;
+        }
+
+        .inline-inputs-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
         textarea.form-control {
             resize: vertical;
             min-height: 80px;
@@ -258,9 +267,9 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 25px;
             border-top: 1px dashed var(--border-color);
-            padding-top: 15px;
+            padding-top: 20px;
         }
     </style>
 </head>
@@ -268,6 +277,7 @@
 
 <div class="app-container">
     
+    <!-- Top Header Panel -->
     <header>
         <div class="app-title">
             <h1>Asset Inspection App</h1>
@@ -281,6 +291,7 @@
         </div>
     </header>
 
+    <!-- Toolbar Options -->
     <div class="toolbar">
         <button class="btn btn-primary">💾 บันทึกเป็นรายการใหม่</button>
         <button class="btn btn-secondary">🔄 บันทึกทับรายการปัจจุบัน</button>
@@ -291,6 +302,7 @@
         <button class="btn btn-secondary">🖨️ พิมพ์ / PDF</button>
     </div>
 
+    <!-- Record Quick Selector Tabs -->
     <div class="tab-container">
         <button class="tab active">SF-07-0-015</button>
         <button class="tab">SF-07-0-022</button>
@@ -302,75 +314,40 @@
         <button class="tab">SF-07-0-019</button>
     </div>
 
+    <!-- Main Inspection Sheet Body -->
     <div class="sheet-container">
         <div class="sheet-header">
             <h2>แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย</h2>
             <span>รหัสแบบฟอร์ม: SF-07-0-015</span>
         </div>
 
+        <!-- Section 1: ข้อมูลทั่วไป -->
         <div class="section-title">1. ข้อมูลทั่วไป</div>
         <div class="grid-4">
-            <div class="form-group">
-                <label>Station ID</label>
-                <input type="text" class="form-control" placeholder="ระบุ Station ID">
-            </div>
-            <div class="form-group">
-                <label>สถานที่</label>
-                <input type="text" class="form-control" placeholder="ระบุสถานที่ติดตั้ง">
-            </div>
-            <div class="form-group">
-                <label>GIS (Lat.)</label>
-                <input type="text" class="form-control" placeholder="ละติจูด">
-            </div>
-            <div class="form-group">
-                <label>GIS (Long.)</label>
-                <input type="text" class="form-control" placeholder="ลองจิจูด">
-            </div>
+            <div class="form-group"><label>Station ID</label><input type="text" class="form-control"></div>
+            <div class="form-group"><label>สถานที่</label><input type="text" class="form-control"></div>
+            <div class="form-group"><label>GIS (Lat.)</label><input type="text" class="form-control"></div>
+            <div class="form-group"><label>GIS (Long.)</label><input type="text" class="form-control"></div>
         </div>
-
         <div class="grid-4">
-            <div class="form-group">
-                <label>MEA No.1</label>
-                <input type="text" class="form-control">
-            </div>
-            <div class="form-group">
-                <label>MEA No.2</label>
-                <input type="text" class="form-control">
-            </div>
-            <div class="form-group">
-                <label>MEA No.3</label>
-                <input type="text" class="form-control">
-            </div>
-            <div class="form-group">
-                <label>จำนวนเฟส</label>
-                <input type="text" class="form-control" placeholder="เช่น 1 เฟส / 3 เฟส">
-            </div>
+            <div class="form-group"><label>MEA No.1</label><input type="text" class="form-control"></div>
+            <div class="form-group"><label>MEA No.2</label><input type="text" class="form-control"></div>
+            <div class="form-group"><label>MEA No.3</label><input type="text" class="form-control"></div>
+            <div class="form-group"><label>จำนวนเฟส</label><input type="text" class="form-control"></div>
         </div>
-
         <div class="grid-4">
-            <div class="form-group">
-                <label>ยี่ห้อหม้อแปลง</label>
-                <input type="text" class="form-control">
-            </div>
-            <div class="form-group">
-                <label>ขนาด (kVA)</label>
-                <input type="text" class="form-control">
-            </div>
-            <div class="form-group">
-                <label>ชนิด</label>
-                <input type="text" class="form-control">
-            </div>
-            <div class="form-group">
-                <label>ลักษณะการติดตั้ง</label>
-                <input type="text" class="form-control">
-            </div>
+            <div class="form-group"><label>ยี่ห้อ (หม้อแปลง)</label><input type="text" class="form-control"></div>
+            <div class="form-group"><label>ยี่ห้อ (อื่นๆ)</label><input type="text" class="form-control"></div>
+            <div class="form-group"><label>ขนาด (kVA)</label><input type="text" class="form-control"></div>
+            <div class="form-group"><label>ชนิด / ลักษณะการติดตั้ง</label><input type="text" class="form-control"></div>
         </div>
 
+        <!-- Section 2: รายการตรวจสอบบำรุงรักษา (ครบ 14 ข้อ) -->
         <div class="section-title">2. รายการตรวจสอบบำรุงรักษา</div>
         <table class="inspection-table">
             <thead>
                 <tr>
-                    <th>รายการตรวจสอบ</th>
+                    <th style="text-align: left;">รายการตรวจสอบ</th>
                     <th>ปกติ</th>
                     <th>ชำรุด</th>
                     <th>ไม่มี</th>
@@ -378,15 +355,114 @@
                 </tr>
             </thead>
             <tbody>
-                <tr><td>2.1 Drop Fuse</td><td><input type="radio" name="chk1"></td><td><input type="radio" name="chk1"></td><td><input type="radio" name="chk1"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.2 Station Post Type Insulator</td><td><input type="radio" name="chk2"></td><td><input type="radio" name="chk2"></td><td><input type="radio" name="chk2"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.3 สายเข้า-ออก Drop Fuse</td><td><input type="radio" name="chk3"></td><td><input type="radio" name="chk3"></td><td><input type="radio" name="chk3"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.4 คอนสาย</td><td><input type="radio" name="chk4"></td><td><input type="radio" name="chk4"></td><td><input type="radio" name="chk4"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.5 อุปกรณ์ป้องกันสัตว์</td><td><input type="radio" name="chk5"></td><td><input type="radio" name="chk5"></td><td><input type="radio" name="chk5"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.6 Low Voltage Capacitor</td><td><input type="radio" name="chk6"></td><td><input type="radio" name="chk6"></td><td><input type="radio" name="chk6"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.7 กับดักฟ้าผ่า (L/A)</td><td><input type="radio" name="chk7"></td><td><input type="radio" name="chk7"></td><td><input type="radio" name="chk7"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.8 ตัวถังหม้อแปลง</td><td><input type="radio" name="chk8"></td><td><input type="radio" name="chk8"></td><td><input type="radio" name="chk8"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.9 Bushing HV-LV</td><td><input type="radio" name="chk9"></td><td><input type="radio" name="chk9"></td><td><input type="radio" name="chk9"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.10 Cover (Bushing, L/A, Term. kit)</td><td><input type="radio" name="chk10"></td><td><input type="radio" name="chk10"></td><td><input type="radio" name="chk10"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.11 สายหน้าหม้อแปลง LV</td><td><input type="radio" name="chk11"></td><td><input type="radio" name="chk11"></td><td><input type="radio" name="chk11"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
-                <tr><td>2.12 LV Ground</td><td><input type="radio" name="chk1
+                <tr><td>2.1 Drop Fuse</td><td><input type="radio" name="chk_1"></td><td><input type="radio" name="chk_1"></td><td><input type="radio" name="chk_1"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
+                <tr><td>2.2 Station Post Type Insulator</td><td><input type="radio" name="chk_2"></td><td><input type="radio" name="chk_2"></td><td><input type="radio" name="chk_2"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
+                <tr><td>2.3 สายเข้า-ออก Drop Fuse</td><td><input type="radio" name="chk_3"></td><td><input type="radio" name="chk_3"></td><td><input type="radio" name="chk_3"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
+                <tr><td>2.4 คอนสาย</td><td><input type="radio" name="chk_4"></td><td><input type="radio" name="chk_4"></td><td><input type="radio" name="chk_4"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
+                <tr><td>2.5 อุปกรณ์ป้องกันสัตว์</td><td><input type="radio" name="chk_5"></td><td><input type="radio" name="chk_5"></td><td><input type="radio" name="chk_5"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
+                <tr><td>2.6 Low Voltage Capacitor</td><td><input type="radio" name="chk_6"></td><td><input type="radio" name="chk_6"></td><td><input type="radio" name="chk_6"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
+                <tr><td>2.7 กับดักฟ้าผ่า (L/A)</td><td><input type="radio" name="chk_7"></td><td><input type="radio" name="chk_7"></td><td><input type="radio" name="chk_7"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
+                <tr><td>2.8 ตัวถังหม้อแปลง</td><td><input type="radio" name="chk_8"></td><td><input type="radio" name="chk_8"></td><td><input type="radio" name="chk_8"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
+                <tr><td>2.9 Bushing HV-LV</td><td><input type="radio" name="chk_9"></td><td><input type="radio" name="chk_9"></td><td><input type="radio" name="chk_9"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
+                <tr><td>2.10 Cover (Bushing, L/A, Term. kit)</td><td><input type="radio" name="chk_10"></td><td><input type="radio" name="chk_10"></td><td><input type="radio" name="chk_10"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
+                <tr><td>2.11 สายหน้าหม้อแปลง LV</td><td><input type="radio" name="chk_11"></td><td><input type="radio" name="chk_11"></td><td><input type="radio" name="chk_11"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
+                <tr><td>2.12 LV Ground</td><td><input type="radio" name="chk_12"></td><td><input type="radio" name="chk_12"></td><td><input type="radio" name="chk_12"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
+                <tr><td>2.13 HV Ground</td><td><input type="radio" name="chk_13"></td><td><input type="radio" name="chk_13"></td><td><input type="radio" name="chk_13"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
+                <tr><td>2.14 CT-TLM Meter (ถ้ามี)</td><td><input type="radio" name="chk_14"></td><td><input type="radio" name="chk_14"></td><td><input type="radio" name="chk_14"></td><td><input type="text" class="form-control" style="border:none; padding:2px;"></td></tr>
+            </tbody>
+        </table>
+
+        <!-- Section 3: ตรวจสอบวัดกระแสและแรงดันไฟฟ้า -->
+        <div class="section-title">3. ตรวจสอบวัดกระแสและแรงดันไฟฟ้า</div>
+        <div class="measurement-wrapper">
+            <div style="display: flex; gap: 25px; margin-bottom: 20px; flex-wrap: wrap; align-items: center;">
+                <div class="form-group">
+                    <label>ช่วงเวลาตรวจสอบ</label>
+                    <div style="display: flex; gap: 15px; margin-top: 5px;">
+                        <label><input type="checkbox"> กลางวัน</label>
+                        <label><input type="checkbox"> กลางคืน</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>เวลา</label>
+                    <input type="time" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>วิธีการ</label>
+                    <div style="display: flex; gap: 15px; margin-top: 5px;">
+                        <label><input type="checkbox"> วัดหน้างาน</label>
+                        <label><input type="checkbox"> TLM</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="measurement-grid">
+                <!-- Voltage Box -->
+                <div class="sub-box">
+                    <h4>แรงดันไฟฟ้า (V)</h4>
+                    <div class="inline-inputs-2">
+                        <div class="form-group"><label>V1-N =</label><input type="text" class="form-control"></div>
+                        <div class="form-group"><label>V1-2 =</label><input type="text" class="form-control"></div>
+                    </div>
+                    <div class="inline-inputs-2">
+                        <div class="form-group"><label>V2-N =</label><input type="text" class="form-control"></div>
+                        <div class="form-group"><label>V1-3 =</label><input type="text" class="form-control"></div>
+                    </div>
+                    <div class="inline-inputs-2">
+                        <div class="form-group"><label>V3-N =</label><input type="text" class="form-control"></div>
+                        <div class="form-group"><label>V2-3 =</label><input type="text" class="form-control"></div>
+                    </div>
+                </div>
+
+                <!-- Current Box -->
+                <div class="sub-box">
+                    <h4>กระแสไฟฟ้า (A)</h4>
+                    <div class="inline-inputs-2">
+                        <div class="form-group"><label>IN =</label><input type="text" class="form-control"></div>
+                        <div class="form-group"><label>I1 =</label><input type="text" class="form-control"></div>
+                    </div>
+                    <div class="inline-inputs-2">
+                        <div class="form-group"><label>I2 =</label><input type="text" class="form-control"></div>
+                        <div class="form-group"><label>I3 =</label><input type="text" class="form-control"></div>
+                    </div>
+                    <div class="form-group" style="margin-top: 5px;">
+                        <label>ผลรวมกระแสหน้าหม้อแปลงฯ ทั้งหมด</label>
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม -->
+        <div class="section-title">4. สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม</div>
+        <div class="form-group" style="margin-bottom: 15px;">
+            <textarea class="form-control" placeholder="ระบุสิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม..."></textarea>
+        </div>
+
+        <!-- Section 5: การปรับปรุงข้อบกพร่อง -->
+        <div class="section-title">5. การปรับปรุงข้อบกพร่อง</div>
+        <div class="form-group" style="margin-bottom: 20px;">
+            <textarea class="form-control" placeholder="ระบุรายละเอียดการปรับปรุงข้อบกพร่อง..."></textarea>
+        </div>
+
+        <!-- Footer Signatures -->
+        <div class="footer-info">
+            <div class="form-group">
+                <label>ผู้ตรวจสอบ / ผู้ตรวจ</label>
+                <input type="text" class="form-control" placeholder="ลงชื่อผู้ตรวจสอบ">
+            </div>
+            <div class="form-group">
+                <label>ตำแหน่ง</label>
+                <input type="text" class="form-control" placeholder="ระบุตำแหน่ง">
+            </div>
+            <div class="form-group">
+                <label>วันที่</label>
+                <input type="date" class="form-control">
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
