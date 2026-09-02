@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asset Inspection App - SF-07-0-015 (Complete)</title>
+    <title>Asset Inspection App - SF-07-0-015 (Warm Theme)</title>
     <style>
         :root {
-            --primary-color: #2563eb;
-            --primary-hover: #1d4ed8;
-            --bg-color: #f8fafc;
+            --primary-color: #d97706; /* สีเหลืองอำพัน/ส้มอบอุ่น */
+            --primary-hover: #b45309;
+            --bg-color: #fdfbf7;      /* พื้นหลังสีนวลๆ อุ่นๆ */
             --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-secondary: #64748b;
-            --border-color: #cbd5e1;
+            --text-main: #292524;     /* สีน้ำตาลเข้มเกือบดำ นวลตากว่าสีดำสนิท */
+            --text-secondary: #78716c;/* สีเทาอมน้ำตาล */
+            --border-color: #e7e5e4;  /* สีเส้นขอบนวลละมุน */
         }
 
         * {
@@ -41,8 +41,9 @@
             background: var(--card-bg);
             padding: 15px 25px;
             border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(41,37,36,0.06);
             margin-bottom: 20px;
+            border: 1px solid var(--border-color);
         }
 
         .app-title h1 {
@@ -66,10 +67,11 @@
             font-weight: 600;
             cursor: pointer;
             transition: background 0.2s;
+            color: var(--text-main);
         }
 
         .auth-section .google-btn:hover {
-            background: #f1f5f9;
+            background: #f5f5f4;
         }
 
         /* --- Toolbar --- */
@@ -80,9 +82,10 @@
             background: var(--card-bg);
             padding: 15px;
             border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(41,37,36,0.06);
             margin-bottom: 20px;
             align-items: center;
+            border: 1px solid var(--border-color);
         }
 
         .btn {
@@ -97,12 +100,12 @@
 
         .btn-primary { background: var(--primary-color); color: white; }
         .btn-primary:hover { background: var(--primary-hover); }
-        .btn-secondary { background: #e2e8f0; color: var(--text-main); }
-        .btn-secondary:hover { background: #cbd5e1; }
-        .btn-danger { background: #fee2e2; color: #dc2626; }
-        .btn-danger:hover { background: #fecaca; }
-        .btn-geo { background: #10b981; color: white; font-size: 0.8rem; padding: 4px 8px; border-radius: 4px; cursor: pointer; border: none; margin-top: 4px; display: inline-flex; align-items: center; gap: 4px;}
-        .btn-geo:hover { background: #059669; }
+        .btn-secondary { background: #f5f5f4; color: var(--text-main); border: 1px solid var(--border-color); }
+        .btn-secondary:hover { background: #e7e5e4; }
+        .btn-danger { background: #fef2f2; color: #dc2626; border: 1px solid #fee2e2; }
+        .btn-danger:hover { background: #fee2e2; }
+        .btn-geo { background: #059669; color: white; font-size: 0.8rem; padding: 4px 8px; border-radius: 4px; cursor: pointer; border: none; margin-top: 4px; display: inline-flex; align-items: center; gap: 4px;}
+        .btn-geo:hover { background: #047857; }
 
         /* --- Tabs --- */
         .tab-container {
@@ -115,19 +118,21 @@
 
         .tab {
             padding: 8px 14px;
-            background: #e2e8f0;
+            background: #f5f5f4;
             border-radius: 6px;
             font-size: 0.85rem;
             cursor: pointer;
             white-space: nowrap;
-            border: none;
-            transition: background 0.2s;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            transition: all 0.2s;
         }
 
         .tab.active {
             background: var(--primary-color);
             color: white;
             font-weight: 600;
+            border-color: var(--primary-color);
         }
 
         /* --- Extra Panels (Saved Records, Images, Criticality) --- */
@@ -135,8 +140,9 @@
             background: var(--card-bg);
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(41,37,36,0.06);
             margin-bottom: 20px;
+            border: 1px solid var(--border-color);
         }
 
         .panel-header {
@@ -170,6 +176,7 @@
             border: 1px solid var(--border-color);
             border-radius: 6px;
             font-size: 0.9rem;
+            background-color: #fafaf9;
         }
 
         .search-input-group span {
@@ -210,12 +217,13 @@
         }
 
         .criticality-badge {
-            background: #e2e8f0;
+            background: #f5f5f4;
             padding: 4px 8px;
             border-radius: 4px;
             font-size: 0.75rem;
             font-weight: 600;
             color: var(--text-secondary);
+            border: 1px solid var(--border-color);
         }
 
         .criticality-footer {
@@ -234,7 +242,8 @@
             background: var(--card-bg);
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px -1px rgba(41,37,36,0.06);
+            border: 1px solid var(--border-color);
         }
 
         .sheet-header {
@@ -291,12 +300,14 @@
             outline: none;
             transition: border-color 0.2s;
             width: 100%;
-            background-color: #fff;
+            background-color: #fafaf9;
+            color: var(--text-main);
         }
 
         .form-control:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.15);
+            background-color: #fff;
         }
 
         /* Inspection Table */
@@ -314,9 +325,10 @@
         }
 
         table.inspection-table th {
-            background-color: #f1f5f9;
+            background-color: #f5f5f4;
             font-weight: 600;
             text-align: center;
+            color: var(--text-main);
         }
 
         table.inspection-table td:nth-child(2),
@@ -328,7 +340,7 @@
 
         /* Measurement Section */
         .measurement-wrapper {
-            background: #f8fafc;
+            background: #fafaf9;
             border: 1px solid var(--border-color);
             padding: 20px;
             border-radius: 8px;
@@ -567,20 +579,20 @@
                 </tr>
             </thead>
             <tbody>
-                <tr><td>2.1 Drop Fuse</td><td><input type="radio" name="chk_1" value="ปกติ"></td><td><input type="radio" name="chk_1" value="ชำรุด"></td><td><input type="radio" name="chk_1" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
-                <tr><td>2.2 Station Post Type Insulator</td><td><input type="radio" name="chk_2" value="ปกติ"></td><td><input type="radio" name="chk_2" value="ชำรุด"></td><td><input type="radio" name="chk_2" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
-                <tr><td>2.3 สายเข้า-ออก Drop Fuse</td><td><input type="radio" name="chk_3" value="ปกติ"></td><td><input type="radio" name="chk_3" value="ชำรุด"></td><td><input type="radio" name="chk_3" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
-                <tr><td>2.4 คอนสาย</td><td><input type="radio" name="chk_4" value="ปกติ"></td><td><input type="radio" name="chk_4" value="ชำรุด"></td><td><input type="radio" name="chk_4" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
-                <tr><td>2.5 อุปกรณ์ป้องกันสัตว์</td><td><input type="radio" name="chk_5" value="ปกติ"></td><td><input type="radio" name="chk_5" value="ชำรุด"></td><td><input type="radio" name="chk_5" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
-                <tr><td>2.6 Low Voltage Capacitor</td><td><input type="radio" name="chk_6" value="ปกติ"></td><td><input type="radio" name="chk_6" value="ชำรุด"></td><td><input type="radio" name="chk_6" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
-                <tr><td>2.7 กับดักฟ้าผ่า (L/A)</td><td><input type="radio" name="chk_7" value="ปกติ"></td><td><input type="radio" name="chk_7" value="ชำรุด"></td><td><input type="radio" name="chk_7" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
-                <tr><td>2.8 ตัวถังหม้อแปลง</td><td><input type="radio" name="chk_8" value="ปกติ"></td><td><input type="radio" name="chk_8" value="ชำรุด"></td><td><input type="radio" name="chk_8" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
-                <tr><td>2.9 Bushing HV-LV</td><td><input type="radio" name="chk_9" value="ปกติ"></td><td><input type="radio" name="chk_9" value="ชำรุด"></td><td><input type="radio" name="chk_9" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
-                <tr><td>2.10 Cover (Bushing, L/A, Term. kit)</td><td><input type="radio" name="chk_10" value="ปกติ"></td><td><input type="radio" name="chk_10" value="ชำรุด"></td><td><input type="radio" name="chk_10" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
-                <tr><td>2.11 สายหน้าหม้อแปลง LV</td><td><input type="radio" name="chk_11" value="ปกติ"></td><td><input type="radio" name="chk_11" value="ชำรุด"></td><td><input type="radio" name="chk_11" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
-                <tr><td>2.12 LV Ground</td><td><input type="radio" name="chk_12" value="ปกติ"></td><td><input type="radio" name="chk_12" value="ชำรุด"></td><td><input type="radio" name="chk_12" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
-                <tr><td>2.13 HV Ground</td><td><input type="radio" name="chk_13" value="ปกติ"></td><td><input type="radio" name="chk_13" value="ชำรุด"></td><td><input type="radio" name="chk_13" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
-                <tr><td>2.14 CT-TLM Meter (ถ้ามี)</td><td><input type="radio" name="chk_14" value="ปกติ"></td><td><input type="radio" name="chk_14" value="ชำรุด"></td><td><input type="radio" name="chk_14" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.1 Drop Fuse</td><td><input type="radio" name="chk_1" value="ปกติ"></td><td><input type="radio" name="chk_1" value="ชำรุด"></td><td><input type="radio" name="chk_1" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px; background:transparent;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.2 Station Post Type Insulator</td><td><input type="radio" name="chk_2" value="ปกติ"></td><td><input type="radio" name="chk_2" value="ชำรุด"></td><td><input type="radio" name="chk_2" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px; background:transparent;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.3 สายเข้า-ออก Drop Fuse</td><td><input type="radio" name="chk_3" value="ปกติ"></td><td><input type="radio" name="chk_3" value="ชำรุด"></td><td><input type="radio" name="chk_3" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px; background:transparent;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.4 คอนสาย</td><td><input type="radio" name="chk_4" value="ปกติ"></td><td><input type="radio" name="chk_4" value="ชำรุด"></td><td><input type="radio" name="chk_4" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px; background:transparent;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.5 อุปกรณ์ป้องกันสัตว์</td><td><input type="radio" name="chk_5" value="ปกติ"></td><td><input type="radio" name="chk_5" value="ชำรุด"></td><td><input type="radio" name="chk_5" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px; background:transparent;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.6 Low Voltage Capacitor</td><td><input type="radio" name="chk_6" value="ปกติ"></td><td><input type="radio" name="chk_6" value="ชำรุด"></td><td><input type="radio" name="chk_6" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px; background:transparent;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.7 กับดักฟ้าผ่า (L/A)</td><td><input type="radio" name="chk_7" value="ปกติ"></td><td><input type="radio" name="chk_7" value="ชำรุด"></td><td><input type="radio" name="chk_7" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px; background:transparent;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.8 ตัวถังหม้อแปลง</td><td><input type="radio" name="chk_8" value="ปกติ"></td><td><input type="radio" name="chk_8" value="ชำรุด"></td><td><input type="radio" name="chk_8" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px; background:transparent;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.9 Bushing HV-LV</td><td><input type="radio" name="chk_9" value="ปกติ"></td><td><input type="radio" name="chk_9" value="ชำรุด"></td><td><input type="radio" name="chk_9" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px; background:transparent;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.10 Cover (Bushing, L/A, Term. kit)</td><td><input type="radio" name="chk_10" value="ปกติ"></td><td><input type="radio" name="chk_10" value="ชำรุด"></td><td><input type="radio" name="chk_10" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px; background:transparent;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.11 สายหน้าหม้อแปลง LV</td><td><input type="radio" name="chk_11" value="ปกติ"></td><td><input type="radio" name="chk_11" value="ชำรุด"></td><td><input type="radio" name="chk_11" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px; background:transparent;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.12 LV Ground</td><td><input type="radio" name="chk_12" value="ปกติ"></td><td><input type="radio" name="chk_12" value="ชำรุด"></td><td><input type="radio" name="chk_12" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px; background:transparent;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.13 HV Ground</td><td><input type="radio" name="chk_13" value="ปกติ"></td><td><input type="radio" name="chk_13" value="ชำรุด"></td><td><input type="radio" name="chk_13" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px; background:transparent;" placeholder="ระบุรายละเอียด"></td></tr>
+                <tr><td>2.14 CT-TLM Meter (ถ้ามี)</td><td><input type="radio" name="chk_14" value="ปกติ"></td><td><input type="radio" name="chk_14" value="ชำรุด"></td><td><input type="radio" name="chk_14" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; padding:2px; background:transparent;" placeholder="ระบุรายละเอียด"></td></tr>
             </tbody>
         </table>
 
@@ -729,7 +741,6 @@
             }
         });
 
-        // คิดค่าเฉลี่ยหรือคะแนนรวมเทียบจาก 100 ตามสัดส่วน (ตัวอย่างนี้คิดค่าเฉลี่ยจากหัวข้อที่ประเมิน)
         const badge = document.getElementById('criticalityBadge');
         const scoreText = document.getElementById('totalScoreText');
 
@@ -737,13 +748,13 @@
             const avgScore = Math.round(sum / selects.length);
             scoreText.innerText = `คะแนนรวม: ${avgScore} / 100`;
             badge.innerText = `ประเมินแล้ว (${avgScore} คะแนน)`;
-            badge.style.background = '#dbeafe';
-            badge.style.color = '#1e40af';
+            badge.style.background = '#fef3c7';
+            badge.style.color = '#b45309';
         } else {
             scoreText.innerText = `คะแนนรวม: — / 100`;
             badge.innerText = `ยังไม่ประเมิน`;
-            badge.style.background = '#e2e8f0';
-            badge.style.color = '#64748b';
+            badge.style.background = '#f5f5f4';
+            badge.style.color = '#78716c';
         }
     }
 
