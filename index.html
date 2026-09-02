@@ -26,9 +26,9 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            padding: 12px;
-            font-size: 15px;
-            line-height: 1.5;
+            padding: 10px;
+            font-size: 14px;
+            line-height: 1.4;
         }
 
         .app-container {
@@ -36,13 +36,12 @@
             margin: 0 auto;
         }
 
-        /* แผงควบคุมด้านบน Responsive รองรับมือถือ */
         .no-print {
             background: var(--card-bg);
-            padding: 15px;
-            border-radius: 12px;
+            padding: 12px;
+            border-radius: 10px;
             border: 1px solid var(--border-color);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
@@ -50,23 +49,23 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
         }
 
         .google-btn {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             background: #fff;
             border: 1px solid var(--border-color);
-            padding: 6px 14px;
-            border-radius: 8px;
+            padding: 5px 12px;
+            border-radius: 6px;
             font-weight: 600;
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             transition: background 0.2s;
         }
 
@@ -75,15 +74,15 @@
         .toolbar {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 12px;
+            gap: 6px;
+            margin-bottom: 10px;
             align-items: center;
         }
 
         .btn {
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 0.9rem;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.85rem;
             font-weight: 500;
             cursor: pointer;
             border: none;
@@ -95,10 +94,9 @@
         .btn-secondary { background: #f1f5f9; color: var(--text-main); border: 1px solid var(--border-color); }
         .btn-secondary:hover { background: #e2e8f0; }
         .btn-danger { background: #fef2f2; color: #dc2626; border: 1px solid #fee2e2; }
-        .btn-geo { background: #059669; color: white; font-size: 0.75rem; padding: 4px 10px; border-radius: 6px; cursor: pointer; border: none; margin-left: 6px; }
+        .btn-geo { background: #059669; color: white; font-size: 0.7rem; padding: 3px 8px; border-radius: 4px; cursor: pointer; border: none; margin-left: 4px; }
         .btn-geo:hover { background: #047857; }
 
-        /* แถบแท็บเลื่อนง่ายบนมือถือและแท็บเล็ต */
         .tab-container {
             display: flex;
             gap: 6px;
@@ -107,19 +105,11 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        .tab-container::-webkit-scrollbar {
-            height: 4px;
-        }
-        .tab-container::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 4px;
-        }
-
         .tab {
-            padding: 8px 14px;
+            padding: 6px 12px;
             background: #f1f5f9;
-            border-radius: 8px;
-            font-size: 0.85rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
             cursor: pointer;
             border: 1px solid var(--border-color);
             white-space: nowrap;
@@ -137,11 +127,11 @@
         /* --- รูปแบบใบตรวจสอบเอกสารทางการ --- */
         .official-sheet {
             background: var(--card-bg);
-            padding: 25px;
-            border-radius: 12px;
+            padding: 18px 22px;
+            border-radius: 10px;
             border: 1px solid var(--border-color);
-            font-size: 0.9rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            font-size: 0.85rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
         }
 
         .sheet-title-container {
@@ -149,41 +139,41 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 2px solid var(--text-main);
-            padding-bottom: 10px;
-            margin-bottom: 12px;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
         }
 
         .sheet-title-container h1 {
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             font-weight: 700;
             color: var(--text-main);
         }
 
         .sheet-code {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 700;
             border: 1.5px solid var(--text-main);
-            padding: 3px 10px;
-            border-radius: 6px;
+            padding: 2px 8px;
+            border-radius: 4px;
         }
 
         .section-header {
             background-color: #f1f5f9;
             font-weight: 600;
-            padding: 6px 12px;
-            font-size: 0.9rem;
+            padding: 5px 10px;
+            font-size: 0.85rem;
             border: 1px solid var(--border-color);
-            margin-top: 12px;
-            margin-bottom: 6px;
-            border-radius: 6px;
+            margin-top: 10px;
+            margin-bottom: 4px;
+            border-radius: 4px;
             color: #334155;
         }
 
         .grid-form {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin-bottom: 6px;
+            gap: 6px;
+            margin-bottom: 4px;
         }
 
         .field-group {
@@ -197,16 +187,17 @@
         .field-group.span-4 { grid-column: span 4; }
 
         .field-group label {
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             color: var(--text-secondary);
             font-weight: 600;
+            margin-left: 2px;
         }
 
         .form-control {
-            padding: 6px 10px;
+            padding: 4px 8px;
             border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 0.88rem;
+            border-radius: 4px;
+            font-size: 0.84rem;
             background-color: #f8fafc;
             width: 100%;
             color: var(--text-main);
@@ -216,19 +207,19 @@
             border-color: var(--primary-color);
             outline: none;
             background-color: #fff;
-            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
+            box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.1);
         }
 
         table.inspection-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         table.inspection-table th, table.inspection-table td {
             border: 1px solid var(--border-color);
-            padding: 6px 8px;
-            font-size: 0.82rem;
+            padding: 4px 6px;
+            font-size: 0.8rem;
         }
 
         table.inspection-table th {
@@ -238,64 +229,66 @@
             color: #334155;
         }
 
-        table.inspection-table td:nth-child(4),
-        table.inspection-table td:nth-child(5) {
+        /* ขยายช่องข้อบกพร่องให้กว้างขึ้นและใช้งานง่ายขึ้น */
+        table.inspection-table td:nth-child(2),
+        table.inspection-table td:nth-child(3) {
             text-align: center;
-            width: 40px;
+            width: 32px;
+        }
+
+        table.inspection-table td:last-child {
+            width: 45%; /* ขยายสัดส่วนความกว้างช่องข้อบกพร่องให้กว้างเต็มตา */
         }
 
         textarea.form-control {
             resize: vertical;
-            height: 50px;
+            height: 40px;
         }
 
         .signature-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 12px;
+            gap: 10px;
+            margin-top: 10px;
             border-top: 1px dashed var(--border-color);
-            padding-top: 10px;
+            padding-top: 8px;
         }
 
         .sig-box {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
             background: #f8fafc;
-            padding: 10px;
+            padding: 8px;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 6px;
         }
 
         .sheet-footer-note {
             display: flex;
             justify-content: space-between;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             color: var(--text-secondary);
-            margin-top: 10px;
+            margin-top: 6px;
         }
 
-        /* รองรับการแสดงผลหน้าจอมือถือและแท็บเล็ตไม่ให้ล้นตาราง */
         @media (max-width: 768px) {
             .grid-form { grid-template-columns: repeat(2, 1fr); }
             .field-group.span-3, .field-group.span-4 { grid-column: span 2; }
-            body { padding: 6px; }
-            .official-sheet { padding: 12px; }
-            .toolbar { gap: 6px; }
-            .btn { padding: 6px 12px; font-size: 0.8rem; }
+            body { padding: 4px; }
+            .official-sheet { padding: 10px; }
         }
 
-        /* ตั้งค่าพิเศษเมื่อกดพิมพ์ (Print) ให้พอดี A4 หน้าเดียวเป๊ะ */
+        /* โหมดสั่งพิมพ์ A4 หน้าเดียว */
         @media print {
             @page {
                 size: A4 portrait;
-                margin: 5mm;
+                margin: 4mm;
             }
             body {
                 background: white;
                 padding: 0;
-                font-size: 11px;
+                font-size: 10px;
             }
             .no-print {
                 display: none !important;
@@ -305,15 +298,15 @@
                 border: none;
                 padding: 0;
                 width: 100%;
-                font-size: 0.68rem;
+                font-size: 0.65rem;
             }
             .grid-form { gap: 2px; margin-bottom: 2px; }
-            .form-control { padding: 2px 4px; font-size: 0.68rem; height: 22px; }
-            .section-header { padding: 2px 5px; margin-top: 4px; margin-bottom: 2px; font-size: 0.68rem; }
-            table.inspection-table th, table.inspection-table td { padding: 2px 4px; font-size: 0.62rem; }
-            textarea.form-control { height: 18px; }
-            .signature-grid { gap: 6px; margin-top: 4px; padding-top: 3px; }
-            .sig-box { padding: 4px; gap: 2px; }
+            .form-control { padding: 1px 3px; font-size: 0.65rem; height: 20px; }
+            .section-header { padding: 2px 4px; margin-top: 3px; margin-bottom: 2px; font-size: 0.65rem; }
+            table.inspection-table th, table.inspection-table td { padding: 1px 3px; font-size: 0.6rem; }
+            textarea.form-control { height: 16px; }
+            .signature-grid { gap: 4px; margin-top: 3px; padding-top: 2px; }
+            .sig-box { padding: 3px; gap: 2px; }
         }
     </style>
 </head>
@@ -321,7 +314,6 @@
 
 <div class="app-container">
     
-    <!-- แผงควบคุมด้านบน (ซ่อนเวลาพิมพ์) -->
     <div class="no-print">
         <div class="auth-bar">
             <span id="authStatus">👤 ยังไม่ได้เข้าสู่ระบบ — ข้อมูลจะไม่ถูกบันทึก</span>
@@ -332,7 +324,7 @@
         </div>
 
         <div class="toolbar">
-            <span style="font-size: 0.9rem; font-weight: 600;">เมนูจัดการ:</span>
+            <span style="font-size: 0.85rem; font-weight: 600;">เมนูจัดการ:</span>
             <button class="btn btn-primary" onclick="saveNewRecord()">💾 บันทึกใหม่</button>
             <button class="btn btn-secondary" onclick="saveCurrentRecord()">🔄 บันทึกทับ</button>
             <button class="btn btn-secondary" onclick="copyAsNewRecord()">📄 คัดลอก</button>
@@ -342,7 +334,6 @@
             <button class="btn btn-primary" onclick="window.print()">🖨️ พิมพ์ A4 หน้าเดียว</button>
         </div>
 
-        <!-- แถบเลื่อนเลือกฟอร์มอุปกรณ์ (รองรับทุกขนาดหน้าจอ) -->
         <div class="tab-container" id="tabContainer">
             <button class="tab active" onclick="switchTab(this, 'SF-07-0-015')">SF-07-0-015</button>
             <button class="tab" onclick="switchTab(this, 'SF-07-0-016')">SF-07-0-016</button>
@@ -358,7 +349,7 @@
         </div>
     </div>
 
-    <!-- ส่วนแสดงใบตรวจสอบเอกสาร -->
+    <!-- ส่วนแสดงใบตรวจสอบ -->
     <div id="formContentArea">
         <div class="official-sheet" id="printArea">
             <div class="sheet-title-container">
@@ -401,13 +392,13 @@
                 </tbody>
             </table>
             <div class="section-header">3 ตรวจสอบวัดกระแสและแรงดันไฟฟ้า</div>
-            <div style="display: flex; gap: 15px; margin-bottom: 8px; font-size: 0.85rem; align-items: center; flex-wrap: wrap;"><div><label><input type="checkbox"> กลางวัน</label> &nbsp; <label><input type="checkbox"> กลางคืน</label></div><div>เวลา : <input type="time" class="form-control" style="display: inline-block; width: 100px; padding: 2px;"></div><div>วิธีการ: <label><input type="checkbox"> วัดหน้างาน</label> &nbsp; <label><input type="checkbox"> TLM</label></div></div>
-            <div class="measure-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px 14px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 8px;">
-                <div><strong style="font-size: 0.85rem;">แรงดันไฟฟ้า (V)</strong><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 4px;"><div class="field-group"><label>V1-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-2</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-3</label><input type="text" class="form-control"></div><div class="field-group"><label>V3-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-3</label><input type="text" class="form-control"></div></div></div>
-                <div><strong style="font-size: 0.85rem;">กระแสไฟฟ้า (A)</strong><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 4px;"><div class="field-group"><label>IN</label><input type="text" class="form-control"></div><div class="field-group"><label>I1</label><input type="text" class="form-control"></div><div class="field-group"><label>I2</label><input type="text" class="form-control"></div><div class="field-group"><label>I3</label><input type="text" class="form-control"></div></div><div class="field-group" style="margin-top: 6px;"><label>ผลรวมกระแสหน้าหม้อแปลงฯ ทั้งหมด</label><input type="text" class="form-control"></div></div>
+            <div style="display: flex; gap: 15px; margin-bottom: 6px; font-size: 0.8rem; align-items: center; flex-wrap: wrap;"><div><label><input type="checkbox"> กลางวัน</label> &nbsp; <label><input type="checkbox"> กลางคืน</label></div><div>เวลา : <input type="time" class="form-control" style="display: inline-block; width: 90px; padding: 2px;"></div><div>วิธีการ: <label><input type="checkbox"> วัดหน้างาน</label> &nbsp; <label><input type="checkbox"> TLM</label></div></div>
+            <div class="measure-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 8px 10px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 6px;">
+                <div><strong style="font-size: 0.8rem;">แรงดันไฟฟ้า (V)</strong><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 3px;"><div class="field-group"><label>V1-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-2</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-3</label><input type="text" class="form-control"></div><div class="field-group"><label>V3-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-3</label><input type="text" class="form-control"></div></div></div>
+                <div><strong style="font-size: 0.8rem;">กระแสไฟฟ้า (A)</strong><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 3px;"><div class="field-group"><label>IN</label><input type="text" class="form-control"></div><div class="field-group"><label>I1</label><input type="text" class="form-control"></div><div class="field-group"><label>I2</label><input type="text" class="form-control"></div><div class="field-group"><label>I3</label><input type="text" class="form-control"></div></div><div class="field-group" style="margin-top: 4px;"><label>ผลรวมกระแสหน้าหม้อแปลงฯ ทั้งหมด</label><input type="text" class="form-control"></div></div>
             </div>
-            <div class="section-header">4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
-            <div class="section-header">5 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
+            <div class="section-header">4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
+            <div class="section-header">5 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
             <div class="signature-grid">
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
@@ -481,13 +472,13 @@
                 </tbody>
             </table>
             <div class="section-header">3 ตรวจสอบวัดกระแสและแรงดันไฟฟ้า</div>
-            <div style="display: flex; gap: 15px; margin-bottom: 8px; font-size: 0.85rem; align-items: center; flex-wrap: wrap;"><div><label><input type="checkbox"> กลางวัน</label> &nbsp; <label><input type="checkbox"> กลางคืน</label></div><div>เวลา : <input type="time" class="form-control" style="display: inline-block; width: 100px; padding: 2px;"></div><div>วิธีการ: <label><input type="checkbox"> วัดหน้างาน</label> &nbsp; <label><input type="checkbox"> TLM</label></div></div>
-            <div class="measure-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px 14px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 8px;">
-                <div><strong style="font-size: 0.85rem;">แรงดันไฟฟ้า (V)</strong><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 4px;"><div class="field-group"><label>V1-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-2</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-3</label><input type="text" class="form-control"></div><div class="field-group"><label>V3-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-3</label><input type="text" class="form-control"></div></div></div>
-                <div><strong style="font-size: 0.85rem;">กระแสไฟฟ้า (A)</strong><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 4px;"><div class="field-group"><label>IN</label><input type="text" class="form-control"></div><div class="field-group"><label>I1</label><input type="text" class="form-control"></div><div class="field-group"><label>I2</label><input type="text" class="form-control"></div><div class="field-group"><label>I3</label><input type="text" class="form-control"></div></div><div class="field-group" style="margin-top: 6px;"><label>ผลรวมกระแสหน้าหม้อแปลงฯ ทั้งหมด</label><input type="text" class="form-control"></div></div>
+            <div style="display: flex; gap: 15px; margin-bottom: 6px; font-size: 0.8rem; align-items: center; flex-wrap: wrap;"><div><label><input type="checkbox"> กลางวัน</label> &nbsp; <label><input type="checkbox"> กลางคืน</label></div><div>เวลา : <input type="time" class="form-control" style="display: inline-block; width: 90px; padding: 2px;"></div><div>วิธีการ: <label><input type="checkbox"> วัดหน้างาน</label> &nbsp; <label><input type="checkbox"> TLM</label></div></div>
+            <div class="measure-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 8px 10px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 6px;">
+                <div><strong style="font-size: 0.8rem;">แรงดันไฟฟ้า (V)</strong><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 3px;"><div class="field-group"><label>V1-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-2</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-3</label><input type="text" class="form-control"></div><div class="field-group"><label>V3-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-3</label><input type="text" class="form-control"></div></div></div>
+                <div><strong style="font-size: 0.8rem;">กระแสไฟฟ้า (A)</strong><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 3px;"><div class="field-group"><label>IN</label><input type="text" class="form-control"></div><div class="field-group"><label>I1</label><input type="text" class="form-control"></div><div class="field-group"><label>I2</label><input type="text" class="form-control"></div><div class="field-group"><label>I3</label><input type="text" class="form-control"></div></div><div class="field-group" style="margin-top: 4px;"><label>ผลรวมกระแสหน้าหม้อแปลงฯ ทั้งหมด</label><input type="text" class="form-control"></div></div>
             </div>
-            <div class="section-header">4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
-            <div class="section-header">5 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
+            <div class="section-header">4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
+            <div class="section-header">5 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
             <div class="signature-grid">
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
@@ -510,7 +501,7 @@
                 <div class="field-group span-2"><label>ตู้ OFDF No.</label><input type="text" class="form-control"></div>
             </div>
             <div class="section-header">2 รายการตรวจสอบบำรุงรักษา</div>
-            <div style="display: flex; gap: 20px; font-size: 0.85rem; margin-bottom: 8px; background: #f8fafc; padding: 6px 10px; border: 1px solid var(--border-color); border-radius: 6px;">
+            <div style="display: flex; gap: 20px; font-size: 0.8rem; margin-bottom: 6px; background: #f8fafc; padding: 4px 8px; border: 1px solid var(--border-color); border-radius: 6px;">
                 <div>สถานะสวิตช์: <label><input type="checkbox"> ปลด</label> <label><input type="checkbox"> สับ</label></div>
                 <div>สถานะระบบ SCADA/EMS/DMS: <label><input type="checkbox"> online</label> <label><input type="checkbox"> offline</label></div>
             </div>
@@ -537,8 +528,8 @@
                     <tr><td>2.18 การทดสอบ ATS[cite: 17]</td><td><input type="radio" name="r18"></td><td><input type="radio" name="r18"></td><td><input type="radio" name="r18"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                 </tbody>
             </table>
-            <div class="section-header">3 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
-            <div class="section-header">4 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
+            <div class="section-header">3 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
+            <div class="section-header">4 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
             <div class="signature-grid">
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
@@ -558,7 +549,7 @@
                 <div class="field-group span-2"><label>Switch No.</label><input type="text" class="form-control"></div>
             </div>
             <div class="section-header">2 รายการตรวจสอบบำรุงรักษา</div>
-            <div style="font-size: 0.85rem; margin-bottom: 8px; background: #f8fafc; padding: 6px 10px; border: 1px solid var(--border-color); border-radius: 6px;">
+            <div style="font-size: 0.8rem; margin-bottom: 6px; background: #f8fafc; padding: 4px 8px; border: 1px solid var(--border-color); border-radius: 6px;">
                 - สถานะสวิตช์: <label><input type="checkbox"> ปลด</label> &nbsp; <label><input type="checkbox"> สับ</label>[cite: 18]
             </div>
             <table class="inspection-table">
@@ -663,10 +654,10 @@
                 </tbody>
             </table>
             <div class="section-header">3 ตรวจสอบวัดกระแสและแรงดันไฟฟ้า (ด้านแรงต่ำ)</div>
-            <div style="display: flex; gap: 10px; margin-bottom: 4px; font-size: 0.85rem; align-items: center; flex-wrap: wrap;"><div><label><input type="checkbox"> กลางวัน</label> <label><input type="checkbox"> กลางคืน</label></div><div>เวลา : <input type="time" class="form-control" style="display: inline-block; width: 100px; padding: 2px;"></div><div>วิธีการ: <label><input type="checkbox"> วัดหน้างาน</label> <label><input type="checkbox"> TLM</label></div></div>
-            <div class="measure-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 8px 12px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 8px;">
-                <div><strong style="font-size: 0.8rem;">แรงดัน (V)</strong><div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 4px;"><div class="field-group"><label>V1-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V3-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-2</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-3</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-3</label><input type="text" class="form-control"></div></div></div>
-                <div><strong style="font-size: 0.8rem;">กระแส (A)</strong><div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; margin-top: 4px;"><div class="field-group"><label>IN</label><input type="text" class="form-control"></div><div class="field-group"><label>I1</label><input type="text" class="form-control"></div><div class="field-group"><label>I2</label><input type="text" class="form-control"></div><div class="field-group"><label>I3</label><input type="text" class="form-control"></div></div><div class="field-group" style="margin-top: 4px;"><label>ผลรวมกระแสทั้งหมด</label><input type="text" class="form-control"></div></div>
+            <div style="display: flex; gap: 10px; margin-bottom: 2px; font-size: 0.85rem; align-items: center; flex-wrap: wrap;"><div><label><input type="checkbox"> กลางวัน</label> <label><input type="checkbox"> กลางคืน</label></div><div>เวลา : <input type="time" class="form-control" style="display: inline-block; width: 90px; padding: 2px;"></div><div>วิธีการ: <label><input type="checkbox"> วัดหน้างาน</label> <label><input type="checkbox"> TLM</label></div></div>
+            <div class="measure-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 8px 10px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 6px;">
+                <div><strong style="font-size: 0.75rem;">แรงดัน (V)</strong><div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; margin-top: 2px;"><div class="field-group"><label>V1-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V3-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-2</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-3</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-3</label><input type="text" class="form-control"></div></div></div>
+                <div><strong style="font-size: 0.75rem;">กระแส (A)</strong><div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 3px; margin-top: 2px;"><div class="field-group"><label>IN</label><input type="text" class="form-control"></div><div class="field-group"><label>I1</label><input type="text" class="form-control"></div><div class="field-group"><label>I2</label><input type="text" class="form-control"></div><div class="field-group"><label>I3</label><input type="text" class="form-control"></div></div><div class="field-group" style="margin-top: 2px;"><label>ผลรวมกระแสทั้งหมด</label><input type="text" class="form-control"></div></div>
             </div>
             <div class="section-header">4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
             <div class="section-header">5 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
@@ -1025,11 +1016,11 @@
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 6px 0;">
-                <div style="border: 1px dashed var(--border-color); padding: 8px; text-align: center; background: #fafaf9; border-radius: 6px;">
+                <div style="border: 1px dashed var(--border-color); padding: 8px; text-align: center; background: #f8fafc; border-radius: 6px;">
                     <label style="font-size:0.75rem; color:var(--text-secondary); font-weight:600;">🖼️ ภาพถ่ายจริง (Visual Photo)[cite: 25]</label>
                     <input type="file" accept="image/*" style="font-size: 0.7rem; display:block; margin: 6px auto;">
                 </div>
-                <div style="border: 1px dashed var(--border-color); padding: 8px; text-align: center; background: #fafaf9; border-radius: 6px;">
+                <div style="border: 1px dashed var(--border-color); padding: 8px; text-align: center; background: #f8fafc; border-radius: 6px;">
                     <label style="font-size:0.75rem; color:var(--text-secondary); font-weight:600;">🌡️ ภาพถ่ายความร้อน (Thermal Image)[cite: 25]</label>
                     <input type="file" accept="image/*" style="font-size: 0.7rem; display:block; margin: 6px auto;">
                 </div>
