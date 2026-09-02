@@ -61,7 +61,6 @@
         .btn-primary:hover { background: var(--primary-hover); }
         .btn-secondary { background: #f5f5f4; color: var(--text-main); border: 1px solid var(--border-color); }
         .btn-secondary:hover { background: #e7e5e4; }
-        .btn-danger { background: #fef2f2; color: #dc2626; border: 1px solid #fee2e2; }
         .btn-geo { background: #059669; color: white; font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; cursor: pointer; border: none; margin-left: 5px; }
 
         /* --- รูปแบบใบตรวจ (Official Sheet Layout) --- */
@@ -106,7 +105,7 @@
             color: var(--text-main);
         }
 
-        /* Grid ฟอร์มข้อมูลทั่วไป */
+        /* Grid ฟอร์มข้อมูลทั่วไปตามโครงสร้างไฟล์ต้นฉบับ[cite: 3] */
         .grid-form {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -121,17 +120,9 @@
             gap: 2px;
         }
 
-        .field-group.span-2 {
-            grid-column: span 2;
-        }
-
-        .field-group.span-3 {
-            grid-column: span 3;
-        }
-
-        .field-group.span-4 {
-            grid-column: span 4;
-        }
+        .field-group.span-2 { grid-column: span 2; }
+        .field-group.span-3 { grid-column: span 3; }
+        .field-group.span-4 { grid-column: span 4; }
 
         .field-group label {
             font-size: 0.8rem;
@@ -154,7 +145,7 @@
             background-color: #fff;
         }
 
-        /* ตารางรายการตรวจสอบ */
+        /* ตารางรายการตรวจสอบตามต้นฉบับ[cite: 3] */
         table.inspection-table {
             width: 100%;
             border-collapse: collapse;
@@ -181,7 +172,7 @@
             width: 60px;
         }
 
-        /* ส่วนวัดค่าไฟฟ้า */
+        /* ส่วนวัดค่าไฟฟ้าตามโครงสร้าง[cite: 3] */
         .measure-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -205,7 +196,7 @@
             min-height: 50px;
         }
 
-        /* ส่วนลายมือชื่อด้านล่าง */
+        /* ส่วนลายมือชื่อด้านล่างตามต้นฉบับ[cite: 3] */
         .signature-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -225,7 +216,16 @@
             border-radius: 6px;
         }
 
-        /* รองรับการพิมพ์ */
+        .sheet-footer-note {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 15px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 8px;
+        }
+
         @media print {
             body { background: white; padding: 0; }
             .toolbar { display: none; }
@@ -237,191 +237,176 @@
 
 <div class="app-container">
     
-    <!-- Toolbar สำหรับกดใช้งาน -->
+    <!-- Toolbar สำหรับเว็บแอป -->
     <div class="toolbar">
-        <button class="btn btn-primary" onclick="saveRecord()">💾 บันทึกข้อมูล</button>
+        <button class="btn btn-primary" onclick="alert('บันทึกข้อมูลสำเร็จ!')">💾 บันทึกข้อมูล</button>
         <button class="btn btn-secondary" onclick="clearForm()">🗑️ ล้างฟอร์ม</button>
         <div style="flex-grow: 1;"></div>
         <button class="btn btn-primary" onclick="window.print()">🖨️ พิมพ์เอกสาร / PDF</button>
     </div>
 
-    <!-- ฟอร์มใบตรวจแผ่นเดียว (Official Sheet Layout) -->
+    <!-- ฟอร์มใบตรวจแผ่นเดียวอ้างอิงตามไฟล์ต้นฉบับ[cite: 3] -->
     <div class="official-sheet" id="printArea">
         
-        <!-- Header ใบตรวจ -->
         <div class="sheet-title-container">
             <div>
-                <h1>แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย</h1>
+                <h1>แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย[cite: 3]</h1>
             </div>
-            <div class="sheet-code">SF-07-0-015</div>
+            <div class="sheet-code">SF-07-0-015[cite: 3]</div>
         </div>
 
-        <!-- 1. ข้อมูลทั่วไป -->
-        <div class="section-header">1. ข้อมูลทั่วไป</div>
+        <!-- 1. ข้อมูลทั่วไป[cite: 3] -->
+        <div class="section-header">1 ข้อมูลทั่วไป[cite: 3]</div>
         <div class="grid-form">
             <div class="field-group">
-                <label>Station ID</label>
-                <input type="text" class="form-control" value="MBT0399">[cite: 2]
+                <label>Station ID[cite: 3]</label>
+                <input type="text" class="form-control" placeholder="ระบุ Station ID">
             </div>
             <div class="field-group span-3">
-                <label>สถานที่</label>
-                <input type="text" class="form-control" value="ถ.ประเสริฐมนูกิจ (351)">[cite: 2]
+                <label>สถานที่[cite: 3]</label>
+                <input type="text" class="form-control" placeholder="ระบุสถานที่ติดตั้ง">
             </div>
             <div class="field-group span-2">
-                <label>GIS Lat.</label>
-                <input type="text" id="latInput" class="form-control" value="13.807466">[cite: 2]
+                <label>GIS Lat.[cite: 3]</label>
+                <input type="text" id="latInput" class="form-control" placeholder="ละติจูด">
             </div>
             <div class="field-group span-2">
-                <label>GIS Long. <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 พิกัด GPS</button></label>
-                <input type="text" id="longInput" class="form-control" value="100.657294">[cite: 2]
+                <label>GIS Long.[cite: 3] <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 พิกัด GPS</button></label>
+                <input type="text" id="longInput" class="form-control" placeholder="ลองจิจูด">
             </div>
             <div class="field-group">
-                <label>MEA No.1</label>
-                <input type="text" class="form-control" value="4EE-5278">[cite: 2]
+                <label>MEA No1.[cite: 3]</label>
+                <input type="text" class="form-control">
             </div>
             <div class="field-group">
-                <label>MEA No.2</label>
-                <input type="text" class="form-control" value="">
+                <label>MEA No2.[cite: 3]</label>
+                <input type="text" class="form-control">
             </div>
             <div class="field-group">
-                <label>MEA No.3</label>
-                <input type="text" class="form-control" value="">
+                <label>MEA No3.[cite: 3]</label>
+                <input type="text" class="form-control">
             </div>
             <div class="field-group">
-                <label>จำนวนเฟส</label>
-                <input type="text" class="form-control" value="3 เฟส">
+                <label>จำนวนเฟส[cite: 3]</label>
+                <input type="text" class="form-control" placeholder="เช่น 1 หรือ 3">
             </div>
             <div class="field-group">
-                <label>ยี่ห้อหม้อแปลง</label>
-                <input type="text" class="form-control" value="PRECISE">[cite: 2]
+                <label>ยี่ห้อ[cite: 3]</label>
+                <input type="text" class="form-control">
             </div>
             <div class="field-group">
-                <label>ขนาด (kVA)</label>
-                <input type="text" class="form-control" value="">
+                <label>ขนาด[cite: 3]</label>
+                <input type="text" class="form-control" placeholder="kVA">
             </div>
             <div class="field-group">
-                <label>ชนิด</label>
-                <input type="text" class="form-control" value="Oil Type">[cite: 2]
+                <label>ชนิด[cite: 3]</label>
+                <input type="text" class="form-control">
             </div>
             <div class="field-group">
-                <label>ลักษณะการติดตั้ง</label>
-                <input type="text" class="form-control" value="หม้อแปลงฯแขวน">[cite: 2]
+                <label>ลักษณะการติดตั้ง[cite: 3]</label>
+                <input type="text" class="form-control">
             </div>
         </div>
 
-        <!-- 2. รายการตรวจสอบบำรุงรักษา -->
-        <div class="section-header">2. รายการตรวจสอบบำรุงรักษา</div>
+        <!-- 2. รายการตรวจสอบบำรุงรักษา (ครบ 14 ข้อตามต้นฉบับ)[cite: 3] -->
+        <div class="section-header">2 รายการตรวจสอบบำรุงรักษา[cite: 3]</div>
         <table class="inspection-table">
             <thead>
                 <tr>
-                    <th style="text-align: left;">รายการตรวจสอบ</th>
-                    <th>ปกติ</th>
-                    <th>ชำรุด</th>
-                    <th>ไม่มี</th>
-                    <th>ข้อบกพร่อง / รายละเอียด</th>
+                    <th style="text-align: left;">รายการ[cite: 3]</th>
+                    <th>ปกติ[cite: 3]</th>
+                    <th>ชำรุด[cite: 3]</th>
+                    <th>ไม่มี[cite: 3]</th>
+                    <th>ข้อบกพร่อง[cite: 3]</th>
                 </tr>
             </thead>
             <tbody>
-                <tr><td>2.1 Drop Fuse</td><td><input type="radio" name="chk_1" value="ปกติ" checked></td><td><input type="radio" name="chk_1" value="ชำรุด"></td><td><input type="radio" name="chk_1" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.2 Station Post Type Insulator</td><td><input type="radio" name="chk_2" value="ปกติ" checked></td><td><input type="radio" name="chk_2" value="ชำรุด"></td><td><input type="radio" name="chk_2" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.3 สายเข้า-ออก Drop Fuse</td><td><input type="radio" name="chk_3" value="ปกติ" checked></td><td><input type="radio" name="chk_3" value="ชำรุด"></td><td><input type="radio" name="chk_3" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.4 คอนสาย</td><td><input type="radio" name="chk_4" value="ปกติ" checked></td><td><input type="radio" name="chk_4" value="ชำรุด"></td><td><input type="radio" name="chk_4" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.5 อุปกรณ์ป้องกันสัตว์</td><td><input type="radio" name="chk_5" value="ปกติ" checked></td><td><input type="radio" name="chk_5" value="ชำรุด"></td><td><input type="radio" name="chk_5" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.6 Low Voltage Capacitor</td><td><input type="radio" name="chk_6" value="ปกติ"></td><td><input type="radio" name="chk_6" value="ชำรุด"></td><td><input type="radio" name="chk_6" value="ไม่มี" checked></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.7 กับดักฟ้าผ่า (L/A)</td><td><input type="radio" name="chk_7" value="ปกติ" checked></td><td><input type="radio" name="chk_7" value="ชำรุด"></td><td><input type="radio" name="chk_7" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.8 ตัวถังหม้อแปลง</td><td><input type="radio" name="chk_8" value="ปกติ" checked></td><td><input type="radio" name="chk_8" value="ชำรุด"></td><td><input type="radio" name="chk_8" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.9 Bushing HV-LV</td><td><input type="radio" name="chk_9" value="ปกติ" checked></td><td><input type="radio" name="chk_9" value="ชำรุด"></td><td><input type="radio" name="chk_9" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.10 Cover (Bushing, L/A, Term. kit)</td><td><input type="radio" name="chk_10" value="ปกติ" checked></td><td><input type="radio" name="chk_10" value="ชำรุด"></td><td><input type="radio" name="chk_10" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.11 สายหน้าหม้อแปลง LV</td><td><input type="radio" name="chk_11" value="ปกติ" checked></td><td><input type="radio" name="chk_11" value="ชำรุด"></td><td><input type="radio" name="chk_11" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.12 LV Ground</td><td><input type="radio" name="chk_12" value="ปกติ" checked></td><td><input type="radio" name="chk_12" value="ชำรุด"></td><td><input type="radio" name="chk_12" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.13 HV Ground</td><td><input type="radio" name="chk_13" value="ปกติ" checked></td><td><input type="radio" name="chk_13" value="ชำรุด"></td><td><input type="radio" name="chk_13" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                <tr><td>2.14 CT-TLM Meter (ถ้ามี)</td><td><input type="radio" name="chk_14" value="ปกติ" checked></td><td><input type="radio" name="chk_14" value="ชำรุด"></td><td><input type="radio" name="chk_14" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.1 Drop Fuse[cite: 3]</td><td><input type="radio" name="chk_1" value="ปกติ"></td><td><input type="radio" name="chk_1" value="ชำรุด"></td><td><input type="radio" name="chk_1" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.2 Station Post Type Insulator[cite: 3]</td><td><input type="radio" name="chk_2" value="ปกติ"></td><td><input type="radio" name="chk_2" value="ชำรุด"></td><td><input type="radio" name="chk_2" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.3 สายเข้า-ออก Drop Fuse[cite: 3]</td><td><input type="radio" name="chk_3" value="ปกติ"></td><td><input type="radio" name="chk_3" value="ชำรุด"></td><td><input type="radio" name="chk_3" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.4 คอนสาย[cite: 3]</td><td><input type="radio" name="chk_4" value="ปกติ"></td><td><input type="radio" name="chk_4" value="ชำรุด"></td><td><input type="radio" name="chk_4" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.5 อุปกรณ์ป้องกันสัตว์[cite: 3]</td><td><input type="radio" name="chk_5" value="ปกติ"></td><td><input type="radio" name="chk_5" value="ชำรุด"></td><td><input type="radio" name="chk_5" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.6 Low Voltage Capacitor[cite: 3]</td><td><input type="radio" name="chk_6" value="ปกติ"></td><td><input type="radio" name="chk_6" value="ชำรุด"></td><td><input type="radio" name="chk_6" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.7 กับดักฟ้าผ่า (L/A)[cite: 3]</td><td><input type="radio" name="chk_7" value="ปกติ"></td><td><input type="radio" name="chk_7" value="ชำรุด"></td><td><input type="radio" name="chk_7" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.8 ตัวถังหม้อแปลง[cite: 3]</td><td><input type="radio" name="chk_8" value="ปกติ"></td><td><input type="radio" name="chk_8" value="ชำรุด"></td><td><input type="radio" name="chk_8" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.9 Bushing HV-LV[cite: 3]</td><td><input type="radio" name="chk_9" value="ปกติ"></td><td><input type="radio" name="chk_9" value="ชำรุด"></td><td><input type="radio" name="chk_9" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.10 Cover (Bushing, L/A, Term. kit)[cite: 3]</td><td><input type="radio" name="chk_10" value="ปกติ"></td><td><input type="radio" name="chk_10" value="ชำรุด"></td><td><input type="radio" name="chk_10" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.11 สายหน้าหม้อแปลง LV[cite: 3]</td><td><input type="radio" name="chk_11" value="ปกติ"></td><td><input type="radio" name="chk_11" value="ชำรุด"></td><td><input type="radio" name="chk_11" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.12 LV Ground[cite: 3]</td><td><input type="radio" name="chk_12" value="ปกติ"></td><td><input type="radio" name="chk_12" value="ชำรุด"></td><td><input type="radio" name="chk_12" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.13 HV Ground[cite: 3]</td><td><input type="radio" name="chk_13" value="ปกติ"></td><td><input type="radio" name="chk_13" value="ชำรุด"></td><td><input type="radio" name="chk_13" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                <tr><td>2.14 CT-TLM Meter (ถ้ามี)[cite: 3]</td><td><input type="radio" name="chk_14" value="ปกติ"></td><td><input type="radio" name="chk_14" value="ชำรุด"></td><td><input type="radio" name="chk_14" value="ไม่มี"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
             </tbody>
         </table>
 
-        <!-- 3. ตรวจสอบวัดกระแสและแรงดันไฟฟ้า -->
-        <div class="section-header">3. ตรวจสอบวัดกระแสและแรงดันไฟฟ้า</div>
+        <!-- 3. ตรวจสอบวัดกระแสและแรงดันไฟฟ้าตามต้นฉบับ[cite: 3] -->
+        <div class="section-header">3 ตรวจสอบวัดกระแสและแรงดันไฟฟ้า[cite: 3]</div>
         <div style="display: flex; gap: 20px; margin-bottom: 10px; font-size: 0.9rem; align-items: center; flex-wrap: wrap;">
-            <div><label><input type="checkbox"> กลางวัน</label> &nbsp; <label><input type="checkbox"> กลางคืน</label></div>
-            <div>เวลา : <input type="time" class="form-control" style="display: inline-block; width: 120px;"></div>
-            <div>วิธีการ: <label><input type="checkbox" checked> วัดหน้างาน</label> &nbsp; <label><input type="checkbox"> TLM</label></div>[cite: 2]
+            <div><label><input type="checkbox"> กลางวัน[cite: 3]</label> &nbsp; <label><input type="checkbox"> กลางคืน[cite: 3]</label></div>
+            <div>เวลา : <input type="time" class="form-control" style="display: inline-block; width: 120px;">[cite: 3]</div>
+            <div>วิธีการ: <label><input type="checkbox"> วัดหน้างาน[cite: 3]</label> &nbsp; <label><input type="checkbox"> TLM[cite: 3]</label></div>
         </div>
 
         <div class="measure-container">
             <div>
-                <strong style="font-size: 0.9rem;">แรงดันไฟฟ้า (V)</strong>
+                <strong style="font-size: 0.9rem;">แรงดันไฟฟ้า (V)[cite: 3]</strong>
                 <div class="measure-subgrid">
-                    <div class="field-group"><label>V1-N</label><input type="text" class="form-control" value="235"></div>[cite: 2]
-                    <div class="field-group"><label>V1-2</label><input type="text" class="form-control" value="236"></div>[cite: 2]
-                    <div class="field-group"><label>V2-N</label><input type="text" class="form-control" value="234"></div>[cite: 2]
-                    <div class="field-group"><label>V1-3</label><input type="text" class="form-control" value=""></div>
-                    <div class="field-group"><label>V3-N</label><input type="text" class="form-control" value=""></div>
-                    <div class="field-group"><label>V2-3</label><input type="text" class="form-control" value="399"></div>[cite: 2]
+                    <div class="field-group"><label>V1-N[cite: 3]</label><input type="text" class="form-control"></div>
+                    <div class="field-group"><label>V1-2[cite: 3]</label><input type="text" class="form-control"></div>
+                    <div class="field-group"><label>V2-N[cite: 3]</label><input type="text" class="form-control"></div>
+                    <div class="field-group"><label>V1-3[cite: 3]</label><input type="text" class="form-control"></div>
+                    <div class="field-group"><label>V3-N[cite: 3]</label><input type="text" class="form-control"></div>
+                    <div class="field-group"><label>V2-3[cite: 3]</label><input type="text" class="form-control"></div>
                 </div>
             </div>
             <div>
-                <strong style="font-size: 0.9rem;">กระแสไฟฟ้า (A)</strong>
+                <strong style="font-size: 0.9rem;">กระแสไฟฟ้า (A)[cite: 3]</strong>
                 <div class="measure-subgrid">
-                    <div class="field-group"><label>IN</label><input type="text" class="form-control" value="34"></div>[cite: 2]
-                    <div class="field-group"><label>I1</label><input type="text" class="form-control" value="21"></div>[cite: 2]
-                    <div class="field-group"><label>I2</label><input type="text" class="form-control" value="26"></div>[cite: 2]
-                    <div class="field-group"><label>I3</label><input type="text" class="form-control" value="19"></div>[cite: 2]
+                    <div class="field-group"><label>IN[cite: 3]</label><input type="text" class="form-control"></div>
+                    <div class="field-group"><label>I = 1[cite: 3]</label><input type="text" class="form-control"></div>
+                    <div class="field-group"><label>I2[cite: 3]</label><input type="text" class="form-control"></div>
+                    <div class="field-group"><label>I3[cite: 3]</label><input type="text" class="form-control"></div>
                 </div>
                 <div class="field-group" style="margin-top: 8px;">
-                    <label>ผลรวมกระแสหน้าหม้อแปลงฯ ทั้งหมด</label>
-                    <input type="text" class="form-control" value="">
+                    <label>ผลรวมกระแสหน้าหม้อแปลงฯ ทั้งหมด[cite: 3]</label>
+                    <input type="text" class="form-control">
                 </div>
             </div>
         </div>
 
-        <!-- 4 & 5. สิ่งที่ต้องปรับปรุง & การปรับปรุงข้อบกพร่อง -->
-        <div class="section-header">4. สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม</div>
+        <!-- 4 & 5. ส่วนปรับปรุงตามต้นฉบับ[cite: 3] -->
+        <div class="section-header">4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :[cite: 3]</div>
         <div class="field-group" style="margin-bottom: 10px;">
-            <textarea class="form-control">วงจรตามแบบ อป. หน้าหม้อแปลง</textarea>[cite: 2]
+            <textarea class="form-control" placeholder="ระบุข้อมูลเพิ่มเติม..."></textarea>
         </div>
 
-        <div class="section-header">5. การปรับปรุงข้อบกพร่อง</div>
+        <div class="section-header">5 การปรับปรุงข้อบกพร่อง :[cite: 3]</div>
         <div class="field-group" style="margin-bottom: 10px;">
             <textarea class="form-control" placeholder="ระบุการปรับปรุงข้อบกพร่อง..."></textarea>
         </div>
 
-        <!-- ลายมือชื่อ -->
+        <!-- ลายมือชื่อตามต้นฉบับ[cite: 3] -->
         <div class="signature-grid">
             <div class="sig-box">
-                <div class="field-group">
-                    <label>ผู้ตรวจ</label>
-                    <input type="text" class="form-control" value="ว่า รต. อภิสิทธิ์ ประดิษฐธรรม">[cite: 2]
-                </div>
-                <div class="field-group">
-                    <label>ตำแหน่ง</label>
-                    <input type="text" class="form-control" value="ซทอ.5">[cite: 2]
-                </div>
-                <div class="field-group">
-                    <label>วันที่</label>
-                    <input type="date" class="form-control" id="dateField1" value="2026-08-18">[cite: 2]
-                </div>
+                <div class="field-group"><label>ผู้ตรวจ[cite: 3]</label><input type="text" class="form-control"></div>
+                <div class="field-group"><label>ตำแหน่ง[cite: 3]</label><input type="text" class="form-control"></div>
+                <div class="field-group"><label>วันที่[cite: 3]</label><input type="date" class="form-control"></div>
             </div>
             <div class="sig-box">
-                <div class="field-group">
-                    <label>ผู้ตรวจสอบ</label>
-                    <input type="text" class="form-control" value="">
-                </div>
-                <div class="field-group">
-                    <label>ตำแหน่ง</label>
-                    <input type="text" class="form-control" value="">
-                </div>
-                <div class="field-group">
-                    <label>วันที่</label>
-                    <input type="date" class="form-control" id="dateField2">
-                </div>
+                <div class="field-group"><label>ผู้ตรวจสอบ[cite: 3]</label><input type="text" class="form-control"></div>
+                <div class="field-group"><label>ตำแหน่ง[cite: 3]</label><input type="text" class="form-control"></div>
+                <div class="field-group"><label>วันที่[cite: 3]</label><input type="date" class="form-control"></div>
             </div>
+        </div>
+
+        <div class="sheet-footer-note">
+            <span>ปรับปรุงครั้งที่ 0 วันที่...[cite: 3]</span>
+            <span>SF-07-0-015[cite: 3]</span>
         </div>
 
     </div>
 </div>
 
 <script>
-    // ดึงพิกัด GPS ปัจจุบัน
     function getCurrentLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -438,14 +423,10 @@
         }
     }
 
-    function saveRecord() {
-        alert("บันทึกข้อมูลเรียบร้อยแล้ว!");
-    }
-
     function clearForm() {
         if(confirm("ต้องการล้างข้อมูลทั้งหมดในฟอร์มใช่หรือไม่?")) {
             document.querySelectorAll('.official-sheet input[type="text"], .official-sheet textarea').forEach(el => el.value = '');
-            document.querySelectorAll('.official-sheet input[type="radio"]').forEach(el => el.checked = false);
+            document.querySelectorAll('.official-sheet input[type="radio"], .official-sheet input[type="checkbox"]').forEach(el => el.checked = false);
         }
     }
 </script>
