@@ -18,12 +18,7 @@
             --radius: 8px;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Sarabun', sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Sarabun', sans-serif; }
 
         body {
             background-color: var(--bg-body);
@@ -33,24 +28,14 @@
             line-height: 1.35;
         }
 
-        .app-container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
+        .app-container { max-width: 900px; margin: 0 auto; }
 
-        /* --- แผงควบคุมด้านบน (ซ่อนตอนพิมพ์) --- */
         .no-print {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-
-        .control-hub {
             background: var(--card-bg);
             padding: 10px;
             border-radius: var(--radius);
             border: 1px solid var(--border);
+            margin-bottom: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
         }
 
@@ -159,39 +144,6 @@
             box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
 
-        /* --- แผงเสริมด้านบน (ข้อมูลบันทึก / รูปภาพ / Criticality) --- */
-        .extra-panel {
-            background: var(--card-bg);
-            padding: 10px 12px;
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            font-size: 0.8rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-        }
-
-        .extra-panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .extra-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr auto;
-            gap: 6px;
-            align-items: center;
-        }
-
-        .criticality-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 6px;
-            margin-top: 6px;
-        }
-
-        /* --- รูปแบบใบตรวจสอบทางการ (Official Sheet) --- */
         .official-sheet {
             background: var(--card-bg);
             padding: 12px 16px;
@@ -210,20 +162,8 @@
             margin-bottom: 6px;
         }
 
-        .sheet-title-container h1 {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
-
-        .sheet-code {
-            font-size: 0.75rem;
-            font-weight: 700;
-            background: var(--accent);
-            color: white;
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
+        .sheet-title-container h1 { font-size: 1rem; font-weight: 700; color: var(--accent); }
+        .sheet-code { font-size: 0.75rem; font-weight: 700; background: var(--accent); color: white; padding: 2px 6px; border-radius: 4px; }
 
         .section-header {
             background-color: #f1f5f9;
@@ -251,27 +191,9 @@
             background-color: #f8fafc;
         }
 
-        .info-table th {
-            text-align: right;
-            color: var(--text-muted);
-            font-weight: 600;
-            width: 20%;
-        }
-
-        .info-table td {
-            background-color: #fff;
-            width: 30%;
-        }
-
-        .info-table input {
-            border: none;
-            background: transparent;
-            width: 100%;
-            padding: 1px;
-            font-size: 0.78rem;
-            color: var(--text-main);
-        }
-
+        .info-table th { text-align: right; color: var(--text-muted); font-weight: 600; width: 20%; }
+        .info-table td { background-color: #fff; width: 30%; }
+        .info-table input { border: none; background: transparent; width: 100%; padding: 1px; font-size: 0.78rem; color: var(--text-main); }
         .info-table input:focus { outline: none; background: #fffbeb; }
 
         table.inspection-table {
@@ -286,38 +208,10 @@
             font-size: 0.73rem;
         }
 
-        table.inspection-table th {
-            background-color: #f1f5f9;
-            text-align: center;
-            font-weight: 700;
-            color: var(--accent);
-        }
-
-        table.inspection-table td:nth-child(2),
-        table.inspection-table td:nth-child(3),
-        table.inspection-table td:nth-child(4) {
-            text-align: center;
-            width: 30px;
-        }
-
-        table.inspection-table td:last-child { width: 45%; }
-
-        input[type="radio"], input[type="checkbox"] {
-            transform: scale(1.05);
-            accent-color: var(--primary);
-            cursor: pointer;
-        }
-
-        .form-control {
-            padding: 3px 5px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            font-size: 0.78rem;
-            background-color: #f8fafc;
-            width: 100%;
-            color: var(--text-main);
-        }
-
+        table.inspection-table th { background-color: #f1f5f9; text-align: center; font-weight: 700; color: var(--accent); }
+        
+        input[type="radio"], input[type="checkbox"] { transform: scale(1.05); accent-color: var(--primary); cursor: pointer; }
+        .form-control { padding: 3px 5px; border: 1px solid var(--border); border-radius: 4px; font-size: 0.78rem; background-color: #f8fafc; width: 100%; color: var(--text-main); }
         textarea.form-control { resize: vertical; height: 26px; }
 
         .signature-grid {
@@ -349,36 +243,11 @@
             padding-top: 3px;
         }
 
-        /* --- Responsive มือถือ --- */
-        @media (max-width: 768px) {
-            .extra-grid { grid-template-columns: 1fr; }
-            .criticality-grid { grid-template-columns: 1fr; }
-            body { padding: 4px; }
-            .official-sheet { padding: 10px; }
-        }
-
-        /* --- ตั้งค่าพิมพ์ออกเป็นกระดาษ A4 หน้าเดียวพอดีเป๊ะ --- */
         @media print {
-            @page {
-                size: A4 portrait;
-                margin: 4mm;
-            }
-            body {
-                background: white;
-                padding: 0;
-                font-size: 8.5px;
-            }
-            .no-print {
-                display: none !important;
-            }
-            .official-sheet {
-                box-shadow: none !important;
-                border: none !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                width: 100% !important;
-                max-width: 100% !important;
-            }
+            @page { size: A4 portrait; margin: 4mm; }
+            body { background: white; padding: 0; font-size: 8.5px; }
+            .no-print { display: none !important; }
+            .official-sheet { box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; }
             .sheet-title-container { margin-bottom: 4px; padding-bottom: 2px; }
             .sheet-title-container h1 { font-size: 11px; }
             .info-table th, .info-table td { padding: 1px 3px; font-size: 8px; }
@@ -402,7 +271,6 @@
             <div class="top-bar">
                 <div class="app-brand">⚡ ระบบตรวจสอบอุปกรณ์ไฟฟ้า (MEA)</div>
                 <div class="google-pill" onclick="handleGoogleLogin()">
-                    <svg width="12" height="12" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.19v3.15C3.17 21.32 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.19C.43 8.13 0 9.87 0 11.7s.43 3.57 1.19 5.1l4.08-2.56z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.68 1.19 6.6l4.08 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
                     <span id="authStatus">เข้าสู่ระบบ Google</span>
                 </div>
             </div>
@@ -429,47 +297,6 @@
                 <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-024')">SF-07-0-024</button>
                 <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-025')">SF-07-0-025</button>
             </div>
-        </div>
-
-        <!-- แผงข้อมูลที่บันทึกไว้ -->
-        <div class="extra-panel">
-            <div class="extra-panel-header">
-                <span>📁 ข้อมูลที่บันทึกไว้ (0)</span>
-                <button class="btn btn-secondary" style="font-size:0.7rem; padding:2px 6px;" onclick="alert('รีเฟรชสำเร็จ')">🔄 รีเฟรช</button>
-            </div>
-            <div class="extra-grid">
-                <input type="text" class="form-control" placeholder="Plant">
-                <input type="text" class="form-control" placeholder="Work Order">
-                <button class="btn btn-secondary" style="font-size:0.75rem; padding:4px 10px;" onclick="alert('ล้างตัวกรอง')">ล้าง</button>
-            </div>
-        </div>
-
-        <!-- แผงรูปภาพประกอบ -->
-        <div class="extra-panel">
-            <div class="extra-panel-header">
-                <span>📷 รูปภาพประกอบการตรวจสอบ</span>
-                <span style="font-size:0.75rem; color:var(--text-muted);">0 KB</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
-                <span style="font-size:0.78rem; color:var(--text-muted);">ยังไม่มีรูปภาพประกอบ</span>
-                <button class="btn btn-primary" style="font-size:0.75rem; padding:3px 8px;" onclick="alert('เพิ่มรูปภาพ')">+ เพิ่มรูป</button>
-            </div>
-        </div>
-
-        <!-- แผงประเมินความสำคัญ (Criticality) -->
-        <div class="extra-panel">
-            <div class="extra-panel-header">
-                <span>🎯 การประเมินความสำคัญของอุปกรณ์ (Criticality)</span>
-                <span style="font-size:0.7rem; background:#e2e8f0; padding:2px 6px; border-radius:4px;">ยังไม่ประเมิน</span>
-            </div>
-            <div class="criticality-grid">
-                <div class="field-group"><label style="font-size:0.7rem; color:var(--text-muted);">SAF</label><select class="form-control" style="padding:4px;"><option>- เลือก -</option></select></div>
-                <div class="field-group"><label style="font-size:0.7rem; color:var(--text-muted);">REL</label><select class="form-control" style="padding:4px;"><option>- เลือก -</option></select></div>
-                <div class="field-group"><label style="font-size:0.7rem; color:var(--text-muted);">OPR</label><select class="form-control" style="padding:4px;"><option>- เลือก -</option></select></div>
-                <div class="field-group"><label style="font-size:0.7rem; color:var(--text-muted);">CON</label><select class="form-control" style="padding:4px;"><option>- เลือก -</option></select></div>
-                <div class="field-group"><label style="font-size:0.7rem; color:var(--text-muted);">REC</label><select class="form-control" style="padding:4px;"><option>- เลือก -</option></select></div>
-            </div>
-            <div style="font-size:0.75rem; margin-top:4px; font-weight:600;">คะแนนรวม: — / 100</div>
         </div>
     </div>
 
@@ -631,7 +458,7 @@
             <table class="inspection-table">
                 <thead><tr><th style="text-align: left;">รายการตรวจสอบ</th><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th><th>ข้อบกพร่อง / การดำเนินการแก้ไข</th></tr></thead>
                 <tbody>
-                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">ตู้ครอบ Encloser</td></tr>
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">ตู้ครอบ Enclosure</td></tr>
                     <tr><td>2.1 สภาพภายนอก</td><td><input type="radio" name="u1"></td><td><input type="radio" name="u1"></td><td><input type="radio" name="u1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.2 ประตู</td><td><input type="radio" name="u2"></td><td><input type="radio" name="u2"></td><td><input type="radio" name="u2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.3 ฐานตู้ / นั่งร้าน</td><td><input type="radio" name="u3"></td><td><input type="radio" name="u3"></td><td><input type="radio" name="u3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
@@ -711,68 +538,17 @@
         `
     };
 
-    function switchSubTab(pageNum) {
-        document.querySelectorAll('.sub-tab-btn').forEach((tab, index) => {
-            if(index + 1 === pageNum) {
-                tab.classList.add('active');
-            } else {
-                tab.classList.remove('active');
-            }
-        });
-        document.getElementById('subFormContent').innerHTML = unitSubstationPages[pageNum];
-        const today = new Date().toISOString().split('T')[0];
-        if(document.getElementById('dateField1')) document.getElementById('dateField1').value = today;
-        if(document.getElementById('dateField2')) document.getElementById('dateField2').value = today;
-        if(document.getElementById('dateField3')) document.getElementById('dateField3').value = today;
-        if(document.getElementById('dateField4')) document.getElementById('dateField4').value = today;
-    }
-
     const formTemplates = {
         'SF-07-0-015': `
             <div class="sheet-title-container"><div><h1 id="formTitle">แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย</h1></div><div class="sheet-code" id="formCode">SF-07-0-015</div></div>
             <div class="section-header">1 ข้อมูลทั่วไป</div>
             <table class="info-table">
-                <tr>
-                    <th>Station ID</th>
-                    <td><input type="text" placeholder="ระบุ Station ID"></td>
-                    <th>สถานที่</th>
-                    <td><input type="text" placeholder="ระบุสถานที่ติดตั้ง"></td>
-                </tr>
-                <tr>
-                    <th>GIS Lat.</th>
-                    <td><input type="text" id="latInput" placeholder="ละติจูด"></td>
-                    <th>GIS Long.</th>
-                    <td>
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <input type="text" id="longInput" placeholder="ลองจิจูด" style="width:70%;">
-                            <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th>MEA No1.</th>
-                    <td><input type="text" placeholder="ระบุหมายเลข"></td>
-                    <th>MEA No2.</th>
-                    <td><input type="text" placeholder="ระบุหมายเลข"></td>
-                </tr>
-                <tr>
-                    <th>MEA No3.</th>
-                    <td><input type="text" placeholder="ระบุหมายเลข"></td>
-                    <th>จำนวนเฟส</th>
-                    <td><input type="text" placeholder="ระบุจำนวนเฟส"></td>
-                </tr>
-                <tr>
-                    <th>ยี่ห้อ</th>
-                    <td><input type="text" placeholder="ระบุยี่ห้อ"></td>
-                    <th>ขนาด</th>
-                    <td><input type="text" placeholder="ระบุขนาด (kVA)"></td>
-                </tr>
-                <tr>
-                    <th>ชนิด</th>
-                    <td><input type="text" placeholder="ระบุชนิด"></td>
-                    <th>ลักษณะการติดตั้ง</th>
-                    <td><input type="text" placeholder="ระบุลักษณะการติดตั้ง"></td>
-                </tr>
+                <tr><th>Station ID</th><td><input type="text" placeholder="ระบุ Station ID"></td><th>สถานที่</th><td><input type="text" placeholder="ระบุสถานที่ติดตั้ง"></td></tr>
+                <tr><th>GIS Lat.</th><td><input type="text" id="latInput" placeholder="ละติจูด"></td><th>GIS Long.</th><td><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="longInput" placeholder="ลองจิจูด" style="width:70%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
+                <tr><th>MEA No1.</th><td><input type="text" placeholder="ระบุหมายเลข"></td><th>MEA No2.</th><td><input type="text" placeholder="ระบุหมายเลข"></td></tr>
+                <tr><th>MEA No3.</th><td><input type="text" placeholder="ระบุหมายเลข"></td><th>จำนวนเฟส</th><td><input type="text" placeholder="ระบุจำนวนเฟส"></td></tr>
+                <tr><th>ยี่ห้อ</th><td><input type="text" placeholder="ระบุยี่ห้อ"></td><th>ขนาด</th><td><input type="text" placeholder="ระบุขนาด (kVA)"></td></tr>
+                <tr><th>ชนิด</th><td><input type="text" placeholder="ระบุชนิด"></td><th>ลักษณะการติดตั้ง</th><td><input type="text" placeholder="ระบุลักษณะการติดตั้ง"></td></tr>
             </table>
             <div class="section-header">2 รายการตรวจสอบบำรุงรักษา</div>
             <table class="inspection-table">
@@ -813,51 +589,17 @@
             <div class="sheet-title-container"><div><h1 id="formTitle">แบบตรวจสอบบำรุงรักษา Load Break Switch</h1></div><div class="sheet-code" id="formCode">SF-07-0-016</div></div>
             <div class="section-header">1 ข้อมูลทั่วไป</div>
             <table class="info-table">
-                <tr>
-                    <th>Station ID</th>
-                    <td><input type="text" placeholder="ระบุ Station ID"></td>
-                    <th>สถานที่</th>
-                    <td><input type="text" placeholder="ระบุสถานที่ติดตั้ง"></td>
-                </tr>
-                <tr>
-                    <th>GIS Lat.</th>
-                    <td><input type="text" id="latInput" placeholder="ละติจูด"></td>
-                    <th>GIS Long.</th>
-                    <td>
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <input type="text" id="longInput" placeholder="ลองจิจูด" style="width:70%;">
-                            <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th>ยี่ห้อ LBS</th>
-                    <td><input type="text" placeholder="ระบุยี่ห้อ LBS"></td>
-                    <th>LBS MEA No.</th>
-                    <td><input type="text" placeholder="ระบุหมายเลข กฟน."></td>
-                </tr>
-                <tr>
-                    <th>Switch No.</th>
-                    <td><input type="text" placeholder="ระบุสวิตช์ No."></td>
-                    <th>ยี่ห้อ VT</th>
-                    <td><input type="text" placeholder="ระบุยี่ห้อ VT"></td>
-                </tr>
-                <tr>
-                    <th>VT MEA No.</th>
-                    <td><input type="text" placeholder="ระบุหมายเลข กฟน."></td>
-                    <th>ตู้ OFDF No.</th>
-                    <td><input type="text" placeholder="ระบุหมายเลขตู้"></td>
-                </tr>
+                <tr><th>Station ID</th><td><input type="text" placeholder="ระบุ Station ID"></td><th>สถานที่</th><td><input type="text" placeholder="ระบุสถานที่ติดตั้ง"></td></tr>
+                <tr><th>GIS Lat.</th><td><input type="text" id="latInput" placeholder="ละติจูด"></td><th>GIS Long.</th><td><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="longInput" placeholder="ลองจิจูด" style="width:70%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
+                <tr><th>ยี่ห้อ LBS</th><td><input type="text" placeholder="ยี่ห้อ LBS"></td><th>LBS MEA No.</th><td><input type="text" placeholder="MEA No."></td></tr>
+                <tr><th>Switch No.</th><td><input type="text" placeholder="Switch No."></td><th>ยี่ห้อ VT</th><td><input type="text" placeholder="ยี่ห้อ VT"></td></tr>
+                <tr><th>VT MEA No.</th><td><input type="text" placeholder="VT MEA No."></td><th>ตู้ OFDF No.</th><td><input type="text" placeholder="ตู้ OFDF No."></td></tr>
             </table>
             <div class="section-header">2 รายการตรวจสอบบำรุงรักษา</div>
-            <div style="display: flex; gap: 20px; font-size: 0.8rem; margin-bottom: 6px; background: #f8fafc; padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px;">
-                <div>สถานะสวิตช์: <label><input type="checkbox"> ปลด</label> <label><input type="checkbox"> สับ</label></div>
-                <div>สถานะระบบ SCADA: <label><input type="checkbox"> online</label> <label><input type="checkbox"> offline</label></div>
-            </div>
             <table class="inspection-table">
-                <thead><tr><th style="text-align: left;">รายการ (2.1 ถึง 2.18)</th><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th><th>ข้อบกพร่อง / การดำเนินการแก้ไข</th></tr></thead>
+                <thead><tr><th style="text-align: left;">รายการ LBS (2.1 ถึง 2.18)</th><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th><th>ข้อบกพร่อง / การดำเนินการแก้ไข</th></tr></thead>
                 <tbody>
-                    <tr><td>2.1 ตัวถัง LBS /สลักล็อคการปลดสับ</td><td><input type="radio" name="r1"></td><td><input type="radio" name="r1"></td><td><input type="radio" name="r1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.1 ตัวถัง LBS / สลักล็อคการปลดสับ</td><td><input type="radio" name="r1"></td><td><input type="radio" name="r1"></td><td><input type="radio" name="r1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.2 สถานะก๊าซ SF6</td><td><input type="radio" name="r2"></td><td><input type="radio" name="r2"></td><td><input type="radio" name="r2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.3 Bushing</td><td><input type="radio" name="r3"></td><td><input type="radio" name="r3"></td><td><input type="radio" name="r3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.4 กับดักฟ้าผ่า</td><td><input type="radio" name="r4"></td><td><input type="radio" name="r4"></td><td><input type="radio" name="r4"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
@@ -865,12 +607,12 @@
                     <tr><td>2.6 Drop Fuse ลง VT</td><td><input type="radio" name="r6"></td><td><input type="radio" name="r6"></td><td><input type="radio" name="r6"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.7 คอนสาย</td><td><input type="radio" name="r7"></td><td><input type="radio" name="r7"></td><td><input type="radio" name="r7"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.8 สายควบคุม LBS</td><td><input type="radio" name="r8"></td><td><input type="radio" name="r8"></td><td><input type="radio" name="r8"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.9 อุปกรณ์ป้องกันสัตว์ / Control / FRTU / Ground</td><td><input type="radio" name="r9"></td><td><input type="radio" name="r9"></td><td><input type="radio" name="r9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.9 อุปกรณ์ป้องกันสัตว์ / Control / Ground</td><td><input type="radio" name="r9"></td><td><input type="radio" name="r9"></td><td><input type="radio" name="r9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.10 ไฟสถานะหน้าตู้</td><td><input type="radio" name="r10"></td><td><input type="radio" name="r10"></td><td><input type="radio" name="r10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.11 แหล่งจ่ายไฟฟ้า และสายควบคุม</td><td><input type="radio" name="r11"></td><td><input type="radio" name="r11"></td><td><input type="radio" name="r11"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.12 สภาพแบตเตอรี่หรือ Capacitor</td><td><input type="radio" name="r12"></td><td><input type="radio" name="r12"></td><td><input type="radio" name="r12"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.13 Ground HV (L/A, LBS)</td><td><input type="radio" name="r13"></td><td><input type="radio" name="r13"></td><td><input type="radio" name="r13"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.14 Ground LV (ดู Control)</td><td><input type="radio" name="r14"></td><td><input type="radio" name="r14"></td><td><input type="radio" name="r14"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.14 Ground LV (ตู้ Control)</td><td><input type="radio" name="r14"></td><td><input type="radio" name="r14"></td><td><input type="radio" name="r14"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.15 ทดสอบ ปลด/สับ ทาง Remote</td><td><input type="radio" name="r15"></td><td><input type="radio" name="r15"></td><td><input type="radio" name="r15"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.16 ทดสอบ ปลด/สับ ทาง Local</td><td><input type="radio" name="r16"></td><td><input type="radio" name="r16"></td><td><input type="radio" name="r16"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.17 แรงดันไฟฟ้าเลี้ยงอุปกรณ์</td><td><input type="radio" name="r17"></td><td><input type="radio" name="r17"></td><td><input type="radio" name="r17"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
@@ -890,42 +632,15 @@
             <div class="sheet-title-container"><div><h1 id="formTitle">แบบตรวจสอบบำรุงรักษา Sectionalizer</h1></div><div class="sheet-code" id="formCode">SF-07-0-017</div></div>
             <div class="section-header">1 ข้อมูลทั่วไป</div>
             <table class="info-table">
-                <tr>
-                    <th>Station ID</th>
-                    <td><input type="text" placeholder="ระบุ Station ID"></td>
-                    <th>สถานที่</th>
-                    <td><input type="text" placeholder="ระบุสถานที่ติดตั้ง"></td>
-                </tr>
-                <tr>
-                    <th>GIS Lat.</th>
-                    <td><input type="text" id="latInput" placeholder="ละติจูด"></td>
-                    <th>GIS Long.</th>
-                    <td>
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <input type="text" id="longInput" placeholder="ลองจิจูด" style="width:70%;">
-                            <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th>ยี่ห้อ SZ</th>
-                    <td><input type="text" placeholder="ระบุยี่ห้อ SZ"></td>
-                    <th>SZ MEA No.</th>
-                    <td><input type="text" placeholder="ระบุหมายเลข กฟน."></td>
-                </tr>
-                <tr>
-                    <th>Switch No.</th>
-                    <td colspan="3"><input type="text" placeholder="ระบุสวิตช์ No."></td>
-                </tr>
+                <tr><th>Station ID</th><td><input type="text" placeholder="ระบุ Station ID"></td><th>สถานที่</th><td><input type="text" placeholder="ระบุสถานที่ติดตั้ง"></td></tr>
+                <tr><th>GIS Lat.</th><td><input type="text" id="latInput" placeholder="ละติจูด"></td><th>GIS Long.</th><td><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="longInput" placeholder="ลองจิจูด" style="width:70%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
+                <tr><th>ยี่ห้อ SZ</th><td><input type="text" placeholder="ยี่ห้อ SZ"></td><th>SZ MEA No.</th><td><input type="text" placeholder="SZ MEA No."></td></tr>
+                <tr><th>Switch No.</th><td colspan="3"><input type="text" placeholder="Switch No."></td></tr>
             </table>
-            <div class="section-header">2 รายการตรวจสอบบำรุงรักษา</div>
-            <div style="font-size: 0.8rem; margin-bottom: 4px; background: #f8fafc; padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px;">
-                - สถานะสวิตช์: <label><input type="checkbox"> ปลด</label> &nbsp; <label><input type="checkbox"> สับ</label>
-            </div>
+            <div class="section-header">2 รายการตรวจสอบบำรุงรักษา Sectionalizer</div>
             <table class="inspection-table">
-                <thead><tr><th style="text-align: left;">รายการ (2.1 ถึง 2.13)</th><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th><th>ข้อบกพร่อง / การดำเนินการแก้ไข</th></tr></thead>
+                <thead><tr><th style="text-align: left;">รายการ SZ (2.1 ถึง 2.13)</th><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th><th>ข้อบกพร่อง / การดำเนินการแก้ไข</th></tr></thead>
                 <tbody>
-                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">สภาพ SZ และอุปกรณ์ประกอบ (2.1-2.7)</td></tr>
                     <tr><td>2.1 ตัวถัง SZ / สลักล็อคการปลดสับ</td><td><input type="radio" name="sz1"></td><td><input type="radio" name="sz1"></td><td><input type="radio" name="sz1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.2 สถานะก๊าซ SF6</td><td><input type="radio" name="sz2"></td><td><input type="radio" name="sz2"></td><td><input type="radio" name="sz2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.3 Bushing</td><td><input type="radio" name="sz3"></td><td><input type="radio" name="sz3"></td><td><input type="radio" name="sz3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
@@ -933,13 +648,12 @@
                     <tr><td>2.5 คอนสาย</td><td><input type="radio" name="sz5"></td><td><input type="radio" name="sz5"></td><td><input type="radio" name="sz5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.6 สายควบคุม SZ</td><td><input type="radio" name="sz6"></td><td><input type="radio" name="sz6"></td><td><input type="radio" name="sz6"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.7 อุปกรณ์ป้องกันสัตว์</td><td><input type="radio" name="sz7"></td><td><input type="radio" name="sz7"></td><td><input type="radio" name="sz7"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">Control / Ground & ทดสอบ ปลด/สับ (2.8-2.13)</td></tr>
                     <tr><td>2.8 ไฟสถานะหน้าตู้</td><td><input type="radio" name="sz8"></td><td><input type="radio" name="sz8"></td><td><input type="radio" name="sz8"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.9 แหล่งจ่ายไฟฟ้า และสายควบคุม</td><td><input type="radio" name="sz9"></td><td><input type="radio" name="sz9"></td><td><input type="radio" name="sz9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.10 สภาพแบตเตอรี่หรือ Capacitor</td><td><input type="radio" name="sz10"></td><td><input type="radio" name="sz10"></td><td><input type="radio" name="sz10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.9 แหล่งจ่ายไฟและสายควบคุม</td><td><input type="radio" name="sz9"></td><td><input type="radio" name="sz9"></td><td><input type="radio" name="sz9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.10 แบตเตอรี่หรือ Capacitor</td><td><input type="radio" name="sz10"></td><td><input type="radio" name="sz10"></td><td><input type="radio" name="sz10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.11 Ground HV (L/A, SZ)</td><td><input type="radio" name="sz11"></td><td><input type="radio" name="sz11"></td><td><input type="radio" name="sz11"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.12 Ground LV (ตู้ Control)</td><td><input type="radio" name="sz12"></td><td><input type="radio" name="sz12"></td><td><input type="radio" name="sz12"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.13 ทดลอง ทาง Local</td><td><input type="radio" name="sz13"></td><td><input type="radio" name="sz13"></td><td><input type="radio" name="sz13"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.13 ทดสอบปลด/สับ ทาง Local</td><td><input type="radio" name="sz13"></td><td><input type="radio" name="sz13"></td><td><input type="radio" name="sz13"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                 </tbody>
             </table>
             <div class="section-header">3 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 4px;"><textarea class="form-control" style="height:25px;"></textarea></div>
@@ -955,56 +669,33 @@
             <div class="sheet-title-container"><div><h1 id="formTitle">แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)</h1></div><div class="sheet-code" id="formCode">SF-07-0-018</div></div>
             <div class="section-header">1 ข้อมูลทั่วไป</div>
             <table class="info-table">
-                <tr>
-                    <th>Station ID</th>
-                    <td><input type="text" placeholder="ระบุ Station ID"></td>
-                    <th>สถานที่</th>
-                    <td><input type="text" placeholder="ระบุสถานที่ติดตั้ง"></td>
-                </tr>
-                <tr>
-                    <th>GIS Lat.</th>
-                    <td><input type="text" id="latInput" placeholder="ละติจูด"></td>
-                    <th>GIS Long.</th>
-                    <td>
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <input type="text" id="longInput" placeholder="ลองจิจูด" style="width:70%;">
-                            <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th>ยี่ห้อ RMU</th>
-                    <td><input type="text" placeholder="ระบุยี่ห้อ RMU"></td>
-                    <th>RMU MEA No.</th>
-                    <td><input type="text" placeholder="ระบุหมายเลข กฟน."></td>
-                </tr>
+                <tr><th>Station ID</th><td><input type="text" placeholder="ระบุ Station ID"></td><th>สถานที่</th><td><input type="text" placeholder="ระบุสถานที่ติดตั้ง"></td></tr>
+                <tr><th>GIS Lat.</th><td><input type="text" id="latInput" placeholder="ละติจูด"></td><th>GIS Long.</th><td><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="longInput" placeholder="ลองจิจูด" style="width:70%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
+                <tr><th>ยี่ห้อ RMU</th><td><input type="text" placeholder="ยี่ห้อ RMU"></td><th>RMU MEA No.</th><td><input type="text" placeholder="RMU MEA No."></td></tr>
             </table>
-            <div class="section-header">2 รายการตรวจสอบบำรุงรักษา</div>
+            <div class="section-header">2 รายการตรวจสอบบำรุงรักษา RMU</div>
             <table class="inspection-table">
-                <thead><tr><th style="text-align: left;">รายการ (2.1 ถึง 2.19)</th><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th><th>ข้อบกพร่อง / การดำเนินการแก้ไข</th></tr></thead>
+                <thead><tr><th style="text-align: left;">รายการ RMU (2.1 ถึง 2.19)</th><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th><th>ข้อบกพร่อง / การดำเนินการแก้ไข</th></tr></thead>
                 <tbody>
-                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">ตู้ครอบ RMU (กรณีติดตั้งนอกอาคาร) (2.1-2.3)</td></tr>
-                    <tr><td>2.1 สภาพภายนอก</td><td><input type="radio" name="rmu1"></td><td><input type="radio" name="rmu1"></td><td><input type="radio" name="rmu1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.2 ประตู</td><td><input type="radio" name="rmu2"></td><td><input type="radio" name="rmu2"></td><td><input type="radio" name="rmu2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.3 ฐานตู้</td><td><input type="radio" name="rmu3"></td><td><input type="radio" name="rmu3"></td><td><input type="radio" name="rmu3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">RMU (2.4-2.10)</td></tr>
-                    <tr><td>2.4 สภาพ RMU / ห้อง</td><td><input type="radio" name="rmu4"></td><td><input type="radio" name="rmu4"></td><td><input type="radio" name="rmu4"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.1 สภาพภายนอกตู้ครอบ</td><td><input type="radio" name="rmu1"></td><td><input type="radio" name="rmu1"></td><td><input type="radio" name="rmu1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.2 ประตูตู้ครอบ</td><td><input type="radio" name="rmu2"></td><td><input type="radio" name="rmu2"></td><td><input type="radio" name="rmu2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.3 ฐานตู้ครอบ</td><td><input type="radio" name="rmu3"></td><td><input type="radio" name="rmu3"></td><td><input type="radio" name="rmu3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.4 สภาพตัวถัง RMU / ห้อง</td><td><input type="radio" name="rmu4"></td><td><input type="radio" name="rmu4"></td><td><input type="radio" name="rmu4"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.5 ก๊าซ SF6</td><td><input type="radio" name="rmu5"></td><td><input type="radio" name="rmu5"></td><td><input type="radio" name="rmu5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.6 ตัวแสดงสถานะสวิทซ์</td><td><input type="radio" name="rmu6"></td><td><input type="radio" name="rmu6"></td><td><input type="radio" name="rmu6"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.7 กุญแจล็อคป้องกันการปลด-สับ</td><td><input type="radio" name="rmu7"></td><td><input type="radio" name="rmu7"></td><td><input type="radio" name="rmu7"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.8 คันสับ</td><td><input type="radio" name="rmu8"></td><td><input type="radio" name="rmu8"></td><td><input type="radio" name="rmu8"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.9 ตัวตรวจสอบแรงดัน</td><td><input type="radio" name="rmu9"></td><td><input type="radio" name="rmu9"></td><td><input type="radio" name="rmu9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.10 ตัวตรวจสอบการลัดวงจร</td><td><input type="radio" name="rmu10"></td><td><input type="radio" name="rmu10"></td><td><input type="radio" name="rmu10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">ระบบการปลด-สับด้วยไฟฟ้า & ทดสอบ & ATF (2.11-2.19)</td></tr>
                     <tr><td>2.11 แรงดันไฟฟ้าเลี้ยงอุปกรณ์</td><td><input type="radio" name="rmu11"></td><td><input type="radio" name="rmu11"></td><td><input type="radio" name="rmu11"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.12 สภาพแบตเตอรี่หรือ UPS (ถ้ามี)</td><td><input type="radio" name="rmu12"></td><td><input type="radio" name="rmu12"></td><td><input type="radio" name="rmu12"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.13 FRTU (ถ้ามี)</td><td><input type="radio" name="rmu13"></td><td><input type="radio" name="rmu13"></td><td><input type="radio" name="rmu13"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.12 แบตเตอรี่หรือ UPS</td><td><input type="radio" name="rmu12"></td><td><input type="radio" name="rmu12"></td><td><input type="radio" name="rmu12"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.13 FRTU</td><td><input type="radio" name="rmu13"></td><td><input type="radio" name="rmu13"></td><td><input type="radio" name="rmu13"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.14 อุปกรณ์ควบคุมอื่นๆ</td><td><input type="radio" name="rmu14"></td><td><input type="radio" name="rmu14"></td><td><input type="radio" name="rmu14"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.15 การปลดสับด้วย REMOTE (ถ้ามี)</td><td><input type="radio" name="rmu15"></td><td><input type="radio" name="rmu15"></td><td><input type="radio" name="rmu15"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.16 การปลดสับด้วย LOCAL กดปุ่ม (ถ้ามี)</td><td><input type="radio" name="rmu16"></td><td><input type="radio" name="rmu16"></td><td><input type="radio" name="rmu16"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.17 การปลดสับด้วยคันสับ</td><td><input type="radio" name="rmu17"></td><td><input type="radio" name="rmu17"></td><td><input type="radio" name="rmu17"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.18 แรงดันไฟฟ้าเลี้ยงอุปกรณ์ (ระบบ ATF)</td><td><input type="radio" name="rmu18"></td><td><input type="radio" name="rmu18"></td><td><input type="radio" name="rmu18"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.19 การทดสอบ ATF (ถ้ามี)</td><td><input type="radio" name="rmu19"></td><td><input type="radio" name="rmu19"></td><td><input type="radio" name="rmu19"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.15 ปลดสับด้วย REMOTE</td><td><input type="radio" name="rmu15"></td><td><input type="radio" name="rmu15"></td><td><input type="radio" name="rmu15"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.16 ปลดสับด้วย LOCAL</td><td><input type="radio" name="rmu16"></td><td><input type="radio" name="rmu16"></td><td><input type="radio" name="rmu16"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.17 ปลดสับด้วยคันสับ</td><td><input type="radio" name="rmu17"></td><td><input type="radio" name="rmu17"></td><td><input type="radio" name="rmu17"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.18 แรงดันไฟฟ้า (ระบบ ATF)</td><td><input type="radio" name="rmu18"></td><td><input type="radio" name="rmu18"></td><td><input type="radio" name="rmu18"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.19 การทดสอบ ATF</td><td><input type="radio" name="rmu19"></td><td><input type="radio" name="rmu19"></td><td><input type="radio" name="rmu19"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                 </tbody>
             </table>
             <div class="section-header">3 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 4px;"><textarea class="form-control" style="height:25px;"></textarea></div>
@@ -1020,44 +711,15 @@
             <div class="sheet-title-container"><div><h1 id="formTitle">แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV ในสายป้อน</h1></div><div class="sheet-code" id="formCode">SF-07-0-020</div></div>
             <div class="section-header">1 ข้อมูลทั่วไป</div>
             <table class="info-table">
-                <tr>
-                    <th>Station ID</th>
-                    <td><input type="text" placeholder="ระบุ Station ID"></td>
-                    <th>สถานที่</th>
-                    <td><input type="text" placeholder="ระบุสถานที่ติดตั้ง"></td>
-                </tr>
-                <tr>
-                    <th>MEA No.</th>
-                    <td><input type="text" placeholder="ระบุหมายเลข กฟน."></td>
-                    <th>สายป้อน</th>
-                    <td><input type="text" placeholder="ระบุสายป้อน"></td>
-                </tr>
-                <tr>
-                    <th>GIS Lat / Long</th>
-                    <td colspan="3">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <input type="text" id="latInput" placeholder="ละติจูด" style="width:40%;">
-                            <input type="text" id="longInput" placeholder="ลองจิจูด" style="width:40%;">
-                            <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th>ชนิด Control</th>
-                    <td><input type="text" placeholder="ระบุชนิด Control"></td>
-                    <th>ยี่ห้อ Control</th>
-                    <td><input type="text" placeholder="ระบุยี่ห้อ"></td>
-                </tr>
-                <tr>
-                    <th>ชนิด Switch</th>
-                    <td><input type="text" placeholder="ระบุชนิด Switch"></td>
-                    <th>ยี่ห้อ Switch</th>
-                    <td><input type="text" placeholder="ระบุยี่ห้อ"></td>
-                </tr>
+                <tr><th>Station ID</th><td><input type="text" placeholder="Station ID"></td><th>สถานที่</th><td><input type="text" placeholder="สถานที่ติดตั้ง"></td></tr>
+                <tr><th>MEA No.</th><td><input type="text" placeholder="MEA No."></td><th>สายป้อน</th><td><input type="text" placeholder="สายป้อน"></td></tr>
+                <tr><th>GIS Lat/Long</th><td colspan="3"><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="latInput" placeholder="Lat" style="width:40%;"><input type="text" id="longInput" placeholder="Long" style="width:40%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
+                <tr><th>ชนิด Control</th><td><input type="text" placeholder="ชนิด Control"></td><th>ยี่ห้อ Control</th><td><input type="text" placeholder="ยี่ห้อ"></td></tr>
+                <tr><th>ชนิด Switch</th><td><input type="text" placeholder="ชนิด Switch"></td><th>ยี่ห้อ Switch</th><td><input type="text" placeholder="ยี่ห้อ"></td></tr>
             </table>
-            <div class="section-header">2 รายการตรวจสอบบำรุงรักษา</div>
+            <div class="section-header">2 รายการตรวจสอบบำรุงรักษา Capacitor Bank</div>
             <table class="inspection-table">
-                <thead><tr><th style="text-align: left;">รายการ (2.1 ถึง 2.19)</th><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th><th>ข้อบกพร่อง / การดำเนินการแก้ไข</th></tr></thead>
+                <thead><tr><th style="text-align: left;">รายการ Cap Bank (2.1 ถึง 2.19)</th><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th><th>ข้อบกพร่อง / การดำเนินการแก้ไข</th></tr></thead>
                 <tbody>
                     <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">อุปกรณ์ประกอบ (2.1-2.8)</td></tr>
                     <tr><td>2.1 Drop Fuse</td><td><input type="radio" name="cb1"></td><td><input type="radio" name="cb1"></td><td><input type="radio" name="cb1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
@@ -1068,7 +730,7 @@
                     <tr><td>2.6 กับดักฟ้าผ่า (L/A)</td><td><input type="radio" name="cb6"></td><td><input type="radio" name="cb6"></td><td><input type="radio" name="cb6"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.7 Cover (Bushing, L/A)</td><td><input type="radio" name="cb7"></td><td><input type="radio" name="cb7"></td><td><input type="radio" name="cb7"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.8 HV Ground</td><td><input type="radio" name="cb8"></td><td><input type="radio" name="cb8"></td><td><input type="radio" name="cb8"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">อุปกรณ์ควบคุม สำหรับสถานี Switching Capacitor Bank (2.9-2.15)</td></tr>
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">อุปกรณ์ควบคุม (2.9-2.15)</td></tr>
                     <tr><td>2.9 Vacuum CB</td><td><input type="radio" name="cb9"></td><td><input type="radio" name="cb9"></td><td><input type="radio" name="cb9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.10 Supply</td><td><input type="radio" name="cb10"></td><td><input type="radio" name="cb10"></td><td><input type="radio" name="cb10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.11 Fuse Control ภายในตู้</td><td><input type="radio" name="cb11"></td><td><input type="radio" name="cb11"></td><td><input type="radio" name="cb11"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
@@ -1094,6 +756,267 @@
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
             </div>
             <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-020</span></div>
+        `,
+
+        'SF-07-0-021': `
+            <div class="sheet-title-container">
+                <div><h1 id="formTitle">แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย</h1></div>
+                <div class="sheet-code" id="formCode">SF-07-0-021</div>
+            </div>
+            <div class="section-header">ข้อมูลทั่วไป</div>
+            <table class="info-table">
+                <tr><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td><th>STATION</th><td><input type="text" placeholder="Station"></td></tr>
+                <tr><th>FIX ID</th><td><input type="text" placeholder="Fix ID"></td><th>WLN</th><td><input type="text" placeholder="WLN"></td></tr>
+                <tr><th>MEA NO.</th><td><input type="text" placeholder="MEA No."></td><th>ACB NO.</th><td><input type="text" placeholder="ACB No."></td></tr>
+                <tr><th>RELAY NO.</th><td><input type="text" placeholder="Relay No."></td><th>COUNTER</th><td><input type="text" placeholder="Counter"></td></tr>
+                <tr>
+                    <th>RELAY (เลือก)</th>
+                    <td>
+                        <div style="font-size:0.75rem; display:flex; gap:6px; flex-wrap:wrap;">
+                            <label><input type="checkbox"> MPCR</label>
+                            <label><input type="checkbox"> MPCV</label>
+                            <label><input type="checkbox"> ETI</label>
+                            <label><input type="checkbox"> อื่นๆ</label>
+                        </div>
+                    </td>
+                    <th>GIS Lat/Long</th>
+                    <td>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <input type="text" id="latInput" placeholder="Lat" style="width:38%;">
+                            <input type="text" id="longInput" placeholder="Long" style="width:38%;">
+                            <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div class="section-header">รายการตรวจสอบบำรุงรักษา เครื่องป้องกันหม้อแปลงวงจรตาข่าย</div>
+            <table class="inspection-table">
+                <thead>
+                    <tr>
+                        <th style="width: 35px;">ลำดับ</th>
+                        <th style="text-align: left;">รายการตรวจสอบ</th>
+                        <th>เกณฑ์</th>
+                        <th>ปกติ</th>
+                        <th>ไม่ปกติ</th>
+                        <th>ข้อบกพร่อง / การดำเนินการแก้ไข</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td rowspan="8" style="text-align:center; font-weight:bold;">1</td><td colspan="5" style="background:#f5f5f4; font-weight:bold;">สภาพภายนอก</td></tr>
+                    <tr><td>1.1 สถานะ MV.SW.</td><td>CLOSE</td><td><input type="radio" name="e1"></td><td><input type="radio" name="e1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>1.2 สถานะ NP</td><td>CLOSE</td><td><input type="radio" name="e2"></td><td><input type="radio" name="e2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>1.3 เบอร์ตู้ / สีตู้</td><td>ชัดเจน ไม่ลอก</td><td><input type="radio" name="e3"></td><td><input type="radio" name="e3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>1.4 ระบบกราวด์</td><td>มีทั้ง N และ G</td><td><input type="radio" name="e4"></td><td><input type="radio" name="e4"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>1.5 ป้องกันแรงดันเกินภายนอก</td><td>ไม่ชำรุด</td><td><input type="radio" name="e5"></td><td><input type="radio" name="e5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>1.6 ตัวถัง / รอยต่อหม้อแปลง</td><td>ไม่มีน้ำมันรั่ว</td><td><input type="radio" name="e6"></td><td><input type="radio" name="e6"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>1.7 ฝาตู้</td><td>ปิดแน่นสนิท</td><td><input type="radio" name="e7"></td><td><input type="radio" name="e7"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>1.8 แขวนป้ายแดงห้ามปลด-สับ</td><td>ที่ SW และ NP</td><td><input type="radio" name="e8"></td><td><input type="radio" name="e8"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+
+                    <tr><td rowspan="3" style="text-align:center; font-weight:bold;">2</td><td colspan="5" style="background:#f5f5f4; font-weight:bold;">การทดสอบปลด-สับ MV.SW.</td></tr>
+                    <tr><td>2.1 ปลด MV.SW. ครั้งที่ 1</td><td>NP OPEN</td><td><input type="radio" name="e9"></td><td><input type="radio" name="e9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.2 สับ MV.SW. ครั้งที่ 1</td><td>NP CLOSE</td><td><input type="radio" name="e10"></td><td><input type="radio" name="e10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.3 ปลด MV.SW. ครั้งที่ 2</td><td>NP OPEN</td><td><input type="radio" name="e11"></td><td><input type="radio" name="e11"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+
+                    <tr><td style="text-align:center; font-weight:bold;">3</td><td>3.1 อุปกรณ์ภายใน</td><td>ไม่มีน้ำหยด</td><td><input type="radio" name="e12"></td><td><input type="radio" name="e12"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center; font-weight:bold;">4</td><td>4.1 อุปกรณ์ส่งข้อมูลระยะไกล</td><td>พร้อมใช้งาน</td><td><input type="radio" name="e13"></td><td><input type="radio" name="e13"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center; font-weight:bold;">5</td><td>สับ SW.แรงกลาง เมื่อลงเสา</td><td>NP CLOSE</td><td><input type="radio" name="e14"></td><td><input type="radio" name="e14"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                </tbody>
+            </table>
+            <div class="section-header">ข้อเสนอแนะ / ข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 4px;"><textarea class="form-control" style="height:25px;"></textarea></div>
+            <div class="signature-grid">
+                <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
+                <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
+            </div>
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-021</span></div>
+        `,
+
+        'SF-07-0-022': `
+            <div class="sheet-title-container"><div><h1 id="formTitle">แบบตรวจสอบบำรุงรักษาหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง</h1></div><div class="sheet-code" id="formCode">SF-07-0-022</div></div>
+            <div class="section-header">1 ข้อมูลทั่วไป</div>
+            <table class="info-table">
+                <tr><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td><th>STATION</th><td><input type="text" placeholder="Station"></td></tr>
+                <tr><th>FIX ID</th><td><input type="text" placeholder="Fix ID"></td><th>WLN</th><td><input type="text" placeholder="WLN"></td></tr>
+                <tr><th>TR. MEA NO.</th><td><input type="text" placeholder="TR MEA No."></td><th>SW. MEA NO.</th><td><input type="text" placeholder="SW MEA No."></td></tr>
+                <tr><th>GIS Lat/Long</th><td colspan="3"><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="latInput" placeholder="Lat" style="width:40%;"><input type="text" id="longInput" placeholder="Long" style="width:40%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
+            </table>
+            <div class="section-header">2 รายการตรวจสอบบำรุงรักษา</div>
+            <table class="inspection-table">
+                <thead><tr><th style="width: 35px;">ลำดับ</th><th style="text-align: left;">รายการ</th><th>เกณฑ์</th><th>ปกติ</th><th>ไม่ปกติ</th><th>ข้อบกพร่อง / การดำเนินการแก้ไข</th></tr></thead>
+                <tbody>
+                    <tr><td rowspan="4" style="text-align:center; font-weight:bold;">1</td><td colspan="5" style="background:#f5f5f4; font-weight:bold;">สวิทซ์แรงกลาง</td></tr>
+                    <tr><td>1.1 สภาพภายนอก</td><td>ปลด-สับได้</td><td><input type="radio" name="m1"></td><td><input type="radio" name="m1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>1.2 ก๊าซ SF6</td><td>ในโซนกำหนด</td><td><input type="radio" name="m2"></td><td><input type="radio" name="m2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>1.3 หัวต่อสาย / สายไฟฟ้า</td><td>ไม่ร้าว/ไม่ไหม้</td><td><input type="radio" name="m3"></td><td><input type="radio" name="m3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>1.4 ระบบกราวด์</td><td>มีครบถ้วน</td><td><input type="radio" name="m4"></td><td><input type="radio" name="m4"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+
+                    <tr><td rowspan="5" style="text-align:center; font-weight:bold;">2</td><td colspan="5" style="background:#f5f5f4; font-weight:bold;">หม้อแปลง</td></tr>
+                    <tr><td>2.1 ตัวถังหม้อแปลง</td><td>ไม่บุบ/ไม่ฉีกขาด</td><td><input type="radio" name="m5"></td><td><input type="radio" name="m5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.2 น้ำมันหม้อแปลง</td><td>ระดับปกติไม่รั่ว</td><td><input type="radio" name="m6"></td><td><input type="radio" name="m6"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.3 ฟิวส์ 12 kV</td><td>ไม่ชำรุด</td><td><input type="radio" name="m7"></td><td><input type="radio" name="m7"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.4 อุณหภูมิสูงสุด / จริง</td><td>ไม่เกิน 90 °C</td><td><input type="radio" name="m8"></td><td><input type="radio" name="m8"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+
+                    <tr><td rowspan="2" style="text-align:center; font-weight:bold;">3</td><td colspan="5" style="background:#f5f5f4; font-weight:bold;">ด้านแรงต่ำ</td></tr>
+                    <tr><td>3.1 สายไฟฟ้า / คาปาซิเตอร์</td><td>ไม่ชำรุดเสียหาย</td><td><input type="radio" name="m10"></td><td><input type="radio" name="m10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                </tbody>
+            </table>
+
+            <div class="section-header">ผลการวัดค่ากระแสไฟฟ้า & แรงดันไฟฟ้า</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 4px;">
+                <div class="field-group"><label>กระแสแรงกลาง 12 kV</label><input type="text" class="form-control" placeholder="< 25A"></div>
+                <div class="field-group"><label>กระแส Cap. 25-75 kVAR</label><input type="text" class="form-control" placeholder="ตามขนาด"></div>
+                <div class="field-group span-2"><label>แรงดันด้านแรงต่ำ L-N / L-L</label><input type="text" class="form-control" placeholder="V1N, V2N, V3N / L-L"></div>
+            </div>
+
+            <div class="section-header">ข้อเสนอแนะ / ข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 4px;"><textarea class="form-control" style="height:25px;"></textarea></div>
+            <div class="signature-grid">
+                <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
+                <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
+            </div>
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-022</span></div>
+        `,
+
+        'SF-07-0-023': `
+            <div class="sheet-title-container">
+                <div><h1 id="formTitle">แบบตรวจสอบบำรุงรักษาทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย</h1></div>
+                <div class="sheet-code" id="formCode">SF-07-0-023</div>
+            </div>
+            
+            <div class="section-header">ข้อมูลทั่วไป</div>
+            <table class="info-table">
+                <tr><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td><th>STATION ID</th><td><input type="text" placeholder="Station ID"></td></tr>
+                <tr><th>SW.ยี่ห้อ / TR. MEA No.</th><td><input type="text" placeholder="ยี่ห้อ/หมายเลข"></td><th>GIS Lat/Long</th><td><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="latInput" placeholder="Lat" style="width:40%;"><input type="text" id="longInput" placeholder="Long" style="width:40%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
+            </table>
+
+            <div class="section-header">ขั้นตอนการทดสอบและกรองน้ำมันหม้อแปลง</div>
+            <div style="font-size:0.75rem; margin-bottom:3px; color:var(--text-muted);">ทดสอบ Breakdown Voltage (kV) 5 ครั้ง ห่างครั้งละ 5 นาที (เกณฑ์มาตรฐาน >= 26 kV)</div>
+            <table class="inspection-table">
+                <thead><tr><th style="text-align: left;">ช่วงการทดสอบ</th><th>ครั้ง 1</th><th>ครั้ง 2</th><th>ครั้ง 3</th><th>ครั้ง 4</th><th>ครั้ง 5</th><th>ค่าเฉลี่ย</th></tr></thead>
+                <tbody>
+                    <tr><td>1. ทดสอบครั้งแรก</td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td></tr>
+                    <tr><td>2. หลังกรองน้ำมันครั้งที่ 1</td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td></tr>
+                    <tr><td>3. หลังกรองน้ำมันครั้งที่ 2</td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td><td><input type="text" class="form-control"></td></tr>
+                </tbody>
+            </table>
+
+            <div class="section-header">ข้อเสนอแนะ/ข้อมูลเพิ่มเติม :</div>
+            <div class="field-group" style="margin-bottom: 4px;"><textarea class="form-control" style="height:25px;"></textarea></div>
+
+            <div class="signature-grid" style="grid-template-columns: 1fr 1fr;">
+                <div class="sig-box">
+                    <div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div>
+                    <div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div>
+                    <div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div>
+                </div>
+                <div class="sig-box">
+                    <div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div>
+                    <div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div>
+                    <div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div>
+                </div>
+            </div>
+
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่....</span><span id="footerCode">SF-07-0-023</span></div>
+        `,
+
+        'SF-07-0-024': `
+            <div class="sheet-title-container">
+                <div><h1 id="formTitle">รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)</h1></div>
+                <div class="sheet-code" id="formCode">SF-07-0-024</div>
+            </div>
+            
+            <div class="grid-form" style="margin-bottom: 4px; display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
+                <div class="field-group"><label>ผู้ตรวจ 1:</label><input type="text" class="form-control" placeholder="ชื่อ-นามสกุล"></div>
+                <div class="field-group"><label>ผู้ตรวจ 2:</label><input type="text" class="form-control" placeholder="ชื่อ-นามสกุล"></div>
+            </div>
+
+            <div class="section-header">1. ข้อมูลภาพถ่าย Thermovision</div>
+            <table class="info-table">
+                <tr><th>ชื่อภาพ</th><td><input type="text" placeholder="ชื่อภาพ"></td><th>Station ID</th><td><input type="text" placeholder="Station ID"></td></tr>
+                <tr><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td><th>อุปกรณ์</th><td><input type="text" placeholder="อุปกรณ์"></td></tr>
+                <tr><th>MEA No.</th><td><input type="text" placeholder="MEA No."></td><th>สายป้อน</th><td><input type="text" placeholder="สายป้อน"></td></tr>
+                <tr><th>วันที่ตรวจ</th><td><input type="date" class="form-control" id="dateField1" style="background:transparent; border:none;"></td><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td></tr>
+                <tr><th>GIS Lat/Long</th><td><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="latInput" placeholder="Lat" style="width:40%;"><input type="text" id="longInput" placeholder="Long" style="width:40%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td><th>Emissivity</th><td><input type="text" placeholder="Emissivity"></td></tr>
+            </table>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 4px 0;">
+                <div style="border: 1px dashed var(--border); padding: 4px; text-align: center; background: #f8fafc; border-radius: 4px;"><label style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">🖼️ ภาพถ่ายจริง (Visual)</label><input type="file" accept="image/*" style="font-size: 0.65rem; display:block; margin: 2px auto;"></div>
+                <div style="border: 1px dashed var(--border); padding: 4px; text-align: center; background: #f8fafc; border-radius: 4px;"><label style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">🌡️ ภาพถ่ายความร้อน (Thermal)</label><input type="file" accept="image/*" style="font-size: 0.65rem; display:block; margin: 2px auto;"></div>
+            </div>
+
+            <div class="section-header">2. เกณฑ์ความสำคัญ (Standard for Infrared Inspection)</div>
+            <table class="inspection-table">
+                <thead><tr><th style="width: 40px;">ระดับ</th><th>Delta T (°C)</th><th style="text-align: left;">ข้อเสนอแนะการดำเนินการ</th><th style="width: 50px;">เลือก</th></tr></thead>
+                <tbody>
+                    <tr><td style="text-align:center; font-weight:bold; color:#059669;">4</td><td>0 - 10°C</td><td>อุปกรณ์ปกติ</td><td style="text-align:center;"><input type="checkbox"></td></tr>
+                    <tr><td style="text-align:center; font-weight:bold; color:#d97706;">3</td><td>> 10 - 20°C</td><td>แก้ไขในการบำรุงรักษาครั้งต่อไป</td><td style="text-align:center;"><input type="checkbox"></td></tr>
+                    <tr><td style="text-align:center; font-weight:bold; color:#ea580c;">2</td><td>> 20 - 40°C</td><td>ควรแก้ไขภายใน 1 เดือน</td><td style="text-align:center;"><input type="checkbox"></td></tr>
+                    <tr><td style="text-align:center; font-weight:bold; color:#dc2626;">1</td><td>> 40°C</td><td>ควรได้รับการแก้ไขเร่งด่วน</td><td style="text-align:center;"><input type="checkbox"></td></tr>
+                </tbody>
+            </table>
+
+            <div class="section-header">3. รายละเอียดการตรวจสอบ & 4. การส่งต่อแก้ไข</div>
+            <div class="field-group" style="margin-bottom: 4px;"><textarea class="form-control" style="height:25px;" placeholder="รายละเอียด..."></textarea></div>
+
+            <div class="signature-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
+                <div class="sig-box"><div class="field-group"><label>ผู้ดำเนินการ</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่แก้ไข</label><input type="date" class="form-control"></div></div>
+                <div class="sig-box"><div class="field-group"><label>ผู้บริหารทราบ</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control"></div></div>
+            </div>
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่....</span><span id="footerCode">SF-07-0-024</span></div>
+        `,
+
+        'SF-07-0-025': `
+            <div class="sheet-title-container">
+                <div>
+                    <h1 id="formTitle">รายงานผลการตรวจสอบการคายประจุไฟฟ้าบางส่วน (Partial Discharge)</h1>
+                    <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); margin-top: 1px;">โดยใช้กล้อง Acoustic Camera</div>
+                </div>
+                <div class="sheet-code" id="formCode">SF-07-0-025</div>
+            </div>
+
+            <div class="grid-form" style="margin-bottom: 4px; display:grid; grid-template-columns: repeat(3, 1fr); gap: 4px;">
+                <div class="field-group"><label>ผู้ตรวจ 1:</label><input type="text" class="form-control" placeholder="ผู้ตรวจคนที่ 1"></div>
+                <div class="field-group"><label>ตำแหน่ง 1:</label><input type="text" class="form-control" placeholder="ตำแหน่ง"></div>
+                <div class="field-group"><label>วันที่ตรวจ</label><input type="date" class="form-control" id="dateField1"></div>
+            </div>
+
+            <div class="section-header">1. ข้อมูลภาพถ่าย Partial Discharge</div>
+            <table class="info-table">
+                <tr><th>Station ID</th><td><input type="text" placeholder="Station ID"></td><th>อุปกรณ์</th><td><input type="text" placeholder="อุปกรณ์"></td></tr>
+                <tr><th>MEA No.</th><td><input type="text" placeholder="MEA No."></td><th>สายป้อน</th><td><input type="text" placeholder="สายป้อน"></td></tr>
+                <tr><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td><th>GIS Lat/Long</th><td><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="latInput" placeholder="Lat" style="width:40%;"><input type="text" id="longInput" placeholder="Long" style="width:40%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
+                <tr><th>จุดที่ผิดปกติ</th><td colspan="3"><input type="text" placeholder="ระบุตำแหน่งจุดที่ผิดปกติ"></td></tr>
+            </table>
+
+            <div style="font-size: 0.78rem; margin: 4px 0; background:#f8fafc; padding:6px 10px; border:1px solid var(--border); border-radius:6px;">
+                <div style="display:flex; gap:10px; align-items:center; margin-bottom:4px;">
+                    <div><b>ความเข้มเสียง (dB):</b> <input type="text" class="form-control" style="display:inline-block; width:90px; padding:2px;" placeholder="dB"></div>
+                </div>
+                <div>
+                    <b>ระดับความรุนแรง (NL CLOUD):</b>
+                    <div style="display:flex; gap:10px; margin-top:2px;">
+                        <label><input type="checkbox"> สูงมาก</label>
+                        <label><input type="checkbox"> สูง</label>
+                        <label><input type="checkbox"> ปานกลาง</label>
+                        <label><input type="checkbox"> ต่ำ</label>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 4px 0;">
+                <div style="border: 1px dashed var(--border); padding: 6px; text-align: center; background: #f8fafc; border-radius: 4px;"><label style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">📷 ภาพกล้องปกติ</label><input type="file" accept="image/*" style="font-size: 0.65rem; display:block; margin: 2px auto;"></div>
+                <div style="border: 1px dashed var(--border); padding: 6px; text-align: center; background: #f8fafc; border-radius: 4px;"><label style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">📷 ภาพ Acoustic Camera</label><input type="file" accept="image/*" style="font-size: 0.65rem; display:block; margin: 2px auto;"></div>
+            </div>
+
+            <div class="section-header">2. การส่งต่อแก้ไข & 3. การดำเนินการปรับปรุง</div>
+            <div class="field-group" style="margin-bottom: 4px;"><input type="text" class="form-control" placeholder="กลุ่มงานที่รับไปดำเนินการต่อ"></div>
+            <div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control" style="height:25px;" placeholder="ผลการดำเนินการแก้ไขปรับปรุง..."></textarea></div>
+
+            <div class="signature-grid">
+                <div class="sig-box"><div class="field-group"><label>โปรดดำเนินการแก้ไข</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
+                <div class="sig-box"><div class="field-group"><label>ผู้ดำเนินการปรับปรุง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่แก้ไข</label><input type="date" class="form-control"></div></div>
+            </div>
+
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่....</span><span id="footerCode">SF-07-0-025</span></div>
         `
     };
 
@@ -1123,24 +1046,10 @@
         alert("เข้าสู่ระบบสำเร็จ!");
     }
 
-    function saveNewRecord() {
-        alert("💾 บันทึกข้อมูลเป็นรายการใหม่เรียบร้อยแล้ว!");
-    }
-
-    function saveCurrentRecord() {
-        alert("🔄 บันทึกทับรายการปัจจุบันสำเร็จ!");
-    }
-
-    function copyAsNewRecord() {
-        alert("📄 คัดลอกข้อมูลเป็นฉบับใหม่สำเร็จ!");
-    }
-
-    function newForm() {
-        if(confirm("ต้องการสร้างฟอร์มใหม่ใช่หรือไม่?")) {
-            clearForm();
-        }
-    }
-
+    function saveNewRecord() { alert("💾 บันทึกข้อมูลเป็นรายการใหม่เรียบร้อยแล้ว!"); }
+    function saveCurrentRecord() { alert("🔄 บันทึกทับรายการปัจจุบันสำเร็จ!"); }
+    function copyAsNewRecord() { alert("📄 คัดลอกข้อมูลเป็นฉบับใหม่สำเร็จ!"); }
+    function newForm() { if(confirm("ต้องการสร้างฟอร์มใหม่ใช่หรือไม่?")) { clearForm(); } }
     function clearForm() {
         document.querySelectorAll('input[type="text"], textarea, input[type="time"]').forEach(el => el.value = '');
         document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(el => el.checked = false);
