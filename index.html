@@ -7,13 +7,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #d97706;
-            --primary-hover: #b45309;
-            --bg-color: #f8fafc;
+            --primary: #f59e0b;
+            --primary-dark: #d97706;
+            --accent: #0f172a;
+            --bg-body: #f1f5f9;
             --card-bg: #ffffff;
             --text-main: #1e293b;
-            --text-secondary: #64748b;
-            --border-color: #cbd5e1;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
         }
 
         * {
@@ -24,11 +27,11 @@
         }
 
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg-body);
             color: var(--text-main);
-            padding: 8px;
-            font-size: 15px; /* เพิ่มขนาดฟอนต์ให้อ่านง่ายบนมือถือ */
-            line-height: 1.5;
+            padding: 12px;
+            font-size: 15px;
+            line-height: 1.6;
         }
 
         .app-container {
@@ -36,306 +39,304 @@
             margin: 0 auto;
         }
 
-        .no-print {
+        /* --- Modern Control Hub (ส่วนควบคุมด้านบน) --- */
+        .control-hub {
             background: var(--card-bg);
-            padding: 10px;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            padding: 16px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            margin-bottom: 14px;
+            box-shadow: var(--shadow);
         }
 
-        .auth-bar {
+        .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.85rem;
-            margin-bottom: 8px;
-            flex-wrap: wrap;
-            gap: 6px;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
         }
 
-        .google-btn {
+        .app-brand {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--accent);
             display: flex;
             align-items: center;
             gap: 6px;
-            background: #fff;
-            border: 1px solid var(--border-color);
-            padding: 6px 14px;
-            border-radius: 8px;
+        }
+
+        .google-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            padding: 6px 12px;
+            border-radius: 20px;
             font-weight: 600;
+            font-size: 0.8rem;
             cursor: pointer;
-            font-size: 0.85rem;
+            color: var(--text-main);
+            transition: all 0.2s;
         }
+        .google-pill:hover { background: #f1f5f9; border-color: #cbd5e1; }
 
-        .toolbar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 10px;
-            align-items: center;
+        /* --- Toolbars & Buttons --- */
+        .action-toolbar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
         .btn {
-            padding: 8px 14px;
+            padding: 10px 12px;
             border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 500;
+            font-size: 0.85rem;
+            font-weight: 600;
             cursor: pointer;
             border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
             transition: all 0.2s;
         }
 
-        .btn-primary { background: var(--primary-color); color: white; }
-        .btn-primary:hover { background: var(--primary-hover); }
-        .btn-secondary { background: #f1f5f9; color: var(--text-main); border: 1px solid var(--border-color); }
-        .btn-secondary:hover { background: #e2e8f0; }
+        .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 2px 4px rgba(245, 158, 11, 0.2); }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-secondary { background: #f8fafc; color: var(--text-main); border: 1px solid var(--border); }
+        .btn-secondary:hover { background: #f1f5f9; }
         .btn-danger { background: #fef2f2; color: #dc2626; border: 1px solid #fee2e2; }
-        
-        /* ขยายปุ่ม GPS บนมือถือให้กดง่ายขึ้น */
-        .btn-geo { background: #059669; color: white; font-size: 0.8rem; padding: 6px 12px; border-radius: 6px; cursor: pointer; border: none; margin-left: 4px; }
+        .btn-danger:hover { background: #fee2e2; }
+        .btn-print { background: var(--accent); color: white; grid-column: span 2; }
+        .btn-print:hover { background: #1e293b; }
+
+        .btn-geo { background: #059669; color: white; font-size: 0.75rem; padding: 4px 10px; border-radius: 6px; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 4px; }
         .btn-geo:hover { background: #047857; }
 
-        .tab-container {
+        /* --- Modern Form Switcher Tabs --- */
+        .tab-scroller {
             display: flex;
             gap: 6px;
             overflow-x: auto;
-            padding-bottom: 6px;
-            -webkit-overflow-scrolling: touch;
+            padding-bottom: 4px;
+            scrollbar-width: thin;
         }
 
-        .tab {
+        .tab-btn {
             padding: 8px 14px;
-            background: #f1f5f9;
+            background: #f8fafc;
             border-radius: 8px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             cursor: pointer;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--border);
             white-space: nowrap;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .tab.active {
-            background: var(--primary-color);
-            color: white;
+            color: var(--text-muted);
             font-weight: 600;
-            border-color: var(--primary-color);
+            transition: all 0.2s;
         }
 
-        .sub-tab-container {
+        .tab-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            box-shadow: 0 2px 4px rgba(15, 23, 42, 0.2);
+        }
+
+        .sub-tab-box {
             display: flex;
             gap: 6px;
             margin-bottom: 10px;
-        }
-
-        .sub-tab {
-            padding: 8px 14px;
-            background: #e2e8f0;
+            background: #f8fafc;
+            padding: 4px;
             border-radius: 8px;
-            font-size: 0.85rem;
+            border: 1px solid var(--border);
+        }
+
+        .sub-tab-btn {
+            flex: 1;
+            padding: 8px;
+            background: transparent;
+            border-radius: 6px;
+            font-size: 0.8rem;
             cursor: pointer;
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
+            border: none;
+            color: var(--text-muted);
             font-weight: 600;
+            text-align: center;
+            transition: all 0.2s;
         }
 
-        .sub-tab.active {
-            background: #334155;
-            color: white;
-            border-color: #334155;
+        .sub-tab-btn.active {
+            background: #ffffff;
+            color: var(--accent);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        .extra-panel {
-            background: var(--card-bg);
-            padding: 10px 14px;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 10px;
-            font-size: 0.85rem;
-        }
-
-        .extra-panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .extra-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr auto;
-            gap: 6px;
-            align-items: center;
-        }
-
-        .criticality-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 6px;
-            margin-top: 6px;
-        }
-
+        /* --- Official Sheet Container --- */
         .official-sheet {
             background: var(--card-bg);
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-            font-size: 0.9rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-            margin-top: 10px;
+            padding: 24px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            margin-top: 14px;
         }
 
         .sheet-title-container {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--text-main);
-            padding-bottom: 8px;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-            gap: 6px;
+            align-items: flex-start;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
+            margin-bottom: 14px;
+            gap: 10px;
         }
 
         .sheet-title-container h1 {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: 700;
-            color: var(--text-main);
+            color: var(--accent);
         }
 
         .sheet-code {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 700;
-            border: 1.5px solid var(--text-main);
-            padding: 2px 8px;
+            background: var(--accent);
+            color: white;
+            padding: 4px 10px;
             border-radius: 6px;
         }
 
         .section-header {
-            background-color: #f1f5f9;
-            font-weight: 600;
-            padding: 6px 10px;
-            font-size: 0.9rem;
-            border: 1px solid var(--border-color);
-            margin-top: 12px;
-            margin-bottom: 6px;
+            background: linear-gradient(to right, #f1f5f9, #f8fafc);
+            font-weight: 700;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            border: 1px solid var(--border);
+            margin-top: 14px;
+            margin-bottom: 8px;
             border-radius: 6px;
-            color: #334155;
+            color: var(--accent);
+            border-left: 4px solid var(--primary);
         }
 
-        /* ตารางข้อมูลทั่วไป รองรับมือถือแบบยืดหยุ่น */
+        /* --- Clean Modern Info Table --- */
         .info-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-size: 0.85rem;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
         }
 
         .info-table th, .info-table td {
-            border: 1px solid var(--border-color);
-            padding: 6px 8px;
+            border: 1px solid var(--border);
+            padding: 8px 10px;
             background-color: #f8fafc;
         }
 
         .info-table th {
             text-align: right;
-            color: var(--text-secondary);
+            color: var(--text-muted);
             font-weight: 600;
-            width: 25%;
+            width: 20%;
         }
 
         .info-table td {
             background-color: #fff;
-            width: 25%;
+            width: 30%;
         }
 
         .info-table input {
             border: none;
             background: transparent;
             width: 100%;
-            padding: 4px;
+            padding: 2px;
             font-size: 0.9rem;
             color: var(--text-main);
         }
 
         .info-table input:focus {
             outline: none;
-            background: #fdf8f6;
+            background: #fffbeb;
         }
 
+        /* --- Inspection Table --- */
         table.inspection-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
         }
 
         table.inspection-table th, table.inspection-table td {
-            border: 1px solid var(--border-color);
-            padding: 6px;
+            border: 1px solid var(--border);
+            padding: 8px 10px;
             font-size: 0.85rem;
         }
 
         table.inspection-table th {
             background-color: #f1f5f9;
             text-align: center;
-            font-weight: 600;
-            color: #334155;
+            font-weight: 700;
+            color: var(--accent);
         }
 
         table.inspection-table td:nth-child(2),
-        table.inspection-table td:nth-child(3) {
+        table.inspection-table td:nth-child(3),
+        table.inspection-table td:nth-child(4) {
             text-align: center;
-            width: 40px;
+            width: 45px;
         }
 
         table.inspection-table td:last-child {
             width: 40%;
         }
 
-        /* ขยายขนาด Radio Button และ Checkbox ให้จิ้มง่ายบนมือถือ */
         input[type="radio"], input[type="checkbox"] {
             transform: scale(1.3);
-            margin: 4px;
+            accent-color: var(--primary-dark);
             cursor: pointer;
+        }
+
+        .form-control {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            background-color: #f8fafc;
+            width: 100%;
+            color: var(--text-main);
+            transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
         }
 
         textarea.form-control {
             resize: vertical;
-            height: 50px;
-            padding: 6px 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 0.9rem;
-            background-color: #f8fafc;
-            width: 100%;
-            color: var(--text-main);
-        }
-
-        .form-control {
-            padding: 6px 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 0.9rem;
-            background-color: #f8fafc;
-            width: 100%;
-            color: var(--text-main);
-        }
-
-        .form-control:focus {
-            border-color: var(--primary-color);
-            outline: none;
-            background-color: #fff;
-            box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.1);
+            height: 60px;
         }
 
         .signature-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 12px;
-            border-top: 1px dashed var(--border-color);
-            padding-top: 10px;
+            gap: 12px;
+            margin-top: 14px;
+            border-top: 1px dashed var(--border);
+            padding-top: 12px;
         }
 
         .sig-box {
@@ -343,8 +344,8 @@
             flex-direction: column;
             gap: 6px;
             background: #f8fafc;
-            padding: 10px;
-            border: 1px solid var(--border-color);
+            padding: 12px;
+            border: 1px solid var(--border);
             border-radius: 8px;
         }
 
@@ -352,60 +353,39 @@
             display: flex;
             justify-content: space-between;
             font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-top: 8px;
+            color: var(--text-muted);
+            margin-top: 12px;
+            border-top: 1px solid var(--border);
+            padding-top: 6px;
         }
 
-        /* Responsive สำหรับมือถือ: เปลี่ยนตารางข้อมูลทั่วไปให้อยู่ในแนวตั้ง สบายตา ไม่ล้นจอ */
+        /* --- Mobile Responsive Enhancements --- */
         @media (max-width: 768px) {
+            body { padding: 4px; }
+            .official-sheet { padding: 12px; }
             .info-table, .info-table tbody, .info-table tr, .info-table th, .info-table td {
                 display: block;
                 width: 100% !important;
             }
-            .info-table th {
-                text-align: left;
-                background-color: #f1f5f9;
-                padding: 4px 8px;
-                border-bottom: none;
-            }
-            .info-table td {
-                border-top: none;
-                margin-bottom: 4px;
-            }
-            .extra-grid { grid-template-columns: 1fr; }
-            .criticality-grid { grid-template-columns: 1fr; }
-            body { padding: 4px; }
-            .official-sheet { padding: 10px; }
+            .info-table th { text-align: left; background: #f1f5f9; padding: 6px 10px; border-bottom: none; }
+            .info-table td { border-top: none; padding: 6px 10px; margin-bottom: 4px; }
+            .signature-grid { grid-template-columns: 1fr; }
+            .btn-print { grid-column: span 1; }
         }
 
+        /* --- Print Optimization --- */
         @media print {
-            @page {
-                size: A4 portrait;
-                margin: 4mm;
-            }
-            body {
-                background: white;
-                padding: 0;
-                font-size: 10px;
-            }
-            .no-print {
-                display: none !important;
-            }
-            .official-sheet {
-                box-shadow: none;
-                border: none;
-                padding: 0;
-                width: 100%;
-                font-size: 0.65rem;
-                margin-top: 0;
-            }
+            @page { size: A4 portrait; margin: 4mm; }
+            body { background: white; padding: 0; font-size: 10px; }
+            .no-print { display: none !important; }
+            .official-sheet { box-shadow: none; border: none; padding: 0; width: 100%; font-size: 0.65rem; margin-top: 0; }
             .info-table th, .info-table td { padding: 2px 4px; font-size: 0.62rem; display: table-cell; }
-            .section-header { padding: 2px 4px; margin-top: 3px; margin-bottom: 2px; font-size: 0.65rem; }
+            .section-header { padding: 2px 6px; margin-top: 4px; margin-bottom: 2px; font-size: 0.65rem; }
             table.inspection-table th, table.inspection-table td { padding: 2px 4px; font-size: 0.6rem; }
             input[type="radio"], input[type="checkbox"] { transform: scale(1); }
-            textarea.form-control { height: 18px; }
-            .signature-grid { gap: 4px; margin-top: 3px; padding-top: 2px; }
-            .sig-box { padding: 4px; gap: 2px; }
+            textarea.form-control { height: 20px; }
+            .signature-grid { gap: 6px; margin-top: 6px; padding-top: 4px; }
+            .sig-box { padding: 6px; gap: 3px; }
         }
     </style>
 </head>
@@ -414,85 +394,51 @@
 <div class="app-container">
     
     <div class="no-print">
-        <div class="auth-bar">
-            <span id="authStatus">👤 ยังไม่ได้เข้าสู่ระบบ — ข้อมูลจะไม่ถูกบันทึก</span>
-            <button class="google-btn" onclick="handleGoogleLogin()">
-                <svg width="14" height="14" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.19v3.15C3.17 21.32 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.19C.43 8.13 0 9.87 0 11.7s.43 3.57 1.19 5.1l4.08-2.56z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.68 1.19 6.6l4.08 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
-                เข้าสู่ระบบด้วย Google
-            </button>
-        </div>
+        <div class="control-hub">
+            <div class="top-bar">
+                <div class="app-brand">
+                    ⚡ ระบบตรวจสอบอุปกรณ์ไฟฟ้า (MEA Asset Inspection)
+                </div>
+                <div class="google-pill" onclick="handleGoogleLogin()">
+                    <svg width="14" height="14" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.19v3.15C3.17 21.32 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.19C.43 8.13 0 9.87 0 11.7s.43 3.57 1.19 5.1l4.08-2.56z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.68 1.19 6.6l4.08 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
+                    <span id="authStatus">เข้าสู่ระบบด้วย Google</span>
+                </div>
+            </div>
 
-        <div class="toolbar">
-            <span style="font-size: 0.85rem; font-weight: 600;">เมนูจัดการ:</span>
-            <button class="btn btn-primary" onclick="saveNewRecord()">💾 บันทึกใหม่</button>
-            <button class="btn btn-secondary" onclick="saveCurrentRecord()">🔄 บันทึกทับ</button>
-            <button class="btn btn-secondary" onclick="copyAsNewRecord()">📄 คัดลอก</button>
-            <button class="btn btn-secondary" onclick="newForm()">➕ ฟอร์มใหม่</button>
-            <button class="btn btn-danger" onclick="clearForm()">🗑️ ล้าง</button>
-            <div style="flex-grow: 1;"></div>
-            <button class="btn btn-primary" onclick="window.print()">🖨️ พิมพ์ A4 หน้าเดียว</button>
-        </div>
+            <div class="action-toolbar">
+                <button class="btn btn-primary" onclick="saveNewRecord()">💾 บันทึกใหม่</button>
+                <button class="btn btn-secondary" onclick="saveCurrentRecord()">🔄 บันทึกทับ</button>
+                <button class="btn btn-secondary" onclick="copyAsNewRecord()">📄 คัดลอก</button>
+                <button class="btn btn-secondary" onclick="newForm()">➕ ฟอร์มใหม่</button>
+                <button class="btn btn-danger" onclick="clearForm()">🗑️ ล้าง</button>
+                <button class="btn btn-print" onclick="window.print()">🖨️ พิมพ์ A4</button>
+            </div>
 
-        <div class="extra-panel">
-            <div class="extra-panel-header">
-                <span>📁 ข้อมูลที่บันทึกไว้ (0)</span>
-                <button class="btn btn-secondary" style="font-size:0.75rem; padding:4px 10px;" onclick="alert('รีเฟรชข้อมูลสำเร็จ')">🔄 รีเฟรช</button>
+            <!-- แถบเลือกฟอร์มหลัก -->
+            <div class="tab-scroller" id="tabContainer">
+                <button class="tab-btn active" onclick="switchTab(this, 'SF-07-0-015')">SF-07-0-015</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-016')">SF-07-0-016</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-017')">SF-07-0-017</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-018')">SF-07-0-018</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-019')">SF-07-0-019</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-020')">SF-07-0-020</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-021')">SF-07-0-021</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-022')">SF-07-0-022</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-023')">SF-07-0-023</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-024')">SF-07-0-024</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-025')">SF-07-0-025</button>
             </div>
-            <div class="extra-grid">
-                <input type="text" class="form-control" placeholder="Plant">
-                <input type="text" class="form-control" placeholder="Work Order">
-                <button class="btn btn-secondary" style="font-size:0.85rem; padding:6px 14px;" onclick="alert('ล้างตัวกรองแล้ว')">ล้าง</button>
-            </div>
-        </div>
-
-        <div class="extra-panel">
-            <div class="extra-panel-header">
-                <span>📷 รูปภาพประกอบการตรวจสอบ</span>
-                <span style="font-size:0.75rem; color:var(--text-secondary);">0 KB</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
-                <span style="font-size:0.8rem; color:var(--text-secondary);">ยังไม่มีรูปภาพประกอบ</span>
-                <button class="btn btn-primary" style="font-size:0.8rem; padding:6px 12px;" onclick="alert('ฟังก์ชันเพิ่มรูปภาพ')">+ เพิ่มรูป</button>
-            </div>
-        </div>
-
-        <div class="extra-panel">
-            <div class="extra-panel-header">
-                <span>🎯 การประเมินความสำคัญของอุปกรณ์ (Criticality)</span>
-                <span style="font-size:0.75rem; background:#e2e8f0; padding:2px 8px; border-radius:4px;">ยังไม่ประเมิน</span>
-            </div>
-            <div class="criticality-grid">
-                <div class="field-group"><label>SAF — ความปลอดภัย</label><select class="form-control"><option>- เลือก -</option></select></div>
-                <div class="field-group"><label>REL — ความต่อเนื่อง</label><select class="form-control"><option>- เลือก -</option></select></div>
-                <div class="field-group"><label>OPR — ภารกิจ</label><select class="form-control"><option>- เลือก -</option></select></div>
-                <div class="field-group"><label>CON — แนวโน้มขัดข้อง</label><select class="form-control"><option>- เลือก -</option></select></div>
-                <div class="field-group"><label>REC — ความยากกู้คืน</label><select class="form-control"><option>- เลือก -</option></select></div>
-            </div>
-            <div style="font-size:0.8rem; margin-top:6px; font-weight:600;">คะแนนรวม: — / 100</div>
-        </div>
-
-        <div class="tab-container" id="tabContainer">
-            <button class="tab active" onclick="switchTab(this, 'SF-07-0-015')">SF-07-0-015</button>
-            <button class="tab" onclick="switchTab(this, 'SF-07-0-016')">SF-07-0-016</button>
-            <button class="tab" onclick="switchTab(this, 'SF-07-0-017')">SF-07-0-017</button>
-            <button class="tab" onclick="switchTab(this, 'SF-07-0-018')">SF-07-0-018</button>
-            <button class="tab" onclick="switchTab(this, 'SF-07-0-019')">SF-07-0-019</button>
-            <button class="tab" onclick="switchTab(this, 'SF-07-0-020')">SF-07-0-020</button>
-            <button class="tab" onclick="switchTab(this, 'SF-07-0-021')">SF-07-0-021</button>
-            <button class="tab" onclick="switchTab(this, 'SF-07-0-022')">SF-07-0-022</button>
-            <button class="tab" onclick="switchTab(this, 'SF-07-0-023')">SF-07-0-023</button>
-            <button class="tab" onclick="switchTab(this, 'SF-07-0-024')">SF-07-0-024</button>
-            <button class="tab" onclick="switchTab(this, 'SF-07-0-025')">SF-07-0-025</button>
         </div>
     </div>
 
-    <!-- ส่วนแสดงใบตรวจสอบ -->
+    <!-- ส่วนแสดงเนื้อหาฟอร์ม -->
     <div id="formContentArea">
         <div class="official-sheet" id="printArea">
             <div class="sheet-title-container">
                 <div><h1 id="formTitle">แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย</h1></div>
                 <div class="sheet-code" id="formCode">SF-07-0-015</div>
             </div>
+            
             <div class="section-header">1 ข้อมูลทั่วไป</div>
             <table class="info-table">
                 <tr>
@@ -537,9 +483,10 @@
                     <td><input type="text" placeholder="ระบุลักษณะการติดตั้ง"></td>
                 </tr>
             </table>
+
             <div class="section-header">2 รายการตรวจสอบบำรุงรักษา</div>
             <table class="inspection-table">
-                <thead><tr><th style="text-align: left;">รายการ</th><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th><th>ข้อบกพร่อง</th></tr></thead>
+                <thead><tr><th style="text-align: left;">รายการ</th><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th><th>ข้อบกพร่อง / การดำเนินการแก้ไข</th></tr></thead>
                 <tbody>
                     <tr><td>2.1 Drop Fuse</td><td><input type="radio" name="c1"></td><td><input type="radio" name="c1"></td><td><input type="radio" name="c1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.2 Station Post Type Insulator</td><td><input type="radio" name="c2"></td><td><input type="radio" name="c2"></td><td><input type="radio" name="c2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
@@ -557,14 +504,24 @@
                     <tr><td>2.14 CT-TLM Meter (ถ้ามี)</td><td><input type="radio" name="c14"></td><td><input type="radio" name="c14"></td><td><input type="radio" name="c14"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                 </tbody>
             </table>
+
             <div class="section-header">3 ตรวจสอบวัดกระแสและแรงดันไฟฟ้า</div>
-            <div style="display: flex; gap: 15px; margin-bottom: 6px; font-size: 0.85rem; align-items: center; flex-wrap: wrap;"><div><label><input type="checkbox"> กลางวัน</label> &nbsp; <label><input type="checkbox"> กลางคืน</label></div><div>เวลา : <input type="time" class="form-control" style="display: inline-block; width: 100px; padding: 4px;"></div><div>วิธีการ: <label><input type="checkbox"> วัดหน้างาน</label> &nbsp; <label><input type="checkbox"> TLM</label></div></div>
-            <div class="measure-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 8px;">
-                <div><strong style="font-size: 0.85rem;">แรงดันไฟฟ้า (V)</strong><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 4px;"><div class="field-group"><label>V1-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-2</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-3</label><input type="text" class="form-control"></div><div class="field-group"><label>V3-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-3</label><input type="text" class="form-control"></div></div></div>
-                <div><strong style="font-size: 0.85rem;">กระแสไฟฟ้า (A)</strong><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 4px;"><div class="field-group"><label>IN</label><input type="text" class="form-control"></div><div class="field-group"><label>I1</label><input type="text" class="form-control"></div><div class="field-group"><label>I2</label><input type="text" class="form-control"></div><div class="field-group"><label>I3</label><input type="text" class="form-control"></div></div><div class="field-group" style="margin-top: 6px;"><label>ผลรวมกระแสหน้าหม้อแปลงฯ ทั้งหมด</label><input type="text" class="form-control"></div></div>
+            <div style="display: flex; gap: 15px; margin-bottom: 8px; font-size: 0.85rem; align-items: center; flex-wrap: wrap;">
+                <div><label><input type="checkbox"> กลางวัน</label> &nbsp; <label><input type="checkbox"> กลางคืน</label></div>
+                <div>เวลา : <input type="time" class="form-control" style="display: inline-block; width: 110px; padding: 4px;"></div>
+                <div>วิธีการ: <label><input type="checkbox"> วัดหน้างาน</label> &nbsp; <label><input type="checkbox"> TLM</label></div>
             </div>
-            <div class="section-header">4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control" style="height: 60px;"></textarea></div>
-            <div class="section-header">5 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control" style="height: 60px;"></textarea></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px;">
+                <div><strong>แรงดันไฟฟ้า (V)</strong><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 4px;"><div class="field-group"><label>V1-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-2</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-3</label><input type="text" class="form-control"></div><div class="field-group"><label>V3-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-3</label><input type="text" class="form-control"></div></div></div>
+                <div><strong>กระแสไฟฟ้า (A)</strong><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 4px;"><div class="field-group"><label>IN</label><input type="text" class="form-control"></div><div class="field-group"><label>I1</label><input type="text" class="form-control"></div><div class="field-group"><label>I2</label><input type="text" class="form-control"></div><div class="field-group"><label>I3</label><input type="text" class="form-control"></div></div><div class="field-group" style="margin-top: 6px;"><label>ผลรวมกระแสหน้าหม้อแปลงฯ ทั้งหมด</label><input type="text" class="form-control"></div></div>
+            </div>
+
+            <div class="section-header">4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div>
+            <div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
+
+            <div class="section-header">5 การปรับปรุงข้อบกพร่อง :</div>
+            <div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
+
             <div class="signature-grid">
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
@@ -602,10 +559,10 @@
     const unitSubstationPages = {
         1: `
             <div class="sheet-title-container"><div><h1 id="formTitle">แบบตรวจสอบบำรุงรักษา UNIT SUBSTATION</h1></div><div class="sheet-code" id="formCode">SF-07-0-019</div></div>
-            <div class="no-print" style="padding: 4px 0; margin-bottom: 6px;">
-                <div class="sub-tab-container">
-                    <button class="sub-tab active" onclick="switchSubTab(1)">📄 ใบที่ 1 (ข้อมูลทั่วไป & ตู้ครอบ RMU)</button>
-                    <button class="sub-tab" onclick="switchSubTab(2)">📄 ใบที่ 2 (หม้อแปลง, แรงต่ำ & ค่าไฟฟ้า)</button>
+            <div class="no-print" style="margin-bottom: 6px;">
+                <div class="sub-tab-box">
+                    <button class="sub-tab-btn active" onclick="switchSubTab(1)">📄 ใบที่ 1 (ข้อมูลทั่วไป & ตู้ครอบ RMU)</button>
+                    <button class="sub-tab-btn" onclick="switchSubTab(2)">📄 ใบที่ 2 (หม้อแปลง, แรงต่ำ & ค่าไฟฟ้า)</button>
                 </div>
             </div>
             <div class="section-header">1 ข้อมูลทั่วไป</div>
@@ -622,7 +579,7 @@
                     <th>GIS Long.</th>
                     <td>
                         <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <input type="text" id="longInput" placeholder="ลองจิจูด" style="width:75%;">
+                            <input type="text" id="longInput" placeholder="ลองจิจูด" style="width:70%;">
                             <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button>
                         </div>
                     </td>
@@ -684,10 +641,10 @@
         `,
         2: `
             <div class="sheet-title-container"><div><h1 id="formTitle">แบบตรวจสอบบำรุงรักษา UNIT SUBSTATION</h1></div><div class="sheet-code" id="formCode">SF-07-0-019</div></div>
-            <div class="no-print" style="padding: 4px 0; margin-bottom: 6px;">
-                <div class="sub-tab-container">
-                    <button class="sub-tab" onclick="switchSubTab(1)">📄 ใบที่ 1 (ข้อมูลทั่วไป & ตู้ครอบ RMU)</button>
-                    <button class="sub-tab active" onclick="switchSubTab(2)">📄 ใบที่ 2 (หม้อแปลง, แรงต่ำ & ค่าไฟฟ้า)</button>
+            <div class="no-print" style="margin-bottom: 6px;">
+                <div class="sub-tab-box">
+                    <button class="sub-tab-btn" onclick="switchSubTab(1)">📄 ใบที่ 1 (ข้อมูลทั่วไป & ตู้ครอบ RMU)</button>
+                    <button class="sub-tab-btn active" onclick="switchSubTab(2)">📄 ใบที่ 2 (หม้อแปลง, แรงต่ำ & ค่าไฟฟ้า)</button>
                 </div>
             </div>
             <div class="section-header">2 รายการตรวจสอบบำรุงรักษา (ใบที่ 2)</div>
@@ -705,17 +662,17 @@
                 </tbody>
             </table>
             <div class="section-header">3 ตรวจสอบวัดกระแสและแรงดันไฟฟ้า (ด้านแรงต่ำ)</div>
-            <div style="display: flex; gap: 10px; margin-bottom: 2px; font-size: 0.8rem; align-items: center; flex-wrap: wrap;">
-                <div><label><input type="checkbox"> กลางวัน</label> <label><input type="checkbox"> กลางคืน</label></div>
-                <div>เวลา : <input type="time" class="form-control" style="display: inline-block; width: 90px; padding: 2px;"></div>
-                <div>วิธีการ: <label><input type="checkbox"> วัดหน้างาน</label> <label><input type="checkbox"> TLM</label></div>
+            <div style="display: flex; gap: 10px; margin-bottom: 6px; font-size: 0.85rem; align-items: center; flex-wrap: wrap;">
+                <div><label><input type="checkbox"> กลางวัน</label> &nbsp; <label><input type="checkbox"> กลางคืน</label></div>
+                <div>เวลา : <input type="time" class="form-control" style="display: inline-block; width: 100px; padding: 4px;"></div>
+                <div>วิธีการ: <label><input type="checkbox"> วัดหน้างาน</label> &nbsp; <label><input type="checkbox"> TLM</label></div>
             </div>
-            <div class="measure-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 6px 10px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 4px;">
-                <div><strong style="font-size: 0.75rem;">แรงดันไฟฟ้า (V)</strong><div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; margin-top: 2px;"><div class="field-group"><label>V1-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V3-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-2</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-3</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-3</label><input type="text" class="form-control"></div></div></div>
-                <div><strong style="font-size: 0.75rem;">กระแสไฟฟ้า (A)</strong><div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 3px; margin-top: 2px;"><div class="field-group"><label>IN</label><input type="text" class="form-control"></div><div class="field-group"><label>I1</label><input type="text" class="form-control"></div><div class="field-group"><label>I2</label><input type="text" class="form-control"></div><div class="field-group"><label>I3</label><input type="text" class="form-control"></div></div><div class="field-group" style="margin-top: 2px;"><label>ผลรวมกระแสหน้าหม้อแปลงฯ ทั้งหมด</label><input type="text" class="form-control"></div></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px; background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px;">
+                <div><strong>แรงดันไฟฟ้า (V)</strong><div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 4px;"><div class="field-group"><label>V1-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V3-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-2</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-3</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-3</label><input type="text" class="form-control"></div></div></div>
+                <div><strong>กระแสไฟฟ้า (A)</strong><div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; margin-top: 4px;"><div class="field-group"><label>IN</label><input type="text" class="form-control"></div><div class="field-group"><label>I1</label><input type="text" class="form-control"></div><div class="field-group"><label>I2</label><input type="text" class="form-control"></div><div class="field-group"><label>I3</label><input type="text" class="form-control"></div></div><div class="field-group" style="margin-top: 4px;"><label>ผลรวมกระแสทั้งหมด</label><input type="text" class="form-control"></div></div>
             </div>
-            <div class="section-header">4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 4px;"><textarea class="form-control" style="height:30px;"></textarea></div>
-            <div class="section-header">5 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 4px;"><textarea class="form-control" style="height:30px;"></textarea></div>
+            <div class="section-header">4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control" style="height:50px;"></textarea></div>
+            <div class="section-header">5 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control" style="height:50px;"></textarea></div>
             <div class="signature-grid">
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField3"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField4"></div></div>
@@ -725,7 +682,7 @@
     };
 
     function switchSubTab(pageNum) {
-        document.querySelectorAll('.sub-tab').forEach((tab, index) => {
+        document.querySelectorAll('.sub-tab-btn').forEach((tab, index) => {
             if(index + 1 === pageNum) {
                 tab.classList.add('active');
             } else {
@@ -757,7 +714,7 @@
                     <th>GIS Long.</th>
                     <td>
                         <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <input type="text" id="longInput" placeholder="ลองจิจูด" style="width:75%;">
+                            <input type="text" id="longInput" placeholder="ลองจิจูด" style="width:70%;">
                             <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button>
                         </div>
                     </td>
@@ -789,7 +746,7 @@
             </table>
             <div class="section-header">2 รายการตรวจสอบบำรุงรักษา</div>
             <table class="inspection-table">
-                <thead><tr><th style="text-align: left;">รายการ</th><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th><th>ข้อบกพร่อง</th></tr></thead>
+                <thead><tr><th style="text-align: left;">รายการ</th><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th><th>ข้อบกพร่อง / การดำเนินการแก้ไข</th></tr></thead>
                 <tbody>
                     <tr><td>2.1 Drop Fuse</td><td><input type="radio" name="c1"></td><td><input type="radio" name="c1"></td><td><input type="radio" name="c1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.2 Station Post Type Insulator</td><td><input type="radio" name="c2"></td><td><input type="radio" name="c2"></td><td><input type="radio" name="c2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
@@ -808,18 +765,19 @@
                 </tbody>
             </table>
             <div class="section-header">3 ตรวจสอบวัดกระแสและแรงดันไฟฟ้า</div>
-            <div style="display: flex; gap: 15px; margin-bottom: 6px; font-size: 0.8rem; align-items: center; flex-wrap: wrap;"><div><label><input type="checkbox"> กลางวัน</label> &nbsp; <label><input type="checkbox"> กลางคืน</label></div><div>เวลา : <input type="time" class="form-control" style="display: inline-block; width: 100px; padding: 4px;"></div><div>วิธีการ: <label><input type="checkbox"> วัดหน้างาน</label> &nbsp; <label><input type="checkbox"> TLM</label></div></div>
-            <div class="measure-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 8px;">
-                <div><strong style="font-size: 0.85rem;">แรงดันไฟฟ้า (V)</strong><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 4px;"><div class="field-group"><label>V1-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-2</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-3</label><input type="text" class="form-control"></div><div class="field-group"><label>V3-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-3</label><input type="text" class="form-control"></div></div></div>
-                <div><strong style="font-size: 0.85rem;">กระแสไฟฟ้า (A)</strong><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 4px;"><div class="field-group"><label>IN</label><input type="text" class="form-control"></div><div class="field-group"><label>I1</label><input type="text" class="form-control"></div><div class="field-group"><label>I2</label><input type="text" class="form-control"></div><div class="field-group"><label>I3</label><input type="text" class="form-control"></div></div><div class="field-group" style="margin-top: 6px;"><label>ผลรวมกระแสหน้าหม้อแปลงฯ ทั้งหมด</label><input type="text" class="form-control"></div></div>
+            <div style="display: flex; gap: 15px; margin-bottom: 8px; font-size: 0.85rem; align-items: center; flex-wrap: wrap;"><div><label><input type="checkbox"> กลางวัน</label> &nbsp; <label><input type="checkbox"> กลางคืน</label></div><div>เวลา : <input type="time" class="form-control" style="display: inline-block; width: 110px; padding: 4px;"></div><div>วิธีการ: <label><input type="checkbox"> วัดหน้างาน</label> &nbsp; <label><input type="checkbox"> TLM</label></div></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px;">
+                <div><strong>แรงดันไฟฟ้า (V)</strong><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 4px;"><div class="field-group"><label>V1-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-2</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-3</label><input type="text" class="form-control"></div><div class="field-group"><label>V3-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-3</label><input type="text" class="form-control"></div></div></div>
+                <div><strong>กระแสไฟฟ้า (A)</strong><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 4px;"><div class="field-group"><label>IN</label><input type="text" class="form-control"></div><div class="field-group"><label>I1</label><input type="text" class="form-control"></div><div class="field-group"><label>I2</label><input type="text" class="form-control"></div><div class="field-group"><label>I3</label><input type="text" class="form-control"></div></div><div class="field-group" style="margin-top: 6px;"><label>ผลรวมกระแสหน้าหม้อแปลงฯ ทั้งหมด</label><input type="text" class="form-control"></div></div>
             </div>
-            <div class="section-header">4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control" style="height: 60px;"></textarea></div>
-            <div class="section-header">5 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control" style="height: 60px;"></textarea></div>
+            <div class="section-header">4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
+            <div class="section-header">5 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
             <div class="signature-grid">
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
             </div>
-            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-015</span></div>`,
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-015</span></div>
+        `,
 
         'SF-07-0-016': `
             <div class="sheet-title-container"><div><h1 id="formTitle">แบบตรวจสอบบำรุงรักษา Load Break Switch</h1></div><div class="sheet-code" id="formCode">SF-07-0-016</div></div>
@@ -837,7 +795,7 @@
                     <th>GIS Long.</th>
                     <td>
                         <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <input type="text" id="longInput" placeholder="ลองจิจูด" style="width:75%;">
+                            <input type="text" id="longInput" placeholder="ลองจิจูด" style="width:70%;">
                             <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button>
                         </div>
                     </td>
@@ -862,12 +820,12 @@
                 </tr>
             </table>
             <div class="section-header">2 รายการตรวจสอบบำรุงรักษา</div>
-            <div style="display: flex; gap: 20px; font-size: 0.8rem; margin-bottom: 6px; background: #f8fafc; padding: 4px 8px; border: 1px solid var(--border-color); border-radius: 6px;">
+            <div style="display: flex; gap: 20px; font-size: 0.85rem; margin-bottom: 8px; background: #f8fafc; padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px;">
                 <div>สถานะสวิตช์: <label><input type="checkbox"> ปลด</label> <label><input type="checkbox"> สับ</label></div>
-                <div>สถานะระบบ SCADA/EMS/DMS: <label><input type="checkbox"> online</label> <label><input type="checkbox"> offline</label></div>
+                <div>สถานะระบบ SCADA: <label><input type="checkbox"> online</label> <label><input type="checkbox"> offline</label></div>
             </div>
             <table class="inspection-table">
-                <thead><tr><th style="text-align: left;">รายการ (2.1 ถึง 2.18)</th><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th><th>ข้อบกพร่อง</th></tr></thead>
+                <thead><tr><th style="text-align: left;">รายการ (2.1 ถึง 2.18)</th><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th><th>ข้อบกพร่อง / การดำเนินการแก้ไข</th></tr></thead>
                 <tbody>
                     <tr><td>2.1 ตัวถัง LBS /สลักล็อคการปลดสับ</td><td><input type="radio" name="r1"></td><td><input type="radio" name="r1"></td><td><input type="radio" name="r1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.2 สถานะก๊าซ SF6</td><td><input type="radio" name="r2"></td><td><input type="radio" name="r2"></td><td><input type="radio" name="r2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
@@ -889,13 +847,14 @@
                     <tr><td>2.18 การทดสอบ ATS</td><td><input type="radio" name="r18"></td><td><input type="radio" name="r18"></td><td><input type="radio" name="r18"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                 </tbody>
             </table>
-            <div class="section-header">3 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
-            <div class="section-header">4 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
+            <div class="section-header">3 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
+            <div class="section-header">4 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
             <div class="signature-grid">
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
             </div>
-            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-016</span></div>`,
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-016</span></div>
+        `,
 
         'SF-07-0-017': `
             <div class="sheet-title-container"><div><h1 id="formTitle">แบบตรวจสอบบำรุงรักษา Sectionalizer</h1></div><div class="sheet-code" id="formCode">SF-07-0-017</div></div>
@@ -913,7 +872,7 @@
                     <th>GIS Long.</th>
                     <td>
                         <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <input type="text" id="longInput" placeholder="ลองจิจูด" style="width:75%;">
+                            <input type="text" id="longInput" placeholder="ลองจิจูด" style="width:70%;">
                             <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button>
                         </div>
                     </td>
@@ -930,11 +889,11 @@
                 </tr>
             </table>
             <div class="section-header">2 รายการตรวจสอบบำรุงรักษา</div>
-            <div style="font-size: 0.8rem; margin-bottom: 6px; background: #f8fafc; padding: 4px 8px; border: 1px solid var(--border-color); border-radius: 6px;">
+            <div style="font-size: 0.85rem; margin-bottom: 8px; background: #f8fafc; padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px;">
                 - สถานะสวิตช์: <label><input type="checkbox"> ปลด</label> &nbsp; <label><input type="checkbox"> สับ</label>
             </div>
             <table class="inspection-table">
-                <thead><tr><th style="text-align: left;">รายการ (2.1 ถึง 2.13)</th><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th><th>ข้อบกพร่อง</th></tr></thead>
+                <thead><tr><th style="text-align: left;">รายการ (2.1 ถึง 2.13)</th><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th><th>ข้อบกพร่อง / การดำเนินการแก้ไข</th></tr></thead>
                 <tbody>
                     <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">สภาพ SZ และอุปกรณ์ประกอบ (2.1-2.7)</td></tr>
                     <tr><td>2.1 ตัวถัง SZ / สลักล็อคการปลดสับ</td><td><input type="radio" name="sz1"></td><td><input type="radio" name="sz1"></td><td><input type="radio" name="sz1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
@@ -959,7 +918,8 @@
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
             </div>
-            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-017</span></div>`,
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-017</span></div>
+        `,
 
         'SF-07-0-018': `
             <div class="sheet-title-container"><div><h1 id="formTitle">แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)</h1></div><div class="sheet-code" id="formCode">SF-07-0-018</div></div>
@@ -977,7 +937,7 @@
                     <th>GIS Long.</th>
                     <td>
                         <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <input type="text" id="longInput" placeholder="ลองจิจูด" style="width:75%;">
+                            <input type="text" id="longInput" placeholder="ลองจิจูด" style="width:70%;">
                             <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button>
                         </div>
                     </td>
@@ -991,7 +951,7 @@
             </table>
             <div class="section-header">2 รายการตรวจสอบบำรุงรักษา</div>
             <table class="inspection-table">
-                <thead><tr><th style="text-align: left;">รายการ (2.1 ถึง 2.19)</th><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th><th>ข้อบกพร่อง</th></tr></thead>
+                <thead><tr><th style="text-align: left;">รายการ (2.1 ถึง 2.19)</th><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th><th>ข้อบกพร่อง / การดำเนินการแก้ไข</th></tr></thead>
                 <tbody>
                     <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">ตู้ครอบ RMU (กรณีติดตั้งนอกอาคาร) (2.1-2.3)</td></tr>
                     <tr><td>2.1 สภาพภายนอก</td><td><input type="radio" name="rmu1"></td><td><input type="radio" name="rmu1"></td><td><input type="radio" name="rmu1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
@@ -1023,7 +983,8 @@
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
             </div>
-            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-018</span></div>`,
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-018</span></div>
+        `,
 
         'SF-07-0-020': `
             <div class="sheet-title-container"><div><h1 id="formTitle">แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV ในสายป้อน</h1></div><div class="sheet-code" id="formCode">SF-07-0-020</div></div>
@@ -1066,7 +1027,7 @@
             </table>
             <div class="section-header">2 รายการตรวจสอบบำรุงรักษา</div>
             <table class="inspection-table">
-                <thead><tr><th style="text-align: left;">รายการ (2.1 ถึง 2.19)</th><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th><th>ข้อบกพร่อง</th></tr></thead>
+                <thead><tr><th style="text-align: left;">รายการ (2.1 ถึง 2.19)</th><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th><th>ข้อบกพร่อง / การดำเนินการแก้ไข</th></tr></thead>
                 <tbody>
                     <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">อุปกรณ์ประกอบ (2.1-2.8)</td></tr>
                     <tr><td>2.1 Drop Fuse</td><td><input type="radio" name="cb1"></td><td><input type="radio" name="cb1"></td><td><input type="radio" name="cb1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
@@ -1093,8 +1054,8 @@
                 </tbody>
             </table>
             <div style="display: flex; gap: 15px; font-size: 0.85rem; margin-bottom: 6px;">
-                <div>เวลา Cap Off : <input type="text" class="form-control" style="display:inline-block; width:100px; padding:2px;"></div>
-                <div>เวลา Cap On : <input type="text" class="form-control" style="display:inline-block; width:100px; padding:2px;"></div>
+                <div>เวลา Cap Off : <input type="text" class="form-control" style="display:inline-block; width:100px; padding:4px;"></div>
+                <div>เวลา Cap On : <input type="text" class="form-control" style="display:inline-block; width:100px; padding:4px;"></div>
             </div>
             <div class="section-header">3 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
             <div class="section-header">4 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
@@ -1102,7 +1063,8 @@
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
             </div>
-            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-020</span></div>`,
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-020</span></div>
+        `,
 
         'SF-07-0-021': `
             <div class="sheet-title-container">
@@ -1138,7 +1100,7 @@
                 <tr>
                     <th>RELAY (เลือก)</th>
                     <td>
-                        <div style="font-size:0.8rem; display:flex; gap:10px;">
+                        <div style="font-size:0.8rem; display:flex; gap:8px; flex-wrap:wrap;">
                             <label><input type="checkbox"> MPCR</label>
                             <label><input type="checkbox"> MPCV</label>
                             <label><input type="checkbox"> ETI</label>
@@ -1148,8 +1110,8 @@
                     <th>GIS Lat/Long</th>
                     <td>
                         <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <input type="text" id="latInput" placeholder="Lat" style="width:40%;">
-                            <input type="text" id="longInput" placeholder="Long" style="width:40%;">
+                            <input type="text" id="latInput" placeholder="Lat" style="width:38%;">
+                            <input type="text" id="longInput" placeholder="Long" style="width:38%;">
                             <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button>
                         </div>
                     </td>
@@ -1164,7 +1126,7 @@
                         <th>เกณฑ์</th>
                         <th>ปกติ</th>
                         <th>ไม่ปกติ</th>
-                        <th>ข้อบกพร่อง / การดำเนินการแก้ไข/เพิ่มเติม</th>
+                        <th>ข้อบกพร่อง / การดำเนินการแก้ไข</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1208,7 +1170,8 @@
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
             </div>
-            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-021</span></div>`,
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-021</span></div>
+        `,
 
         'SF-07-0-022': `
             <div class="sheet-title-container"><div><h1 id="formTitle">แบบตรวจสอบบำรุงรักษาหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง</h1></div><div class="sheet-code" id="formCode">SF-07-0-022</div></div>
@@ -1252,7 +1215,7 @@
                         <th>เกณฑ์</th>
                         <th>ปกติ</th>
                         <th>ไม่ปกติ</th>
-                        <th>ข้อบกพร่อง / การดำเนินการแก้ไข/เพิ่มเติม</th>
+                        <th>ข้อบกพร่อง / การดำเนินการแก้ไข</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1322,7 +1285,8 @@
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
             </div>
-            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-022</span></div>`,
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-022</span></div>
+        `,
 
         'SF-07-0-023': `
             <div class="sheet-title-container">
@@ -1433,7 +1397,8 @@
             <div class="sheet-footer-note">
                 <span>ปรับปรุงครั้งที่ 0 วันที่....</span>
                 <span id="footerCode">SF-07-0-023</span>
-            </div>`,
+            </div>
+        `,
 
         'SF-07-0-024': `
             <div class="sheet-title-container">
@@ -1542,7 +1507,8 @@
             <div class="sheet-footer-note">
                 <span>ปรับปรุงครั้งที่ 0 วันที่....</span>
                 <span id="footerCode">SF-07-0-024</span>
-            </div>`,
+            </div>
+        `,
 
         'SF-07-0-025': `
             <div class="sheet-title-container">
@@ -1610,11 +1576,11 @@
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 8px 0;">
                 <div style="border: 1px dashed var(--border-color); padding: 10px; text-align: center; background: #f8fafc; border-radius: 8px;">
-                    <label style="font-size:0.8rem; color:var(--text-secondary); font-weight:600;">📷 ภาพถ่ายจากกล้องปกติ</label>
+                    <label style="font-size:0.80rem; color:var(--text-secondary); font-weight:600;">📷 ภาพถ่ายจากกล้องปกติ</label>
                     <input type="file" accept="image/*" style="font-size: 0.75rem; display:block; margin: 6px auto;">
                 </div>
                 <div style="border: 1px dashed var(--border-color); padding: 10px; text-align: center; background: #f8fafc; border-radius: 8px;">
-                    <label style="font-size:0.8rem; color:var(--text-secondary); font-weight:600;">📷 ภาพถ่ายจาก Acoustic Camera</label>
+                    <label style="font-size:0.80rem; color:var(--text-secondary); font-weight:600;">📷 ภาพถ่ายจาก Acoustic Camera</label>
                     <input type="file" accept="image/*" style="font-size: 0.75rem; display:block; margin: 6px auto;">
                 </div>
             </div>
@@ -1645,11 +1611,12 @@
             <div class="sheet-footer-note">
                 <span>ปรับปรุงครั้งที่ 0 วันที่....</span>
                 <span id="footerCode">SF-07-0-025</span>
-            </div>`
+            </div>
+        `
     };
 
     function switchTab(element, formCode) {
-        document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(tab => tab.classList.remove('active'));
         element.classList.add('active');
 
         if(formCode === 'SF-07-0-019') {
@@ -1670,7 +1637,7 @@
     }
 
     function handleGoogleLogin() {
-        document.getElementById('authStatus').innerText = "👤 เข้าสู่ระบบด้วย Google สำเร็จ (ผู้ใช้งานระบบ)";
+        document.getElementById('authStatus').innerText = "เข้าสู่ระบบด้วย Google สำเร็จ";
         alert("เข้าสู่ระบบสำเร็จ!");
     }
 
@@ -1696,10 +1663,6 @@
         document.querySelectorAll('input[type="text"], textarea, input[type="time"]').forEach(el => el.value = '');
         document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(el => el.checked = false);
         alert("ล้างฟอร์มเรียบร้อยแล้ว");
-    }
-
-    function refreshRecords() {
-        alert("🔄 รีเฟรชรายการข้อมูลที่บันทึกแล้ว");
     }
 </script>
 
