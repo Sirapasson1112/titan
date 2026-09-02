@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asset Inspection App - SF-07-0-015</title>
+    <!-- นำเข้าฟอนต์ Sarabun และ TH Sarabun PSK เพื่อความสวยงามเป็นทางการ -->
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-color: #d97706;
             --primary-hover: #b45309;
-            --bg-color: #fdfbf7;
+            --bg-color: #fcf9f2;
             --card-bg: #ffffff;
             --text-main: #292524;
             --text-secondary: #78716c;
@@ -19,7 +21,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'TH Sarabun PSK', 'Segoe UI', Tahoma, sans-serif;
+            font-family: 'Sarabun', sans-serif;
         }
 
         body {
@@ -43,6 +45,7 @@
             border: 1px solid var(--border-color);
             margin-bottom: 10px;
             font-size: 0.85rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
         }
 
         .google-btn {
@@ -51,139 +54,154 @@
             gap: 6px;
             background: #fff;
             border: 1px solid var(--border-color);
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 6px;
             font-weight: 600;
             cursor: pointer;
             font-size: 0.8rem;
+            transition: background 0.2s;
         }
+
+        .google-btn:hover { background: #f5f5f4; }
 
         .toolbar {
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
             background: var(--card-bg);
-            padding: 10px;
+            padding: 10px 15px;
             border-radius: 8px;
             border: 1px solid var(--border-color);
             margin-bottom: 10px;
             align-items: center;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
         }
 
         .btn {
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.8rem;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.85rem;
             font-weight: 500;
             cursor: pointer;
             border: none;
+            transition: all 0.2s;
         }
 
         .btn-primary { background: var(--primary-color); color: white; }
         .btn-primary:hover { background: var(--primary-hover); }
         .btn-secondary { background: #f5f5f4; color: var(--text-main); border: 1px solid var(--border-color); }
+        .btn-secondary:hover { background: #e7e5e4; }
         .btn-danger { background: #fef2f2; color: #dc2626; border: 1px solid #fee2e2; }
-        .btn-geo { background: #059669; color: white; font-size: 0.65rem; padding: 2px 4px; border-radius: 3px; cursor: pointer; border: none; margin-left: 3px; }
+        .btn-geo { background: #059669; color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; cursor: pointer; border: none; margin-left: 4px; }
+        .btn-geo:hover { background: #047857; }
 
         .tab-container {
             display: flex;
-            gap: 5px;
+            gap: 6px;
             overflow-x: auto;
             margin-bottom: 10px;
+            padding-bottom: 4px;
         }
 
         .tab {
-            padding: 5px 10px;
+            padding: 6px 12px;
             background: #f5f5f4;
-            border-radius: 4px;
-            font-size: 0.78rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
             cursor: pointer;
             border: 1px solid var(--border-color);
             white-space: nowrap;
+            color: var(--text-secondary);
         }
 
         .tab.active {
             background: var(--primary-color);
             color: white;
-            font-weight: bold;
+            font-weight: 600;
+            border-color: var(--primary-color);
         }
 
         .panel-box {
             background: var(--card-bg);
-            padding: 10px 15px;
+            padding: 12px 15px;
             border-radius: 8px;
             border: 1px solid var(--border-color);
             margin-bottom: 10px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
         }
 
         .panel-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-weight: bold;
-            margin-bottom: 6px;
-            padding-bottom: 4px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
             border-bottom: 1px solid var(--border-color);
         }
 
         .search-row {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             align-items: center;
         }
 
         .criticality-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 6px;
+            gap: 8px;
         }
 
-        /* --- รูปแบบใบตรวจสอบด้านล่าง (พิมพ์ A4 หน้าเดียว) --- */
+        /* --- รูปแบบใบตรวจสอบด้านล่าง (ออกแบบสไตล์เอกสารทางการ พิมพ์ A4 หน้าเดียว) --- */
         .official-sheet {
             background: var(--card-bg);
-            padding: 15px 20px;
+            padding: 20px 25px;
             border-radius: 8px;
             border: 1px solid var(--border-color);
-            font-size: 0.78rem;
+            font-size: 0.82rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
         }
 
         .sheet-title-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1.5px solid var(--text-main);
-            padding-bottom: 3px;
-            margin-bottom: 5px;
+            border-bottom: 2px solid var(--text-main);
+            padding-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         .sheet-title-container h1 {
-            font-size: 1.1rem;
-            font-weight: bold;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
         }
 
         .sheet-code {
-            font-size: 0.85rem;
-            font-weight: bold;
-            border: 1px solid var(--text-main);
-            padding: 1px 6px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border: 1.5px solid var(--text-main);
+            padding: 2px 8px;
+            border-radius: 4px;
         }
 
         .section-header {
             background-color: #f5f5f4;
-            font-weight: bold;
-            padding: 2px 5px;
-            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 3px 8px;
+            font-size: 0.82rem;
             border: 1px solid var(--border-color);
-            margin-top: 5px;
-            margin-bottom: 3px;
+            margin-top: 8px;
+            margin-bottom: 4px;
+            border-radius: 3px;
         }
 
         .grid-form {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 3px;
-            margin-bottom: 3px;
+            gap: 4px;
+            margin-bottom: 4px;
         }
 
         .field-group {
@@ -195,95 +213,104 @@
         .field-group.span-3 { grid-column: span 3; }
 
         .field-group label {
-            font-size: 0.68rem;
+            font-size: 0.72rem;
             color: var(--text-secondary);
-            font-weight: bold;
+            font-weight: 600;
         }
 
         .form-control {
-            padding: 2px 4px;
+            padding: 3px 6px;
             border: 1px solid var(--border-color);
-            border-radius: 2px;
-            font-size: 0.78rem;
+            border-radius: 4px;
+            font-size: 0.82rem;
             background-color: #fafaf9;
             width: 100%;
+            color: var(--text-main);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            background-color: #fff;
+            box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.1);
         }
 
         table.inspection-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }
 
         table.inspection-table th, table.inspection-table td {
             border: 1px solid var(--border-color);
-            padding: 2px 4px;
-            font-size: 0.72rem;
+            padding: 3px 6px;
+            font-size: 0.78rem;
         }
 
         table.inspection-table th {
             background-color: #f5f5f4;
             text-align: center;
+            font-weight: 600;
         }
 
         table.inspection-table td:nth-child(2),
         table.inspection-table td:nth-child(3),
         table.inspection-table td:nth-child(4) {
             text-align: center;
-            width: 35px;
+            width: 40px;
         }
 
         .measure-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 6px;
+            gap: 8px;
             border: 1px solid var(--border-color);
-            padding: 4px 6px;
+            padding: 6px 10px;
             background-color: #fafaf9;
-            border-radius: 3px;
-            margin-bottom: 3px;
+            border-radius: 4px;
+            margin-bottom: 4px;
         }
 
         .measure-subgrid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 3px;
-            margin-top: 2px;
+            gap: 4px;
+            margin-top: 3px;
         }
 
         textarea.form-control {
             resize: none;
-            height: 25px;
+            height: 30px;
         }
 
         .signature-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 5px;
+            gap: 10px;
+            margin-top: 6px;
             border-top: 1px dashed var(--border-color);
-            padding-top: 3px;
+            padding-top: 5px;
         }
 
         .sig-box {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 3px;
             background: #fafaf9;
-            padding: 4px;
+            padding: 6px;
             border: 1px solid var(--border-color);
-            border-radius: 3px;
+            border-radius: 4px;
         }
 
         .sheet-footer-note {
             display: flex;
             justify-content: space-between;
-            font-size: 0.68rem;
+            font-size: 0.72rem;
             color: var(--text-secondary);
-            margin-top: 3px;
+            margin-top: 4px;
         }
 
-        /* ตั้งค่าตอนสั่งพิมพ์: ซ่อนเมนูด้านบน ให้พิมพ์ออกเฉพาะใบตรวจสอบ A4 หน้าเดียว */
+        /* ตั้งค่าตอนสั่งพิมพ์: ซ่อนเมนูด้านบน จัดหน้ากระดาษ A4 หน้าเดียวพอดี */
         @media print {
             @page {
                 size: A4 portrait;
@@ -309,10 +336,10 @@
 
 <div class="app-container">
     
-    <!-- ส่วนบน: แผงควบคุมและเมนูเว็บแอป (ไม่พิมพ์ออกกระดาษ) -->
+    <!-- ส่วนบน: แผงควบคุมและเมนูเว็บแอป (ซ่อนเวลาพิมพ์) -->
     <div class="no-print">
         <div class="auth-bar">
-            <span>ยังไม่ได้เข้าสู่ระบบ — ข้อมูลจะไม่ถูกบันทึก</span>
+            <span>👤 ยังไม่ได้เข้าสู่ระบบ — ข้อมูลจะไม่ถูกบันทึก</span>
             <button class="google-btn" onclick="alert('กำลังเชื่อมต่อ Google...')">
                 <svg width="14" height="14" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.19v3.15C3.17 21.32 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.19C.43 8.13 0 9.87 0 11.7s.43 3.57 1.19 5.1l4.08-2.56z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.68 1.19 6.6l4.08 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
                 เข้าสู่ระบบด้วย Google
@@ -320,8 +347,8 @@
         </div>
 
         <div class="toolbar">
-            <span style="font-size: 0.8rem; font-weight: bold;">พร้อมใช้งาน</span>
-            <button class="btn btn-primary">💾 บันทึกเป็นรายการใหม่</button>
+            <span style="font-size: 0.85rem; font-weight: 600;">สถานะ: พร้อมใช้งาน</span>
+            <button class="btn btn-primary">💾 บันทึกใหม่</button>
             <button class="btn btn-secondary">🔄 บันทึกทับ</button>
             <button class="btn btn-secondary">📄 คัดลอก</button>
             <button class="btn btn-secondary">➕ ฟอร์มใหม่</button>
@@ -331,27 +358,26 @@
         </div>
 
         <div class="tab-container">
-            <button class="tab active">SF-07-0-015 ...</button>
-            <button class="tab">SF-07-0-022 ...</button>
-            <button class="tab">SF-07-0-023 ...</button>
-            <button class="tab">SF-07-0-021 ...</button>
-            <button class="tab">SF-07-0-016 ...</button>
-            <button class="tab">SF-07-0-017 ...</button>
-            <button class="tab">SF-07-0-018 ...</button>
-            <button class="tab">SF-07-0-019 ...</button>
+            <button class="tab active">SF-07-0-015</button>
+            <button class="tab">SF-07-0-022</button>
+            <button class="tab">SF-07-0-023</button>
+            <button class="tab">SF-07-0-021</button>
+            <button class="tab">SF-07-0-016</button>
+            <button class="tab">SF-07-0-017</button>
+            <button class="tab">SF-07-0-018</button>
+            <button class="tab">SF-07-0-019</button>
         </div>
 
         <div class="panel-box">
             <div class="panel-header">
                 <span>🗂️ ข้อมูลที่บันทึกไว้ (0)</span>
-                <button class="btn btn-secondary" style="padding: 2px 6px; font-size: 0.75rem;">🔄 รีเฟรช</button>
+                <button class="btn btn-secondary" style="padding: 2px 8px; font-size: 0.75rem;">🔄 รีเฟรช</button>
             </div>
             <div class="search-row">
                 <input type="text" class="form-control" placeholder="Plant">
                 <input type="text" class="form-control" placeholder="Work Order">
                 <button class="btn btn-secondary" style="font-size: 0.75rem;">ล้าง</button>
             </div>
-            <div style="text-align: center; color: var(--text-secondary); padding: 8px; font-size: 0.78rem;">เข้าสู่ระบบเพื่อดูรายการที่บันทึกไว้</div>
         </div>
 
         <div class="panel-box">
@@ -360,8 +386,8 @@
                 <span style="font-size: 0.75rem; color: var(--text-secondary);">0 KB</span>
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 0.78rem; color: var(--text-secondary);">ยังไม่มีรูปภาพ — กด "เพิ่มรูป"</span>
-                <label class="btn btn-primary" style="cursor: pointer; font-size: 0.75rem; padding: 3px 8px;">
+                <span style="font-size: 0.8rem; color: var(--text-secondary);">ยังไม่มีรูปภาพประกอบ</span>
+                <label class="btn btn-primary" style="cursor: pointer; font-size: 0.75rem; padding: 4px 10px;">
                     + เพิ่มรูป <input type="file" accept="image/*" style="display: none;">
                 </label>
             </div>
@@ -370,7 +396,7 @@
         <div class="panel-box">
             <div class="panel-header">
                 <span>🎯 การประเมินความสำคัญของอุปกรณ์ (Criticality)</span>
-                <span style="background: #f5f5f4; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; border: 1px solid var(--border-color);">ยังไม่ประเมิน</span>
+                <span style="background: #f5f5f4; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; border: 1px solid var(--border-color);">ยังไม่ประเมิน</span>
             </div>
             <div class="criticality-grid">
                 <div class="field-group"><label>SAF — ความปลอดภัย</label><select class="form-control"><option>- เลือก -</option></select></div>
@@ -379,7 +405,7 @@
                 <div class="field-group"><label>CON — แนวโน้มขัดข้อง</label><select class="form-control"><option>- เลือก -</option></select></div>
                 <div class="field-group"><label>REC — ความยากกู้คืน</label><select class="form-control"><option>- เลือก -</option></select></div>
             </div>
-            <div style="margin-top: 6px; font-size: 0.78rem; font-weight: bold; border-top: 1px dashed var(--border-color); padding-top: 4px;">คะแนนรวม: — / 100</div>
+            <div style="margin-top: 8px; font-size: 0.8rem; font-weight: 600; border-top: 1px dashed var(--border-color); padding-top: 6px;">คะแนนรวม: — / 100</div>
         </div>
     </div>
 
@@ -445,15 +471,15 @@
 
         <!-- 3. ตรวจสอบวัดกระแสและแรงดันไฟฟ้า[cite: 3] -->
         <div class="section-header">3 ตรวจสอบวัดกระแสและแรงดันไฟฟ้า[cite: 3]</div>
-        <div style="display: flex; gap: 12px; margin-bottom: 3px; font-size: 0.72rem; align-items: center; flex-wrap: wrap;">
+        <div style="display: flex; gap: 15px; margin-bottom: 4px; font-size: 0.78rem; align-items: center; flex-wrap: wrap;">
             <div><label><input type="checkbox"> กลางวัน[cite: 3]</label> &nbsp; <label><input type="checkbox"> กลางคืน[cite: 3]</label></div>
-            <div>เวลา : <input type="time" class="form-control" style="display: inline-block; width: 85px; padding: 1px;">[cite: 3]</div>
+            <div>เวลา : <input type="time" class="form-control" style="display: inline-block; width: 90px; padding: 1px;">[cite: 3]</div>
             <div>วิธีการ: <label><input type="checkbox"> วัดหน้างาน[cite: 3]</label> &nbsp; <label><input type="checkbox"> TLM[cite: 3]</label></div>
         </div>
 
         <div class="measure-container">
             <div>
-                <strong style="font-size: 0.72rem;">แรงดันไฟฟ้า (V)[cite: 3]</strong>
+                <strong style="font-size: 0.78rem;">แรงดันไฟฟ้า (V)[cite: 3]</strong>
                 <div class="measure-subgrid">
                     <div class="field-group"><label>V1-N[cite: 3]</label><input type="text" class="form-control"></div>
                     <div class="field-group"><label>V1-2[cite: 3]</label><input type="text" class="form-control"></div>
@@ -464,14 +490,14 @@
                 </div>
             </div>
             <div>
-                <strong style="font-size: 0.72rem;">กระแสไฟฟ้า (A)[cite: 3]</strong>
+                <strong style="font-size: 0.78rem;">กระแสไฟฟ้า (A)[cite: 3]</strong>
                 <div class="measure-subgrid">
                     <div class="field-group"><label>IN[cite: 3]</label><input type="text" class="form-control"></div>
                     <div class="field-group"><label>I1[cite: 3]</label><input type="text" class="form-control"></div>
                     <div class="field-group"><label>I2[cite: 3]</label><input type="text" class="form-control"></div>
                     <div class="field-group"><label>I3[cite: 3]</label><input type="text" class="form-control"></div>
                 </div>
-                <div class="field-group" style="margin-top: 2px;">
+                <div class="field-group" style="margin-top: 3px;">
                     <label>ผลรวมกระแสหน้าหม้อแปลงฯ ทั้งหมด[cite: 3]</label>
                     <input type="text" class="form-control">
                 </div>
@@ -480,12 +506,12 @@
 
         <!-- 4 & 5. ส่วนปรับปรุง[cite: 3] -->
         <div class="section-header">4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :[cite: 3]</div>
-        <div class="field-group" style="margin-bottom: 3px;">
+        <div class="field-group" style="margin-bottom: 4px;">
             <textarea class="form-control"></textarea>
         </div>
 
         <div class="section-header">5 การปรับปรุงข้อบกพร่อง :[cite: 3]</div>
-        <div class="field-group" style="margin-bottom: 3px;">
+        <div class="field-group" style="margin-bottom: 4px;">
             <textarea class="form-control"></textarea>
         </div>
 
