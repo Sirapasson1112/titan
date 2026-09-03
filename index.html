@@ -20,19 +20,9 @@
             --border-soft: #cbd5e1;
             --border-focus: #94a3b8;
             --primary: #d97706;
-            --primary-light: #fef3c7;
             --primary-dark: #b45309;
             --accent: #0f172a;
             --radius: 8px;
-
-            --soft-rose-bg: #ffe4e6;
-            --soft-rose-text: #e11d48;
-            --soft-amber-bg: #fef3c7;
-            --soft-amber-text: #b45309;
-            --soft-green-bg: #dcfce7;
-            --soft-green-text: #15803d;
-            --soft-blue-bg: #e0f2fe;
-            --soft-blue-text: #0369a1;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Sarabun', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -40,7 +30,7 @@
         body {
             background-color: var(--bg-body);
             color: var(--text-main);
-            padding: 10px;
+            padding: 12px;
             font-size: 13px;
             line-height: 1.4;
         }
@@ -48,7 +38,6 @@
         .app-container {
             max-width: 900px;
             margin: 0 auto;
-            padding-bottom: 60px;
         }
 
         .no-print {
@@ -73,27 +62,7 @@
             margin-bottom: 10px;
             padding-bottom: 8px;
             border-bottom: 1px solid var(--border-soft);
-        }
-
-        .app-brand {
-            font-size: 0.95rem;
             font-weight: 700;
-            color: #1e293b;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .brand-icon {
-            width: 30px;
-            height: 30px;
-            background: var(--primary-light);
-            color: var(--primary-dark);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
         }
 
         .google-pill {
@@ -104,45 +73,14 @@
             border: 1px solid var(--border-soft);
             padding: 4px 12px;
             border-radius: 20px;
-            font-size: 0.72rem;
+            font-size: 0.75rem;
             cursor: pointer;
             color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .main-nav-bar {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 10px;
-            background: #e2e8f0;
-            padding: 3px;
-            border-radius: 8px;
-        }
-
-        .main-nav-btn {
-            flex: 1;
-            padding: 8px 10px;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            background: transparent;
-            color: var(--text-muted);
-            transition: all 0.2s;
-            text-align: center;
-        }
-
-        .main-nav-btn.active {
-            background: #ffffff;
-            color: #0f172a;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-            font-weight: 700;
         }
 
         .action-toolbar {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
             gap: 6px;
             margin-bottom: 8px;
         }
@@ -157,7 +95,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 5px;
             transition: all 0.15s ease;
         }
         .btn:active { transform: scale(0.97); }
@@ -169,7 +107,6 @@
         .btn-danger { background: #fef2f2; color: #dc2626; border: 1px solid #fee2e2; }
         .btn-print { background: var(--accent); color: white; grid-column: span 2; }
         .btn-excel { background: #059669; color: white; }
-        .btn-excel:hover { background: #047857; }
         .btn-geo { background: #059669; color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; cursor: pointer; border: none; margin-left: 4px; }
 
         .tab-scroller {
@@ -246,7 +183,7 @@
 
         .extra-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr auto;
+            grid-template-columns: 1fr;
             gap: 6px;
         }
 
@@ -269,35 +206,6 @@
         }
         .saved-item:hover { background: #f8fafc; }
         .saved-item.active-item { background: #f0fdf4; border-left: 3px solid #10b981; }
-
-        .criticality-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 8px;
-            margin-top: 6px;
-        }
-
-        .cost-calc-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 8px;
-            margin-top: 8px;
-            background: #f8fafc;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid var(--border-soft);
-        }
-
-        .badge-priority {
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            display: inline-block;
-        }
-        .p1-badge { background: var(--soft-rose-bg); color: var(--soft-rose-text); border: 1px solid #fecdd3; }
-        .p2-badge { background: var(--soft-amber-bg); color: var(--soft-amber-text); border: 1px solid #fde68a; }
-        .p3-badge { background: var(--soft-green-bg); color: var(--soft-green-text); border: 1px solid #bbf7d0; }
 
         .official-sheet {
             background: var(--card-bg);
@@ -399,108 +307,21 @@
             padding-top: 3px;
         }
 
-        .planning-view {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-            gap: 8px;
-        }
-
-        .kpi-card {
-            background: #ffffff;
-            padding: 14px;
-            border-radius: var(--radius);
-            border: 1px solid var(--border-soft);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            user-select: none;
-        }
-        .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.06); }
-        .kpi-card.kpi-active { border: 2px solid #334155 !important; background: #f8fafc !important; }
-
-        .kpi-card::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 4px; }
-        .kpi-p1::before { background: #f43f5e; }
-        .kpi-cost::before { background: #f59e0b; }
-        .kpi-avoid::before { background: #10b981; }
-        .kpi-total::before { background: #0284c7; }
-
-        .kpi-title { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; display: flex; justify-content: space-between; }
-        .kpi-value { font-size: 1.35rem; font-weight: 700; color: #1e293b; margin-top: 3px; }
-        .kpi-sub { font-size: 0.68rem; color: var(--text-muted); margin-top: 2px; }
-
-        .plan-table-box {
-            background: #ffffff;
-            border-radius: var(--radius);
-            border: 1px solid var(--border-soft);
-            padding: 12px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-            overflow-x: auto;
-        }
-
-        .plan-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.74rem;
-            min-width: 800px;
-        }
-
-        .plan-table th {
-            background: #f8fafc;
-            color: #334155;
-            text-align: left;
-            padding: 8px 10px;
-            border-bottom: 2px solid var(--border-soft);
-            font-weight: 700;
-        }
-
-        .plan-table td { padding: 8px 10px; border-bottom: 1px solid #f1f5f9; }
-        .plan-table tr:hover { background: #fafafa; }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(4px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            padding: 10px;
-        }
-
-        .modal-card {
-            background: #ffffff;
-            border-radius: var(--radius);
-            max-width: 480px;
-            width: 100%;
-            padding: 18px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-
         @media print {
             @page { size: A4 portrait; margin: 4mm; }
-            body { background: white !important; padding: 0; font-size: 8.5px; }
-            .no-print, .planning-view, .main-nav-bar, .modal-overlay { display: none !important; }
-            .official-sheet { box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; width: 100% !important; }
-            .sheet-title-container { margin-bottom: 4px; padding-bottom: 2px; }
-            .sheet-title-container h1 { font-size: 11px; }
-            .info-table th, .info-table td { padding: 1px 3px; font-size: 8px; border: 1px solid #000 !important; }
-            .section-header { padding: 2px 4px; margin-top: 4px; margin-bottom: 2px; font-size: 8.5px; }
-            table.inspection-table th, table.inspection-table td { padding: 1px 3px; font-size: 8px; border: 1px solid #000 !important; }
-            input[type="radio"], input[type="checkbox"] { transform: scale(0.85); }
-            textarea.form-control { height: 18px; padding: 1px 3px; font-size: 8px; border: 1px solid #000 !important; }
-            .form-control { padding: 1px 3px; font-size: 8px; height: 18px; border: 1px solid #000 !important; }
-            .signature-grid { gap: 4px; margin-top: 4px; padding-top: 2px; }
-            .sig-box { padding: 3px; gap: 1px; border: 1px solid #000 !important; }
-            .sheet-footer-note { margin-top: 3px; }
+            body { background: white !important; padding: 0; font-size: 8px; }
+            .no-print { display: none !important; }
+            .official-sheet { box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; }
+            .sheet-title-container { margin-bottom: 2px; padding-bottom: 1px; }
+            .info-table th, .info-table td { padding: 1px 2px; font-size: 7.5px; border: 1px solid #000 !important; }
+            .section-header { padding: 2px 4px; margin-top: 3px; margin-bottom: 2px; font-size: 8px; }
+            table.inspection-table th, table.inspection-table td { padding: 1px 2px; font-size: 7.5px; border: 1px solid #000 !important; }
+            input[type="radio"], input[type="checkbox"] { transform: scale(0.8); }
+            textarea.form-control { height: 16px; padding: 1px 2px; font-size: 7.5px; border: 1px solid #000 !important; }
+            .form-control { padding: 1px 2px; font-size: 7.5px; height: 16px; border: 1px solid #000 !important; }
+            .signature-grid { gap: 4px; margin-top: 3px; padding-top: 2px; }
+            .sig-box { padding: 2px; gap: 1px; border: 1px solid #000 !important; }
+            .sheet-footer-note { margin-top: 2px; }
         }
     </style>
 </head>
@@ -511,23 +332,10 @@
     <div class="no-print">
         <div class="control-hub">
             <div class="top-bar">
-                <div class="app-brand">
-                    <div class="brand-icon">⚡</div>
-                    <span>ระบบบำรุงรักษาอุปกรณ์ไฟฟ้า</span>
-                </div>
+                <div class="app-brand">⚡ ระบบตรวจสอบอุปกรณ์ไฟฟ้า (MEA)</div>
                 <div class="google-pill" onclick="handleGoogleLogin()">
                     <span id="authStatus">👤 บัญชีหน้างาน</span>
                 </div>
-            </div>
-
-            <!-- สลับมุมมองระหว่าง ใบฟอร์มตรวจสอบ กับ แผนงาน PM & Cost -->
-            <div class="main-nav-bar">
-                <button class="main-nav-btn active" id="navFormBtn" onclick="switchMainView('form')">
-                    📋 แบบฟอร์มตรวจสอบ (Inspection Forms)
-                </button>
-                <button class="main-nav-btn" id="navPlanBtn" onclick="switchMainView('planning')">
-                    📊 แผนงาน PM & งบประมาณ (PM Planning & Cost)
-                </button>
             </div>
 
             <div class="action-toolbar">
@@ -540,24 +348,22 @@
                 <button class="btn btn-print" onclick="window.print()">🖨️ พิมพ์/PDF</button>
             </div>
 
-            <div id="formTabSection">
-                <div class="tab-scroller" id="tabContainer">
-                    <button class="tab-btn active" onclick="switchTab(this, 'SF-07-0-015')">SF-07-0-015 หม้อแปลงจำหน่าย</button>
-                    <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-016')">SF-07-0-016 LBS</button>
-                    <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-017')">SF-07-0-017 Sectionalizer</button>
-                    <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-018')">SF-07-0-018 RMU</button>
-                    <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-019')">SF-07-0-019 Unit Substation</button>
-                    <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-020')">SF-07-0-020 Capacitor Bank</button>
-                    <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-021')">SF-07-0-021 หม้อแปลงตาข่าย</button>
-                    <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-022')">SF-07-0-022 สวิตช์แรงกลาง</button>
-                    <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-023')">SF-07-0-023 กรองน้ำมัน TR</button>
-                    <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-024')">SF-07-0-024 จุดร้อนแดง Hot Spot</button>
-                    <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-025')">SF-07-0-025 Partial Discharge</button>
-                </div>
+            <div class="tab-scroller" id="tabContainer">
+                <button class="tab-btn active" onclick="switchTab(this, 'SF-07-0-015')">SF-07-0-015 หม้อแปลง</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-016')">SF-07-0-016 LBS</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-017')">SF-07-0-017 Sectionalizer</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-018')">SF-07-0-018 RMU</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-019')">SF-07-0-019 Unit Substation</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-020')">SF-07-0-020 Capacitor Bank</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-021')">SF-07-0-021 หม้อแปลงตาข่าย</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-022')">SF-07-0-022 สวิตช์แรงกลาง</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-023')">SF-07-0-023 กรองน้ำมัน TR</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-024')">SF-07-0-024 Hot Spot</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-025')">SF-07-0-025 Partial Discharge</button>
             </div>
         </div>
 
-        <div class="extra-panel" id="savedRecordsPanel">
+        <div class="extra-panel">
             <div class="extra-panel-header">
                 <span id="savedCountText">📁 ข้อมูลที่บันทึกไว้ในเครื่อง (0 รายการ)</span>
                 <button class="btn btn-secondary" style="font-size:0.68rem; padding:2px 6px;" onclick="renderSavedRecordsList()">🔄 รีเฟรช</button>
@@ -567,313 +373,22 @@
             </div>
             <div class="saved-records-list" id="savedRecordsContainer"></div>
         </div>
-
-        <div class="extra-panel" id="photoPanel">
-            <div class="extra-panel-header">
-                <span>📷 รูปภาพประกอบการตรวจสอบ</span>
-                <span id="photoSizeLabel" style="font-size:0.7rem; color:var(--text-muted);">0 KB</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2px;">
-                <span id="photoStatusText" style="font-size:0.75rem; color:var(--text-muted);">ยังไม่มีรูปภาพประกอบ</span>
-                <input type="file" id="actualFileInput" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
-                <button class="btn btn-primary" style="font-size:0.72rem; padding:4px 10px;" onclick="triggerUpload()">+ เพิ่มรูปภาพ</button>
-            </div>
-            <div id="imagePreviewBox" style="display:none; margin-top:6px; text-align:center;">
-                <img id="previewImg" src="" style="max-height:100px; border-radius:4px; border:1px solid var(--border-soft);">
-                <button class="btn btn-danger" style="font-size:0.6rem; padding:2px 6px; margin:3px auto 0;" onclick="removeImage()">ลบรูป</button>
-            </div>
-        </div>
-
-        <div class="extra-panel" id="criticalityPanel">
-            <div class="extra-panel-header">
-                <span>🎯 การประเมินความสำคัญของอุปกรณ์ (Criticality & Priority)</span>
-                <span id="priorityBadge" class="badge-priority p3-badge">P3 - ตามรอบปกติ (Routine)</span>
-            </div>
-            <div class="criticality-grid">
-                <div>
-                    <label style="font-size:0.68rem; color:var(--text-muted); font-weight:600;">SAF (ความปลอดภัย)</label>
-                    <select id="crit_saf" class="form-control" onchange="calculateCriticalityAndCost()">
-                        <option value="1">1 - ต่ำมาก</option>
-                        <option value="2">2 - ต่ำ</option>
-                        <option value="3" selected>3 - ปานกลาง</option>
-                        <option value="4">4 - สูง</option>
-                        <option value="5">5 - วิกฤต</option>
-                    </select>
-                </div>
-                <div>
-                    <label style="font-size:0.68rem; color:var(--text-muted); font-weight:600;">REL (ความต่อเนื่องการจ่ายไฟ)</label>
-                    <select id="crit_rel" class="form-control" onchange="calculateCriticalityAndCost()">
-                        <option value="1">1 - ลูกค้าน้อย</option>
-                        <option value="2">2 - ชุมชนขนาดเล็ก</option>
-                        <option value="3" selected>3 - ชุมชนหนาแน่น</option>
-                        <option value="4">4 - นิคมฯ / โรงพยาบาล</option>
-                        <option value="5">5 - ลูกค้ารายใหญ่ VIP</option>
-                    </select>
-                </div>
-                <div>
-                    <label style="font-size:0.68rem; color:var(--text-muted); font-weight:600;">OPR (ความสำคัญต่อภารกิจ)</label>
-                    <select id="crit_opr" class="form-control" onchange="calculateCriticalityAndCost()">
-                        <option value="1">1 - มีสายป้อนสลับ</option>
-                        <option value="2">2 - สลับจ่ายได้ไว</option>
-                        <option value="3" selected>3 - สลับจ่ายปานกลาง</option>
-                        <option value="4">4 - ไม่มีสายป้อนสลับ</option>
-                        <option value="5">5 - สถานีศูนย์กลาง</option>
-                    </select>
-                </div>
-                <div>
-                    <label style="font-size:0.68rem; color:var(--text-muted); font-weight:600;">CON (แนวโน้มขัดข้อง / สภาพ)</label>
-                    <select id="crit_con" class="form-control" onchange="calculateCriticalityAndCost()">
-                        <option value="1">1 - สภาพดีเยี่ยม</option>
-                        <option value="2">2 - ใช้งานได้ปกติ</option>
-                        <option value="3" selected>3 - เฝ้าระวังเล็กน้อย</option>
-                        <option value="4">4 - เริ่มเสื่อมสภาพ</option>
-                        <option value="5">5 - ชำรุดวิกฤต/ใกล้พัง</option>
-                    </select>
-                </div>
-                <div>
-                    <label style="font-size:0.68rem; color:var(--text-muted); font-weight:600;">REC (ความยากในการกู้คืน)</label>
-                    <select id="crit_rec" class="form-control" onchange="calculateCriticalityAndCost()">
-                        <option value="1">1 - แก้ไข &lt; 1 ชม.</option>
-                        <option value="2">2 - แก้ไข 1-2 ชม.</option>
-                        <option value="3" selected>3 - แก้ไข 2-4 ชม.</option>
-                        <option value="4">4 - ต้องใช้อะไหล่สั่งทำ</option>
-                        <option value="5">5 - ต้องยกเปลี่ยนหม้อแปลง</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="cost-calc-grid">
-                <div>
-                    <label style="font-size:0.68rem; color:var(--text-muted); font-weight:600;">ค่าแรง (Labor Cost):</label>
-                    <input type="number" id="cost_labor" class="form-control" value="1500" onchange="calculateCriticalityAndCost()">
-                </div>
-                <div>
-                    <label style="font-size:0.68rem; color:var(--text-muted); font-weight:600;">ค่าอะไหล่ (Material Cost):</label>
-                    <input type="number" id="cost_material" class="form-control" value="2500" onchange="calculateCriticalityAndCost()">
-                </div>
-                <div>
-                    <label style="font-size:0.68rem; color:var(--text-muted); font-weight:600;">ค่าเครื่องมือ (Tool Cost):</label>
-                    <input type="number" id="cost_tool" class="form-control" value="1000" onchange="calculateCriticalityAndCost()">
-                </div>
-                <div>
-                    <label style="font-size:0.68rem; font-weight:700; color:var(--primary-dark);">รวมต้นทุน PM ทั้งหมด:</label>
-                    <input type="text" id="cost_total" class="form-control" value="5,000 บาท" readonly style="font-weight:700; background:#fefdf9; color:#b45309;">
-                    <span id="cost_avoid_label" style="font-size:0.62rem; color:#059669; font-weight:600;">มูลค่าความเสียหายที่ลดได้: ~150,000 บาท</span>
-                </div>
-            </div>
-        </div>
     </div>
 
-    <!-- ส่วนแสดงใบตรวจสอบ (ล็อกรูปแบบทางการครบถ้วน) -->
+    <!-- ส่วนแสดงใบตรวจสอบ -->
     <div id="formContentArea">
         <div class="official-sheet" id="printArea"></div>
-    </div>
-
-    <!-- มุมมองแผนงาน PM & จัดลำดับงบประมาณ -->
-    <div id="planningContentArea" class="planning-view" style="display: none;">
-        <div class="kpi-grid">
-            <div class="kpi-card kpi-p1" id="kpiCardP1" onclick="filterByKpi('P1')">
-                <div class="kpi-title"><span>งานฉุกเฉินด่วน (P1 Urgent)</span><span>👆 กรอง</span></div>
-                <div class="kpi-value" id="kpiP1Count">2 งาน</div>
-                <div class="kpi-sub">ต้องทำภายใน 24-48 ชม.</div>
-            </div>
-            <div class="kpi-card kpi-cost" id="kpiCardCost" onclick="filterByKpi('COST')">
-                <div class="kpi-title"><span>งบประมาณวางแผนทั้งหมด</span><span>👆 เรียงงบ</span></div>
-                <div class="kpi-value" id="kpiTotalBudget">฿ 54,500</div>
-                <div class="kpi-sub">จากรายการซ่อมบำรุงทั้งหมด</div>
-            </div>
-            <div class="kpi-card kpi-avoid" id="kpiCardAvoid" onclick="filterByKpi('AVOID')">
-                <div class="kpi-title"><span>มูลค่าความเสียหายที่ป้องกันได้</span><span>👆 ดูความคุ้มค่า</span></div>
-                <div class="kpi-value" id="kpiAvoidedLoss">฿ 1,450,000</div>
-                <div class="kpi-sub">Cost Avoidance จากการดักจับอาการเสีย</div>
-            </div>
-            <div class="kpi-card kpi-total" id="kpiCardDone" onclick="filterByKpi('DONE')">
-                <div class="kpi-title"><span>สถานะแผนงานเสร็จสิ้น</span><span>👆 กรองงานเสร็จ</span></div>
-                <div class="kpi-value" id="kpiCompletion">66.7%</div>
-                <div class="kpi-sub">ความสำเร็จของแผนงาน</div>
-            </div>
-        </div>
-
-        <div class="plan-table-box">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <div>
-                    <h3 style="font-size:0.9rem; font-weight:700; color:#1e293b;" id="planTableTitle">📋 แผนงาน PM จัดลำดับความสำคัญและงบประมาณ</h3>
-                    <span style="font-size:0.68rem; color:var(--text-muted);" id="planTableSubtitle">เรียงลำดับความเสี่ยง P1 ➔ P2 ➔ P3</span>
-                </div>
-                <button id="resetKpiFilterBtn" class="btn btn-secondary" style="display:none; font-size:0.7rem; padding:2px 6px;" onclick="filterByKpi('ALL')">✖ ล้างตัวกรอง</button>
-            </div>
-            <table class="plan-table">
-                <thead>
-                    <tr>
-                        <th>Work Order</th>
-                        <th>วันที่กำหนด</th>
-                        <th>รหัสฟอร์ม</th>
-                        <th>Station ID / สถานที่</th>
-                        <th>อุปกรณ์</th>
-                        <th>คะแนนความเสี่ยง</th>
-                        <th>ความสำคัญ</th>
-                        <th>งบประมาณ PM</th>
-                        <th>สถานะ</th>
-                        <th>การดำเนินการ</th>
-                    </tr>
-                </thead>
-                <tbody id="planTableBody"></tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Modal แก้ไขข้อมูลแผนงาน -->
-    <div id="editModal" class="modal-overlay" style="display:none;">
-        <div class="modal-card">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom:1px solid var(--border-soft); padding-bottom:4px;">
-                <h3 style="font-size:0.9rem; font-weight:700;">✏️ แก้ไขข้อมูลใบงาน PM</h3>
-                <button onclick="closeEditModal()" style="background:none; border:none; font-size:1rem; cursor:pointer; color:var(--text-muted);">✖</button>
-            </div>
-            <div style="display:flex; flex-direction:column; gap:6px;">
-                <div>
-                    <label style="font-size:0.7rem; font-weight:600;">Work Order No.</label>
-                    <input type="text" id="modalWO" class="form-control" readonly style="background:#f8fafc;">
-                </div>
-                <div>
-                    <label style="font-size:0.7rem; font-weight:600;">วันที่ดำเนินการ</label>
-                    <input type="date" id="modalDate" class="form-control">
-                </div>
-                <div>
-                    <label style="font-size:0.7rem; font-weight:600;">Station ID / สถานที่</label>
-                    <input type="text" id="modalLoc" class="form-control">
-                </div>
-                <div>
-                    <label style="font-size:0.7rem; font-weight:600;">ชื่ออุปกรณ์</label>
-                    <input type="text" id="modalAsset" class="form-control">
-                </div>
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
-                    <div>
-                        <label style="font-size:0.7rem; font-weight:600;">ระดับความสำคัญ</label>
-                        <select id="modalPriority" class="form-control">
-                            <option value="P1">P1 - ฉุกเฉินเร่งด่วน</option>
-                            <option value="P2">P2 - สำคัญสูง</option>
-                            <option value="P3">P3 - ตามรอบปกติ</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label style="font-size:0.7rem; font-weight:600;">สถานะงาน</label>
-                        <select id="modalStatus" class="form-control">
-                            <option value="รอดำเนินการ">รอดำเนินการ</option>
-                            <option value="กำลังทำ">กำลังทำ</option>
-                            <option value="อนุมัติแล้ว">อนุมัติแล้ว</option>
-                            <option value="เสร็จสิ้น">เสร็จสิ้น</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label style="font-size:0.7rem; font-weight:600;">งบประมาณรวม (บาท)</label>
-                    <input type="number" id="modalTotalCost" class="form-control">
-                </div>
-                <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:6px;">
-                    <button class="btn btn-secondary" onclick="closeEditModal()">ยกเลิก</button>
-                    <button class="btn btn-primary" onclick="saveModalChanges()">💾 บันทึก</button>
-                </div>
-            </div>
-        </div>
     </div>
 
 </div>
 
 <script>
-    const defaultData = [
-        { orderId: "WO-2026-0801", date: "2026-09-05", formCode: "SF-07-0-024", stationId: "ST-04", location: "สายป้อน เทพารักษ์ 12", asset: "ขั้วต่อ Bushing HV ด้านไฟเข้า", score: 88, priority: "P1", laborCost: 1500, materialCost: 2000, toolCost: 3000, totalCost: 6500, avoidedCost: 450000, status: "รอดำเนินการ", formData: {} },
-        { orderId: "WO-2026-0802", date: "2026-09-06", formCode: "SF-07-0-023", stationId: "ST-02", location: "สถานีย่อยบางพลี", asset: "หม้อแปลงวงจรตาข่าย TR-02", score: 78, priority: "P1", laborCost: 3500, materialCost: 8000, toolCost: 5000, totalCost: 16500, avoidedCost: 500000, status: "กำลังทำ", formData: {} },
-        { orderId: "WO-2026-0803", date: "2026-09-12", formCode: "SF-07-0-016", stationId: "ST-09", location: "Feeder 04 กิ่งแก้ว", asset: "Load Break Switch (SF6)", score: 62, priority: "P2", laborCost: 1800, materialCost: 2500, toolCost: 1000, totalCost: 5300, avoidedCost: 200000, status: "อนุมัติแล้ว", formData: {} },
-        { orderId: "WO-2026-0804", date: "2026-09-15", formCode: "SF-07-0-018", stationId: "ST-11", location: "อาคารควบคุม Substation C", asset: "Ring Main Unit (RMU)", score: 55, priority: "P2", laborCost: 2000, materialCost: 3200, toolCost: 1000, totalCost: 6200, avoidedCost: 150000, status: "เสร็จสิ้น", formData: {} },
-        { orderId: "WO-2026-0805", date: "2026-09-20", formCode: "SF-07-0-015", stationId: "ST-14", location: "ซอยสุขุมวิท 101", asset: "หม้อแปลงจำหน่าย 250 kVA", score: 42, priority: "P3", laborCost: 1500, materialCost: 2000, toolCost: 500, totalCost: 4000, avoidedCost: 80000, status: "เสร็จสิ้น", formData: {} },
-        { orderId: "WO-2026-0806", date: "2026-09-28", formCode: "SF-07-0-020", stationId: "ST-18", location: "สายป้อน แพรกษา 5", asset: "Capacitor Bank 24kV", score: 35, priority: "P3", laborCost: 1500, materialCost: 1500, toolCost: 500, totalCost: 3500, avoidedCost: 70000, status: "เสร็จสิ้น", formData: {} }
-    ];
-
-    let maintenancePlan = JSON.parse(localStorage.getItem('mea_pm_plan')) || defaultData;
+    let savedRecords = JSON.parse(localStorage.getItem('mea_inspection_records')) || [];
     let currentRecordIndex = -1;
     let currentActiveForm = 'SF-07-0-015';
-    let currentKpiFilter = null;
 
     function saveToLocalStorage() {
-        localStorage.setItem('mea_pm_plan', JSON.stringify(maintenancePlan));
-    }
-
-    function switchMainView(view) {
-        const navFormBtn = document.getElementById('navFormBtn');
-        const navPlanBtn = document.getElementById('navPlanBtn');
-        const formArea = document.getElementById('formContentArea');
-        const planArea = document.getElementById('planningContentArea');
-        const formTabSection = document.getElementById('formTabSection');
-        const critPanel = document.getElementById('criticalityPanel');
-        const savedPanel = document.getElementById('savedRecordsPanel');
-        const photoPanel = document.getElementById('photoPanel');
-
-        if(view === 'planning') {
-            navFormBtn.classList.remove('active');
-            navPlanBtn.classList.add('active');
-            formArea.style.display = 'none';
-            planArea.style.display = 'flex';
-            formTabSection.style.display = 'none';
-            critPanel.style.display = 'none';
-            savedPanel.style.display = 'none';
-            photoPanel.style.display = 'none';
-            renderPlanningTable();
-        } else {
-            navPlanBtn.classList.remove('active');
-            navFormBtn.classList.add('active');
-            planArea.style.display = 'none';
-            formArea.style.display = 'block';
-            formTabSection.style.display = 'block';
-            critPanel.style.display = 'block';
-            savedPanel.style.display = 'block';
-            photoPanel.style.display = 'block';
-            renderSavedRecordsList();
-        }
-    }
-
-    function filterByKpi(type) {
-        const cardP1 = document.getElementById('kpiCardP1');
-        const cardCost = document.getElementById('kpiCardCost');
-        const cardAvoid = document.getElementById('kpiCardAvoid');
-        const cardDone = document.getElementById('kpiCardDone');
-        const resetBtn = document.getElementById('resetKpiFilterBtn');
-        const title = document.getElementById('planTableTitle');
-        const subtitle = document.getElementById('planTableSubtitle');
-
-        [cardP1, cardCost, cardAvoid, cardDone].forEach(card => { if(card) card.classList.remove('kpi-active'); });
-
-        if(currentKpiFilter === type || type === 'ALL') {
-            currentKpiFilter = null;
-            resetBtn.style.display = 'none';
-            title.innerText = "📋 แผนงาน PM จัดลำดับความสำคัญและงบประมาณ";
-            subtitle.innerText = "เรียงลำดับความเสี่ยง P1 ➔ P2 ➔ P3";
-            renderPlanningTable();
-            return;
-        }
-
-        currentKpiFilter = type;
-        resetBtn.style.display = 'inline-block';
-        let listToRender = [...maintenancePlan];
-
-        if(type === 'P1') {
-            cardP1.classList.add('kpi-active');
-            listToRender = listToRender.filter(item => item.priority === 'P1');
-            title.innerText = "🚨 แผนงานเร่งด่วนฉุกเฉินระดับ P1";
-            subtitle.innerText = `พบ ${listToRender.length} รายการที่ต้องดำเนินการทันที`;
-        } else if(type === 'COST') {
-            cardCost.classList.add('kpi-active');
-            listToRender.sort((a, b) => b.totalCost - a.totalCost);
-            title.innerText = "💰 แผนงานเรียงตามงบประมาณ PM สูงสุด";
-        } else if(type === 'AVOID') {
-            cardAvoid.classList.add('kpi-active');
-            listToRender.sort((a, b) => b.avoidedCost - a.avoidedCost);
-            title.innerText = "🛡️ แผนงานเรียงตามความคุ้มค่า (Cost Avoidance)";
-        } else if(type === 'DONE') {
-            cardDone.classList.add('kpi-active');
-            listToRender = listToRender.filter(item => item.status === 'เสร็จสิ้น');
-            title.innerText = "✅ แผนงานที่ดำเนินการเสร็จสิ้นแล้ว";
-        }
-        renderPlanningTable(listToRender);
+        localStorage.setItem('mea_inspection_records', JSON.stringify(savedRecords));
     }
 
     function collectCurrentFormData() {
@@ -898,7 +413,6 @@
     }
 
     function saveNewRecord() {
-        const calc = calculateCriticalityAndCost();
         const stationInput = document.querySelector('.info-table input[placeholder*="Station"]') || 
                              document.querySelector('.info-table input[placeholder*="สถานี"]');
         const locationInput = document.querySelector('.info-table input[placeholder*="สถานที่"]');
@@ -907,59 +421,39 @@
         const location = (locationInput && locationInput.value) ? locationInput.value : "พื้นที่หน้างาน MEA";
 
         const newRec = {
-            orderId: `WO-2026-${Math.floor(1000 + Math.random() * 9000)}`,
+            id: `REC-${Date.now().toString().slice(-4)}`,
             date: new Date().toISOString().split('T')[0],
             formCode: currentActiveForm,
             stationId: stationId,
             location: location,
-            asset: getFormTitleName(currentActiveForm),
-            score: calc.totalScore,
-            priority: calc.priority,
-            laborCost: calc.labor,
-            materialCost: calc.material,
-            toolCost: calc.tool,
-            totalCost: calc.totalCost,
-            avoidedCost: calc.estAvoided,
-            status: "รอดำเนินการ",
             formData: collectCurrentFormData()
         };
 
-        maintenancePlan.unshift(newRec);
+        savedRecords.unshift(newRec);
         currentRecordIndex = 0;
         saveToLocalStorage();
         renderSavedRecordsList();
-        alert(`💾 บันทึกรายการใหม่ ${newRec.orderId} เรียบร้อยแล้ว!`);
+        alert(`💾 บันทึกข้อมูลลงเครื่องสำเร็จ (${newRec.id})`);
     }
 
     function saveCurrentRecord() {
-        if(currentRecordIndex >= 0 && currentRecordIndex < maintenancePlan.length) {
-            const calc = calculateCriticalityAndCost();
-            const record = maintenancePlan[currentRecordIndex];
-            record.score = calc.totalScore;
-            record.priority = calc.priority;
-            record.laborCost = calc.labor;
-            record.materialCost = calc.material;
-            record.toolCost = calc.tool;
-            record.totalCost = calc.totalCost;
-            record.avoidedCost = calc.estAvoided;
-            record.formData = collectCurrentFormData();
-
+        if(currentRecordIndex >= 0 && currentRecordIndex < savedRecords.length) {
+            savedRecords[currentRecordIndex].formData = collectCurrentFormData();
             saveToLocalStorage();
             renderSavedRecordsList();
-            alert(`🔄 บันทึกทับรายการเรียบร้อยแล้ว!`);
+            alert(`🔄 บันทึกทับข้อมูลเรียบร้อยแล้ว!`);
         } else {
             saveNewRecord();
         }
     }
 
     function copyAsNewRecord() {
-        if(currentRecordIndex >= 0 && currentRecordIndex < maintenancePlan.length) {
-            const original = maintenancePlan[currentRecordIndex];
+        if(currentRecordIndex >= 0 && currentRecordIndex < savedRecords.length) {
+            const original = savedRecords[currentRecordIndex];
             const copied = JSON.parse(JSON.stringify(original));
-            copied.orderId = `WO-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+            copied.id = `REC-${Date.now().toString().slice(-4)}`;
             copied.date = new Date().toISOString().split('T')[0];
-            copied.status = "รอดำเนินการ (คัดลอก)";
-            maintenancePlan.unshift(copied);
+            savedRecords.unshift(copied);
             currentRecordIndex = 0;
             saveToLocalStorage();
             renderSavedRecordsList();
@@ -970,7 +464,7 @@
     }
 
     function newForm() {
-        if(confirm("ต้องการล้างฟอร์มเพื่อสร้างใบงานใหม่ใช่หรือไม่?")) {
+        if(confirm("ต้องการล้างฟอร์มเพื่อกรอกใบงานใหม่ใช่หรือไม่?")) {
             currentRecordIndex = -1;
             clearForm();
         }
@@ -980,16 +474,15 @@
         document.querySelectorAll('#formContentArea input[type="text"], #formContentArea textarea, #formContentArea input[type="time"]').forEach(el => el.value = '');
         document.querySelectorAll('#formContentArea input[type="radio"], #formContentArea input[type="checkbox"]').forEach(el => el.checked = false);
         setTodayDate();
-        removeImage();
         renderSavedRecordsList();
     }
 
     function renderSavedRecordsList(filteredList = null) {
         const container = document.getElementById('savedRecordsContainer');
-        const list = filteredList || maintenancePlan;
+        const list = filteredList || savedRecords;
         container.innerHTML = '';
 
-        document.getElementById('savedCountText').innerText = `📁 ข้อมูลที่บันทึกไว้ (${maintenancePlan.length} รายการ)`;
+        document.getElementById('savedCountText').innerText = `📁 ข้อมูลที่บันทึกไว้ในเครื่อง (${savedRecords.length} รายการ)`;
 
         if (list.length === 0) {
             container.innerHTML = `<div style="padding:8px; text-align:center; color:var(--text-muted);">ยังไม่มีข้อมูลในเครื่อง</div>`;
@@ -997,20 +490,18 @@
         }
 
         list.forEach((item) => {
-            const originalIndex = maintenancePlan.indexOf(item);
+            const originalIndex = savedRecords.indexOf(item);
             const isSelected = originalIndex === currentRecordIndex;
-            let badgeClass = item.priority === 'P1' ? 'p1-badge' : (item.priority === 'P2' ? 'p2-badge' : 'p3-badge');
 
             const div = document.createElement('div');
             div.className = `saved-item ${isSelected ? 'active-item' : ''}`;
             div.innerHTML = `
                 <div>
-                    <span style="font-weight:700; color:#1e293b;">${item.orderId || item.id}</span>
+                    <span style="font-weight:700; color:#1e293b;">${item.id}</span>
                     <span style="color:#0284c7; font-weight:600; margin:0 4px;">[${item.formCode}]</span>
                     <span style="color:var(--text-muted); font-size:0.7rem;">${item.stationId}</span>
                 </div>
-                <div style="display:flex; align-items:center; gap:4px;">
-                    <span class="badge-priority ${badgeClass}">${item.priority || 'P3'}</span>
+                <div style="display:flex; gap:4px;">
                     <button type="button" class="btn btn-secondary" style="font-size:0.65rem; padding:2px 6px;" onclick="selectRecordToView(${originalIndex}, event)">เปิดดู</button>
                     <button type="button" class="btn btn-danger" style="font-size:0.65rem; padding:2px 5px;" onclick="deleteRecord(${originalIndex}, event)">ลบ</button>
                 </div>
@@ -1022,7 +513,7 @@
     function selectRecordToView(idx, event) {
         if (event) { event.preventDefault(); event.stopPropagation(); }
         currentRecordIndex = idx;
-        const record = maintenancePlan[idx];
+        const record = savedRecords[idx];
         if (!record) return;
 
         const tabBtns = document.querySelectorAll('.tab-btn');
@@ -1036,208 +527,32 @@
         setTimeout(() => {
             fillFormData(record.formData);
             renderSavedRecordsList();
-            window.scrollTo({ top: 300, behavior: 'smooth' });
+            window.scrollTo({ top: 250, behavior: 'smooth' });
         }, 100);
     }
 
     function deleteRecord(idx, event) {
         if(event) event.stopPropagation();
         if(confirm(`ยืนยันการลบรายการนี้?`)) {
-            maintenancePlan.splice(idx, 1);
+            savedRecords.splice(idx, 1);
             if(currentRecordIndex === idx) currentRecordIndex = -1;
             saveToLocalStorage();
             renderSavedRecordsList();
-            renderPlanningTable();
         }
     }
 
     function filterSavedRecords() {
         const val = document.getElementById('filterPlant').value.toLowerCase();
-        const filtered = maintenancePlan.filter(item => item.stationId.toLowerCase().includes(val) || item.location.toLowerCase().includes(val) || item.formCode.toLowerCase().includes(val));
+        const filtered = savedRecords.filter(item => item.stationId.toLowerCase().includes(val) || item.location.toLowerCase().includes(val) || item.formCode.toLowerCase().includes(val));
         renderSavedRecordsList(filtered);
     }
 
-    let editingPlanIndex = -1;
-
-    function openEditModal(idx) {
-        editingPlanIndex = idx;
-        const item = maintenancePlan[idx];
-        document.getElementById('modalWO').value = item.orderId;
-        document.getElementById('modalDate').value = item.date;
-        document.getElementById('modalLoc').value = `${item.stationId} - ${item.location}`;
-        document.getElementById('modalAsset').value = item.asset;
-        document.getElementById('modalPriority').value = item.priority;
-        document.getElementById('modalStatus').value = item.status;
-        document.getElementById('modalTotalCost').value = item.totalCost;
-        document.getElementById('editModal').style.display = 'flex';
-    }
-
-    function closeEditModal() {
-        document.getElementById('editModal').style.display = 'none';
-        editingPlanIndex = -1;
-    }
-
-    function saveModalChanges() {
-        if(editingPlanIndex < 0) return;
-        const item = maintenancePlan[editingPlanIndex];
-        item.date = document.getElementById('modalDate').value;
-        item.asset = document.getElementById('modalAsset').value;
-        item.priority = document.getElementById('modalPriority').value;
-        item.status = document.getElementById('modalStatus').value;
-        item.totalCost = parseFloat(document.getElementById('modalTotalCost').value) || 0;
-
-        saveToLocalStorage();
-        closeEditModal();
-        renderPlanningTable();
-        renderSavedRecordsList();
-        alert("💾 บันทึกการแก้ไขแผนงานเรียบร้อยแล้ว!");
-    }
-
-    function renderPlanningTable(customList = null) {
-        const tbody = document.getElementById('planTableBody');
-        tbody.innerHTML = '';
-
-        let p1Count = 0, totalBudget = 0, totalAvoided = 0, completedCount = 0;
-        maintenancePlan.forEach(item => {
-            if(item.priority === 'P1') p1Count++;
-            totalBudget += (item.totalCost || 0);
-            totalAvoided += (item.avoidedCost || 0);
-            if(item.status === 'เสร็จสิ้น') completedCount++;
-        });
-
-        document.getElementById('kpiP1Count').innerText = `${p1Count} งาน`;
-        document.getElementById('kpiTotalBudget').innerText = `฿ ${totalBudget.toLocaleString()}`;
-        document.getElementById('kpiAvoidedLoss').innerText = `฿ ${totalAvoided.toLocaleString()}`;
-        const pct = maintenancePlan.length > 0 ? ((completedCount / maintenancePlan.length) * 100).toFixed(1) : 0;
-        document.getElementById('kpiCompletion').innerText = `${pct}%`;
-
-        const list = customList || maintenancePlan;
-        if(list.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:15px; color:var(--text-muted);">ไม่พบรายการแผนงาน</td></tr>`;
-            return;
-        }
-
-        list.forEach((item) => {
-            const originalIndex = maintenancePlan.indexOf(item);
-            let badgeClass = item.priority === 'P1' ? 'p1-badge' : (item.priority === 'P2' ? 'p2-badge' : 'p3-badge');
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td style="font-weight:700; color:#1e293b;">${item.orderId || 'WO-NEW'}</td>
-                <td>${item.date || '-'}</td>
-                <td><span style="font-weight:600; color:#0284c7;">${item.formCode}</span></td>
-                <td>${item.stationId} - ${item.location}</td>
-                <td>${item.asset || 'อุปกรณ์ไฟฟ้า'}</td>
-                <td style="font-weight:700; text-align:center;">${item.score || 50}/100</td>
-                <td><span class="badge-priority ${badgeClass}">${item.priority || 'P3'}</span></td>
-                <td style="font-weight:600; color:#1e293b;">฿${(item.totalCost || 5000).toLocaleString()}</td>
-                <td><span style="font-weight:600; color:${item.status === 'เสร็จสิ้น' ? '#15803d' : '#b45309'}">${item.status || 'รอดำเนินการ'}</span></td>
-                <td>
-                    <div style="display:flex; gap:3px;">
-                        <button class="btn btn-secondary" style="font-size:0.65rem; padding:2px 5px;" onclick="loadRecordToForm(${originalIndex})">ดูฟอร์ม</button>
-                        <button class="btn btn-primary" style="font-size:0.65rem; padding:2px 5px;" onclick="openEditModal(${originalIndex})">✏️</button>
-                    </div>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-    }
-
-    function loadRecordToForm(idx) {
-        switchMainView('form');
-        selectRecordToView(idx);
-    }
-
-    function calculateCriticalityAndCost() {
-        const saf = parseInt(document.getElementById('crit_saf').value) || 0;
-        const rel = parseInt(document.getElementById('crit_rel').value) || 0;
-        const opr = parseInt(document.getElementById('crit_opr').value) || 0;
-        const con = parseInt(document.getElementById('crit_con').value) || 0;
-        const rec = parseInt(document.getElementById('crit_rec').value) || 0;
-
-        const totalScore = (saf * 5) + (rel * 5) + (opr * 4) + (con * 3) + (rec * 3);
-        const badge = document.getElementById('priorityBadge');
-        let priority = "P3";
-
-        if(totalScore >= 75) {
-            priority = "P1";
-            badge.className = "badge-priority p1-badge";
-            badge.innerText = `P1 - วิกฤต/ด่วนมาก (${totalScore}/100)`;
-        } else if(totalScore >= 50) {
-            priority = "P2";
-            badge.className = "badge-priority p2-badge";
-            badge.innerText = `P2 - สำคัญสูง (${totalScore}/100)`;
-        } else {
-            priority = "P3";
-            badge.className = "badge-priority p3-badge";
-            badge.innerText = `P3 - ตามรอบปกติ (${totalScore}/100)`;
-        }
-
-        const labor = parseFloat(document.getElementById('cost_labor').value) || 0;
-        const material = parseFloat(document.getElementById('cost_material').value) || 0;
-        const tool = parseFloat(document.getElementById('cost_tool').value) || 0;
-        const totalCost = labor + material + tool;
-
-        document.getElementById('cost_total').value = totalCost.toLocaleString() + " บาท";
-        let estAvoided = priority === 'P1' ? 450000 : (priority === 'P2' ? 180000 : 80000);
-        document.getElementById('cost_avoid_label').innerText = `มูลค่าความเสียหายที่ลดได้: ~${estAvoided.toLocaleString()} บาท`;
-        return { totalScore, priority, totalCost, estAvoided, labor, material, tool };
-    }
-
-    function getFormTitleName(code) {
-        const titles = {
-            'SF-07-0-015': 'หม้อแปลงจำหน่าย',
-            'SF-07-0-016': 'Load Break Switch',
-            'SF-07-0-017': 'Sectionalizer',
-            'SF-07-0-018': 'Ring Main Unit',
-            'SF-07-0-019': 'Unit Substation',
-            'SF-07-0-020': 'Capacitor Bank',
-            'SF-07-0-021': 'หม้อแปลงตาข่าย',
-            'SF-07-0-022': 'สวิตช์แรงกลาง',
-            'SF-07-0-023': 'กรองน้ำมันหม้อแปลง',
-            'SF-07-0-024': 'จุดร้อนแดง Hot Spot',
-            'SF-07-0-025': 'Partial Discharge'
-        };
-        return titles[code] || 'อุปกรณ์ไฟฟ้า';
-    }
-
     function exportPlanToExcel() {
-        const exportData = maintenancePlan.map(item => ({
-            'Work Order': item.orderId || item.id,
-            'วันที่กำหนดทำ': item.date,
-            'รหัสแบบฟอร์ม': item.formCode,
-            'Station ID': item.stationId,
-            'สถานที่ติดตั้ง': item.location,
-            'อุปกรณ์': item.asset || 'อุปกรณ์ไฟฟ้า',
-            'คะแนนความเสี่ยง': item.score || 50,
-            'ความสำคัญ': item.priority || 'P3',
-            'งบประมาณรวม (บาท)': item.totalCost || 5000,
-            'สถานะ': item.status || 'รอดำเนินการ'
-        }));
-        const ws = XLSX.utils.json_to_sheet(exportData);
+        if(savedRecords.length === 0) { alert("ยังไม่มีข้อมูลสำหรับส่งออก Excel"); return; }
+        const ws = XLSX.utils.json_to_sheet(savedRecords);
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "PM_Planning");
-        XLSX.writeFile(wb, `MEA_PM_Planning_${new Date().toISOString().split('T')[0]}.xlsx`);
-    }
-
-    function triggerUpload() { document.getElementById('actualFileInput').click(); }
-    function handleImageUpload(e) {
-        const file = e.target.files[0];
-        if(!file) return;
-        document.getElementById('photoSizeLabel').innerText = `${(file.size / 1024).toFixed(1)} KB`;
-        document.getElementById('photoStatusText').innerText = `แนบไฟล์: ${file.name}`;
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-            document.getElementById('previewImg').src = evt.target.result;
-            document.getElementById('imagePreviewBox').style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-    }
-    function removeImage() {
-        document.getElementById('actualFileInput').value = '';
-        document.getElementById('photoSizeLabel').innerText = '0 KB';
-        document.getElementById('photoStatusText').innerText = 'ยังไม่มีรูปภาพประกอบ';
-        document.getElementById('imagePreviewBox').style.display = 'none';
-        document.getElementById('previewImg').src = '';
+        XLSX.utils.book_append_sheet(wb, ws, "Inspection_Data");
+        XLSX.writeFile(wb, `MEA_Inspection_Data_${new Date().toISOString().split('T')[0]}.xlsx`);
     }
 
     function getCurrentLocation() {
@@ -1250,13 +565,12 @@
                     if(longEl) longEl.value = pos.coords.longitude.toFixed(6);
                     alert("📍 ดึงพิกัด GPS สำเร็จ!");
                 },
-                () => { alert("ไม่สามารถดึงพิกัดได้: กรุณาอนุญาตการเข้าถึง GPS"); },
+                () => { alert("ไม่สามารถดึงพิกัดได้: กรุณาอนุญาตการเข้าถึง GPS บนเบราว์เซอร์"); },
                 { enableHighAccuracy: true }
             );
         } else { alert("เบราว์เซอร์ไม่รองรับ Geolocation"); }
     }
 
-    // โค้ดเทมเพลตฟอร์มทางการทั้ง 11 ฟอร์ม (ล็อกไว้สมบูรณ์)
     const unitSubstationPages = {
         1: `
             <div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 6px;">แบบตรวจสอบบำรุงรักษา UNIT SUBSTATION (1)</div>
@@ -1324,33 +638,125 @@
             <table class="info-table">
                 <tr><th style="width: 12%;">Station ID</th><td style="width: 38%;"><input type="text" placeholder="Station ID"></td><th style="width: 12%;">สถานที่</th><td style="width: 38%;"><input type="text" placeholder="สถานที่"></td></tr>
                 <tr><th>GIS Lat.</th><td><input type="text" id="latInput" placeholder="Lat"></td><th>Long.</th><td><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="longInput" placeholder="Long" style="width:65%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
-                <tr><th>MEA No1.</th><td><input type="text"></td><th>MEA No2.</th><td><input type="text"></td></tr>
-                <tr><th>ยี่ห้อ</th><td><input type="text"></td><th>ขนาด</th><td><input type="text"></td></tr>
+                <tr><th>MEA No1.</th><td><input type="text" placeholder="MEA No1."></td><th>MEA No2.</th><td><input type="text" placeholder="MEA No2."></td></tr>
+                <tr><th>ยี่ห้อ</th><td><input type="text" placeholder="ยี่ห้อ"></td><th>ขนาด</th><td><input type="text" placeholder="ขนาด"></td></tr>
             </table>
             <div class="section-header"><span class="section-num">2</span> รายการตรวจสอบบำรุงรักษา</div>
             <table class="inspection-table">
-                <thead><tr><th rowspan="2" style="text-align: left; width: 45%;">รายการ</th><th colspan="3">ผลการตรวจสอบ</th><th rowspan="2" style="width: 40%;">ข้อบกพร่อง</th></tr><tr><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th></tr></thead>
+                <thead><tr><th rowspan="2" style="text-align: left; width: 45%;">รายการ</th><th colspan="3">ผลการตรวจสอบ</th><th rowspan="2" style="width: 40%;">ข้อบกพร่อง</th></tr><tr><th style="width: 45px;">ปกติ</th><th style="width: 45px;">ชำรุด</th><th style="width: 45px;">ไม่มี</th></tr></thead>
                 <tbody>
                     <tr><td>2.1 Drop Fuse</td><td style="text-align:center;"><input type="radio" name="c1"></td><td style="text-align:center;"><input type="radio" name="c1"></td><td style="text-align:center;"><input type="radio" name="c1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.2 Station Post Type Insulator</td><td style="text-align:center;"><input type="radio" name="c2"></td><td style="text-align:center;"><input type="radio" name="c2"></td><td style="text-align:center;"><input type="radio" name="c2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.3 สายเข้า-ออก Drop Fuse</td><td style="text-align:center;"><input type="radio" name="c3"></td><td style="text-align:center;"><input type="radio" name="c3"></td><td style="text-align:center;"><input type="radio" name="c3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.4 คอนสาย</td><td style="text-align:center;"><input type="radio" name="c4"></td><td style="text-align:center;"><input type="radio" name="c4"></td><td style="text-align:center;"><input type="radio" name="c4"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.5 อุปกรณ์ป้องกันสัตว์</td><td style="text-align:center;"><input type="radio" name="c5"></td><td style="text-align:center;"><input type="radio" name="c5"></td><td style="text-align:center;"><input type="radio" name="c5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                </tbody>
+            </table>
+            <table class="info-table" style="margin-top: 6px;">
+                <tr><th style="width:12%;">ผู้ตรวจ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td><th style="width:12%;">ผู้ตรวจสอบ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td></tr>
+                <tr><th>วันที่</th><td><input type="date" class="form-control" id="dateField1"></td><th>วันที่</th><td><input type="date" class="form-control" id="dateField2"></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0</span><span>SF-07-0-015</span></div>
+        `,
+
+        'SF-07-0-016': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษา Load Break Switch</div>
+            <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
+            <table class="info-table">
+                <tr><th style="width: 12%;">Station ID</th><td style="width: 38%;"><input type="text" placeholder="Station ID"></td><th style="width: 12%;">GIS Lat.</th><td style="width: 38%;"><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="latInput" placeholder="Lat" style="width:65%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
+                <tr><th>สถานที่</th><td colspan="3"><input type="text" placeholder="สถานที่"></td></tr>
+                <tr><th>ยี่ห้อ LBS</th><td><input type="text" placeholder="ยี่ห้อ LBS"></td><th>LBS MEA No.</th><td><input type="text" placeholder="LBS MEA No."></td></tr>
+            </table>
+            <div class="section-header"><span class="section-num">2</span> รายการตรวจสอบบำรุงรักษา</div>
+            <table class="inspection-table">
+                <thead><tr><th rowspan="2" style="text-align: left; width: 45%;">รายการ</th><th colspan="3">ผลการตรวจสอบ</th><th rowspan="2" style="width: 40%;">ข้อบกพร่อง</th></tr><tr><th style="width: 45px;">ปกติ</th><th style="width: 45px;">ชำรุด</th><th style="width: 45px;">ไม่มี</th></tr></thead>
+                <tbody>
+                    <tr><td>2.1 ตัวถัง LBS /สลักล็อคการปลดสับ</td><td style="text-align:center;"><input type="radio" name="r1"></td><td style="text-align:center;"><input type="radio" name="r1"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.2 สถานะก๊าซ SF6</td><td style="text-align:center;"><input type="radio" name="r2"></td><td style="text-align:center;"><input type="radio" name="r2"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                 </tbody>
             </table>
             <table class="info-table" style="margin-top: 6px;">
                 <tr><th style="width:12%;">ผู้ตรวจ</th><td style="width:38%;"><input type="text"></td><th style="width:12%;">ผู้ตรวจสอบ</th><td style="width:38%;"><input type="text"></td></tr>
                 <tr><th>วันที่</th><td><input type="date" class="form-control" id="dateField1"></td><th>วันที่</th><td><input type="date" class="form-control" id="dateField2"></td></tr>
             </table>
-            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0</span><span>SF-07-0-015</span></div>
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0</span><span>SF-07-0-016</span></div>
         `,
-        'SF-07-0-016': `<div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษา Load Break Switch</div><div class="section-header">1 ข้อมูลทั่วไป</div><table class="info-table"><tr><th>Station ID</th><td><input type="text"></td><th>สถานที่</th><td><input type="text"></td></tr></table><div class="sheet-footer-note"><span>SF-07-0-016</span></div>`,
-        'SF-07-0-017': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">แบบตรวจสอบบำรุงรักษา Sectionalizer</div><div class="sheet-footer-note"><span>SF-07-0-017</span></div>`,
-        'SF-07-0-018': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)</div><div class="sheet-footer-note"><span>SF-07-0-018</span></div>`,
-        'SF-07-0-020': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">แบบตรวจสอบบำรุงรักษา Capacitor Bank</div><div class="sheet-footer-note"><span>SF-07-0-020</span></div>`,
-        'SF-07-0-021': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">แบบตรวจสอบเครื่องป้องกันหม้อแปลงตาข่าย</div><div class="sheet-footer-note"><span>SF-07-0-021</span></div>`,
-        'SF-07-0-022': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">แบบตรวจสอบหม้อแปลงตาข่ายและสวิตช์แรงกลาง</div><div class="sheet-footer-note"><span>SF-07-0-022</span></div>`,
-        'SF-07-0-023': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">แบบตรวจสอบทดสอบและกรองน้ำมันหม้อแปลง</div><div class="sheet-footer-note"><span>SF-07-0-023</span></div>`,
-        'SF-07-0-024': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)</div><div class="sheet-footer-note"><span>SF-07-0-024</span></div>`,
-        'SF-07-0-025': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">รายงานผลการตรวจสอบ Partial Discharge</div><div class="sheet-footer-note"><span>SF-07-0-025</span></div>`
+
+        'SF-07-0-017': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษา Sectionalizer</div>
+            <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
+            <table class="info-table">
+                <tr><th>Station ID</th><td><input type="text" placeholder="Station ID"></td><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td></tr>
+                <tr><th>ยี่ห้อ SZ</th><td><input type="text" placeholder="ยี่ห้อ SZ"></td><th>SZ MEA No.</th><td><input type="text" placeholder="SZ MEA No."></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>SF-07-0-017</span></div>
+        `,
+
+        'SF-07-0-018': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)</div>
+            <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
+            <table class="info-table">
+                <tr><th>Station ID</th><td><input type="text" placeholder="Station ID"></td><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td></tr>
+                <tr><th>ยี่ห้อ RMU</th><td><input type="text" placeholder="ยี่ห้อ RMU"></td><th>RMU MEA No.</th><td><input type="text" placeholder="RMU MEA No."></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>SF-07-0-018</span></div>
+        `,
+
+        'SF-07-0-020': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV ในสายป้อน</div>
+            <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
+            <table class="info-table">
+                <tr><th>Station ID</th><td><input type="text" placeholder="Station ID"></td><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td></tr>
+                <tr><th>MEA No.</th><td><input type="text" placeholder="MEA No."></td><th>สายป้อน</th><td><input type="text" placeholder="สายป้อน"></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>SF-07-0-020</span></div>
+        `,
+
+        'SF-07-0-021': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย</div>
+            <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
+            <table class="info-table">
+                <tr><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td><th>STATION</th><td><input type="text" placeholder="Station"></td></tr>
+                <tr><th>MEA NO.</th><td><input type="text" placeholder="MEA No."></td><th>ACB NO.</th><td><input type="text" placeholder="ACB No."></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>SF-07-0-021</span></div>
+        `,
+
+        'SF-07-0-022': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษาหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง</div>
+            <table class="info-table">
+                <tr><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td><th>STATION</th><td><input type="text" placeholder="Station"></td></tr>
+                <tr><th>TR. MEA NO.</th><td><input type="text" placeholder="TR MEA No."></td><th>SW. MEA NO.</th><td><input type="text" placeholder="SW MEA No."></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>SF-07-0-022</span></div>
+        `,
+
+        'SF-07-0-023': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษาทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย</div>
+            <table class="info-table">
+                <tr><th>สถานที่</th><td colspan="3"><input type="text" placeholder="ระบุสถานที่"></td></tr>
+                <tr><th>STATION ID</th><td><input type="text" placeholder="Station ID"></td><th>TR.MEA No.</th><td><input type="text" placeholder="TR.MEA No."></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>SF-07-0-023</span></div>
+        `,
+
+        'SF-07-0-024': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 8px;">รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)</div>
+            <table class="info-table">
+                <tr><th>ชื่อภาพ</th><td><input type="text" placeholder="ชื่อภาพ"></td><th>Station ID</th><td><input type="text" placeholder="Station ID"></td></tr>
+                <tr><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td><th>อุปกรณ์</th><td><input type="text" placeholder="อุปกรณ์"></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>SF-07-0-024</span></div>
+        `,
+
+        'SF-07-0-025': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 8px;">รายงานผลการตรวจสอบ Partial Discharge (Acoustic Camera)</div>
+            <table class="info-table">
+                <tr><th>Station ID</th><td><input type="text" placeholder="Station ID"></td><th>อุปกรณ์</th><td><input type="text" placeholder="อุปกรณ์"></td></tr>
+                <tr><th>สถานที่</th><td colspan="3"><input type="text" placeholder="สถานที่"></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>SF-07-0-025</span></div>
+        `
     };
 
     function switchSubTab(pageNum) {
