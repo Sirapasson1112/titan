@@ -858,6 +858,9 @@
                 <tr><th style="width: 12%;">Station ID</th><td style="width: 38%;"><input type="text" placeholder="Station ID"></td><th style="width: 12%;">สถานที่</th><td style="width: 38%;"><input type="text" placeholder="สถานที่"></td></tr>
                 <tr><th>GIS Lat.</th><td><input type="text" id="latInput" placeholder="Lat"></td><th>Long.</th><td><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="longInput" placeholder="Long" style="width:65%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
                 <tr><th>MEA No1.</th><td><input type="text" placeholder="MEA No1."></td><th>MEA No2.</th><td><input type="text" placeholder="MEA No2."></td></tr>
+                <tr><th>MEA No3.</th><td><input type="text" placeholder="MEA No3."></td><th>จำนวนเฟส</th><td><input type="text" placeholder="จำนวนเฟส"></td></tr>
+                <tr><th>ยี่ห้อ</th><td><input type="text" placeholder="ยี่ห้อ"></td><th>ขนาด</th><td><input type="text" placeholder="ขนาด"></td></tr>
+                <tr><th>ชนิด</th><td><input type="text" placeholder="ชนิด"></td><th>ลักษณะการติดตั้ง</th><td><input type="text" placeholder="ลักษณะการติดตั้ง"></td></tr>
             </table>
             <div class="section-header"><span class="section-num">2</span> รายการตรวจสอบบำรุงรักษา</div>
             <table class="inspection-table">
@@ -868,6 +871,15 @@
                     <tr><td>2.3 สายเข้า-ออก Drop Fuse</td><td style="text-align:center;"><input type="radio" name="c3"></td><td style="text-align:center;"><input type="radio" name="c3"></td><td style="text-align:center;"><input type="radio" name="c3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.4 คอนสาย</td><td style="text-align:center;"><input type="radio" name="c4"></td><td style="text-align:center;"><input type="radio" name="c4"></td><td style="text-align:center;"><input type="radio" name="c4"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.5 อุปกรณ์ป้องกันสัตว์</td><td style="text-align:center;"><input type="radio" name="c5"></td><td style="text-align:center;"><input type="radio" name="c5"></td><td style="text-align:center;"><input type="radio" name="c5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.6 Low Voltage Capacitor</td><td style="text-align:center;"><input type="radio" name="c6"></td><td style="text-align:center;"><input type="radio" name="c6"></td><td style="text-align:center;"><input type="radio" name="c6"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.7 กับดักฟ้าผ่า (L/A)</td><td style="text-align:center;"><input type="radio" name="c7"></td><td style="text-align:center;"><input type="radio" name="c7"></td><td style="text-align:center;"><input type="radio" name="c7"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.8 ตัวถังหม้อแปลง</td><td style="text-align:center;"><input type="radio" name="c8"></td><td style="text-align:center;"><input type="radio" name="c8"></td><td style="text-align:center;"><input type="radio" name="c8"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.9 Bushing HV-LV</td><td style="text-align:center;"><input type="radio" name="c9"></td><td style="text-align:center;"><input type="radio" name="c9"></td><td style="text-align:center;"><input type="radio" name="c9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.10 Cover (Bushing ,L/A, Term. kit)</td><td style="text-align:center;"><input type="radio" name="c10"></td><td style="text-align:center;"><input type="radio" name="c10"></td><td style="text-align:center;"><input type="radio" name="c10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.11 สายหน้าหม้อแปลง LV</td><td style="text-align:center;"><input type="radio" name="c11"></td><td style="text-align:center;"><input type="radio" name="c11"></td><td style="text-align:center;"><input type="radio" name="c11"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.12 LV Ground</td><td style="text-align:center;"><input type="radio" name="c12"></td><td style="text-align:center;"><input type="radio" name="c12"></td><td style="text-align:center;"><input type="radio" name="c12"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.13 HV Ground</td><td style="text-align:center;"><input type="radio" name="c13"></td><td style="text-align:center;"><input type="radio" name="c13"></td><td style="text-align:center;"><input type="radio" name="c13"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.14 CT-TLM Meter (ถ้ามี)</td><td style="text-align:center;"><input type="radio" name="c14"></td><td style="text-align:center;"><input type="radio" name="c14"></td><td style="text-align:center;"><input type="radio" name="c14"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                 </tbody>
             </table>
             <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-015</span></div>
@@ -878,6 +890,10 @@
             <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
             <table class="info-table">
                 <tr><th style="width: 12%;">Station ID</th><td style="width: 38%;"><input type="text" placeholder="Station ID"></td><th style="width: 12%;">GIS Lat.</th><td style="width: 38%;"><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="latInput" placeholder="Lat" style="width:65%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
+                <tr><th>สถานที่</th><td colspan="3"><input type="text" placeholder="สถานที่"></td></tr>
+                <tr><th>ยี่ห้อ LBS</th><td><input type="text" placeholder="ยี่ห้อ LBS"></td><th>LBS MEA No.</th><td><input type="text" placeholder="LBS MEA No."></td></tr>
+                <tr><th>ยี่ห้อ VT</th><td><input type="text" placeholder="ยี่ห้อ VT"></td><th>VT MEA No.</th><td><input type="text" placeholder="VT MEA No."></td></tr>
+                <tr><th>Switch No.</th><td><input type="text" placeholder="Switch No."></td><th>ตู้ OFDF No.</th><td><input type="text" placeholder="ตู้ OFDF No."></td></tr>
             </table>
             <div class="section-header"><span class="section-num">2</span> รายการตรวจสอบบำรุงรักษา</div>
             <table class="inspection-table">
@@ -885,6 +901,9 @@
                 <tbody>
                     <tr><td>2.1 ตัวถัง LBS /สลักล็อคการปลดสับ</td><td style="text-align:center;"><input type="radio" name="r1"></td><td style="text-align:center;"><input type="radio" name="r1"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.2 สถานะก๊าซ SF6</td><td style="text-align:center;"><input type="radio" name="r2"></td><td style="text-align:center;"><input type="radio" name="r2"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.3 Bushing</td><td style="text-align:center;"><input type="radio" name="r3"></td><td style="text-align:center;"><input type="radio" name="r3"></td><td style="text-align:center;"><input type="radio" name="r3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.4 กับดักฟ้าผ่า</td><td style="text-align:center;"><input type="radio" name="r4"></td><td style="text-align:center;"><input type="radio" name="r4"></td><td style="text-align:center;"><input type="radio" name="r4"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.5 VT</td><td style="text-align:center;"><input type="radio" name="r5"></td><td style="text-align:center;"><input type="radio" name="r5"></td><td style="text-align:center;"><input type="radio" name="r5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                 </tbody>
             </table>
             <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-016</span></div>
@@ -895,6 +914,18 @@
             <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
             <table class="info-table">
                 <tr><th style="width: 12%;">Station ID</th><td style="width: 38%;"><input type="text" placeholder="Station ID"></td><th style="width: 12%;">GIS Lat.</th><td style="width: 38%;"><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="latInput" placeholder="Lat" style="width:65%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
+                <tr><th>สถานที่</th><td colspan="3"><input type="text" placeholder="สถานที่"></td></tr>
+                <tr><th>ยี่ห้อ SZ</th><td><input type="text" placeholder="ยี่ห้อ SZ"></td><th>Long.</th><td><input type="text" id="longInput" placeholder="Long"></td></tr>
+                <tr><th>SZ MEA No.</th><td><input type="text" placeholder="SZ MEA No."></td><th>Switch No.</th><td><input type="text" placeholder="Switch No."></td></tr>
+            </table>
+            <div class="section-header"><span class="section-num">2</span> รายการตรวจสอบบำรุงรักษา</div>
+            <table class="inspection-table">
+                <thead><tr><th rowspan="2" style="text-align: left; width: 45%;">รายการ</th><th colspan="3">ผลการตรวจสอบ</th><th rowspan="2" style="width: 40%;">ข้อบกพร่อง</th></tr><tr><th style="width: 45px;">ปกติ</th><th style="width: 45px;">ชำรุด</th><th style="width: 45px;">ไม่มี</th></tr></thead>
+                <tbody>
+                    <tr><td>2.1 ตัวถัง SZ / สลักล็อคการปลดสับ</td><td style="text-align:center;"><input type="radio" name="sz1"></td><td style="text-align:center;"><input type="radio" name="sz1"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.2 สถานะก๊าซ SF6</td><td style="text-align:center;"><input type="radio" name="sz2"></td><td style="text-align:center;"><input type="radio" name="sz2"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.3 Bushing</td><td style="text-align:center;"><input type="radio" name="sz3"></td><td style="text-align:center;"><input type="radio" name="sz3"></td><td style="text-align:center;"><input type="radio" name="sz3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                </tbody>
             </table>
             <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-017</span></div>
         `,
@@ -904,6 +935,18 @@
             <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
             <table class="info-table">
                 <tr><th style="width: 12%;">Station ID</th><td style="width: 38%;"><input type="text" placeholder="Station ID"></td><th style="width: 12%;">GIS Lat.</th><td style="width: 38%;"><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="latInput" placeholder="Lat" style="width:65%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
+                <tr><th>สถานที่</th><td colspan="3"><input type="text" placeholder="สถานที่"></td></tr>
+                <tr><th>ยี่ห้อ RMU</th><td><input type="text" placeholder="ยี่ห้อ RMU"></td><th>Long.</th><td><input type="text" id="longInput" placeholder="Long"></td></tr>
+                <tr><th>RMU MEA No.</th><td colspan="3"><input type="text" placeholder="RMU MEA No."></td></tr>
+            </table>
+            <div class="section-header"><span class="section-num">2</span> รายการตรวจสอบบำรุงรักษา</div>
+            <table class="inspection-table">
+                <thead><tr><th rowspan="2" style="text-align: left; width: 45%;">รายการ</th><th colspan="3">ผลการตรวจสอบ</th><th rowspan="2" style="width: 40%;">ข้อบกพร่อง</th></tr><tr><th style="width: 45px;">ปกติ</th><th style="width: 45px;">ชำรุด</th><th style="width: 45px;">ไม่มี</th></tr></thead>
+                <tbody>
+                    <tr><td>2.1 สภาพภายนอกตู้ครอบ</td><td style="text-align:center;"><input type="radio" name="rmu1"></td><td style="text-align:center;"><input type="radio" name="rmu1"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.2 ประตูตู้ครอบ</td><td style="text-align:center;"><input type="radio" name="rmu2"></td><td style="text-align:center;"><input type="radio" name="rmu2"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.5 ก๊าซ SF6</td><td style="text-align:center;"><input type="radio" name="rmu5"></td><td style="text-align:center;"><input type="radio" name="rmu5"></td><td style="text-align:center;"><input type="radio" name="rmu5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                </tbody>
             </table>
             <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-018</span></div>
         `,
@@ -913,6 +956,15 @@
             <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
             <table class="info-table">
                 <tr><th style="width: 14%;">Station ID</th><td style="width: 36%;"><input type="text" placeholder="Station ID"></td><th style="width: 14%;">สถานที่</th><td style="width: 36%;"><input type="text" placeholder="สถานที่"></td></tr>
+                <tr><th>MEA No.</th><td><input type="text" placeholder="MEA No."></td><th>GIS Lat.</th><td><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="latInput" placeholder="Lat" style="width:65%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
+            </table>
+            <div class="section-header"><span class="section-num">2</span> รายการตรวจสอบบำรุงรักษา</div>
+            <table class="inspection-table">
+                <thead><tr><th rowspan="2" style="text-align: left; width: 45%;">รายการ</th><th colspan="3">ผลการตรวจสอบ</th><th rowspan="2" style="width: 40%;">ข้อบกพร่อง</th></tr><tr><th style="width: 45px;">ปกติ</th><th style="width: 45px;">ชำรุด</th><th style="width: 45px;">ไม่มี</th></tr></thead>
+                <tbody>
+                    <tr><td>2.1 Drop Fuse</td><td style="text-align:center;"><input type="radio" name="cb1"></td><td style="text-align:center;"><input type="radio" name="cb1"></td><td style="text-align:center;"><input type="radio" name="cb1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.2 Station Post Type Insulator</td><td style="text-align:center;"><input type="radio" name="cb2"></td><td style="text-align:center;"><input type="radio" name="cb2"></td><td style="text-align:center;"><input type="radio" name="cb2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                </tbody>
             </table>
             <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-020</span></div>
         `,
@@ -922,6 +974,14 @@
             <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
             <table class="info-table">
                 <tr><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td><th>STATION</th><td><input type="text" placeholder="Station"></td></tr>
+                <tr><th>FIX ID</th><td><input type="text" placeholder="Fix ID"></td><th>WLN</th><td><input type="text" placeholder="WLN"></td></tr>
+            </table>
+            <div class="section-header"><span class="section-num">2</span> รายการตรวจสอบบำรุงรักษา</div>
+            <table class="inspection-table">
+                <thead><tr><th style="width: 35px;">ลำดับ</th><th style="text-align: left; width: 35%;">รายการตรวจสอบ</th><th style="width: 25%;">เกณฑ์</th><th style="width: 45px;">ปกติ</th><th style="width: 45px;">ไม่ปกติ</th><th>ข้อบกพร่อง / การดำเนินการแก้ไข/เพิ่มเติม</th></tr></thead>
+                <tbody>
+                    <tr><td style="text-align:center;">1.1</td><td>Station ID / สถานะ MV.SW.</td><td>CLOSE</td><td style="text-align:center;"><input type="radio" name="e1"></td><td style="text-align:center;"><input type="radio" name="e1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                </tbody>
             </table>
             <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-021</span></div>
         `,
@@ -936,19 +996,36 @@
         'SF-07-0-023': `
             ${criticalityBannerHTML}
             <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษาทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย</div>
-            <table class="info-table">
+            <table class="info-table" style="margin-bottom: 4px;">
                 <tr><th style="width: 12%;">สถานที่</th><td colspan="3"><input type="text" placeholder="ระบุสถานที่"></td></tr>
+            </table>
+            <div class="section-header" style="background:#fde047; color:#0f172a; text-align:center; display:block; font-weight:700;">ขั้นตอนการกรองน้ำมัน</div>
+            <div style="font-size:0.75rem; font-weight:700; margin-top:4px; margin-bottom:2px;">1 ทดสอบน้ำมันหม้อแปลงด้วยเครื่องทดสอบ โดยทดสอบ 5 ครั้ง ห่างครั้งละ 5 นาที</div>
+            <table class="inspection-table" style="margin-bottom: 3px;">
+                <thead><tr><th style="text-align: left; width: 45%;">ครั้งที่</th><th style="width: 45px;">1</th><th style="width: 45px;">2</th><th style="width: 45px;">3</th><th style="width: 45px;">4</th><th style="width: 45px;">5</th><th>ค่าเฉลี่ย</th></tr></thead>
+                <tbody>
+                    <tr><td>Breakdown Voltage (kV)</td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td></tr>
+                </tbody>
             </table>
             <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่....</span><span id="footerCode">SF-07-0-023</span></div>
         `,
         'SF-07-0-024': `
             ${criticalityBannerHTML}
             <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)</div>
+            <div class="section-header"><span class="section-num">1</span> ข้อมูลภาพถ่าย</div>
+            <table class="info-table">
+                <tr><th style="width: 12%;">ชื่อภาพ</th><td style="width: 38%;"><input type="text" placeholder="ชื่อภาพ"></td><th style="width: 12%;">emissivity</th><td style="width: 38%;"><input type="text" placeholder="emissivity"></td></tr>
+            </table>
             <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่....</span><span id="footerCode">SF-07-0-024</span></div>
         `,
         'SF-07-0-025': `
             ${criticalityBannerHTML}
             <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 4px;">รายงานผลการตรวจสอบการคายประจุไฟฟ้าบางส่วน (Partial Discharge)</div>
+            <div style="text-align: center; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 6px;">โดยใช้กล้อง Acoustic Camera</div>
+            <div class="section-header"><span class="section-num">1</span> ข้อมูลภาพถ่าย</div>
+            <table class="info-table">
+                <tr><th style="width: 12%;">Station ID</th><td style="width: 38%;"><input type="text" placeholder="Station ID"></td><th style="width: 12%;">อุปกรณ์</th><td style="width: 38%;"><input type="text" placeholder="อุปกรณ์"></td></tr>
+            </table>
             <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่....</span><span id="footerCode">SF-07-0-025</span></div>
         `
     };
