@@ -201,20 +201,6 @@
         .info-table input { border: none; background: transparent; width: 100%; padding: 1px; font-size: 0.75rem; color: var(--text-main); }
         .info-table input:focus { outline: none; background: #fffbeb; }
 
-        table.inspection-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 4px;
-        }
-
-        table.inspection-table th, table.inspection-table td {
-            border: 1px solid var(--border);
-            padding: 2px 4px;
-            font-size: 0.7rem;
-        }
-
-        table.inspection-table th { background-color: #f1f5f9; text-align: center; font-weight: 700; color: var(--accent); }
-        
         input[type="radio"], input[type="checkbox"] { transform: scale(1.05); accent-color: var(--primary); cursor: pointer; }
         .form-control { padding: 3px 5px; border: 1px solid var(--border); border-radius: 4px; font-size: 0.75rem; background-color: #f8fafc; width: 100%; color: var(--text-main); }
         textarea.form-control { resize: vertical; height: 26px; }
@@ -237,7 +223,6 @@
             .sheet-title-container { margin-bottom: 3px; padding-bottom: 2px; }
             .info-table th, .info-table td { padding: 1px 2px; font-size: 7.5px; }
             .section-header { padding: 2px 4px; margin-top: 3px; margin-bottom: 2px; font-size: 8px; }
-            table.inspection-table th, table.inspection-table td { padding: 1px 2px; font-size: 7.5px; }
             input[type="radio"], input[type="checkbox"] { transform: scale(0.8); }
             textarea.form-control { height: 16px; padding: 1px 2px; font-size: 7.5px; }
             .form-control { padding: 1px 2px; font-size: 7.5px; height: 16px; }
@@ -277,8 +262,8 @@
                 <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-021')">SF-07-0-021</button>
                 <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-022')">SF-07-0-022</button>
                 <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-023')">SF-07-0-023</button>
-                <button class="tab-btn active" onclick="switchTab(this, 'SF-07-0-024')">SF-07-0-024</button>
-                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-025')">SF-07-0-025</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-024')">SF-07-0-024</button>
+                <button class="tab-btn active" onclick="switchTab(this, 'SF-07-0-025')">SF-07-0-025</button>
             </div>
         </div>
 
@@ -327,7 +312,8 @@
     <!-- ส่วนแสดงใบตรวจสอบ -->
     <div id="formContentArea">
         <div class="official-sheet" id="printArea">
-            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 6px;">รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)</div>
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 4px;">รายงานผลการตรวจสอบการคายประจุไฟฟ้าบางส่วน (Partial Discharge)</div>
+            <div style="text-align: center; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 6px;">โดยใช้กล้อง Acoustic Camera</div>
             
             <table class="info-table" style="margin-bottom: 4px;">
                 <tr>
@@ -349,26 +335,20 @@
             <div class="section-header"><span class="section-num">1</span> ข้อมูลภาพถ่าย</div>
             <table class="info-table">
                 <tr>
-                    <th style="width: 12%;">ชื่อภาพ</th>
-                    <td style="width: 38%;"><input type="text" placeholder="ชื่อภาพ"></td>
-                    <th style="width: 12%;">emissivity</th>
-                    <td style="width: 38%;"><input type="text" placeholder="emissivity"></td>
-                </tr>
-                <tr>
-                    <th>Station ID</th>
-                    <td><input type="text" placeholder="Station ID"></td>
-                    <th>อุปกรณ์</th>
-                    <td><input type="text" placeholder="อุปกรณ์"></td>
+                    <th style="width: 12%;">Station ID</th>
+                    <td style="width: 38%;"><input type="text" placeholder="Station ID"></td>
+                    <th style="width: 12%;">อุปกรณ์</th>
+                    <td style="width: 38%;"><input type="text" placeholder="อุปกรณ์"></td>
                 </tr>
                 <tr>
                     <th>MEA No.</th>
                     <td><input type="text" placeholder="MEA No."></td>
-                    <th>สถานที่</th>
-                    <td><input type="text" placeholder="สถานที่"></td>
+                    <th>สายป้อน</th>
+                    <td><input type="text" placeholder="สายป้อน"></td>
                 </tr>
                 <tr>
-                    <th>สายป้อน</th>
-                    <td colspan="3"><input type="text" placeholder="สายป้อน"></td>
+                    <th>สถานที่</th>
+                    <td colspan="3"><input type="text" placeholder="สถานที่"></td>
                 </tr>
                 <tr>
                     <th>GIS Lat.</th>
@@ -381,112 +361,66 @@
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <th>จุดที่ผิดปกติ</th>
+                    <td colspan="3"><input type="text" placeholder="จุดที่ผิดปกติ"></td>
+                </tr>
+            </table>
+
+            <table class="info-table" style="margin-top: 4px; margin-bottom: 2px;">
+                <tr>
+                    <td style="background:#f8fafc; padding:4px 6px; font-size: 0.75rem;">
+                        ระดับความเข้มเสียงที่ตรวจวัดได้ : <input type="text" style="width: 100px; border-bottom: 1px solid #000; background:transparent;"> dB
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background:#f8fafc; padding:4px 6px; font-size: 0.75rem;">
+                        ระดับความรุนแรง * &nbsp; 
+                        <label><input type="checkbox"> สูงมาก</label> &nbsp; &nbsp; 
+                        <label><input type="checkbox"> สูง</label> &nbsp; &nbsp; 
+                        <label><input type="checkbox"> ปานกลาง</label> &nbsp; &nbsp; 
+                        <label><input type="checkbox"> ต่ำ</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background:#f1f5f9; padding:2px 6px; font-size: 0.68rem; color:var(--text-muted);">
+                        หมายเหตุ *ระดับความรุนแรงเป็นการประเมินจาก software ของ NL CLOUD
+                    </td>
+                </tr>
             </table>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 4px 0;">
-                <div style="border: 1px solid var(--border); padding: 4px; text-align: center; background: #f8fafc; border-radius: 4px; min-height: 120px;">
-                    <label style="font-size:0.7rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom: 2px;">ภาพถ่ายจริง</label>
-                    <input type="file" accept="image/*" style="font-size: 0.6rem; display:block; margin: 20px auto;">
+                <div style="border: 1px solid var(--border); padding: 4px; text-align: center; background: #f8fafc; border-radius: 4px; min-height: 110px;">
+                    <label style="font-size:0.7rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom: 2px;">ภาพถ่ายจากกล้องปกติ</label>
+                    <input type="file" accept="image/*" style="font-size: 0.6rem; display:block; margin: 15px auto;">
                 </div>
-                <div style="border: 1px solid var(--border); padding: 4px; text-align: center; background: #f8fafc; border-radius: 4px; min-height: 120px;">
-                    <label style="font-size:0.7rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom: 2px;">ภาพถ่ายความร้อน</label>
-                    <input type="file" accept="image/*" style="font-size: 0.6rem; display:block; margin: 20px auto;">
-                </div>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; align-items: flex-start;">
-                <div>
-                    <div class="section-header"><span class="section-num">2</span> อุณหภูมิสูงสุดที่จุดวัดฯ</div>
-                    <table class="inspection-table" style="margin-bottom: 2px;">
-                        <thead>
-                            <tr><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div style="font-size: 0.7rem; font-weight: 600; margin-top: 3px; margin-bottom: 2px;">อุณหภูมิเปรียบเทียบที่จุดวัดฯ (Delta T) (°C)</div>
-                    <table class="inspection-table">
-                        <thead>
-                            <tr>
-                                <th>ΔT(____)</th>
-                                <th>ΔT(____)</th>
-                                <th>ΔT(____)</th>
-                                <th>ΔT(____)</th>
-                                <th>ΔT(____)</th>
-                                <th>ΔT(____)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div>
-                    <table class="inspection-table" style="margin-top: 6px;">
-                        <thead>
-                            <tr>
-                                <th style="width: 45px;">ลำดับความสำคัญ</th>
-                                <th>Delta T</th>
-                                <th>ข้อเสนอแนะการดำเนินการ</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td style="text-align:center; font-weight:bold;">4</td><td>0-10°C</td><td>อุปกรณ์ปกติ</td></tr>
-                            <tr><td style="text-align:center; font-weight:bold;">3</td><td>>10-20°C</td><td>แก้ไขในการบำรุงรักษาครั้งต่อไป</td></tr>
-                            <tr><td style="text-align:center; font-weight:bold;">2</td><td>>20-40°C</td><td>ควรแก้ไขภายใน 1 เดือน</td></tr>
-                            <tr><td style="text-align:center; font-weight:bold;">1</td><td>>40°C</td><td>ควรได้รับการแก้ไขเร่งด่วน</td></tr>
-                        </tbody>
-                    </table>
+                <div style="border: 1px solid var(--border); padding: 4px; text-align: center; background: #f8fafc; border-radius: 4px; min-height: 110px;">
+                    <label style="font-size:0.7rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom: 2px;">ภาพถ่ายจาก Acoustic Camera</label>
+                    <input type="file" accept="image/*" style="font-size: 0.6rem; display:block; margin: 15px auto;">
                 </div>
             </div>
 
-            <div style="text-align: center; font-size: 0.65rem; color: var(--text-muted); margin: 3px 0;">อ้างอิงมาตรฐาน Standard for Infrared Inspection of Electrical Systems & Rotating Equipment, 2016 Edition</div>
-
-            <div class="section-header"><span class="section-num">3</span> รายการจากการตรวจสอบ</div>
-            <div style="font-size: 0.75rem; margin-bottom: 2px;">
-                ลำดับความสำคัญ <input type="text" style="width: 60px; border-bottom: 1px solid #000; background:transparent; text-align:center;"> &nbsp; 
-                การตรวจสอบ: <input type="text" style="width: 70%; border-bottom: 1px solid #000; background:transparent;">
-            </div>
-            <div style="font-size: 0.75rem; margin-bottom: 4px;">
-                ข้อแนะนำการแก้ไข: <input type="text" style="width: 80%; border-bottom: 1px solid #000; background:transparent;">
-            </div>
-
-            <div class="section-header"><span class="section-num">4</span> การส่งต่อดำเนินการแก้ไข</div>
+            <div class="section-header"><span class="section-num">2</span> การส่งต่อดำเนินการแก้ไข</div>
             <div style="font-size: 0.75rem; margin-bottom: 4px; display:flex; gap:10px; align-items:center;">
-                <div>ส่งต่อให้กลุ่มงาน <input type="text" style="width: 150px; border-bottom: 1px solid #000; background:transparent;"></div>
-                <div>โปรดดำเนินการแก้ไข <input type="text" style="width: 150px; border-bottom: 1px solid #000; background:transparent;"></div>
+                <div>ส่งต่อให้กลุ่มงาน <input type="text" style="width: 180px; border-bottom: 1px solid #000; background:transparent;"></div>
+                <div>โปรดดำเนินการแก้ไข <input type="text" style="width: 180px; border-bottom: 1px solid #000; background:transparent;"></div>
                 <div>วันที่: <input type="date" style="border:none; background:transparent;"></div>
             </div>
             <div style="text-align: right; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px;">(หพบจ./ชพบจ.)</div>
 
-            <div class="section-header"><span class="section-num">5</span> การดำเนินการปรับปรุง</div>
+            <div class="section-header"><span class="section-num">3</span> การดำเนินการปรับปรุง</div>
             <div style="font-size: 0.75rem; margin-bottom: 4px; display:flex; gap:10px; align-items:center;">
                 <div>ดำเนินการแก้ไขเมื่อวันที่ <input type="date" style="border:none; background:transparent;"></div>
-                <div>จึงเสนอมาเพื่อโปรดทราบตำแหน่ง <input type="text" style="width: 150px; border-bottom: 1px solid #000; background:transparent;"></div>
+                <div>จึงเสนอมาเพื่อโปรดทราบ <input type="text" style="width: 180px; border-bottom: 1px solid #000; background:transparent;"></div>
+                <div>ตำแหน่ง <input type="text" style="width: 100px; border-bottom: 1px solid #000; background:transparent;"></div>
             </div>
             <div style="text-align: right; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px;">(ผู้ดำเนินการปรับปรุง)</div>
             <div style="font-size: 0.75rem; margin-bottom: 4px;">
-                ทราบ <input type="text" style="width: 200px; border-bottom: 1px solid #000; background:transparent;"> &nbsp; วันที่: <input type="date" style="border:none; background:transparent;">
+                ทราบ <input type="text" style="width: 220px; border-bottom: 1px solid #000; background:transparent;"> &nbsp; วันที่: <input type="date" style="border:none; background:transparent;">
             </div>
             <div style="text-align: right; font-size: 0.7rem; color: var(--text-muted);">(หพบจ./ชพบจ.)</div>
 
-            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-024</span></div>
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่....</span><span id="footerCode">SF-07-0-025</span></div>
         </div>
     </div>
 </div>
@@ -880,7 +814,7 @@
                 <thead><tr><th style="width: 35px;">ลำดับ</th><th style="text-align: left; width: 35%;">รายการตรวจสอบ</th><th style="width: 25%;">เกณฑ์</th><th style="width: 45px;">ปกติ</th><th style="width: 45px;">ไม่ปกติ</th><th>ข้อบกพร่อง / การดำเนินการแก้ไข/เพิ่มเติม</th></tr></thead>
                 <tbody>
                     <tr><td colspan="6" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">1. สภาพภายนอก</td></tr>
-                    <tr><td style="text-align:center;">1.1</td><td>สถานะ MV.SW.</td><td>CLOSE</td><td style="text-align:center;"><input type="radio" name="e1"></td><td style="text-align:center;"><input type="radio" name="e1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;">1.1</td><td>Station ID / สถานะ MV.SW.</td><td>CLOSE</td><td style="text-align:center;"><input type="radio" name="e1"></td><td style="text-align:center;"><input type="radio" name="e1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td style="text-align:center;">1.2</td><td>สถานะ NP</td><td>CLOSE</td><td style="text-align:center;"><input type="radio" name="e2"></td><td style="text-align:center;"><input type="radio" name="e2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td style="text-align:center;">1.3</td><td>เบอร์ตู้/ สีตู้</td><td>ชัดเจน ไม่ลอก</td><td style="text-align:center;"><input type="radio" name="e3"></td><td style="text-align:center;"><input type="radio" name="e3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td style="text-align:center;">1.4</td><td>ระบบกราวด์</td><td>มีทั้งกราวด์ N และ G</td><td style="text-align:center;"><input type="radio" name="e4"></td><td style="text-align:center;"><input type="radio" name="e4"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
@@ -1078,38 +1012,118 @@
             <div style="text-align: right; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px;">(ผู้ดำเนินการปรับปรุง)</div>
             <div style="font-size: 0.75rem; margin-bottom: 4px;">ทราบ <input type="text" style="width: 200px; border-bottom: 1px solid #000; background:transparent;"> &nbsp; วันที่: <input type="date" style="border:none; background:transparent;"></div>
             <div style="text-align: right; font-size: 0.7rem; color: var(--text-muted);">(หพบจ./ชพบจ.)</div>
-            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-024</span></div>
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่....</span><span id="footerCode">SF-07-0-024</span></div>
         `,
 
         'SF-07-0-025': `
-            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">รายงานผลการตรวจสอบการคายประจุไฟฟ้าบางส่วน (Partial Discharge)</div>
-            <div style="text-align: center; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); margin-bottom: 6px;">โดยใช้กล้อง Acoustic Camera</div>
-            <div class="grid-form" style="margin-bottom: 4px; display:grid; grid-template-columns: repeat(3, 1fr); gap: 4px;">
-                <div class="field-group"><label>ผู้ตรวจ 1:</label><input type="text" class="form-control" placeholder="ผู้ตรวจคนที่ 1"></div>
-                <div class="field-group"><label>ตำแหน่ง 1:</label><input type="text" class="form-control" placeholder="ตำแหน่ง"></div>
-                <div class="field-group"><label>วันที่ตรวจ</label><input type="date" class="form-control" id="dateField1"></div>
-            </div>
-            <div class="section-header"><span class="section-num">1</span> ข้อมูลภาพถ่าย Partial Discharge</div>
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 4px;">รายงานผลการตรวจสอบการคายประจุไฟฟ้าบางส่วน (Partial Discharge)</div>
+            <div style="text-align: center; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 6px;">โดยใช้กล้อง Acoustic Camera</div>
+            
+            <table class="info-table" style="margin-bottom: 4px;">
+                <tr>
+                    <th style="width: 10%;">ผู้ตรวจ:</th>
+                    <td style="width: 35%;">1. <input type="text" style="width: 85%; border-bottom: 1px solid #000; background:transparent;"></td>
+                    <th style="width: 12%;">ตำแหน่ง</th>
+                    <td style="width: 18%;"><input type="text"></td>
+                    <th style="width: 10%;">วันที่ตรวจ</th>
+                    <td style="width: 15%;"><input type="date" id="dateField1" style="border:none; background:transparent;"></td>
+                </tr>
+                <tr>
+                    <th>ผู้ตรวจ:</th>
+                    <td>2. <input type="text" style="width: 85%; border-bottom: 1px solid #000; background:transparent;"></td>
+                    <th>ตำแหน่ง</th>
+                    <td colspan="3"><input type="text"></td>
+                </tr>
+            </table>
+
+            <div class="section-header"><span class="section-num">1</span> ข้อมูลภาพถ่าย</div>
             <table class="info-table">
-                <tr><th>Station ID</th><td><input type="text" placeholder="Station ID"></td><th>อุปกรณ์</th><td><input type="text" placeholder="อุปกรณ์"></td></tr>
-                <tr><th>MEA No.</th><td><input type="text" placeholder="MEA No."></td><th>สายป้อน</th><td><input type="text" placeholder="สายป้อน"></td></tr>
-                <tr><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td><th>GIS Lat/Long</th><td><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="latInput" placeholder="Lat" style="width:40%;"><input type="text" id="longInput" placeholder="Long" style="width:40%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
-                <tr><th>จุดที่ผิดปกติ</th><td colspan="3"><input type="text" placeholder="ระบุตำแหน่งจุดที่ผิดปกติ"></td></tr>
+                <tr>
+                    <th style="width: 12%;">Station ID</th>
+                    <td style="width: 38%;"><input type="text" placeholder="Station ID"></td>
+                    <th style="width: 12%;">อุปกรณ์</th>
+                    <td style="width: 38%;"><input type="text" placeholder="อุปกรณ์"></td>
+                </tr>
+                <tr>
+                    <th>MEA No.</th>
+                    <td><input type="text" placeholder="MEA No."></td>
+                    <th>สายป้อน</th>
+                    <td><input type="text" placeholder="สายป้อน"></td>
+                </tr>
+                <tr>
+                    <th>สถานที่</th>
+                    <td colspan="3"><input type="text" placeholder="สถานที่"></td>
+                </tr>
+                <tr>
+                    <th>GIS Lat.</th>
+                    <td><input type="text" id="latInput" placeholder="Lat"></td>
+                    <th>Long.</th>
+                    <td>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <input type="text" id="longInput" placeholder="Long" style="width:65%;">
+                            <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>จุดที่ผิดปกติ</th>
+                    <td colspan="3"><input type="text" placeholder="จุดที่ผิดปกติ"></td>
+                </tr>
             </table>
-            <div style="font-size: 0.78rem; margin: 4px 0; background:#f8fafc; padding:6px 10px; border:1px solid var(--border); border-radius:6px;">
-                <div style="display:flex; gap:10px; align-items:center; margin-bottom:4px;"><div><b>ความเข้มเสียง (dB):</b> <input type="text" class="form-control" style="display:inline-block; width:90px; padding:2px;" placeholder="dB"></div></div>
-                <div><b>ระดับความรุนแรง (NL CLOUD):</b><div style="display:flex; gap:10px; margin-top:2px;"><label><input type="checkbox"> สูงมาก</label><label><input type="checkbox"> สูง</label><label><input type="checkbox"> ปานกลาง</label><label><input type="checkbox"> ต่ำ</label></div></div>
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 4px 0;">
-                <div style="border: 1px dashed var(--border); padding: 6px; text-align: center; background: #f8fafc; border-radius: 4px;"><label style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">📷 ภาพกล้องปกติ</label><input type="file" accept="image/*" style="font-size: 0.65rem; display:block; margin: 2px auto;"></div>
-                <div style="border: 1px dashed var(--border); padding: 6px; text-align: center; background: #f8fafc; border-radius: 4px;"><label style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">📷 ภาพ Acoustic Camera</label><input type="file" accept="image/*" style="font-size: 0.65rem; display:block; margin: 2px auto;"></div>
-            </div>
-            <div class="section-header"><span class="section-num">2</span> การส่งต่อแก้ไข & <span class="section-num">3</span> การดำเนินการปรับปรุง</div>
-            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;" placeholder="กลุ่มงานที่รับเรื่องและผลการดำเนินการ..."></div>
-            <table class="info-table" style="margin-top: 6px;">
-                <tr><th style="width:25%;">โปรดดำเนินการแก้ไข</th><td style="width:25%;"><input type="text" placeholder="ลงนามสั่งการ"></td><th style="width:25%;">ผู้ดำเนินการปรับปรุง</th><td style="width:25%;"><input type="text" placeholder="ชื่อผู้ปฏิบัติงาน"></td></tr>
-                <tr><th>วันที่</th><td><input type="date" class="form-control" id="dateField2" style="border:none; background:transparent;"></td><th>วันที่แก้ไข</th><td><input type="date" class="form-control" style="border:none; background:transparent;"></td></tr>
+
+            <table class="info-table" style="margin-top: 4px; margin-bottom: 2px;">
+                <tr>
+                    <td style="background:#f8fafc; padding:4px 6px; font-size: 0.75rem;">
+                        ระดับความเข้มเสียงที่ตรวจวัดได้ : <input type="text" style="width: 100px; border-bottom: 1px solid #000; background:transparent;"> dB
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background:#f8fafc; padding:4px 6px; font-size: 0.75rem;">
+                        ระดับความรุนแรง * &nbsp; 
+                        <label><input type="checkbox"> สูงมาก</label> &nbsp; &nbsp; 
+                        <label><input type="checkbox"> สูง</label> &nbsp; &nbsp; 
+                        <label><input type="checkbox"> ปานกลาง</label> &nbsp; &nbsp; 
+                        <label><input type="checkbox"> ต่ำ</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background:#f1f5f9; padding:2px 6px; font-size: 0.68rem; color:var(--text-muted);">
+                        หมายเหตุ *ระดับความรุนแรงเป็นการประเมินจาก software ของ NL CLOUD
+                    </td>
+                </tr>
             </table>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 4px 0;">
+                <div style="border: 1px solid var(--border); padding: 4px; text-align: center; background: #f8fafc; border-radius: 4px; min-height: 110px;">
+                    <label style="font-size:0.7rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom: 2px;">ภาพถ่ายจากกล้องปกติ</label>
+                    <input type="file" accept="image/*" style="font-size: 0.6rem; display:block; margin: 15px auto;">
+                </div>
+                <div style="border: 1px solid var(--border); padding: 4px; text-align: center; background: #f8fafc; border-radius: 4px; min-height: 110px;">
+                    <label style="font-size:0.7rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom: 2px;">ภาพถ่ายจาก Acoustic Camera</label>
+                    <input type="file" accept="image/*" style="font-size: 0.6rem; display:block; margin: 15px auto;">
+                </div>
+            </div>
+
+            <div class="section-header"><span class="section-num">2</span> การส่งต่อดำเนินการแก้ไข</div>
+            <div style="font-size: 0.75rem; margin-bottom: 4px; display:flex; gap:10px; align-items:center;">
+                <div>ส่งต่อให้กลุ่มงาน <input type="text" style="width: 180px; border-bottom: 1px solid #000; background:transparent;"></div>
+                <div>โปรดดำเนินการแก้ไข <input type="text" style="width: 180px; border-bottom: 1px solid #000; background:transparent;"></div>
+                <div>วันที่: <input type="date" style="border:none; background:transparent;"></div>
+            </div>
+            <div style="text-align: right; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px;">(หพบจ./ชพบจ.)</div>
+
+            <div class="section-header"><span class="section-num">3</span> การดำเนินการปรับปรุง</div>
+            <div style="font-size: 0.75rem; margin-bottom: 4px; display:flex; gap:10px; align-items:center;">
+                <div>ดำเนินการแก้ไขเมื่อวันที่ <input type="date" style="border:none; background:transparent;"></div>
+                <div>จึงเสนอมาเพื่อโปรดทราบ <input type="text" style="width: 180px; border-bottom: 1px solid #000; background:transparent;"></div>
+                <div>ตำแหน่ง <input type="text" style="width: 100px; border-bottom: 1px solid #000; background:transparent;"></div>
+            </div>
+            <div style="text-align: right; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px;">(ผู้ดำเนินการปรับปรุง)</div>
+            <div style="font-size: 0.75rem; margin-bottom: 4px;">
+                ทราบ <input type="text" style="width: 220px; border-bottom: 1px solid #000; background:transparent;"> &nbsp; วันที่: <input type="date" style="border:none; background:transparent;">
+            </div>
+            <div style="text-align: right; font-size: 0.7rem; color: var(--text-muted);">(หพบจ./ชพบจ.)</div>
+
             <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่....</span><span id="footerCode">SF-07-0-025</span></div>
         `
     };
