@@ -312,8 +312,8 @@
             <div class="tab-scroller" id="tabContainer">
                 <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-015')">SF-07-0-015</button>
                 <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-016')">SF-07-0-016</button>
-                <button class="tab-btn active" onclick="switchTab(this, 'SF-07-0-017')">SF-07-0-017</button>
-                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-018')">SF-07-0-018</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-017')">SF-07-0-017</button>
+                <button class="tab-btn active" onclick="switchTab(this, 'SF-07-0-018')">SF-07-0-018</button>
                 <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-019')">SF-07-0-019</button>
                 <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-020')">SF-07-0-020</button>
                 <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-021')">SF-07-0-021</button>
@@ -369,7 +369,7 @@
     <!-- ส่วนแสดงใบตรวจสอบ -->
     <div id="formContentArea">
         <div class="official-sheet" id="printArea">
-            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษา Sectionalizer</div>
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)</div>
             
             <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
             <table class="info-table">
@@ -389,26 +389,18 @@
                     <td colspan="3"><input type="text" placeholder="สถานที่"></td>
                 </tr>
                 <tr>
-                    <th>ยี่ห้อ SZ</th>
-                    <td><input type="text" placeholder="ยี่ห้อ SZ"></td>
-                    <th>SZ MEA No.</th>
-                    <td><input type="text" placeholder="SZ MEA No."></td>
+                    <th>ยี่ห้อ RMU</th>
+                    <td><input type="text" placeholder="ยี่ห้อ RMU"></td>
+                    <th>Long.</th>
+                    <td><input type="text" id="longInput" placeholder="Long"></td>
                 </tr>
                 <tr>
-                    <th>Switch No.</th>
-                    <td colspan="3"><input type="text" placeholder="Switch No."></td>
+                    <th>RMU MEA No.</th>
+                    <td colspan="3"><input type="text" placeholder="RMU MEA No."></td>
                 </tr>
             </table>
 
             <div class="section-header"><span class="section-num">2</span> รายการตรวจสอบบำรุงรักษา</div>
-            <table class="info-table" style="margin-bottom: 4px;">
-                <tr>
-                    <td style="background:#f8fafc; padding:3px 6px; font-size: 0.75rem;">
-                        - สถานะสวิตช์: &nbsp; <label><input type="checkbox"> ปลด</label> &nbsp; &nbsp; <label><input type="checkbox"> สับ</label>
-                    </td>
-                </tr>
-            </table>
-
             <table class="inspection-table">
                 <thead>
                     <tr>
@@ -423,24 +415,36 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">สภาพ SZ และอุปกรณ์ประกอบ</td></tr>
-                    <tr><td>2.1 ตัวถัง SZ / สลักล็อคการปลดสับ</td><td style="text-align:center;"><input type="radio" name="sz1"></td><td style="text-align:center;"><input type="radio" name="sz1"></td><td style="text-align:center;"><input type="radio" name="sz1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.2 สถานะก๊าซ SF6</td><td style="text-align:center;"><input type="radio" name="sz2"></td><td style="text-align:center;"><input type="radio" name="sz2"></td><td style="text-align:center;"><input type="radio" name="sz2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.3 Bushing</td><td style="text-align:center;"><input type="radio" name="sz3"></td><td style="text-align:center;"><input type="radio" name="sz3"></td><td style="text-align:center;"><input type="radio" name="sz3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.4 กับดักฟ้าผ่า</td><td style="text-align:center;"><input type="radio" name="sz4"></td><td style="text-align:center;"><input type="radio" name="sz4"></td><td style="text-align:center;"><input type="radio" name="sz4"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.5 คอนสาย</td><td style="text-align:center;"><input type="radio" name="sz5"></td><td style="text-align:center;"><input type="radio" name="sz5"></td><td style="text-align:center;"><input type="radio" name="sz5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.6 สายควบคุม SZ</td><td style="text-align:center;"><input type="radio" name="sz6"></td><td style="text-align:center;"><input type="radio" name="sz6"></td><td style="text-align:center;"><input type="radio" name="sz6"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.7 อุปกรณ์ป้องกันสัตว์</td><td style="text-align:center;"><input type="radio" name="sz7"></td><td style="text-align:center;"><input type="radio" name="sz7"></td><td style="text-align:center;"><input type="radio" name="sz7"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">ตู้ครอบ RMU (ถ้ามีกรณีติดตั้งนอกอาคาร)</td></tr>
+                    <tr><td>2.1 สภาพภายนอก</td><td style="text-align:center;"><input type="radio" name="rmu1"></td><td style="text-align:center;"><input type="radio" name="rmu1"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.2 ประตู</td><td style="text-align:center;"><input type="radio" name="rmu2"></td><td style="text-align:center;"><input type="radio" name="rmu2"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.3 ฐานตู้</td><td style="text-align:center;"><input type="radio" name="rmu3"></td><td style="text-align:center;"><input type="radio" name="rmu3"></td><td style="text-align:center;"><input type="radio" name="rmu3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     
-                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">ตู้ Control / Ground</td></tr>
-                    <tr><td>2.8 ไฟสถานะหน้าตู้</td><td style="text-align:center;"><input type="radio" name="sz8"></td><td style="text-align:center;"><input type="radio" name="sz8"></td><td style="text-align:center;"><input type="radio" name="sz8"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.9 แหล่งจ่ายไฟฟ้า และสายควบคุม</td><td style="text-align:center;"><input type="radio" name="sz9"></td><td style="text-align:center;"><input type="radio" name="sz9"></td><td style="text-align:center;"><input type="radio" name="sz9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.10 สภาพแบตเตอรี่หรือ Capacitor</td><td style="text-align:center;"><input type="radio" name="sz10"></td><td style="text-align:center;"><input type="radio" name="sz10"></td><td style="text-align:center;"><input type="radio" name="sz10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.11 Ground HV (L/A, SZ)</td><td style="text-align:center;"><input type="radio" name="sz11"></td><td style="text-align:center;"><input type="radio" name="sz11"></td><td style="text-align:center;"><input type="radio" name="sz11"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.12 Ground LV (ตู้ Control)</td><td style="text-align:center;"><input type="radio" name="sz12"></td><td style="text-align:center;"><input type="radio" name="sz12"></td><td style="text-align:center;"><input type="radio" name="sz12"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">RMU</td></tr>
+                    <tr><td>2.4 สภาพ RMU/ ห้อง</td><td style="text-align:center;"><input type="radio" name="rmu4"></td><td style="text-align:center;"><input type="radio" name="rmu4"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.5 ก๊าซ SF6</td><td style="text-align:center;"><input type="radio" name="rmu5"></td><td style="text-align:center;"><input type="radio" name="rmu5"></td><td style="text-align:center;"><input type="radio" name="rmu5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.6 ตัวแสดงสถานะสวิทซ์</td><td style="text-align:center;"><input type="radio" name="rmu6"></td><td style="text-align:center;"><input type="radio" name="rmu6"></td><td style="text-align:center;"><input type="radio" name="rmu6"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.7 กุญแจล็อคป้องกันการปลด-สับ</td><td style="text-align:center;"><input type="radio" name="rmu7"></td><td style="text-align:center;"><input type="radio" name="rmu7"></td><td style="text-align:center;"><input type="radio" name="rmu7"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.8 คันสับ</td><td style="text-align:center;"><input type="radio" name="rmu8"></td><td style="text-align:center;"><input type="radio" name="rmu8"></td><td style="text-align:center;"><input type="radio" name="rmu8"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.9 ตัวตรวจสอบแรงดัน</td><td style="text-align:center;"><input type="radio" name="rmu9"></td><td style="text-align:center;"><input type="radio" name="rmu9"></td><td style="text-align:center;"><input type="radio" name="rmu9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.10 ตัวตรวจสอบการลัดวงจร</td><td style="text-align:center;"><input type="radio" name="rmu10"></td><td style="text-align:center;"><input type="radio" name="rmu10"></td><td style="text-align:center;"><input type="radio" name="rmu10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     
-                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">ทดสอบ ปลด/สับ</td></tr>
-                    <tr><td>2.13 ทดลอง ทาง Local</td><td style="text-align:center;"><input type="radio" name="sz13"></td><td style="text-align:center;"><input type="radio" name="sz13"></td><td style="text-align:center;"><input type="radio" name="sz13"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">ระบบการปลด-สับด้วยไฟฟ้า (ถ้ามี)</td></tr>
+                    <tr><td>แรงดันไฟฟ้าเลี้ยงอุปกรณ์ (ถ้ามี)</td><td style="text-align:center;"></td><td style="text-align:center;"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.11 แรงดันไฟฟ้าเลี้ยงอุปกรณ์</td><td style="text-align:center;"><input type="radio" name="rmu11"></td><td style="text-align:center;"><input type="radio" name="rmu11"></td><td style="text-align:center;"><input type="radio" name="rmu11"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.12 สภาพแบตเตอรี่หรือ UPS (ถ้ามี)</td><td style="text-align:center;"><input type="radio" name="rmu12"></td><td style="text-align:center;"><input type="radio" name="rmu12"></td><td style="text-align:center;"><input type="radio" name="rmu12"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.13 FRTU (ถ้ามี)</td><td style="text-align:center;"><input type="radio" name="rmu13"></td><td style="text-align:center;"><input type="radio" name="rmu13"></td><td style="text-align:center;"><input type="radio" name="rmu13"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.14 อุปกรณ์ควบคุมอื่นๆ</td><td style="text-align:center;"><input type="radio" name="rmu14"></td><td style="text-align:center;"><input type="radio" name="rmu14"></td><td style="text-align:center;"><input type="radio" name="rmu14"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">การทดสอบการปลดสับ</td></tr>
+                    <tr><td>2.15 การปลดสับด้วย REMOTE (ถ้ามี)</td><td style="text-align:center;"><input type="radio" name="rmu15"></td><td style="text-align:center;"><input type="radio" name="rmu15"></td><td style="text-align:center;"><input type="radio" name="rmu15"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.16 การปลดสับด้วย LOCAL กดปุ่ม (ถ้ามี)</td><td style="text-align:center;"><input type="radio" name="rmu16"></td><td style="text-align:center;"><input type="radio" name="rmu16"></td><td style="text-align:center;"><input type="radio" name="rmu16"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.17 การปลดสับด้วยคันสับ</td><td style="text-align:center;"><input type="radio" name="rmu17"></td><td style="text-align:center;"><input type="radio" name="rmu17"></td><td style="text-align:center;"><input type="radio" name="rmu17"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">ระบบ ATF ที่ RMU (ถ้ามี)</td></tr>
+                    <tr><td>ระบบ ATF ที่ RMU (ถ้ามี)</td><td style="text-align:center;"></td><td style="text-align:center;"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.18 แรงดันไฟฟ้าเลี้ยงอุปกรณ์</td><td style="text-align:center;"><input type="radio" name="rmu18"></td><td style="text-align:center;"><input type="radio" name="rmu18"></td><td style="text-align:center;"><input type="radio" name="rmu18"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.19 การทดสอบ ATF</td><td style="text-align:center;"><input type="radio" name="rmu19"></td><td style="text-align:center;"><input type="radio" name="rmu19"></td><td style="text-align:center;"><input type="radio" name="rmu19"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                 </tbody>
             </table>
 
@@ -473,7 +477,7 @@
                 </tr>
             </table>
 
-            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-017</span></div>
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-018</span></div>
         </div>
     </div>
 </div>
@@ -893,12 +897,14 @@
                 <tr>
                     <th>ยี่ห้อ SZ</th>
                     <td><input type="text" placeholder="ยี่ห้อ SZ"></td>
-                    <th>SZ MEA No.</th>
-                    <td><input type="text" placeholder="SZ MEA No."></td>
+                    <th>Long.</th>
+                    <td><input type="text" id="longInput" placeholder="Long"></td>
                 </tr>
                 <tr>
+                    <th>SZ MEA No.</th>
+                    <td><input type="text" placeholder="SZ MEA No."></td>
                     <th>Switch No.</th>
-                    <td colspan="3"><input type="text" placeholder="Switch No."></td>
+                    <td><input type="text" placeholder="Switch No."></td>
                 </tr>
             </table>
 
@@ -926,8 +932,8 @@
                 </thead>
                 <tbody>
                     <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">สภาพ SZ และอุปกรณ์ประกอบ</td></tr>
-                    <tr><td>2.1 ตัวถัง SZ / สลักล็อคการปลดสับ</td><td style="text-align:center;"><input type="radio" name="sz1"></td><td style="text-align:center;"><input type="radio" name="sz1"></td><td style="text-align:center;"><input type="radio" name="sz1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.2 สถานะก๊าซ SF6</td><td style="text-align:center;"><input type="radio" name="sz2"></td><td style="text-align:center;"><input type="radio" name="sz2"></td><td style="text-align:center;"><input type="radio" name="sz2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.1 ตัวถัง SZ / สลักล็อคการปลดสับ</td><td style="text-align:center;"><input type="radio" name="sz1"></td><td style="text-align:center;"><input type="radio" name="sz1"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.2 สถานะก๊าซ SF6</td><td style="text-align:center;"><input type="radio" name="sz2"></td><td style="text-align:center;"><input type="radio" name="sz2"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.3 Bushing</td><td style="text-align:center;"><input type="radio" name="sz3"></td><td style="text-align:center;"><input type="radio" name="sz3"></td><td style="text-align:center;"><input type="radio" name="sz3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.4 กับดักฟ้าผ่า</td><td style="text-align:center;"><input type="radio" name="sz4"></td><td style="text-align:center;"><input type="radio" name="sz4"></td><td style="text-align:center;"><input type="radio" name="sz4"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>2.5 คอนสาย</td><td style="text-align:center;"><input type="radio" name="sz5"></td><td style="text-align:center;"><input type="radio" name="sz5"></td><td style="text-align:center;"><input type="radio" name="sz5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
@@ -979,47 +985,114 @@
         `,
 
         'SF-07-0-018': `
-            <div class="sheet-title-container"><div><h1 id="formTitle">แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)</h1></div><div class="sheet-code" id="formCode">SF-07-0-018</div></div>
-            <div class="section-header">1 ข้อมูลทั่วไป</div>
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)</div>
+            
+            <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
             <table class="info-table">
-                <tr><th>Station ID</th><td><input type="text" placeholder="ระบุ Station ID"></td><th>สถานที่</th><td><input type="text" placeholder="ระบุสถานที่ติดตั้ง"></td></tr>
-                <tr><th>GIS Lat.</th><td><input type="text" id="latInput" placeholder="ละติจูด"></td><th>GIS Long.</th><td><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="longInput" placeholder="ลองจิจูด" style="width:70%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
-                <tr><th>ยี่ห้อ RMU</th><td><input type="text" placeholder="ระบุยี่ห้อ RMU"></td><th>RMU MEA No.</th><td><input type="text" placeholder="ระบุหมายเลข กฟน."></td></tr>
+                <tr>
+                    <th style="width: 12%;">Station ID</th>
+                    <td style="width: 38%;"><input type="text" placeholder="Station ID"></td>
+                    <th style="width: 12%;">GIS Lat.</th>
+                    <td style="width: 38%;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <input type="text" id="latInput" placeholder="Lat" style="width:65%;">
+                            <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>สถานที่</th>
+                    <td colspan="3"><input type="text" placeholder="สถานที่"></td>
+                </tr>
+                <tr>
+                    <th>ยี่ห้อ RMU</th>
+                    <td><input type="text" placeholder="ยี่ห้อ RMU"></td>
+                    <th>Long.</th>
+                    <td><input type="text" id="longInput" placeholder="Long"></td>
+                </tr>
+                <tr>
+                    <th>RMU MEA No.</th>
+                    <td colspan="3"><input type="text" placeholder="RMU MEA No."></td>
+                </tr>
             </table>
-            <div class="section-header">2 รายการตรวจสอบบำรุงรักษา RMU</div>
+
+            <div class="section-header"><span class="section-num">2</span> รายการตรวจสอบบำรุงรักษา</div>
             <table class="inspection-table">
-                <thead><tr><th style="text-align: left;">รายการ (2.1 ถึง 2.19)</th><th>ปกติ</th><th>ชำรุด</th><th>ไม่มี</th><th>ข้อบกพร่อง / การดำเนินการแก้ไข</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th rowspan="2" style="text-align: left; width: 45%;">รายการ</th>
+                        <th colspan="3">ผลการตรวจสอบ</th>
+                        <th rowspan="2" style="width: 40%;">ข้อบกพร่อง</th>
+                    </tr>
+                    <tr>
+                        <th style="width: 45px;">ปกติ</th>
+                        <th style="width: 45px;">ชำรุด</th>
+                        <th style="width: 45px;">ไม่มี</th>
+                    </tr>
+                </thead>
                 <tbody>
-                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">ตู้ครอบ RMU (กรณีติดตั้งนอกอาคาร) (2.1-2.3)</td></tr>
-                    <tr><td>2.1 สภาพภายนอก</td><td><input type="radio" name="rmu1"></td><td><input type="radio" name="rmu1"></td><td><input type="radio" name="rmu1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.2 ประตู</td><td><input type="radio" name="rmu2"></td><td><input type="radio" name="rmu2"></td><td><input type="radio" name="rmu2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.3 ฐานตู้</td><td><input type="radio" name="rmu3"></td><td><input type="radio" name="rmu3"></td><td><input type="radio" name="rmu3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">RMU (2.4-2.10)</td></tr>
-                    <tr><td>2.4 สภาพ RMU / ห้อง</td><td><input type="radio" name="rmu4"></td><td><input type="radio" name="rmu4"></td><td><input type="radio" name="rmu4"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.5 ก๊าซ SF6</td><td><input type="radio" name="rmu5"></td><td><input type="radio" name="rmu5"></td><td><input type="radio" name="rmu5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.6 ตัวแสดงสถานะสวิทซ์</td><td><input type="radio" name="rmu6"></td><td><input type="radio" name="rmu6"></td><td><input type="radio" name="rmu6"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.7 กุญแจล็อคป้องกันการปลด-สับ</td><td><input type="radio" name="rmu7"></td><td><input type="radio" name="rmu7"></td><td><input type="radio" name="rmu7"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.8 คันสับ</td><td><input type="radio" name="rmu8"></td><td><input type="radio" name="rmu8"></td><td><input type="radio" name="rmu8"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.9 ตัวตรวจสอบแรงดัน</td><td><input type="radio" name="rmu9"></td><td><input type="radio" name="rmu9"></td><td><input type="radio" name="rmu9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.10 ตัวตรวจสอบการลัดวงจร</td><td><input type="radio" name="rmu10"></td><td><input type="radio" name="rmu10"></td><td><input type="radio" name="rmu10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">ระบบการปลด-สับด้วยไฟฟ้า & ทดสอบ & ATF (2.11-2.19)</td></tr>
-                    <tr><td>2.11 แรงดันไฟฟ้าเลี้ยงอุปกรณ์</td><td><input type="radio" name="rmu11"></td><td><input type="radio" name="rmu11"></td><td><input type="radio" name="rmu11"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.12 สภาพแบตเตอรี่หรือ UPS (ถ้ามี)</td><td><input type="radio" name="rmu12"></td><td><input type="radio" name="rmu12"></td><td><input type="radio" name="rmu12"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.13 FRTU (ถ้ามี)</td><td><input type="radio" name="rmu13"></td><td><input type="radio" name="rmu13"></td><td><input type="radio" name="rmu13"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.14 อุปกรณ์ควบคุมอื่นๆ</td><td><input type="radio" name="rmu14"></td><td><input type="radio" name="rmu14"></td><td><input type="radio" name="rmu14"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.15 การปลดสับด้วย REMOTE (ถ้ามี)</td><td><input type="radio" name="rmu15"></td><td><input type="radio" name="rmu15"></td><td><input type="radio" name="rmu15"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.16 การปลดสับด้วย LOCAL กดปุ่ม (ถ้ามี)</td><td><input type="radio" name="rmu16"></td><td><input type="radio" name="rmu16"></td><td><input type="radio" name="rmu16"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.17 การปลดสับด้วยคันสับ</td><td><input type="radio" name="rmu17"></td><td><input type="radio" name="rmu17"></td><td><input type="radio" name="rmu17"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.18 แรงดันไฟฟ้าเลี้ยงอุปกรณ์ (ระบบ ATF)</td><td><input type="radio" name="rmu18"></td><td><input type="radio" name="rmu18"></td><td><input type="radio" name="rmu18"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.19 การทดสอบ ATF (ถ้ามี)</td><td><input type="radio" name="rmu19"></td><td><input type="radio" name="rmu19"></td><td><input type="radio" name="rmu19"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">ตู้ครอบ RMU (ถ้ามีกรณีติดตั้งนอกอาคาร)</td></tr>
+                    <tr><td>2.1 สภาพภายนอก</td><td style="text-align:center;"><input type="radio" name="rmu1"></td><td style="text-align:center;"><input type="radio" name="rmu1"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.2 ประตู</td><td style="text-align:center;"><input type="radio" name="rmu2"></td><td style="text-align:center;"><input type="radio" name="rmu2"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.3 ฐานตู้</td><td style="text-align:center;"><input type="radio" name="rmu3"></td><td style="text-align:center;"><input type="radio" name="rmu3"></td><td style="text-align:center;"><input type="radio" name="rmu3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">RMU</td></tr>
+                    <tr><td>2.4 สภาพ RMU/ ห้อง</td><td style="text-align:center;"><input type="radio" name="rmu4"></td><td style="text-align:center;"><input type="radio" name="rmu4"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.5 ก๊าซ SF6</td><td style="text-align:center;"><input type="radio" name="rmu5"></td><td style="text-align:center;"><input type="radio" name="rmu5"></td><td style="text-align:center;"><input type="radio" name="rmu5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.6 ตัวแสดงสถานะสวิทซ์</td><td style="text-align:center;"><input type="radio" name="rmu6"></td><td style="text-align:center;"><input type="radio" name="rmu6"></td><td style="text-align:center;"><input type="radio" name="rmu6"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.7 กุญแจล็อคป้องกันการปลด-สับ</td><td style="text-align:center;"><input type="radio" name="rmu7"></td><td style="text-align:center;"><input type="radio" name="rmu7"></td><td style="text-align:center;"><input type="radio" name="rmu7"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.8 คันสับ</td><td style="text-align:center;"><input type="radio" name="rmu8"></td><td style="text-align:center;"><input type="radio" name="rmu8"></td><td style="text-align:center;"><input type="radio" name="rmu8"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.9 ตัวตรวจสอบแรงดัน</td><td style="text-align:center;"><input type="radio" name="rmu9"></td><td style="text-align:center;"><input type="radio" name="rmu9"></td><td style="text-align:center;"><input type="radio" name="rmu9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.10 ตัวตรวจสอบการลัดวงจร</td><td style="text-align:center;"><input type="radio" name="rmu10"></td><td style="text-align:center;"><input type="radio" name="rmu10"></td><td style="text-align:center;"><input type="radio" name="rmu10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">ระบบการปลด-สับด้วยไฟฟ้า (ถ้ามี)</td></tr>
+                    <tr><td>แรงดันไฟฟ้าเลี้ยงอุปกรณ์ (ถ้ามี)</td><td style="text-align:center;"></td><td style="text-align:center;"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.11 แรงดันไฟฟ้าเลี้ยงอุปกรณ์</td><td style="text-align:center;"><input type="radio" name="rmu11"></td><td style="text-align:center;"><input type="radio" name="rmu11"></td><td style="text-align:center;"><input type="radio" name="rmu11"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.12 สภาพแบตเตอรี่หรือ UPS (ถ้ามี)</td><td style="text-align:center;"><input type="radio" name="rmu12"></td><td style="text-align:center;"><input type="radio" name="rmu12"></td><td style="text-align:center;"><input type="radio" name="rmu12"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.13 FRTU (ถ้ามี)</td><td style="text-align:center;"><input type="radio" name="rmu13"></td><td style="text-align:center;"><input type="radio" name="rmu13"></td><td style="text-align:center;"><input type="radio" name="rmu13"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.14 อุปกรณ์ควบคุมอื่นๆ</td><td style="text-align:center;"><input type="radio" name="rmu14"></td><td style="text-align:center;"><input type="radio" name="rmu14"></td><td style="text-align:center;"><input type="radio" name="rmu14"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">การทดสอบการปลดสับ</td></tr>
+                    <tr><td>2.15 การปลดสับด้วย REMOTE (ถ้ามี)</td><td style="text-align:center;"><input type="radio" name="rmu15"></td><td style="text-align:center;"><input type="radio" name="rmu15"></td><td style="text-align:center;"><input type="radio" name="rmu15"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.16 การปลดสับด้วย LOCAL กดปุ่ม (ถ้ามี)</td><td style="text-align:center;"><input type="radio" name="rmu16"></td><td style="text-align:center;"><input type="radio" name="rmu16"></td><td style="text-align:center;"><input type="radio" name="rmu16"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.17 การปลดสับด้วยคันสับ</td><td style="text-align:center;"><input type="radio" name="rmu17"></td><td style="text-align:center;"><input type="radio" name="rmu17"></td><td style="text-align:center;"><input type="radio" name="rmu17"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">ระบบ ATF ที่ RMU (ถ้ามี)</td></tr>
+                    <tr><td>ระบบ ATF ที่ RMU (ถ้ามี)</td><td style="text-align:center;"></td><td style="text-align:center;"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.18 แรงดันไฟฟ้าเลี้ยงอุปกรณ์</td><td style="text-align:center;"><input type="radio" name="rmu18"></td><td style="text-align:center;"><input type="radio" name="rmu18"></td><td style="text-align:center;"><input type="radio" name="rmu18"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.19 การทดสอบ ATF</td><td style="text-align:center;"><input type="radio" name="rmu19"></td><td style="text-align:center;"><input type="radio" name="rmu19"></td><td style="text-align:center;"><input type="radio" name="rmu19"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                 </tbody>
             </table>
-            <div class="section-header">3 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
-            <div class="section-header">4 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
-            <div class="signature-grid">
-                <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
-                <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
-            </div>
+
+            <div class="section-header"><span class="section-num">3</span> สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div>
+            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
+            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
+
+            <div class="section-header"><span class="section-num">4</span> การปรับปรุงข้อบกพร่อง :</div>
+            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
+            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
+
+            <table class="info-table" style="margin-top: 6px;">
+                <tr>
+                    <th style="width:12%;">ผู้ตรวจ</th>
+                    <td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td>
+                    <th style="width:12%;">ผู้ตรวจสอบ</th>
+                    <td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td>
+                </tr>
+                <tr>
+                    <th>ตำแหน่ง</th>
+                    <td><input type="text" placeholder="ตำแหน่ง"></td>
+                    <th>ตำแหน่ง</th>
+                    <td><input type="text" placeholder="ตำแหน่ง"></td>
+                </tr>
+                <tr>
+                    <th>วันที่</th>
+                    <td><input type="date" class="form-control" id="dateField1" style="border:none; background:transparent;"></td>
+                    <th>วันที่</th>
+                    <td><input type="date" class="form-control" id="dateField2" style="border:none; background:transparent;"></td>
+                </tr>
+            </table>
+
             <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-018</span></div>
         `,
 
