@@ -18,7 +18,7 @@
             --panel-bg: #ffffff;
             --text-main: #2d3748;
             --text-muted: #718096;
-            --border-soft: #cbd5e1; /* ปรับเส้นขอบให้เข้มและชัดเจนขึ้น */
+            --border-soft: #cbd5e1;
             --border-focus: #94a3b8;
             
             --primary-warm: #d97706;
@@ -240,6 +240,7 @@
             border: 1px solid var(--border-soft);
             font-size: 0.8rem;
             box-shadow: var(--shadow-soft);
+            margin-bottom: 10px;
         }
 
         .extra-panel-header {
@@ -314,6 +315,7 @@
             border: 1px solid var(--border-soft);
             box-shadow: var(--shadow-soft);
             font-size: 0.8rem;
+            margin-top: 10px;
         }
 
         .sheet-title-container {
@@ -349,7 +351,7 @@
         }
 
         .info-table th, .info-table td {
-            border: 1px solid var(--border-soft); /* ใส่เส้นขอบชัดเจนทุกช่อง */
+            border: 1px solid var(--border-soft);
             padding: 5px 8px;
             background-color: #f8fafc;
         }
@@ -366,7 +368,7 @@
         }
 
         table.inspection-table th, table.inspection-table td {
-            border: 1px solid var(--border-soft); /* ใส่เส้นขอบตารางตรวจเช็คชัดเจน */
+            border: 1px solid var(--border-soft);
             padding: 4px 6px;
             font-size: 0.74rem;
         }
@@ -562,7 +564,6 @@
                 <button class="btn btn-secondary" onclick="newForm()">➕ ฟอร์มใหม่</button>
                 <button class="btn btn-danger" onclick="clearForm()">🗑️ ล้าง</button>
                 <button class="btn btn-excel" onclick="exportPlanToExcel()">📗 ส่งออก Excel</button>
-                <!-- เปลี่ยนชื่อปุ่มเป็น พิมพ์/PDF ตามที่ขอ -->
                 <button class="btn btn-print" onclick="window.print()">🖨️ พิมพ์/PDF</button>
             </div>
 
