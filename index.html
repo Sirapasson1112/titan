@@ -121,35 +121,6 @@
             border-color: var(--accent);
         }
 
-        .sub-tab-box {
-            display: flex;
-            gap: 4px;
-            margin-bottom: 6px;
-            background: #f8fafc;
-            padding: 3px;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-        }
-
-        .sub-tab-btn {
-            flex: 1;
-            padding: 5px;
-            background: transparent;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            border: none;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-align: center;
-        }
-
-        .sub-tab-btn.active {
-            background: #ffffff;
-            color: var(--accent);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-        }
-
         .extra-panel {
             background: var(--card-bg);
             padding: 10px 12px;
@@ -317,8 +288,8 @@
                 <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-019')">SF-07-0-019</button>
                 <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-020')">SF-07-0-020</button>
                 <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-021')">SF-07-0-021</button>
-                <button class="tab-btn active" onclick="switchTab(this, 'SF-07-0-022')">SF-07-0-022</button>
-                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-023')">SF-07-0-023</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-022')">SF-07-0-022</button>
+                <button class="tab-btn active" onclick="switchTab(this, 'SF-07-0-023')">SF-07-0-023</button>
                 <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-024')">SF-07-0-024</button>
                 <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-025')">SF-07-0-025</button>
             </div>
@@ -369,90 +340,120 @@
     <!-- ส่วนแสดงใบตรวจสอบ -->
     <div id="formContentArea">
         <div class="official-sheet" id="printArea">
-            <div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 6px;">แบบตรวจสอบบำรุงรักษาหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง</div>
+            <div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 6px;">แบบตรวจสอบบำรุงรักษาทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย</div>
             
-            <table class="info-table">
+            <table class="info-table" style="margin-bottom: 4px;">
                 <tr>
                     <th style="width: 12%;">สถานที่</th>
-                    <td style="width: 38%;"><input type="text" placeholder="สถานที่"></td>
-                    <th style="width: 12%;">STATION</th>
-                    <td style="width: 38%;"><input type="text" placeholder="Station"></td>
+                    <td colspan="3"><input type="text" placeholder="สถานที่"></td>
                 </tr>
                 <tr>
-                    <th>FIX ID</th>
-                    <td><input type="text" placeholder="Fix ID"></td>
-                    <th>WLN</th>
-                    <td><input type="text" placeholder="WLN"></td>
+                    <th style="width: 15%;">STATION ID</th>
+                    <td style="width: 35%;"><input type="text" placeholder="Station ID"></td>
+                    <th style="width: 15%;">SW.ยี่ห้อ</th>
+                    <td style="width: 35%;"><input type="text" placeholder="SW.ยี่ห้อ"></td>
                 </tr>
                 <tr>
-                    <th>TR. MEA NO.</th>
-                    <td><input type="text" placeholder="TR MEA No."></td>
-                    <th>SW. MEA NO.</th>
-                    <td><input type="text" placeholder="SW MEA No."></td>
+                    <th>TR.MEA No.</th>
+                    <td colspan="3"><input type="text" placeholder="TR.MEA No."></td>
                 </tr>
             </table>
 
-            <div class="section-header" style="margin-top: 4px;">รายการตรวจสอบบำรุงรักษา</div>
-            <table class="inspection-table">
+            <div class="section-header" style="background:#fde047; color:#0f172a; text-align:center; display:block; font-weight:700;">ขั้นตอนการกรองน้ำมัน</div>
+
+            <div style="font-size:0.75rem; font-weight:700; margin-top:4px; margin-bottom:2px;">1 ทดสอบน้ำมันหม้อแปลงด้วยเครื่องทดสอบ โดยทดสอบ 5 ครั้ง ห่างครั้งละ 5 นาที</div>
+            <table class="inspection-table" style="margin-bottom: 3px;">
                 <thead>
                     <tr>
-                        <th style="width: 35px;">ลำดับ</th>
-                        <th style="text-align: left; width: 32%;">รายการ</th>
-                        <th style="width: 25%;">เกณฑ์</th>
-                        <th style="width: 42px;">ปกติ</th>
-                        <th style="width: 42px;">ไม่ปกติ</th>
-                        <th style="width: 45px;">ข้อบกพร่อง</th>
-                        <th style="width: 20%;">การดำเนินการแก้ไข/เพิ่มเติม</th>
+                        <th style="text-align: left; width: 45%;">ครั้งที่</th>
+                        <th style="width: 45px;">1</th>
+                        <th style="width: 45px;">2</th>
+                        <th style="width: 45px;">3</th>
+                        <th style="width: 45px;">4</th>
+                        <th style="width: 45px;">5</th>
+                        <th>ค่าเฉลี่ย</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td colspan="7" style="background:#f5f5f4; font-weight:bold; font-size:0.7rem;">1 สวิทช์แรงกลาง</td></tr>
-                    <tr><td style="text-align:center;">1.1</td><td>สภาพภายนอก</td><td>ไม่มีรอยแตก ปลด-สับได้</td><td style="text-align:center;"><input type="radio" name="m1"></td><td style="text-align:center;"><input type="radio" name="m1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td style="text-align:center;">1.2</td><td>ก๊าซ SF6</td><td>อยู่ในโซนที่กำหนด</td><td style="text-align:center;"><input type="radio" name="m2"></td><td style="text-align:center;"><input type="radio" name="m2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td style="text-align:center;">1.3</td><td>หัวต่อสาย/สายไฟฟ้า</td><td>ไม่มีรอยปิ่น ไหม้ หรือแตกร้าว</td><td style="text-align:center;"><input type="radio" name="m3"></td><td style="text-align:center;"><input type="radio" name="m3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td style="text-align:center;">1.4</td><td>ระบบกราวด์</td><td>มีกราวด์ทั้งแรงสูง แรงต่ำ</td><td style="text-align:center;"><input type="radio" name="m4"></td><td style="text-align:center;"><input type="radio" name="m4"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-
-                    <tr><td colspan="7" style="background:#f5f5f4; font-weight:bold; font-size:0.7rem;">2 หม้อแปลง</td></tr>
-                    <tr><td style="text-align:center;">2.1</td><td>ตัวถัง</td><td>ไม่มีรอยแตก บุบ ฉีกขาด</td><td style="text-align:center;"><input type="radio" name="m5"></td><td style="text-align:center;"><input type="radio" name="m5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td style="text-align:center;">2.2</td><td>น้ำมัน</td><td>ไม่รั่วไหล อยู่ในระดับที่กำหนด</td><td style="text-align:center;"><input type="radio" name="m6"></td><td style="text-align:center;"><input type="radio" name="m6"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td style="text-align:center;">2.3</td><td>ฟิวส์ 12 kV</td><td>ไม่ชำรุด</td><td style="text-align:center;"><input type="radio" name="m7"></td><td style="text-align:center;"><input type="radio" name="m7"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td style="text-align:center;">2.4</td><td>อุณหภูมิสูงสุด</td><td>ไม่เกิน 90 °C</td><td style="text-align:center;"><input type="radio" name="m8"></td><td style="text-align:center;"><input type="radio" name="m8"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td style="text-align:center;">2.5</td><td>อุณหภูมิจริง</td><td>ไม่เกิน 90 °C</td><td style="text-align:center;"><input type="radio" name="m9"></td><td style="text-align:center;"><input type="radio" name="m9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-
-                    <tr><td colspan="7" style="background:#f5f5f4; font-weight:bold; font-size:0.7rem;">3 ด้านแรงต่ำ</td></tr>
-                    <tr><td style="text-align:center;">3.1</td><td>สายไฟฟ้า</td><td>ไม่มีจุดชำรุดเสียหาย</td><td style="text-align:center;"><input type="radio" name="m10"></td><td style="text-align:center;"><input type="radio" name="m10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td style="text-align:center;">3.2</td><td>คาปาซิเตอร์แรงต่ำ</td><td>ไม่มีจุดชำรุดเสียหาย</td><td style="text-align:center;"><input type="radio" name="m11"></td><td style="text-align:center;"><input type="radio" name="m11"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr>
+                        <td>Breakdown Voltage (kV)</td>
+                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                    </tr>
                 </tbody>
             </table>
+            <div style="font-size: 0.7rem; color: #334155; margin-bottom: 4px; line-height: 1.2;">
+                *ทดสอบครั้งที่ 1 ถ้าต่ำกว่า 26 kV ดำเนินการกรองน้ำมัน<br>หากเกินกว่า 26 kV ทดสอบให้ครบ 5 ครั้ง แล้วหาค่าเฉลี่ย ถ้ายังต่ำกว่า 26 kV ดำเนินการกรองน้ำมัน
+            </div>
 
-            <table class="info-table" style="font-size: 0.7rem; margin-bottom: 2px;">
-                <tr><th style="width:38%; background:#e2e8f0;">ผลการวัดกระแสไฟฟ้าด้านแรงกลาง 12 kV</th><td>IR (A)=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td>IY (A)=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td>IB (A)=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td style="width:15%; text-align:right;">< 25A</td></tr>
-                <tr><th style="background:#e2e8f0;">ผลการวัดกระแสไฟฟ้าคาปาซิเตอร์ 25 KVAR</th><td>IPh1=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td>IPh2=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td>IPh3=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td style="text-align:right;">28A-40A</td></tr>
-                <tr><th style="background:#e2e8f0;">ผลการวัดกระแสไฟฟ้าคาปาซิเตอร์ 50 KVAR</th><td>IPh1=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td>IPh2=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td>IPh3=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td style="text-align:right;">57A-80A</td></tr>
-                <tr><th style="background:#e2e8f0;">ผลการวัดกระแสไฟฟ้าคาปาซิเตอร์ 75 KVAR</th><td>IPh1=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td>IPh2=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td>IPh3=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td style="text-align:right;">86A-119A</td></tr>
-                <tr><th style="background:#e2e8f0;">ผลการวัดแรงดันด้านแรงต่ำ (V) L-N</th><td>V1N=<input type="text" style="width:45px; border-bottom:1px solid #000; background:transparent;"></td><td>V2N=<input type="text" style="width:45px; border-bottom:1px solid #000; background:transparent;"></td><td>V3N=<input type="text" style="width:45px; border-bottom:1px solid #000; background:transparent;"></td><td style="text-align:right;">214V-237V</td></tr>
-                <tr><th style="background:#e2e8f0;">ผลการวัดแรงดันด้านแรงต่ำ (V) L-L</th><td>V1-2=<input type="text" style="width:45px; border-bottom:1px solid #000; background:transparent;"></td><td>V1-3=<input type="text" style="width:45px; border-bottom:1px solid #000; background:transparent;"></td><td>V2-3=<input type="text" style="width:45px; border-bottom:1px solid #000; background:transparent;"></td><td style="text-align:right;">371V-410V</td></tr>
-            </table>
-
-            <table class="inspection-table" style="font-size: 0.68rem; margin-bottom: 2px;">
+            <div style="font-size:0.75rem; font-weight:700; margin-top:4px; margin-bottom:2px;">2 กรองน้ำมันครั้งที่ 1 แล้วดำเนินการทดสอบใหม่</div>
+            <table class="inspection-table" style="margin-bottom: 3px;">
                 <thead>
-                    <tr><th colspan="7" style="background:#e2e8f0; color:#0f172a; text-align:left; padding:3px;">ผลการวัดกระแสไฟฟ้าด้านแรงต่ำ</th></tr>
-                    <tr><th style="width:45px;">ชุด</th><th>ทิศทาง</th><th>IPh1 (A)</th><th>IPh2 (A)</th><th>IPh3 (A)</th><th>In (A)</th><th style="width:30%;">หมายเหตุ</th></tr>
+                    <tr>
+                        <th style="text-align: left; width: 45%;">ครั้งที่</th>
+                        <th style="width: 45px;">1</th>
+                        <th style="width: 45px;">2</th>
+                        <th style="width: 45px;">3</th>
+                        <th style="width: 45px;">4</th>
+                        <th style="width: 45px;">5</th>
+                        <th>ค่าเฉลี่ย</th>
+                    </tr>
                 </thead>
                 <tbody>
-                    <tr><td style="text-align:center;">ชุดที่ 1</td><td><label><input type="checkbox"> ซ้าย</label> <label><input type="checkbox"> ขวา</label> <label><input type="checkbox"> หน้า</label> <label><input type="checkbox"> หลัง</label></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td rowspan="6" style="font-size:0.65px; color:#555;">ทิศทางคือยืนอยู่บนถนน แล้วหันหน้าเข้าหาหม้อแปลง สายไฟฟ้าไปทิศทางใด (<400A)</td></tr>
-                    <tr><td style="text-align:center;">ชุดที่ 2</td><td><label><input type="checkbox"> ซ้าย</label> <label><input type="checkbox"> ขวา</label> <label><input type="checkbox"> หน้า</label> <label><input type="checkbox"> หลัง</label></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td style="text-align:center;">ชุดที่ 3</td><td><label><input type="checkbox"> ซ้าย</label> <label><input type="checkbox"> ขวา</label> <label><input type="checkbox"> หน้า</label> <label><input type="checkbox"> หลัง</label></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td style="text-align:center;">ชุดที่ 4</td><td><label><input type="checkbox"> ซ้าย</label> <label><input type="checkbox"> ขวา</label> <label><input type="checkbox"> หน้า</label> <label><input type="checkbox"> หลัง</label></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td style="text-align:center;">ชุดที่ 5</td><td><label><input type="checkbox"> ซ้าย</label> <label><input type="checkbox"> ขวา</label> <label><input type="checkbox"> หน้า</label> <label><input type="checkbox"> หลัง</label></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td style="text-align:center;">ชุดที่ 6</td><td><label><input type="checkbox"> ซ้าย</label> <label><input type="checkbox"> ขวา</label> <label><input type="checkbox"> หน้า</label> <label><input type="checkbox"> หลัง</label></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr>
+                        <td>Breakdown Voltage (kV)</td>
+                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                    </tr>
                 </tbody>
             </table>
+            <div style="font-size: 0.7rem; color: #334155; margin-bottom: 4px; line-height: 1.2;">
+                *ทดสอบครั้งที่ 1 ถ้าต่ำกว่า 26 kV ดำเนินการกรองน้ำมัน<br>หากเกินกว่า 26 kV ทดสอบให้ครบ 5 ครั้ง แล้วหาค่าเฉลี่ย ถ้ายัังต่ำกว่า 26 kV ดำเนินการกรองน้ำมันครั้งที่ 2
+            </div>
 
-            <div class="section-header">ข้อเสนอแนะ/ข้อมูลเพิ่มเติม :</div>
-            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
+            <div style="font-size:0.75rem; font-weight:700; margin-top:4px; margin-bottom:2px;">3 กรองน้ำมันครั้งที่ 2 แล้วดำเนินการทดสอบใหม่</div>
+            <table class="inspection-table" style="margin-bottom: 3px;">
+                <thead>
+                    <tr>
+                        <th style="text-align: left; width: 45%;">ครั้งที่</th>
+                        <th style="width: 45px;">1</th>
+                        <th style="width: 45px;">2</th>
+                        <th style="width: 45px;">3</th>
+                        <th style="width: 45px;">4</th>
+                        <th style="width: 45px;">5</th>
+                        <th>ค่าเฉลี่ย</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Breakdown Voltage (kV)</td>
+                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="font-size: 0.7rem; color: #334155; margin-bottom: 4px;">
+                *ทดสอบครบ 5 ครั้ง ถ้าต่ำกว่า 26 kV ให้หาแนวทางแก้ไขต่อไป
+            </div>
 
-            <table class="info-table" style="margin-top: 4px;">
+            <div class="section-header" style="background:#0f172a; color:#fff;">ข้อเสนอแนะ/ข้อมูลเพิ่มเติม</div>
+            <div class="field-group" style="margin-bottom: 4px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
+            <div class="field-group" style="margin-bottom: 4px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
+            <div class="field-group" style="margin-bottom: 4px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
+
+            <table class="info-table" style="margin-top: 6px;">
                 <tr>
                     <th style="width:12%;">ผู้ตรวจ</th>
                     <td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td>
@@ -473,7 +474,7 @@
                 </tr>
             </table>
 
-            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-022</span></div>
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่....</span><span id="footerCode">SF-07-0-023</span></div>
         </div>
     </div>
 </div>
@@ -584,49 +585,17 @@
                 </tbody>
             </table>
             <div class="section-header">3 ตรวจสอบวัดกระแสและแรงดันไฟฟ้า (ด้านแรงต่ำ)</div>
-            <table class="info-table" style="margin-bottom: 4px;">
-                <tr>
-                    <td colspan="7" style="background:#f8fafc; padding:3px 6px;">
-                        <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap; font-size: 0.75rem;">
-                            <div><label><input type="checkbox"> กลางวัน</label> &nbsp; <label><input type="checkbox"> กลางคืน</label></div>
-                            <div>เวลา : <input type="text" style="width: 80px; border-bottom: 1px solid #000; background:transparent;"></div>
-                            <div>วิธีการ: <label><input type="checkbox"> วัดหน้างาน</label> &nbsp; <label><input type="checkbox"> TLM</label></div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th style="width:12%;">แรงดันไฟฟ้า(V)</th>
-                    <td>V1-N=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td>
-                    <td>V2-N=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td>
-                    <td>V3-N=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td>
-                    <td>V1-2=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td>
-                    <td>V1-3=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td>
-                    <td>V2-3=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td>
-                </tr>
-                <tr>
-                    <th>กระแสไฟฟ้า(A)</th>
-                    <td>IN=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td>
-                    <td>I1=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td>
-                    <td>I2=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td>
-                    <td>I3=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td>
-                    <td colspan="2" style="font-size:0.7rem;">ผลรวมกระแสทั้งหมด=<input type="text" style="width:60px; border-bottom:1px solid #000;"></td>
-                </tr>
+            <table class="info-table" style="margin-bottom: 3px;">
+                <tr><td colspan="7" style="background:#f8fafc; padding:3px 6px;"><div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap; font-size: 0.75rem;"><div><label><input type="checkbox"> กลางวัน</label> &nbsp; <label><input type="checkbox"> กลางคืน</label></div><div>เวลา : <input type="text" style="width: 80px; border-bottom: 1px solid #000; background:transparent;"></div><div>วิธีการ: <label><input type="checkbox"> วัดหน้างาน</label> &nbsp; <label><input type="checkbox"> TLM</label></div></div></td></tr>
+                <tr><th style="width:12%;">แรงดันไฟฟ้า(V)</th><td>V1-N=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td><td>V2-N=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td><td>V3-N=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td><td>V1-2=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td><td>V1-3=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td><td>V2-3=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td></tr>
+                <tr><th>กระแสไฟฟ้า(A)</th><td>IN=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td><td>I1=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td><td>I2=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td><td>I3=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td><td colspan="2" style="font-size:0.7rem;">ผลรวมกระแสทั้งหมด=<input type="text" style="width:60px; border-bottom:1px solid #000;"></td></tr>
             </table>
             <div class="section-header">4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 4px;"><textarea class="form-control" style="height:25px;"></textarea></div>
             <div class="section-header">5 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 4px;"><textarea class="form-control" style="height:25px;"></textarea></div>
             <table class="info-table" style="margin-top: 6px;">
-                <tr>
-                    <th style="width:12%;">ผู้ตรวจ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td>
-                    <th style="width:12%;">ผู้ตรวจสอบ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td>
-                </tr>
-                <tr>
-                    <th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td>
-                    <th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td>
-                </tr>
-                <tr>
-                    <th>วันที่</th><td><input type="date" class="form-control" id="dateField3" style="border:none; background:transparent;"></td>
-                    <th>วันที่</th><td><input type="date" class="form-control" id="dateField4" style="border:none; background:transparent;"></td>
-                </tr>
+                <tr><th style="width:12%;">ผู้ตรวจ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td><th style="width:12%;">ผู้ตรวจสอบ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td></tr>
+                <tr><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td></tr>
+                <tr><th>วันที่</th><td><input type="date" class="form-control" id="dateField3" style="border:none; background:transparent;"></td><th>วันที่</th><td><input type="date" class="form-control" id="dateField4" style="border:none; background:transparent;"></td></tr>
             </table>
             <div class="sheet-footer-note"><span>หน้า 2 ของ 2</span><span id="footerCode">SF-07-0-019</span></div>
         `
@@ -883,6 +852,233 @@
                 <tr><th>วันที่</th><td><input type="date" class="form-control" id="dateField1" style="border:none; background:transparent;"></td><th>วันที่</th><td><input type="date" class="form-control" id="dateField2" style="border:none; background:transparent;"></td></tr>
             </table>
             <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-020</span></div>
+        `,
+
+        'SF-07-0-021': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย</div>
+            <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
+            <table class="info-table">
+                <tr><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td><th>STATION</th><td><input type="text" placeholder="Station"></td></tr>
+                <tr><th>FIX ID</th><td><input type="text" placeholder="Fix ID"></td><th>WLN</th><td><input type="text" placeholder="WLN"></td></tr>
+                <tr><th>MEA NO.</th><td><input type="text" placeholder="MEA No."></td><th>ACB NO.</th><td><input type="text" placeholder="ACB No."></td></tr>
+                <tr><th>RELAY NO.</th><td><input type="text" placeholder="Relay No."></td><th>COUNTER</th><td><input type="text" placeholder="Counter"></td></tr>
+                <tr><th>RELAY</th><td><div style="font-size:0.75rem; display:flex; gap:6px; flex-wrap:wrap;"><label><input type="checkbox"> MPCR</label><label><input type="checkbox"> MPCV</label><label><input type="checkbox"> ETI</label><label><input type="checkbox"> อื่นๆ</label></div></td><th>GIS Lat/Long</th><td><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="latInput" placeholder="Lat" style="width:38%;"><input type="text" id="longInput" placeholder="Long" style="width:38%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
+            </table>
+            <div class="section-header"><span class="section-num">2</span> รายการตรวจสอบบำรุงรักษา</div>
+            <table class="inspection-table">
+                <thead><tr><th style="width: 35px;">ลำดับ</th><th style="text-align: left; width: 35%;">รายการตรวจสอบ</th><th style="width: 25%;">เกณฑ์</th><th style="width: 45px;">ปกติ</th><th style="width: 45px;">ไม่ปกติ</th><th>ข้อบกพร่อง / การดำเนินการแก้ไข/เพิ่มเติม</th></tr></thead>
+                <tbody>
+                    <tr><td colspan="6" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">1. สภาพภายนอก</td></tr>
+                    <tr><td style="text-align:center;">1.1</td><td>สถานะ MV.SW.</td><td>CLOSE</td><td style="text-align:center;"><input type="radio" name="e1"></td><td style="text-align:center;"><input type="radio" name="e1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;">1.2</td><td>สถานะ NP</td><td>CLOSE</td><td style="text-align:center;"><input type="radio" name="e2"></td><td style="text-align:center;"><input type="radio" name="e2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;">1.3</td><td>เบอร์ตู้/ สีตู้</td><td>ชัดเจน ไม่ลอก</td><td style="text-align:center;"><input type="radio" name="e3"></td><td style="text-align:center;"><input type="radio" name="e3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;">1.4</td><td>ระบบกราวด์</td><td>มีทั้งกราวด์ N และ G</td><td style="text-align:center;"><input type="radio" name="e4"></td><td style="text-align:center;"><input type="radio" name="e4"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;">1.5</td><td>อุปกรณ์ป้องกันแรงดันเกินภายนอก</td><td>มีทั้งด้าน N และ T ไม่ชำรุด</td><td style="text-align:center;"><input type="radio" name="e5"></td><td style="text-align:center;"><input type="radio" name="e5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;">1.6</td><td>ตัวถัง รอยต่อหม้อแปลง</td><td>ไม่เสียหาย/ไม่มีน้ำมันรั่วซึม</td><td style="text-align:center;"><input type="radio" name="e6"></td><td style="text-align:center;"><input type="radio" name="e6"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;">1.7</td><td>ฝาตู้</td><td>ปิดแน่นสนิท</td><td style="text-align:center;"><input type="radio" name="e7"></td><td style="text-align:center;"><input type="radio" name="e7"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;">1.8</td><td>มีการแขวนป้ายแดงห้ามปลด-สับ</td><td><label><input type="checkbox"> ที่ SW</label> &nbsp; <label><input type="checkbox"> ที่ NP</label></td><td style="text-align:center;"><input type="radio" name="e8"></td><td style="text-align:center;"><input type="radio" name="e8"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td colspan="6" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">2. การทดสอบโดยปลด-สับ MV.SW. (*ทดสอบเมื่อสายป้อนจ่ายไฟและ NP CLOSE อยู่เท่านั้น)</td></tr>
+                    <tr><td style="text-align:center;">2.1</td><td>ปลด MV.SW. ครั้งที่ 1</td><td>NP OPEN</td><td style="text-align:center;"><input type="radio" name="e9"></td><td style="text-align:center;"><input type="radio" name="e9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;">2.2</td><td>สับ MV.SW. ครั้งที่ 1</td><td>NP CLOSE</td><td style="text-align:center;"><input type="radio" name="e10"></td><td style="text-align:center;"><input type="radio" name="e10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;">2.3</td><td>ปลด MV.SW. ครั้งที่ 2</td><td>NP OPEN</td><td style="text-align:center;"><input type="radio" name="e11"></td><td style="text-align:center;"><input type="radio" name="e11"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td colspan="6" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">3. สภาพภายใน</td></tr>
+                    <tr><td style="text-align:center;">3.1</td><td>อุปกรณ์ภายใน</td><td>ไม่มีน้ำหรือหยดน้ำเกาะ</td><td style="text-align:center;"><input type="radio" name="e12"></td><td style="text-align:center;"><input type="radio" name="e12"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;">3.2</td><td>รีเลย์</td><td>อยู่ในสถานะถูกต้อง</td><td style="text-align:center;"><input type="radio" name="e12_2"></td><td style="text-align:center;"><input type="radio" name="e12_2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td colspan="6" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">4. อุปกรณ์ส่งข้อมูลระยะไกล</td></tr>
+                    <tr><td style="text-align:center;">4.1</td><td>ตู้อุปกรณ์</td><td>ไม่ชำรุดเสียหาย</td><td style="text-align:center;"><input type="radio" name="e13"></td><td style="text-align:center;"><input type="radio" name="e13"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;">4.2</td><td>ไฟเลี้ยง /CB & FUSE</td><td>มีไฟเลี้ยง /CB&FUSE สับอยู่</td><td style="text-align:center;"><input type="radio" name="e13_2"></td><td style="text-align:center;"><input type="radio" name="e13_2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;">4.3</td><td>อินเตอร์เน็ตสวิตช์</td><td>ไม่ชำรุดเสียหาย</td><td style="text-align:center;"><input type="radio" name="e13_3"></td><td style="text-align:center;"><input type="radio" name="e13_3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td colspan="6" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">5. สับ SW.แรงกลาง เมื่อลงจากเสาแล้ว</td></tr>
+                    <tr><td style="text-align:center;">5.1</td><td>สับ SW.แรงกลางฯ</td><td>NP CLOSE</td><td style="text-align:center;"><input type="radio" name="e14"></td><td style="text-align:center;"><input type="radio" name="e14"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                </tbody>
+            </table>
+            <div class="section-header"><span class="section-num">3</span> ข้อเสนอแนะ/ข้อมูลเพิ่มเติม :</div>
+            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
+            <table class="info-table" style="margin-top: 6px;">
+                <tr><th style="width:12%;">ผู้ตรวจ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td><th style="width:12%;">ผู้ตรวจสอบ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td></tr>
+                <tr><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td></tr>
+                <tr><th>วันที่</th><td><input type="date" class="form-control" id="dateField1" style="border:none; background:transparent;"></td><th>วันที่</th><td><input type="date" class="form-control" id="dateField2" style="border:none; background:transparent;"></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-021</span></div>
+        `,
+
+        'SF-07-0-022': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษาหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง</div>
+            <table class="info-table">
+                <tr><th style="width: 12%;">สถานที่</th><td style="width: 38%;"><input type="text" placeholder="สถานที่"></td><th style="width: 12%;">STATION</th><td style="width: 38%;"><input type="text" placeholder="Station"></td></tr>
+                <tr><th>FIX ID</th><td><input type="text" placeholder="Fix ID"></td><th>WLN</th><td><input type="text" placeholder="WLN"></td></tr>
+                <tr><th>TR. MEA NO.</th><td><input type="text" placeholder="TR MEA No."></td><th>SW. MEA NO.</th><td><input type="text" placeholder="SW MEA No."></td></tr>
+            </table>
+            <div class="section-header" style="margin-top: 4px;">รายการตรวจสอบบำรุงรักษา</div>
+            <table class="inspection-table">
+                <thead><tr><th style="width: 35px;">ลำดับ</th><th style="text-align: left; width: 32%;">รายการ</th><th style="width: 25%;">เกณฑ์</th><th style="width: 42px;">ปกติ</th><th style="width: 42px;">ไม่ปกติ</th><th style="width: 45px;">ข้อบกพร่อง</th><th>การดำเนินการแก้ไข/เพิ่มเติม</th></tr></thead>
+                <tbody>
+                    <tr><td colspan="7" style="background:#f5f5f4; font-weight:bold; font-size:0.7rem;">สวิทซ์แรงกลาง</td></tr>
+                    <tr><td style="text-align:center;">1</td><td>1.1 สภาพภายนอก</td><td>ไม่มีรอยแตก ปลด-สับได้</td><td style="text-align:center;"><input type="radio" name="m1"></td><td style="text-align:center;"><input type="radio" name="m1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;"></td><td>1.2 ก๊าซ SF6</td><td>อยู่ในโซนที่กำหนด</td><td style="text-align:center;"><input type="radio" name="m2"></td><td style="text-align:center;"><input type="radio" name="m2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;"></td><td>1.3 หัวต่อสาย/สายไฟฟ้า</td><td>ไม่มีรอยปิ่น ไหม้ หรือแตกร้าว</td><td style="text-align:center;"><input type="radio" name="m3"></td><td style="text-align:center;"><input type="radio" name="m3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;"></td><td>1.4 ระบบกราวด์</td><td>มีกราวด์ทั้งแรงสูง แรงต่ำ</td><td style="text-align:center;"><input type="radio" name="m4"></td><td style="text-align:center;"><input type="radio" name="m4"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td colspan="7" style="background:#f5f5f4; font-weight:bold; font-size:0.7rem;">หม้อแปลง</td></tr>
+                    <tr><td style="text-align:center;">2</td><td>2.1 ตัวถัง</td><td>ไม่มีรอยแตก บุบ ฉีกขาด</td><td style="text-align:center;"><input type="radio" name="m5"></td><td style="text-align:center;"><input type="radio" name="m5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;"></td><td>2.2 น้ำมัน</td><td>ไม่รั่วไหล อยู่ในระดับที่กำหนด</td><td style="text-align:center;"><input type="radio" name="m6"></td><td style="text-align:center;"><input type="radio" name="m6"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;"></td><td>2.3 ฟิวส์ 12 kV</td><td>ไม่ชำรุด</td><td style="text-align:center;"><input type="radio" name="m7"></td><td style="text-align:center;"><input type="radio" name="m7"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;"></td><td>2.4 อุณหภูมิสูงสุด</td><td>ไม่เกิน 90 °C</td><td style="text-align:center;"><input type="radio" name="m8"></td><td style="text-align:center;"><input type="radio" name="m8"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;"></td><td>2.5 อุณหภูมิจริง</td><td>ไม่เกิน 90 °C</td><td style="text-align:center;"><input type="radio" name="m9"></td><td style="text-align:center;"><input type="radio" name="m9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td colspan="7" style="background:#f5f5f4; font-weight:bold; font-size:0.7rem;">ด้านแรงต่ำ</td></tr>
+                    <tr><td style="text-align:center;">3</td><td>3.1 สายไฟฟ้า</td><td>ไม่มีจุดชำรุดเสียหาย</td><td style="text-align:center;"><input type="radio" name="m10"></td><td style="text-align:center;"><input type="radio" name="m10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;"></td><td>3.2 คาปาซิเตอร์แรงต่ำ</td><td>ไม่มีจุดชำรุดเสียหาย</td><td style="text-align:center;"><input type="radio" name="m11"></td><td style="text-align:center;"><input type="radio" name="m11"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                </tbody>
+            </table>
+            <table class="info-table" style="font-size: 0.7rem; margin-bottom: 2px;">
+                <tr><th style="width:42%; background:#fde047;">ผลการวัดกระแสไฟฟ้าด้านแรงกลาง 12 kV</th><td>IR (A)=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td>IY (A)=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td>IB (A)=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td style="text-align:right;">< 25A</td></tr>
+                <tr><th style="background:#fde047;">ผลการวัดกระแสไฟฟ้าคาปาซิเตอร์ 25 KVAR</th><td>IPh1=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td>IPh2=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td>IPh3=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td style="text-align:right;">28A-40A</td></tr>
+                <tr><th style="background:#fde047;">ผลการวัดกระแสไฟฟ้าคาปาซิเตอร์ 50 KVAR</th><td>IPh1=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td>IPh2=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td>IPh3=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td style="text-align:right;">57A-80A</td></tr>
+                <tr><th style="background:#fde047;">ผลการวัดกระแสไฟฟ้าคาปาซิเตอร์ 75 KVAR</th><td>IPh1=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td>IPh2=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td>IPh3=<input type="text" style="width:40px; border-bottom:1px solid #000; background:transparent;"></td><td style="text-align:right;">86A-119A</td></tr>
+                <tr><th style="background:#fde047;">ผลการวัดแรงดันด้านแรงต่ำ (V) L-N</th><td>V1N=<input type="text" style="width:45px; border-bottom:1px solid #000; background:transparent;"></td><td>V2N=<input type="text" style="width:45px; border-bottom:1px solid #000; background:transparent;"></td><td>V3N=<input type="text" style="width:45px; border-bottom:1px solid #000; background:transparent;"></td><td style="text-align:right;">214V-237V</td></tr>
+                <tr><th style="background:#fde047;">ผลการวัดแรงดันด้านแรงต่ำ (V) L-L</th><td>V1-2=<input type="text" style="width:45px; border-bottom:1px solid #000; background:transparent;"></td><td>V1-3=<input type="text" style="width:45px; border-bottom:1px solid #000; background:transparent;"></td><td>V2-3=<input type="text" style="width:45px; border-bottom:1px solid #000; background:transparent;"></td><td style="text-align:right;">371V-410V</td></tr>
+            </table>
+            <table class="inspection-table" style="font-size: 0.68rem; margin-bottom: 2px;">
+                <thead>
+                    <tr><th colspan="7" style="background:#fde047; color:#0f172a; text-align:left; padding:3px;">ผลการวัดกระแสไฟฟ้าด้านแรงต่ำ</th></tr>
+                    <tr><th style="width:45px;">ชุด</th><th>ทิศทาง</th><th>IPh1 (A)</th><th>IPh2 (A)</th><th>IPh3 (A)</th><th>In (A)</th><th style="width:30%;">หมายเหตุ</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td style="text-align:center;">ชุดที่ 1</td><td><label><input type="checkbox"> ซ้าย</label> <label><input type="checkbox"> ขวา</label> <label><input type="checkbox"> หน้า</label> <label><input type="checkbox"> หลัง</label></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td rowspan="7" style="font-size:0.65px; color:#555;">ทิศทางคือยืนอยู่บนถนน แล้วหันหน้าเข้าหาหม้อแปลง สายไฟฟ้าไปทิศทางใด (<400A)</td></tr>
+                    <tr><td style="text-align:center;">ชุดที่ 2</td><td><label><input type="checkbox"> ซ้าย</label> <label><input type="checkbox"> ขวา</label> <label><input type="checkbox"> หน้า</label> <label><input type="checkbox"> หลัง</label></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;">ชุดที่ 3</td><td><label><input type="checkbox"> ซ้าย</label> <label><input type="checkbox"> ขวา</label> <label><input type="checkbox"> หน้า</label> <label><input type="checkbox"> หลัง</label></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;">ชุดที่ 4</td><td><label><input type="checkbox"> ซ้าย</label> <label><input type="checkbox"> ขวา</label> <label><input type="checkbox"> หน้า</label> <label><input type="checkbox"> หลัง</label></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;">ชุดที่ 5</td><td><label><input type="checkbox"> ซ้าย</label> <label><input type="checkbox"> ขวา</label> <label><input type="checkbox"> หน้า</label> <label><input type="checkbox"> หลัง</label></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td style="text-align:center;">ชุดที่ 6</td><td><label><input type="checkbox"> ซ้าย</label> <label><input type="checkbox"> ขวา</label> <label><input type="checkbox"> หน้า</label> <label><input type="checkbox"> หลัง</label></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td colspan="2" style="text-align:center; font-weight:bold;">รวม</td><td></td><td></td><td></td><td></td></tr>
+                </tbody>
+            </table>
+            <div class="section-header">ข้อเสนอแนะ/ข้อมูลเพิ่มเติม :</div>
+            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
+            <table class="info-table" style="margin-top: 4px;">
+                <tr><th style="width:12%;">ผู้ตรวจ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td><th style="width:12%;">ผู้ตรวจสอบ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td></tr>
+                <tr><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td></tr>
+                <tr><th>วันที่</th><td><input type="date" class="form-control" id="dateField1" style="border:none; background:transparent;"></td><th>วันที่</th><td><input type="date" class="form-control" id="dateField2" style="border:none; background:transparent;"></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-022</span></div>
+        `,
+
+        'SF-07-0-023': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษาทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย</div>
+            <table class="info-table" style="margin-bottom: 4px;">
+                <tr><th style="width: 12%;">สถานที่</th><td colspan="3"><input type="text" placeholder="ระบุสถานที่"></td></tr>
+                <tr><th style="width: 15%;">STATION ID</th><td style="width: 35%;"><input type="text" placeholder="Station ID"></td><th style="width: 15%;">SW.ยี่ห้อ</th><td style="width: 35%;"><input type="text" placeholder="SW.ยี่ห้อ"></td></tr>
+                <tr><th>TR.MEA No.</th><td colspan="3"><input type="text" placeholder="TR.MEA No."></td></tr>
+            </table>
+            <div class="section-header" style="background:#fde047; color:#0f172a; text-align:center; display:block; font-weight:700;">ขั้นตอนการกรองน้ำมัน</div>
+            <div style="font-size:0.75rem; font-weight:700; margin-top:4px; margin-bottom:2px;">1 ทดสอบน้ำมันหม้อแปลงด้วยเครื่องทดสอบ โดยทดสอบ 5 ครั้ง ห่างครั้งละ 5 นาที</div>
+            <table class="inspection-table" style="margin-bottom: 3px;">
+                <thead><tr><th style="text-align: left; width: 45%;">ครั้งที่</th><th style="width: 45px;">1</th><th style="width: 45px;">2</th><th style="width: 45px;">3</th><th style="width: 45px;">4</th><th style="width: 45px;">5</th><th>ค่าเฉลี่ย</th></tr></thead>
+                <tbody>
+                    <tr><td>Breakdown Voltage (kV)</td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td></tr>
+                </tbody>
+            </table>
+            <div style="font-size: 0.7rem; color: #334155; margin-bottom: 4px; line-height: 1.2;">*ทดสอบครั้งที่ 1 ถ้าต่ำกว่า 26 kV ดำเนินการกรองน้ำมัน<br>หากเกินกว่า 26 kV ทดสอบให้ครบ 5 ครั้ง แล้วหาค่าเฉลี่ย ถ้ายังต่ำกว่า 26 kV ดำเนินการกรองน้ำมัน</div>
+            <div style="font-size:0.75rem; font-weight:700; margin-top:4px; margin-bottom:2px;">2 กรองน้ำมันครั้งที่ 1 แล้วดำเนินการทดสอบใหม่</div>
+            <table class="inspection-table" style="margin-bottom: 3px;">
+                <thead><tr><th style="text-align: left; width: 45%;">ครั้งที่</th><th style="width: 45px;">1</th><th style="width: 45px;">2</th><th style="width: 45px;">3</th><th style="width: 45px;">4</th><th style="width: 45px;">5</th><th>ค่าเฉลี่ย</th></tr></thead>
+                <tbody>
+                    <tr><td>Breakdown Voltage (kV)</td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td></tr>
+                </tbody>
+            </table>
+            <div style="font-size: 0.7rem; color: #334155; margin-bottom: 4px; line-height: 1.2;">*ทดสอบครั้งที่ 1 ถ้าต่ำกว่า 26 kV ดำเนินการกรองน้ำมัน<br>หากเกินกว่า 26 kV ทดสอบให้ครบ 5 ครั้ง แล้วหาค่าเฉลี่ย ถ้ายังต่ำกว่า 26 kV ดำเนินการกรองน้ำมันครั้งที่ 2</div>
+            <div style="font-size:0.75rem; font-weight:700; margin-top:4px; margin-bottom:2px;">3 กรองน้ำมันครั้งที่ 2 แล้วดำเนินการทดสอบใหม่</div>
+            <table class="inspection-table" style="margin-bottom: 3px;">
+                <thead><tr><th style="text-align: left; width: 45%;">ครั้งที่</th><th style="width: 45px;">1</th><th style="width: 45px;">2</th><th style="width: 45px;">3</th><th style="width: 45px;">4</th><th style="width: 45px;">5</th><th>ค่าเฉลี่ย</th></tr></thead>
+                <tbody>
+                    <tr><td>Breakdown Voltage (kV)</td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td></tr>
+                </tbody>
+            </table>
+            <div style="font-size: 0.7rem; color: #334155; margin-bottom: 4px;">*ทดสอบครบ 5 ครั้ง ถ้าต่ำกว่า 26 kV ให้หาแนวทางแก้ไขต่อไป</div>
+            <div class="section-header" style="background:#0f172a; color:#fff;">ข้อเสนอแนะ/ข้อมูลเพิ่มเติม</div>
+            <div class="field-group" style="margin-bottom: 4px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
+            <div class="field-group" style="margin-bottom: 4px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
+            <div class="field-group" style="margin-bottom: 4px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
+            <table class="info-table" style="margin-top: 6px;">
+                <tr><th style="width:12%;">ผู้ตรวจ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td><th style="width:12%;">ผู้ตรวจสอบ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td></tr>
+                <tr><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td></tr>
+                <tr><th>วันที่</th><td><input type="date" class="form-control" id="dateField1" style="border:none; background:transparent;"></td><th>วันที่</th><td><input type="date" class="form-control" id="dateField2" style="border:none; background:transparent;"></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่....</span><span id="footerCode">SF-07-0-023</span></div>
+        `,
+
+        'SF-07-0-024': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)</div>
+            <div class="grid-form" style="margin-bottom: 4px; display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
+                <div class="field-group"><label>ผู้ตรวจ 1:</label><input type="text" class="form-control" placeholder="ชื่อ-นามสกุล"></div>
+                <div class="field-group"><label>ผู้ตรวจ 2:</label><input type="text" class="form-control" placeholder="ชื่อ-นามสกุล"></div>
+            </div>
+            <div class="section-header"><span class="section-num">1</span> ข้อมูลภาพถ่าย Thermovision</div>
+            <table class="info-table">
+                <tr><th>ชื่อภาพ</th><td><input type="text" placeholder="ชื่อภาพ"></td><th>Station ID</th><td><input type="text" placeholder="Station ID"></td></tr>
+                <tr><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td><th>อุปกรณ์</th><td><input type="text" placeholder="อุปกรณ์"></td></tr>
+                <tr><th>MEA No.</th><td><input type="text" placeholder="MEA No."></td><th>สายป้อน</th><td><input type="text" placeholder="สายป้อน"></td></tr>
+                <tr><th>วันที่ตรวจ</th><td><input type="date" class="form-control" id="dateField1" style="background:transparent; border:none;"></td><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td></tr>
+                <tr><th>GIS Lat/Long</th><td><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="latInput" placeholder="Lat" style="width:40%;"><input type="text" id="longInput" placeholder="Long" style="width:40%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td><th>Emissivity</th><td><input type="text" placeholder="Emissivity"></td></tr>
+            </table>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 4px 0;">
+                <div style="border: 1px dashed var(--border); padding: 4px; text-align: center; background: #f8fafc; border-radius: 4px;"><label style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">🖼️ ภาพถ่ายจริง (Visual)</label><input type="file" accept="image/*" style="font-size: 0.65rem; display:block; margin: 2px auto;"></div>
+                <div style="border: 1px dashed var(--border); padding: 4px; text-align: center; background: #f8fafc; border-radius: 4px;"><label style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">🌡️ ภาพถ่ายความร้อน (Thermal)</label><input type="file" accept="image/*" style="font-size: 0.65rem; display:block; margin: 2px auto;"></div>
+            </div>
+            <div class="section-header"><span class="section-num">2</span> เกณฑ์ความสำคัญ (Standard for Infrared Inspection)</div>
+            <table class="inspection-table">
+                <thead><tr><th style="width: 40px;">ระดับ</th><th>Delta T (°C)</th><th style="text-align: left;">ข้อเสนอแนะการดำเนินการ</th><th style="width: 50px;">เลือก</th></tr></thead>
+                <tbody>
+                    <tr><td style="text-align:center; font-weight:bold; color:#059669;">4</td><td>0 - 10°C</td><td>อุปกรณ์ปกติ</td><td style="text-align:center;"><input type="checkbox"></td></tr>
+                    <tr><td style="text-align:center; font-weight:bold; color:#d97706;">3</td><td>> 10 - 20°C</td><td>แก้ไขในการบำรุงรักษาครั้งต่อไป</td><td style="text-align:center;"><input type="checkbox"></td></tr>
+                    <tr><td style="text-align:center; font-weight:bold; color:#ea580c;">2</td><td>> 20 - 40°C</td><td>ควรแก้ไขภายใน 1 เดือน</td><td style="text-align:center;"><input type="checkbox"></td></tr>
+                    <tr><td style="text-align:center; font-weight:bold; color:#dc2626;">1</td><td>> 40°C</td><td>ควรได้รับการแก้ไขเร่งด่วน</td><td style="text-align:center;"><input type="checkbox"></td></tr>
+                </tbody>
+            </table>
+            <div class="section-header"><span class="section-num">3</span> รายการรายละเอียด & <span class="section-num">4</span> การส่งต่อแก้ไข</div>
+            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;" placeholder="รายละเอียดและกลุ่มงานที่รับเรื่อง..."></div>
+            <table class="info-table" style="margin-top: 6px;">
+                <tr>
+                    <th style="width:12%;">ผู้ตรวจ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td>
+                    <th style="width:12%;">ผู้ตรวจสอบ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td>
+                </tr>
+                <tr>
+                    <th>วันที่</th><td><input type="date" class="form-control" id="dateField2" style="border:none; background:transparent;"></td>
+                    <th>วันที่แก้ไข</th><td><input type="date" class="form-control" style="border:none; background:transparent;"></td>
+                </tr>
+            </table>
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่....</span><span id="footerCode">SF-07-0-024</span></div>
+        `,
+
+        'SF-07-0-025': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">รายงานผลการตรวจสอบการคายประจุไฟฟ้าบางส่วน (Partial Discharge)</div>
+            <div style="text-align: center; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); margin-bottom: 6px;">โดยใช้กล้อง Acoustic Camera</div>
+            <div class="grid-form" style="margin-bottom: 4px; display:grid; grid-template-columns: repeat(3, 1fr); gap: 4px;">
+                <div class="field-group"><label>ผู้ตรวจ 1:</label><input type="text" class="form-control" placeholder="ผู้ตรวจคนที่ 1"></div>
+                <div class="field-group"><label>ตำแหน่ง 1:</label><input type="text" class="form-control" placeholder="ตำแหน่ง"></div>
+                <div class="field-group"><label>วันที่ตรวจ</label><input type="date" class="form-control" id="dateField1"></div>
+            </div>
+            <div class="section-header"><span class="section-num">1</span> ข้อมูลภาพถ่าย Partial Discharge</div>
+            <table class="info-table">
+                <tr><th>Station ID</th><td><input type="text" placeholder="Station ID"></td><th>อุปกรณ์</th><td><input type="text" placeholder="อุปกรณ์"></td></tr>
+                <tr><th>MEA No.</th><td><input type="text" placeholder="MEA No."></td><th>สายป้อน</th><td><input type="text" placeholder="สายป้อน"></td></tr>
+                <tr><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td><th>GIS Lat/Long</th><td><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="latInput" placeholder="Lat" style="width:40%;"><input type="text" id="longInput" placeholder="Long" style="width:40%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
+                <tr><th>จุดที่ผิดปกติ</th><td colspan="3"><input type="text" placeholder="ระบุตำแหน่งจุดที่ผิดปกติ"></td></tr>
+            </table>
+            <div style="font-size: 0.78rem; margin: 4px 0; background:#f8fafc; padding:6px 10px; border:1px solid var(--border); border-radius:6px;">
+                <div style="display:flex; gap:10px; align-items:center; margin-bottom:4px;"><div><b>ความเข้มเสียง (dB):</b> <input type="text" class="form-control" style="display:inline-block; width:90px; padding:2px;" placeholder="dB"></div></div>
+                <div><b>ระดับความรุนแรง (NL CLOUD):</b><div style="display:flex; gap:10px; margin-top:2px;"><label><input type="checkbox"> สูงมาก</label><label><input type="checkbox"> สูง</label><label><input type="checkbox"> ปานกลาง</label><label><input type="checkbox"> ต่ำ</label></div></div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 4px 0;">
+                <div style="border: 1px dashed var(--border); padding: 6px; text-align: center; background: #f8fafc; border-radius: 4px;"><label style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">📷 ภาพกล้องปกติ</label><input type="file" accept="image/*" style="font-size: 0.65rem; display:block; margin: 2px auto;"></div>
+                <div style="border: 1px dashed var(--border); padding: 6px; text-align: center; background: #f8fafc; border-radius: 4px;"><label style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">📷 ภาพ Acoustic Camera</label><input type="file" accept="image/*" style="font-size: 0.65rem; display:block; margin: 2px auto;"></div>
+            </div>
+            <div class="section-header"><span class="section-num">2</span> การส่งต่อแก้ไข & <span class="section-num">3</span> การดำเนินการปรับปรุง</div>
+            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;" placeholder="กลุ่มงานที่รับเรื่องและผลการดำเนินการ..."></div>
+            <table class="info-table" style="margin-top: 6px;">
+                <tr><th style="width:25%;">โปรดดำเนินการแก้ไข</th><td style="width:25%;"><input type="text" placeholder="ลงนามสั่งการ"></td><th style="width:25%;">ผู้ดำเนินการปรับปรุง</th><td style="width:25%;"><input type="text" placeholder="ชื่อผู้ปฏิบัติงาน"></td></tr>
+                <tr><th>วันที่</th><td><input type="date" class="form-control" id="dateField2" style="border:none; background:transparent;"></td><th>วันที่แก้ไข</th><td><input type="date" class="form-control" style="border:none; background:transparent;"></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่....</span><span id="footerCode">SF-07-0-025</span></div>
         `
     };
 
