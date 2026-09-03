@@ -181,12 +181,6 @@
             color: #334155;
         }
 
-        .extra-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 6px;
-        }
-
         .saved-records-list {
             max-height: 130px;
             overflow-y: auto;
@@ -253,6 +247,7 @@
             padding: 4px 6px;
             background-color: #f8fafc;
         }
+
         .info-table th { text-align: left; color: var(--text-muted); font-weight: 600; border: 1px solid var(--border-soft); }
         .info-table td { background-color: #fff; border: 1px solid var(--border-soft); }
         .info-table input { border: 1px solid var(--border-soft); background: #fff; width: 100%; padding: 3px 5px; font-size: 0.75rem; color: var(--text-main); border-radius: 4px; }
@@ -269,13 +264,13 @@
             padding: 3px 5px;
             font-size: 0.72rem;
         }
+
         table.inspection-table th { background-color: #f1f5f9; text-align: center; font-weight: 700; color: #334155; border: 1px solid var(--border-soft); }
         table.inspection-table td { border: 1px solid var(--border-soft); background-color: #fff; }
         
         input[type="radio"], input[type="checkbox"] { transform: scale(1.05); accent-color: var(--primary); cursor: pointer; }
         .form-control { padding: 4px 6px; border: 1px solid var(--border-soft); border-radius: 4px; font-size: 0.75rem; background-color: #ffffff; width: 100%; color: var(--text-main); }
         .form-control:focus { outline: none; border-color: var(--border-focus); background: #fffdf5; }
-        textarea.form-control { resize: vertical; height: 26px; border: 1px solid var(--border-soft); }
 
         .signature-grid {
             display: grid;
@@ -311,12 +306,10 @@
             body { background: white !important; padding: 0; font-size: 8px; }
             .no-print { display: none !important; }
             .official-sheet { box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; }
-            .sheet-title-container { margin-bottom: 2px; padding-bottom: 1px; }
             .info-table th, .info-table td { padding: 1px 2px; font-size: 7.5px; border: 1px solid #000 !important; }
             .section-header { padding: 2px 4px; margin-top: 3px; margin-bottom: 2px; font-size: 8px; }
             table.inspection-table th, table.inspection-table td { padding: 1px 2px; font-size: 7.5px; border: 1px solid #000 !important; }
             input[type="radio"], input[type="checkbox"] { transform: scale(0.8); }
-            textarea.form-control { height: 16px; padding: 1px 2px; font-size: 7.5px; border: 1px solid #000 !important; }
             .form-control { padding: 1px 2px; font-size: 7.5px; height: 16px; border: 1px solid #000 !important; }
             .signature-grid { gap: 4px; margin-top: 3px; padding-top: 2px; }
             .sig-box { padding: 2px; gap: 1px; border: 1px solid #000 !important; }
@@ -367,7 +360,7 @@
                 <span id="savedCountText">📁 ข้อมูลที่บันทึกไว้ในเครื่อง (0 รายการ)</span>
                 <button class="btn btn-secondary" style="font-size:0.68rem; padding:2px 6px;" onclick="renderSavedRecordsList()">🔄 รีเฟรช</button>
             </div>
-            <div class="extra-grid">
+            <div style="display:flex; gap:6px;">
                 <input type="text" id="filterPlant" class="form-control" placeholder="ค้นหา Station / สถานที่..." oninput="filterSavedRecords()">
             </div>
             <div class="saved-records-list" id="savedRecordsContainer"></div>
@@ -526,7 +519,7 @@
         setTimeout(() => {
             fillFormData(record.formData);
             renderSavedRecordsList();
-            window.scrollTo({ top: 300, behavior: 'smooth' });
+            window.scrollTo({ top: 250, behavior: 'smooth' });
         }, 100);
     }
 
@@ -570,10 +563,10 @@
         } else { alert("เบราว์เซอร์ไม่รองรับ Geolocation"); }
     }
 
-    // ชุดฟอร์ม Unit Substation 2 หน้า (SF-07-0-019) ตามภาพต้นฉบับ 5.png และ 5-1.png
+    // ฟอร์ม SF-07-0-019 (Unit Substation ทั้ง 2 หน้า ตามรูป 5.png และ 5-1.png)
     const unitSubstationPages = {
         1: `
-            <div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 6px;">แบบตรวจสอบบำรุงรักษา UNIT SUBSTATION (1)</div>
+            <div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 6px;">แบบตรวจสอบบำรุงรักษา UNITSUBSTATION (1)</div>
             <div class="no-print" style="margin-bottom: 6px;">
                 <div class="sub-tab-box">
                     <button class="sub-tab-btn active" onclick="switchSubTab(1)">📄 หน้า 1 (ข้อมูลทั่วไป & รายการ 2.1-2.24)</button>
@@ -626,7 +619,7 @@
             <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span>หน้า 1 ของ 2</span><span>SF-07-0-019</span></div>
         `,
         2: `
-            <div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 6px;">แบบตรวจสอบบำรุงรักษา UNIT SUBSTATION (2)</div>
+            <div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 6px;">แบบตรวจสอบบำรุงรักษา UNITSUBSTATION (2)</div>
             <div class="no-print" style="margin-bottom: 6px;">
                 <div class="sub-tab-box">
                     <button class="sub-tab-btn" onclick="switchSubTab(1)">📄 หน้า 1 (ข้อมูลทั่วไป & รายการ 2.1-2.24)</button>
@@ -647,8 +640,8 @@
             </table>
             <div class="section-header"><span class="section-num">3</span> ตรวจสอบวัดกระแสและแรงดันไฟฟ้า (ด้านแรงต่ำ)</div>
             <table class="info-table" style="margin-bottom: 4px;">
-                <tr><td colspan="6"><label><input type="checkbox"> กลางวัน</label> &nbsp; &nbsp; <label><input type="checkbox"> กลางคืน</label> &nbsp; &nbsp; เวลา : <input type="text" style="width: 80px; display:inline-block;"> &nbsp; &nbsp; วิธีการ: <label><input type="checkbox"> วัดหน้างาน</label> &nbsp; <label><input type="checkbox"> TLM</label></td></tr>
-                <tr><th>แรงดันไฟฟ้า(V)</th><td>V1-N=<input type="text"></td><td>V2-N=<input type="text"></td><td>V3-N=<input type="text"></td><td>V1-2=<input type="text"></td><td>V1-3=<input type="text"></td><td>V2-3=<input type="text"></td></tr>
+                <tr><td colspan="7"><label><input type="checkbox"> กลางวัน</label> &nbsp; &nbsp; <label><input type="checkbox"> กลางคืน</label> &nbsp; &nbsp; เวลา : <input type="text" style="width: 80px; display:inline-block;"> &nbsp; &nbsp; วิธีการ: <label><input type="checkbox"> วัดหน้างาน</label> &nbsp; <label><input type="checkbox"> TLM</label></td></tr>
+                <tr><th style="width:12%;">แรงดันไฟฟ้า(V)</th><td>V1-N=<input type="text"></td><td>V2-N=<input type="text"></td><td>V3-N=<input type="text"></td><td>V1-2=<input type="text"></td><td>V1-3=<input type="text"></td><td>V2-3=<input type="text"></td></tr>
                 <tr><th>กระแสไฟฟ้า(A)</th><td colspan="2">IN=<input type="text"></td><td colspan="2">I1=<input type="text"></td><td colspan="2">I2=<input type="text"></td></tr>
             </table>
             <div class="section-header"><span class="section-num">4</span> สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div>
@@ -707,22 +700,107 @@
             <div class="section-header"><span class="section-num">5</span> การปรับปรุงข้อบกพร่อง :</div>
             <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid #000; background:transparent; border-radius:0;"></div>
             <table class="info-table" style="margin-top: 6px;">
-                <tr><th style="width:12%;">ผู้ตรวจ</th><td style="width:38%;"><input type="text"></td><th style="width:12%;">ผู้ตรวจสอบ</th><td style="width:38%;"><input type="text"></td></tr>
-                <tr><th>ตำแหน่ง</th><td><input type="text"></td><th>ตำแหน่ง</th><td><input type="text"></td></tr>
+                <tr><th style="width:12%;">ผู้ตรวจ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td><th style="width:12%;">ผู้ตรวจสอบ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td></tr>
+                <tr><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td></tr>
                 <tr><th>วันที่</th><td><input type="date" class="form-control" id="dateField1"></td><th>วันที่</th><td><input type="date" class="form-control" id="dateField2"></td></tr>
             </table>
             <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span>SF-07-0-015</span></div>
         `,
 
-        'SF-07-0-016': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษา Load Break Switch</div><div class="section-header">1 ข้อมูลทั่วไป</div><table class="info-table"><tr><th>Station ID</th><td><input type="text"></td><th>สถานที่</th><td><input type="text"></td></tr></table><div class="sheet-footer-note"><span>SF-07-0-016</span></div>`,
-        'SF-07-0-017': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">แบบตรวจสอบบำรุงรักษา Sectionalizer</div><div class="sheet-footer-note"><span>SF-07-0-017</span></div>`,
-        'SF-07-0-018': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)</div><div class="sheet-footer-note"><span>SF-07-0-018</span></div>`,
-        'SF-07-0-020': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">แบบตรวจสอบบำรุงรักษา Capacitor Bank</div><div class="sheet-footer-note"><span>SF-07-0-020</span></div>`,
-        'SF-07-0-021': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">แบบตรวจสอบเครื่องป้องกันหม้อแปลงตาข่าย</div><div class="sheet-footer-note"><span>SF-07-0-021</span></div>`,
-        'SF-07-0-022': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">แบบตรวจสอบหม้อแปลงตาข่ายและสวิตช์แรงกลาง</div><div class="sheet-footer-note"><span>SF-07-0-022</span></div>`,
-        'SF-07-0-023': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">แบบตรวจสอบทดสอบและกรองน้ำมันหม้อแปลง</div><div class="sheet-footer-note"><span>SF-07-0-023</span></div>`,
-        'SF-07-0-024': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)</div><div class="sheet-footer-note"><span>SF-07-0-024</span></div>`,
-        'SF-07-0-025': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">รายงานผลการตรวจสอบ Partial Discharge</div><div class="sheet-footer-note"><span>SF-07-0-025</span></div>`
+        'SF-07-0-016': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษา Load Break Switch</div>
+            <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
+            <table class="info-table">
+                <tr><th style="width: 12%;">Station ID</th><td style="width: 38%;"><input type="text" placeholder="Station ID"></td><th style="width: 12%;">GIS Lat.</th><td style="width: 38%;"><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="latInput" placeholder="Lat" style="width:65%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
+                <tr><th>สถานที่</th><td colspan="3"><input type="text" placeholder="สถานที่"></td></tr>
+                <tr><th>ยี่ห้อ LBS</th><td><input type="text" placeholder="ยี่ห้อ LBS"></td><th>LBS MEA No.</th><td><input type="text" placeholder="LBS MEA No."></td></tr>
+            </table>
+            <div class="section-header"><span class="section-num">2</span> รายการตรวจสอบบำรุงรักษา</div>
+            <table class="inspection-table">
+                <thead><tr><th rowspan="2" style="text-align: left; width: 45%;">รายการ</th><th colspan="3">ผลการตรวจสอบ</th><th rowspan="2" style="width: 40%;">ข้อบกพร่อง</th></tr><tr><th style="width: 45px;">ปกติ</th><th style="width: 45px;">ชำรุด</th><th style="width: 45px;">ไม่มี</th></tr></thead>
+                <tbody>
+                    <tr><td>2.1 ตัวถัง LBS /สลักล็อคการปลดสับ</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.2 สถานะก๊าซ SF6</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                </tbody>
+            </table>
+            <div class="sheet-footer-note"><span>SF-07-0-016</span></div>
+        `,
+
+        'SF-07-0-017': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษา Sectionalizer</div>
+            <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
+            <table class="info-table">
+                <tr><th>Station ID</th><td><input type="text" placeholder="Station ID"></td><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td></tr>
+                <tr><th>ยี่ห้อ SZ</th><td><input type="text" placeholder="ยี่ห้อ SZ"></td><th>SZ MEA No.</th><td><input type="text" placeholder="SZ MEA No."></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>SF-07-0-017</span></div>
+        `,
+
+        'SF-07-0-018': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)</div>
+            <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
+            <table class="info-table">
+                <tr><th>Station ID</th><td><input type="text" placeholder="Station ID"></td><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td></tr>
+                <tr><th>ยี่ห้อ RMU</th><td><input type="text" placeholder="ยี่ห้อ RMU"></td><th>RMU MEA No.</th><td><input type="text" placeholder="RMU MEA No."></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>SF-07-0-018</span></div>
+        `,
+
+        'SF-07-0-020': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV ในสายป้อน</div>
+            <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
+            <table class="info-table">
+                <tr><th>Station ID</th><td><input type="text" placeholder="Station ID"></td><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td></tr>
+                <tr><th>MEA No.</th><td><input type="text" placeholder="MEA No."></td><th>สายป้อน</th><td><input type="text" placeholder="สายป้อน"></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>SF-07-0-020</span></div>
+        `,
+
+        'SF-07-0-021': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย</div>
+            <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
+            <table class="info-table">
+                <tr><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td><th>STATION</th><td><input type="text" placeholder="Station"></td></tr>
+                <tr><th>MEA NO.</th><td><input type="text" placeholder="MEA No."></td><th>ACB NO.</th><td><input type="text" placeholder="ACB No."></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>SF-07-0-021</span></div>
+        `,
+
+        'SF-07-0-022': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษาหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง</div>
+            <table class="info-table">
+                <tr><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td><th>STATION</th><td><input type="text" placeholder="Station"></td></tr>
+                <tr><th>TR. MEA NO.</th><td><input type="text" placeholder="TR MEA No."></td><th>SW. MEA NO.</th><td><input type="text" placeholder="SW MEA No."></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>SF-07-0-022</span></div>
+        `,
+
+        'SF-07-0-023': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษาทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย</div>
+            <table class="info-table">
+                <tr><th>สถานที่</th><td colspan="3"><input type="text" placeholder="ระบุสถานที่"></td></tr>
+                <tr><th>STATION ID</th><td><input type="text" placeholder="Station ID"></td><th>TR.MEA No.</th><td><input type="text" placeholder="TR.MEA No."></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>SF-07-0-023</span></div>
+        `,
+
+        'SF-07-0-024': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)</div>
+            <table class="info-table">
+                <tr><th>ชื่อภาพ</th><td><input type="text" placeholder="ชื่อภาพ"></td><th>Station ID</th><td><input type="text" placeholder="Station ID"></td></tr>
+                <tr><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td><th>อุปกรณ์</th><td><input type="text" placeholder="อุปกรณ์"></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>SF-07-0-024</span></div>
+        `,
+
+        'SF-07-0-025': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">รายงานผลการตรวจสอบ Partial Discharge (Acoustic Camera)</div>
+            <table class="info-table">
+                <tr><th>Station ID</th><td><input type="text" placeholder="Station ID"></td><th>อุปกรณ์</th><td><input type="text" placeholder="อุปกรณ์"></td></tr>
+                <tr><th>สถานที่</th><td colspan="3"><input type="text" placeholder="สถานที่"></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>SF-07-0-025</span></div>
+        `
     };
 
     function switchSubTab(pageNum) {
@@ -754,7 +832,6 @@
             `;
             setTodayDate();
         }
-        calculateCriticalityAndCost();
     }
 
     function setTodayDate() {
@@ -769,7 +846,6 @@
 
     document.addEventListener("DOMContentLoaded", () => {
         switchTab(document.querySelector('.tab-btn'), 'SF-07-0-015');
-        calculateCriticalityAndCost();
         renderSavedRecordsList();
     });
 </script>
