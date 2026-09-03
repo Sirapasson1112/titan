@@ -368,11 +368,11 @@
                 <span style="font-size:0.7rem; background:#e2e8f0; padding:2px 6px; border-radius:4px;">ยังไม่ประเมิน</span>
             </div>
             <div class="criticality-grid">
-                <div class="field-group"><label style="font-size:0.7rem; color:var(--text-muted);">SAF</label><select class="form-control" style="padding:4px;"><option>- เลือก -</option></select></div>
-                <div class="field-group"><label style="font-size:0.7rem; color:var(--text-muted);">REL</label><select class="form-control" style="padding:4px;"><option>- เลือก -</option></select></div>
-                <div class="field-group"><label style="font-size:0.7rem; color:var(--text-muted);">OPR</label><select class="form-control" style="padding:4px;"><option>- เลือก -</option></select></div>
-                <div class="field-group"><label style="font-size:0.7rem; color:var(--text-muted);">CON</label><select class="form-control" style="padding:4px;"><option>- เลือก -</option></select></div>
-                <div class="field-group"><label style="font-size:0.7rem; color:var(--text-muted);">REC</label><select class="form-control" style="padding:4px;"><option>- เลือก -</option></select></div>
+                <div class="field-group"><label style="font-size:0.7rem; color:var(--text-muted);">SAF (ความปลอดภัย)</label><select class="form-control" style="padding:4px;"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></div>
+                <div class="field-group"><label style="font-size:0.7rem; color:var(--text-muted);">REL (ความต่อเนื่อง)</label><select class="form-control" style="padding:4px;"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></div>
+                <div class="field-group"><label style="font-size:0.7rem; color:var(--text-muted);">OPR (ภารกิจ)</label><select class="form-control" style="padding:4px;"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></div>
+                <div class="field-group"><label style="font-size:0.7rem; color:var(--text-muted);">CON (แนวโน้มขัดข้อง)</label><select class="form-control" style="padding:4px;"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></div>
+                <div class="field-group"><label style="font-size:0.7rem; color:var(--text-muted);">REC (ความยากกู้คืน)</label><select class="form-control" style="padding:4px;"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></div>
             </div>
             <div style="font-size:0.75rem; margin-top:4px; font-weight:600;">คะแนนรวม: — / 100</div>
         </div>
@@ -387,12 +387,47 @@
             </div>
             <div class="section-header">1 ข้อมูลทั่วไป</div>
             <table class="info-table">
-                <tr><th>Station ID</th><td><input type="text" placeholder="ระบุ Station ID"></td><th>สถานที่</th><td><input type="text" placeholder="ระบุสถานที่ติดตั้ง"></td></tr>
-                <tr><th>GIS Lat.</th><td><input type="text" id="latInput" placeholder="ละติจูด"></td><th>GIS Long.</th><td><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="longInput" placeholder="ลองจิจูด" style="width:70%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
-                <tr><th>MEA No1.</th><td><input type="text" placeholder="ระบุหมายเลข"></td><th>MEA No2.</th><td><input type="text" placeholder="ระบุหมายเลข"></td></tr>
-                <tr><th>MEA No3.</th><td><input type="text" placeholder="ระบุหมายเลข"></td><th>จำนวนเฟส</th><td><input type="text" placeholder="ระบุจำนวนเฟส"></td></tr>
-                <tr><th>ยี่ห้อ</th><td><input type="text" placeholder="ระบุยี่ห้อ"></td><th>ขนาด</th><td><input type="text" placeholder="ระบุขนาด (kVA)"></td></tr>
-                <tr><th>ชนิด</th><td><input type="text" placeholder="ระบุชนิด"></td><th>ลักษณะการติดตั้ง</th><td><input type="text" placeholder="ระบุลักษณะการติดตั้ง"></td></tr>
+                <tr>
+                    <th>Station ID</th>
+                    <td><input type="text" placeholder="ระบุ Station ID"></td>
+                    <th>สถานที่</th>
+                    <td><input type="text" placeholder="ระบุสถานที่ติดตั้ง"></td>
+                </tr>
+                <tr>
+                    <th>GIS Lat.</th>
+                    <td><input type="text" id="latInput" placeholder="ละติจูด"></td>
+                    <th>GIS Long.</th>
+                    <td>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <input type="text" id="longInput" placeholder="ลองจิจูด" style="width:70%;">
+                            <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>MEA No1.</th>
+                    <td><input type="text" placeholder="ระบุหมายเลข"></td>
+                    <th>MEA No2.</th>
+                    <td><input type="text" placeholder="ระบุหมายเลข"></td>
+                </tr>
+                <tr>
+                    <th>MEA No3.</th>
+                    <td><input type="text" placeholder="ระบุหมายเลข"></td>
+                    <th>จำนวนเฟส</th>
+                    <td><input type="text" placeholder="ระบุจำนวนเฟส"></td>
+                </tr>
+                <tr>
+                    <th>ยี่ห้อ</th>
+                    <td><input type="text" placeholder="ระบุยี่ห้อ"></td>
+                    <th>ขนาด</th>
+                    <td><input type="text" placeholder="ระบุขนาด (kVA)"></td>
+                </tr>
+                <tr>
+                    <th>ชนิด</th>
+                    <td><input type="text" placeholder="ระบุชนิด"></td>
+                    <th>ลักษณะการติดตั้ง</th>
+                    <td><input type="text" placeholder="ระบุลักษณะการติดตั้ง"></td>
+                </tr>
             </table>
             <div class="section-header">2 รายการตรวจสอบบำรุงรักษา</div>
             <table class="inspection-table">
@@ -544,7 +579,7 @@
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 6px; background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 4px;">
                 <div><strong>แรงดันไฟฟ้า (V)</strong><div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; margin-top: 2px;"><div class="field-group"><label>V1-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V3-N</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-2</label><input type="text" class="form-control"></div><div class="field-group"><label>V1-3</label><input type="text" class="form-control"></div><div class="field-group"><label>V2-3</label><input type="text" class="form-control"></div></div></div>
-                <div><strong>กระแสไฟฟ้า (A)</strong><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin-top: 2px;"><div class="field-group"><label>IN</label><input type="text" class="form-control"></div><div class="field-group"><label>I1</label><input type="text" class="form-control"></div><div class="field-group"><label>I2</label><input type="text" class="form-control"></div><div class="field-group"><label>I3</label><input type="text" class="form-control"></div></div><div class="field-group" style="margin-top: 2px;"><label>ผลรวมกระแสทั้งหมด</label><input type="text" class="form-control"></div></div>
+                <div><strong>กระแสไฟฟ้า (A)</strong><div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 3px; margin-top: 2px;"><div class="field-group"><label>IN</label><input type="text" class="form-control"></div><div class="field-group"><label>I1</label><input type="text" class="form-control"></div><div class="field-group"><label>I2</label><input type="text" class="form-control"></div><div class="field-group"><label>I3</label><input type="text" class="form-control"></div></div><div class="field-group" style="margin-top: 2px;"><label>ผลรวมกระแสทั้งหมด</label><input type="text" class="form-control"></div></div>
             </div>
             <div class="section-header">4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 4px;"><textarea class="form-control" style="height:25px;"></textarea></div>
             <div class="section-header">5 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 4px;"><textarea class="form-control" style="height:25px;"></textarea></div>
@@ -683,8 +718,8 @@
                     <tr><td>2.13 ทดลอง ทาง Local</td><td><input type="radio" name="sz13"></td><td><input type="radio" name="sz13"></td><td><input type="radio" name="sz13"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                 </tbody>
             </table>
-            <div class="section-header">3 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 4px;"><textarea class="form-control" style="height:25px;"></textarea></div>
-            <div class="section-header">4 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 4px;"><textarea class="form-control" style="height:25px;"></textarea></div>
+            <div class="section-header">3 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
+            <div class="section-header">4 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
             <div class="signature-grid">
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
@@ -775,12 +810,12 @@
                     <tr><td>2.19 ค่าคาปาซิแตนท์ที่วัดได้</td><td><input type="radio" name="cb19"></td><td><input type="radio" name="cb19"></td><td><input type="radio" name="cb19"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                 </tbody>
             </table>
-            <div style="display: flex; gap: 15px; font-size: 0.85rem; margin-bottom: 6px;">
+            <div style="display: flex; gap: 15px; font-size: 0.8rem; margin-bottom: 4px;">
                 <div>เวลา Cap Off : <input type="text" class="form-control" style="display:inline-block; width:100px; padding:4px;"></div>
                 <div>เวลา Cap On : <input type="text" class="form-control" style="display:inline-block; width:100px; padding:4px;"></div>
             </div>
-            <div class="section-header">3 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
-            <div class="section-header">4 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
+            <div class="section-header">3 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 4px;"><textarea class="form-control" style="height:25px;"></textarea></div>
+            <div class="section-header">4 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 4px;"><textarea class="form-control" style="height:25px;"></textarea></div>
             <div class="signature-grid">
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
@@ -864,9 +899,9 @@
             <div class="sheet-title-container"><div><h1 id="formTitle">แบบตรวจสอบบำรุงรักษาหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง</h1></div><div class="sheet-code" id="formCode">SF-07-0-022</div></div>
             <div class="section-header">1 ข้อมูลทั่วไป</div>
             <table class="info-table">
-                <tr><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td><th>STATION</th><td><input type="text" placeholder="Station"></td></tr>
-                <tr><th>FIX ID</th><td><input type="text" placeholder="Fix ID"></td><th>WLN</th><td><input type="text" placeholder="WLN"></td></tr>
-                <tr><th>TR. MEA NO.</th><td><input type="text" placeholder="TR MEA No."></td><th>SW. MEA NO.</th><td><input type="text" placeholder="SW MEA No."></td></tr>
+                <tr><th>สถานที่</th><td><input type="text" placeholder="ระบุสถานที่"></td><th>STATION</th><td><input type="text" placeholder="ระบุ Station"></td></tr>
+                <tr><th>FIX ID</th><td><input type="text" placeholder="ระบุ Fix ID"></td><th>WLN</th><td><input type="text" placeholder="ระบุ WLN"></td></tr>
+                <tr><th>TR. MEA NO.</th><td><input type="text" placeholder="ระบุหมายเลข กฟน."></td><th>SW. MEA NO.</th><td><input type="text" placeholder="ระบุหมายเลข กฟน."></td></tr>
                 <tr><th>GIS Lat/Long</th><td colspan="3"><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="latInput" placeholder="Lat" style="width:40%;"><input type="text" id="longInput" placeholder="Long" style="width:40%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
             </table>
             <div class="section-header">2 รายการตรวจสอบบำรุงรักษา</div>
@@ -913,8 +948,8 @@
             
             <div class="section-header">ข้อมูลทั่วไป</div>
             <table class="info-table">
-                <tr><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td><th>STATION ID</th><td><input type="text" placeholder="Station ID"></td></tr>
-                <tr><th>SW.ยี่ห้อ / TR. MEA No.</th><td><input type="text" placeholder="ยี่ห้อ/หมายเลข"></td><th>GIS Lat/Long</th><td><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="latInput" placeholder="Lat" style="width:40%;"><input type="text" id="longInput" placeholder="Long" style="width:40%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
+                <tr><th>สถานที่</th><td><input type="text" placeholder="ระบุสถานที่"></td><th>STATION ID</th><td><input type="text" placeholder="ระบุ Station ID"></td></tr>
+                <tr><th>SW.ยี่ห้อ / TR. MEA No.</th><td><input type="text" placeholder="ระบุยี่ห้อและหมายเลข"></td><th>GIS Lat/Long</th><td><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="latInput" placeholder="Lat" style="width:40%;"><input type="text" id="longInput" placeholder="Long" style="width:40%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
             </table>
 
             <div class="section-header">ขั้นตอนการทดสอบและกรองน้ำมันหม้อแปลง</div>
