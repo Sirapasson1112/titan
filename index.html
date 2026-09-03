@@ -240,6 +240,7 @@
             border: 1px solid var(--border-soft);
             font-size: 0.8rem;
             box-shadow: var(--shadow-soft);
+            margin-bottom: 10px;
         }
 
         .extra-panel-header {
@@ -314,6 +315,7 @@
             border: 1px solid var(--border-soft);
             box-shadow: var(--shadow-soft);
             font-size: 0.8rem;
+            margin-top: 10px;
         }
 
         .sheet-title-container {
@@ -438,14 +440,9 @@
             border-color: #cbd5e1;
         }
 
-        .kpi-card:active {
-            transform: scale(0.98);
-        }
-
         .kpi-card.kpi-active {
             border: 2px solid #334155 !important;
             background: #f8fafc !important;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08) !important;
         }
 
         .kpi-card::before {
@@ -520,17 +517,6 @@
             body { background: white !important; padding: 0; font-size: 8.5px; }
             .no-print, .planning-view, .main-nav-bar, .modal-overlay { display: none !important; }
             .official-sheet { box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; width: 100% !important; }
-            .sheet-title-container { margin-bottom: 4px; padding-bottom: 2px; }
-            .sheet-title-container h1 { font-size: 11px; }
-            .info-table th, .info-table td { padding: 1px 3px; font-size: 8px; }
-            .section-header { padding: 2px 4px; margin-top: 4px; margin-bottom: 2px; font-size: 8.5px; }
-            table.inspection-table th, table.inspection-table td { padding: 1px 3px; font-size: 8px; }
-            input[type="radio"], input[type="checkbox"] { transform: scale(0.85); }
-            textarea.form-control { height: 18px; padding: 1px 3px; font-size: 8px; }
-            .form-control { padding: 1px 3px; font-size: 8px; height: 18px; }
-            .signature-grid { gap: 4px; margin-top: 4px; padding-top: 2px; }
-            .sig-box { padding: 3px; gap: 1px; }
-            .sheet-footer-note { margin-top: 3px; }
         }
     </style>
 </head>
@@ -698,6 +684,7 @@
         </div>
     </div>
 
+    <!-- ส่วนแสดงใบตรวจสอบ -->
     <div id="formContentArea">
         <div class="official-sheet" id="printArea"></div>
     </div>
