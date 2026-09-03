@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Asset Inspection App - ระบบตรวจสอบอุปกรณ์ไฟฟ้า</title>
+    <title>ระบบบำรุงรักษาอุปกรณ์ไฟฟ้า - Asset Inspection & PM Planning App</title>
     
     <!-- Google Fonts: Sarabun -->
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -13,21 +13,16 @@
 
     <style>
         :root {
-            --bg-body: #f4f6f8;
+            --bg-body: #f1f5f9;
             --card-bg: #ffffff;
-            --panel-bg: #ffffff;
-            --text-main: #2d3748;
-            --text-muted: #718096;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
             --border-soft: #cbd5e1;
             --border-focus: #94a3b8;
-            
-            --primary-warm: #d97706;
-            --primary-light: #fef3c7;
+            --primary: #d97706;
             --primary-dark: #b45309;
-
-            --radius-md: 10px;
-            --radius-lg: 14px;
-            --shadow-soft: 0 4px 15px -2px rgba(0, 0, 0, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+            --accent: #0f172a;
+            --radius: 8px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Sarabun', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -35,83 +30,65 @@
         body {
             background-color: var(--bg-body);
             color: var(--text-main);
-            padding: 6px;
-            font-size: 14px; /* ขยายขนาดฟอนต์บนมือถือให้อ่านง่ายขึ้น */
-            line-height: 1.5;
+            padding: 12px;
+            font-size: 13px;
+            line-height: 1.4;
         }
 
-        .app-container { max-width: 100%; margin: 0 auto; padding-bottom: 50px; }
+        /* ล็อกความกว้างมาตรฐาน A4 Container */
+        .app-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
 
-        /* จัดการหน้าจอ Mobile ให้ใช้งานง่าย ไม่ล้นจอ */
         .no-print {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            margin-bottom: 8px;
+            gap: 10px;
+            margin-bottom: 10px;
         }
 
         .control-hub {
             background: var(--card-bg);
-            padding: 10px;
-            border-radius: var(--radius-lg);
+            padding: 12px 16px;
+            border-radius: var(--radius);
             border: 1px solid var(--border-soft);
-            box-shadow: var(--shadow-soft);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
         }
 
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
-            padding-bottom: 6px;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
             border-bottom: 1px solid var(--border-soft);
-        }
-
-        .app-brand {
-            font-size: 0.95rem;
             font-weight: 700;
-            color: #1e293b;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .brand-icon {
-            width: 28px;
-            height: 28px;
-            background: var(--primary-light);
-            color: var(--primary-dark);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
         }
 
         .google-pill {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             background: #f8fafc;
             border: 1px solid var(--border-soft);
-            padding: 4px 10px;
+            padding: 4px 12px;
             border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
+            font-size: 0.75rem;
             cursor: pointer;
             color: var(--text-muted);
         }
 
         .action-toolbar {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* จัดเรียงปุ่มบนมือถือให้กดง่าย 3 คอลัมน์ */
-            gap: 5px;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 6px;
             margin-bottom: 8px;
         }
 
         .btn {
-            padding: 10px 6px; /* ขยายพื้นที่เป้าหมายการกด (Touch Target) บนมือถือ */
-            border-radius: 8px;
+            padding: 7px 10px;
+            border-radius: 6px;
             font-size: 0.78rem;
             font-weight: 600;
             cursor: pointer;
@@ -119,31 +96,32 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 5px;
             transition: all 0.15s ease;
-            text-align: center;
         }
-        .btn:active { transform: scale(0.96); }
+        .btn:active { transform: scale(0.97); }
 
-        .btn-primary { background: #d97706; color: #ffffff; }
-        .btn-secondary { background: #f8fafc; color: #334155; border: 1px solid var(--border-soft); }
-        .btn-danger { background: #fff1f2; color: #e11d48; border: 1px solid #ffe4e6; }
-        .btn-print { background: #334155; color: white; grid-column: span 3; } /* ปุ่มพิมพ์เต็มแถวบนมือถือ */
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-secondary { background: #f8fafc; color: var(--text-main); border: 1px solid var(--border-soft); }
+        .btn-secondary:hover { background: #f1f5f9; }
+        .btn-danger { background: #fef2f2; color: #dc2626; border: 1px solid #fee2e2; }
+        .btn-print { background: var(--accent); color: white; grid-column: span 2; }
         .btn-excel { background: #059669; color: white; }
-        .btn-geo { background: #059669; color: white; font-size: 0.75rem; padding: 4px 8px; border-radius: 6px; cursor: pointer; border: none; margin-left: 4px; }
+        .btn-geo { background: #059669; color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; cursor: pointer; border: none; margin-left: 4px; }
 
         .tab-scroller {
             display: flex;
             gap: 4px;
             overflow-x: auto;
             padding-bottom: 4px;
-            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
         }
 
         .tab-btn {
-            padding: 8px 12px;
+            padding: 5px 10px;
             background: #f8fafc;
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 0.75rem;
             cursor: pointer;
             border: 1px solid var(--border-soft);
@@ -151,20 +129,47 @@
             color: var(--text-muted);
             font-weight: 600;
         }
-
         .tab-btn.active {
-            background: #334155;
+            background: var(--accent);
             color: white;
-            border-color: #334155;
+            border-color: var(--accent);
+        }
+
+        .sub-tab-box {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 6px;
+            background: #f8fafc;
+            padding: 3px;
+            border-radius: 6px;
+            border: 1px solid var(--border-soft);
+        }
+
+        .sub-tab-btn {
+            flex: 1;
+            padding: 5px;
+            background: transparent;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            border: none;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-align: center;
+        }
+        .sub-tab-btn.active {
+            background: #ffffff;
+            color: var(--accent);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.08);
         }
 
         .extra-panel {
             background: var(--card-bg);
-            padding: 10px;
-            border-radius: var(--radius-lg);
+            padding: 10px 14px;
+            border-radius: var(--radius);
             border: 1px solid var(--border-soft);
             font-size: 0.8rem;
-            box-shadow: var(--shadow-soft);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
             margin-bottom: 8px;
         }
 
@@ -179,12 +184,12 @@
 
         .extra-grid {
             display: grid;
-            grid-template-columns: 1fr; /* ปรับช่องค้นหาบนมือถือให้เรียงแถวเดี่ยว ไม่เบียด */
+            grid-template-columns: 1fr;
             gap: 6px;
         }
 
         .saved-records-list {
-            max-height: 140px;
+            max-height: 130px;
             overflow-y: auto;
             margin-top: 6px;
             border: 1px solid var(--border-soft);
@@ -192,44 +197,56 @@
         }
 
         .saved-item {
-            padding: 8px;
+            padding: 6px 8px;
             border-bottom: 1px solid #f1f5f9;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 0.75rem;
+            cursor: pointer;
         }
+        .saved-item:hover { background: #f8fafc; }
         .saved-item.active-item { background: #f0fdf4; border-left: 3px solid #10b981; }
 
-        /* ล็อกรูปแบบใบงานตามต้นฉบับ ไม่ให้เพี้ยน */
+        /* รูปแบบใบงานทางการ (ล็อกไว้ตรงตามต้นฉบับการไฟฟ้า) */
         .official-sheet {
             background: var(--card-bg);
-            padding: 10px;
-            border-radius: var(--radius-lg);
+            padding: 16px 20px;
+            border-radius: var(--radius);
             border: 1px solid var(--border-soft);
-            box-shadow: var(--shadow-soft);
-            font-size: 0.75rem;
-            overflow-x: auto; /* ป้องกันตารางล้นจอมือถือ */
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            font-size: 0.8rem;
+            margin-top: 6px;
         }
 
         .section-header {
             background-color: #f1f5f9;
             font-weight: 700;
             padding: 4px 6px;
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             border: 1px solid var(--border-soft);
             margin-top: 6px;
             margin-bottom: 3px;
             border-radius: 4px;
             color: #1e293b;
-            border-left: 3px solid var(--primary-warm);
+            border-left: 3px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .section-num {
+            background: #0f172a;
+            color: #fff;
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.7rem;
         }
 
         .info-table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 4px;
-            font-size: 0.7rem;
+            font-size: 0.73rem;
         }
 
         .info-table th, .info-table td {
@@ -238,9 +255,10 @@
             background-color: #f8fafc;
         }
 
-        .info-table th { text-align: left; color: var(--text-muted); font-weight: 600; }
-        .info-table td { background-color: #fff; }
-        .info-table input { border: 1px solid var(--border-soft); background: #fff; width: 100%; padding: 4px; font-size: 0.75rem; color: var(--text-main); border-radius: 4px; }
+        .info-table th { text-align: left; color: var(--text-muted); font-weight: 600; border: 1px solid var(--border-soft); }
+        .info-table td { background-color: #fff; border: 1px solid var(--border-soft); }
+        .info-table input { border: 1px solid var(--border-soft); background: #fff; width: 100%; padding: 3px 5px; font-size: 0.75rem; color: var(--text-main); border-radius: 4px; }
+        .info-table input:focus { outline: none; border-color: var(--border-focus); background: #fffdf5; }
 
         table.inspection-table {
             width: 100%;
@@ -250,36 +268,62 @@
 
         table.inspection-table th, table.inspection-table td {
             border: 1px solid var(--border-soft);
-            padding: 4px;
-            font-size: 0.7rem;
+            padding: 3px 5px;
+            font-size: 0.72rem;
         }
 
-        table.inspection-table th { background-color: #f1f5f9; text-align: center; font-weight: 700; color: #334155; }
-        table.inspection-table td { background-color: #fff; }
+        table.inspection-table th { background-color: #f1f5f9; text-align: center; font-weight: 700; color: #334155; border: 1px solid var(--border-soft); }
+        table.inspection-table td { border: 1px solid var(--border-soft); background-color: #fff; }
         
-        input[type="radio"], input[type="checkbox"] { transform: scale(1.2); accent-color: var(--primary-warm); cursor: pointer; }
-        .form-control { padding: 5px; border: 1px solid var(--border-soft); border-radius: 4px; font-size: 0.75rem; background-color: #ffffff; width: 100%; }
-        textarea.form-control { height: 28px; }
+        input[type="radio"], input[type="checkbox"] { transform: scale(1.05); accent-color: var(--primary); cursor: pointer; }
+        .form-control { padding: 4px 6px; border: 1px solid var(--border-soft); border-radius: 4px; font-size: 0.75rem; background-color: #ffffff; width: 100%; color: var(--text-main); }
+        .form-control:focus { outline: none; border-color: var(--border-focus); background: #fffdf5; }
+        textarea.form-control { resize: vertical; height: 26px; border: 1px solid var(--border-soft); }
+
+        .signature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-top: 6px;
+            border-top: 1px dashed var(--border-soft);
+            padding-top: 4px;
+        }
+
+        .sig-box {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            background: #f8fafc;
+            padding: 6px 8px;
+            border: 1px solid var(--border-soft);
+            border-radius: 6px;
+        }
 
         .sheet-footer-note {
             display: flex;
             justify-content: space-between;
-            font-size: 0.65rem;
+            font-size: 0.68rem;
             color: var(--text-muted);
-            margin-top: 6px;
+            margin-top: 4px;
             border-top: 1px solid var(--border-soft);
-            padding-top: 4px;
+            padding-top: 3px;
         }
 
         @media print {
             @page { size: A4 portrait; margin: 4mm; }
-            body { background: white !important; padding: 0; font-size: 8.5px; }
+            body { background: white !important; padding: 0; font-size: 8px; }
             .no-print { display: none !important; }
-            .official-sheet { box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; width: 100% !important; overflow: visible !important; }
-            .info-table th, .info-table td { padding: 1px 3px; font-size: 8px; border: 1px solid #000 !important; }
-            table.inspection-table th, table.inspection-table td { padding: 1px 3px; font-size: 8px; border: 1px solid #000 !important; }
-            input[type="radio"], input[type="checkbox"] { transform: scale(0.85); }
-            .form-control { padding: 1px 3px; font-size: 8px; height: 18px; border: 1px solid #000 !important; }
+            .official-sheet { box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; }
+            .sheet-title-container { margin-bottom: 2px; padding-bottom: 1px; }
+            .info-table th, .info-table td { padding: 1px 2px; font-size: 7.5px; border: 1px solid #000 !important; }
+            .section-header { padding: 2px 4px; margin-top: 3px; margin-bottom: 2px; font-size: 8px; }
+            table.inspection-table th, table.inspection-table td { padding: 1px 2px; font-size: 7.5px; border: 1px solid #000 !important; }
+            input[type="radio"], input[type="checkbox"] { transform: scale(0.8); }
+            textarea.form-control { height: 16px; padding: 1px 2px; font-size: 7.5px; border: 1px solid #000 !important; }
+            .form-control { padding: 1px 2px; font-size: 7.5px; height: 16px; border: 1px solid #000 !important; }
+            .signature-grid { gap: 4px; margin-top: 3px; padding-top: 2px; }
+            .sig-box { padding: 2px; gap: 1px; border: 1px solid #000 !important; }
+            .sheet-footer-note { margin-top: 2px; }
         }
     </style>
 </head>
@@ -290,10 +334,7 @@
     <div class="no-print">
         <div class="control-hub">
             <div class="top-bar">
-                <div class="app-brand">
-                    <div class="brand-icon">⚡</div>
-                    <span>ระบบตรวจสอบอุปกรณ์ไฟฟ้า</span>
-                </div>
+                <div class="app-brand">⚡ ระบบตรวจสอบอุปกรณ์ไฟฟ้า (MEA)</div>
                 <div class="google-pill" onclick="handleGoogleLogin()">
                     <span id="authStatus">👤 บัญชีหน้างาน</span>
                 </div>
@@ -306,8 +347,7 @@
                 <button class="btn btn-secondary" onclick="newForm()">➕ ฟอร์มใหม่</button>
                 <button class="btn btn-danger" onclick="clearForm()">🗑️ ล้าง</button>
                 <button class="btn btn-excel" onclick="exportPlanToExcel()">📗 Excel</button>
-                <!-- ปุ่มพิมพ์/PDF ใช้งานได้ดีทั้งบนมือถือและคอมพิวเตอร์ -->
-                <button class="btn btn-print" onclick="window.print()">🖨️ พิมพ์/PDF (A4 หน้าเดียว)</button>
+                <button class="btn btn-print" onclick="window.print()">🖨️ พิมพ์/PDF</button>
             </div>
 
             <div class="tab-scroller" id="tabContainer">
@@ -506,7 +546,7 @@
         setTimeout(() => {
             fillFormData(record.formData);
             renderSavedRecordsList();
-            window.scrollTo({ top: 400, behavior: 'smooth' });
+            window.scrollTo({ top: 300, behavior: 'smooth' });
         }, 100);
     }
 
@@ -1235,11 +1275,7 @@
             }
         });
         document.getElementById('subFormContent').innerHTML = unitSubstationPages[pageNum];
-        const today = new Date().toISOString().split('T')[0];
-        if(document.getElementById('dateField1')) document.getElementById('dateField1').value = today;
-        if(document.getElementById('dateField2')) document.getElementById('dateField2').value = today;
-        if(document.getElementById('dateField3')) document.getElementById('dateField3').value = today;
-        if(document.getElementById('dateField4')) document.getElementById('dateField4').value = today;
+        setTodayDate();
     }
 
     function switchTab(element, formCode) {
@@ -1278,7 +1314,7 @@
 
     function handleGoogleLogin() {
         document.getElementById('authStatus').innerText = "👤 คุณศิรภัสสร (Admin PM)";
-        alert("เข้าสู่ระบบสำเร็จ! สิทธิ์การใช้งาน: Maintenance Engineer / Supervisor");
+        alert("เข้าสู่ระบบสำเร็จ!");
     }
 
     document.addEventListener("DOMContentLoaded", () => {
