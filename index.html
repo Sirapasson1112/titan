@@ -13,16 +13,31 @@
 
     <style>
         :root {
-            --bg-body: #f1f5f9;
+            --bg-body: #f4f6f8;
             --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border-soft: #cbd5e1;
-            --border-focus: #94a3b8;
-            --primary: #d97706;
+            --panel-bg: #ffffff;
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --border-soft: #e2e8f0;
+            --border-focus: #cbd5e1;
+            
+            --primary-warm: #d97706;
+            --primary-light: #fef3c7;
             --primary-dark: #b45309;
-            --accent: #0f172a;
-            --radius: 8px;
+            
+            --soft-rose-bg: #ffe4e6;
+            --soft-rose-text: #e11d48;
+            --soft-amber-bg: #fef3c7;
+            --soft-amber-text: #b45309;
+            --soft-green-bg: #dcfce7;
+            --soft-green-text: #15803d;
+            --soft-blue-bg: #e0f2fe;
+            --soft-blue-text: #0369a1;
+
+            --radius-md: 10px;
+            --radius-lg: 14px;
+            --shadow-soft: 0 4px 15px -2px rgba(0, 0, 0, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+            --shadow-hover: 0 8px 20px -3px rgba(0, 0, 0, 0.07), 0 4px 10px -2px rgba(0, 0, 0, 0.03);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Sarabun', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -30,15 +45,12 @@
         body {
             background-color: var(--bg-body);
             color: var(--text-main);
-            padding: 12px;
+            padding: 10px;
             font-size: 13px;
-            line-height: 1.4;
+            line-height: 1.45;
         }
 
-        .app-container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
+        .app-container { max-width: 1050px; margin: 0 auto; padding-bottom: 60px; }
 
         .no-print {
             display: flex;
@@ -49,20 +61,40 @@
 
         .control-hub {
             background: var(--card-bg);
-            padding: 12px 16px;
-            border-radius: var(--radius);
+            padding: 14px 16px;
+            border-radius: var(--radius-lg);
             border: 1px solid var(--border-soft);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+            box-shadow: var(--shadow-soft);
         }
 
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-            padding-bottom: 8px;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
             border-bottom: 1px solid var(--border-soft);
+        }
+
+        .app-brand {
+            font-size: 1rem;
             font-weight: 700;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
         }
 
         .google-pill {
@@ -71,24 +103,57 @@
             gap: 6px;
             background: #f8fafc;
             border: 1px solid var(--border-soft);
-            padding: 4px 12px;
+            padding: 5px 14px;
             border-radius: 20px;
             font-size: 0.75rem;
+            font-weight: 600;
             cursor: pointer;
             color: var(--text-muted);
+            transition: all 0.2s;
+        }
+        .google-pill:hover { background: #f1f5f9; color: var(--text-main); }
+
+        .main-nav-bar {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+            background: #eef2f6;
+            padding: 4px;
+            border-radius: var(--radius-md);
+        }
+
+        .main-nav-btn {
+            flex: 1;
+            padding: 9px 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            background: transparent;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .main-nav-btn.active {
+            background: #ffffff;
+            color: #0f172a;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            font-weight: 700;
         }
 
         .action-toolbar {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
             gap: 6px;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
         .btn {
-            padding: 7px 10px;
-            border-radius: 6px;
-            font-size: 0.78rem;
+            padding: 7px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
             font-weight: 600;
             cursor: pointer;
             border: none;
@@ -100,38 +165,43 @@
         }
         .btn:active { transform: scale(0.97); }
 
-        .btn-primary { background: var(--primary); color: #fff; }
-        .btn-primary:hover { background: var(--primary-dark); }
-        .btn-secondary { background: #f1f5f9; color: var(--text-main); border: 1px solid var(--border-soft); }
-        .btn-secondary:hover { background: #e2e8f0; }
-        .btn-danger { background: #fef2f2; color: #dc2626; border: 1px solid #fee2e2; }
-        .btn-print { background: var(--accent); color: white; grid-column: span 2; }
+        .btn-primary { background: #d97706; color: #ffffff; }
+        .btn-primary:hover { background: #b45309; }
+        .btn-secondary { background: #f8fafc; color: #334155; border: 1px solid var(--border-soft); }
+        .btn-secondary:hover { background: #f1f5f9; }
+        .btn-danger { background: #fff1f2; color: #e11d48; border: 1px solid #ffe4e6; }
+        .btn-danger:hover { background: #ffe4e6; }
+        .btn-print { background: #334155; color: white; }
+        .btn-print:hover { background: #1e293b; }
         .btn-excel { background: #059669; color: white; }
-        .btn-geo { background: #059669; color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; cursor: pointer; border: none; margin-left: 4px; }
+        .btn-excel:hover { background: #047857; }
+        .btn-geo { background: #059669; color: white; font-size: 0.72rem; padding: 3px 8px; border-radius: 6px; cursor: pointer; border: none; margin-left: 4px; }
 
         .tab-scroller {
             display: flex;
-            gap: 4px;
+            gap: 5px;
             overflow-x: auto;
             padding-bottom: 4px;
             scrollbar-width: thin;
         }
 
         .tab-btn {
-            padding: 5px 10px;
+            padding: 6px 12px;
             background: #f8fafc;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 0.75rem;
             cursor: pointer;
             border: 1px solid var(--border-soft);
             white-space: nowrap;
             color: var(--text-muted);
             font-weight: 600;
+            transition: all 0.2s;
         }
+
         .tab-btn.active {
-            background: var(--accent);
+            background: #334155;
             color: white;
-            border-color: var(--accent);
+            border-color: #334155;
         }
 
         .sub-tab-box {
@@ -146,7 +216,7 @@
 
         .sub-tab-btn {
             flex: 1;
-            padding: 5px;
+            padding: 6px;
             background: transparent;
             border-radius: 4px;
             font-size: 0.75rem;
@@ -156,20 +226,20 @@
             font-weight: 600;
             text-align: center;
         }
+
         .sub-tab-btn.active {
             background: #ffffff;
-            color: var(--accent);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+            color: #0f172a;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
 
         .extra-panel {
             background: var(--card-bg);
-            padding: 10px 14px;
-            border-radius: var(--radius);
+            padding: 14px 16px;
+            border-radius: var(--radius-lg);
             border: 1px solid var(--border-soft);
             font-size: 0.8rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-            margin-bottom: 8px;
+            box-shadow: var(--shadow-soft);
         }
 
         .extra-panel-header {
@@ -177,116 +247,152 @@
             justify-content: space-between;
             align-items: center;
             font-weight: 700;
-            margin-bottom: 6px;
+            margin-bottom: 10px;
             color: #334155;
         }
 
+        .extra-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 8px;
+            align-items: center;
+        }
+
         .saved-records-list {
-            max-height: 130px;
+            max-height: 180px;
             overflow-y: auto;
-            margin-top: 6px;
+            margin-top: 8px;
             border: 1px solid var(--border-soft);
-            border-radius: 6px;
+            border-radius: 8px;
         }
 
         .saved-item {
-            padding: 6px 8px;
+            padding: 8px 10px;
             border-bottom: 1px solid #f1f5f9;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.75rem;
             cursor: pointer;
+            transition: background 0.15s;
         }
         .saved-item:hover { background: #f8fafc; }
         .saved-item.active-item { background: #f0fdf4; border-left: 3px solid #10b981; }
 
-        /* รูปแบบใบงานทางการ */
-        .official-sheet {
-            background: var(--card-bg);
-            padding: 16px 20px;
-            border-radius: var(--radius);
-            border: 1px solid var(--border-soft);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-            font-size: 0.8rem;
+        .criticality-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 8px;
             margin-top: 6px;
         }
 
-        .section-header {
-            background-color: #f1f5f9;
-            font-weight: 700;
-            padding: 4px 6px;
-            font-size: 0.78rem;
+        .cost-calc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 8px;
             border: 1px solid var(--border-soft);
-            margin-top: 6px;
-            margin-bottom: 3px;
-            border-radius: 4px;
-            color: #1e293b;
-            border-left: 3px solid var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 6px;
         }
-        .section-num {
-            background: #0f172a;
-            color: #fff;
-            padding: 1px 5px;
-            border-radius: 3px;
-            font-size: 0.7rem;
+
+        .badge-priority {
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+        .p1-badge { background: var(--soft-rose-bg); color: var(--soft-rose-text); border: 1px solid #fecdd3; }
+        .p2-badge { background: var(--soft-amber-bg); color: var(--soft-amber-text); border: 1px solid #fde68a; }
+        .p3-badge { background: var(--soft-green-bg); color: var(--soft-green-text); border: 1px solid #bbf7d0; }
+
+        .official-sheet {
+            background: var(--card-bg);
+            padding: 18px 22px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-soft);
+            box-shadow: var(--shadow-soft);
+            font-size: 0.8rem;
+        }
+
+        .sheet-title-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #334155;
+            padding-bottom: 6px;
+            margin-bottom: 8px;
+        }
+
+        .sheet-title-container h1 { font-size: 1.05rem; font-weight: 700; color: #1e293b; }
+        .sheet-code { font-size: 0.78rem; font-weight: 700; background: #334155; color: white; padding: 2px 8px; border-radius: 4px; }
+
+        .section-header {
+            background-color: #f8fafc;
+            font-weight: 700;
+            padding: 5px 8px;
+            font-size: 0.8rem;
+            border: 1px solid var(--border-soft);
+            margin-top: 8px;
+            margin-bottom: 4px;
+            border-radius: 6px;
+            color: #1e293b;
+            border-left: 4px solid var(--primary-warm);
         }
 
         .info-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 4px;
-            font-size: 0.73rem;
+            margin-bottom: 6px;
+            font-size: 0.75rem;
         }
 
         .info-table th, .info-table td {
             border: 1px solid var(--border-soft);
-            padding: 4px 6px;
+            padding: 5px 8px;
             background-color: #f8fafc;
         }
 
-        .info-table th { text-align: left; color: var(--text-muted); font-weight: 600; border: 1px solid var(--border-soft); }
-        .info-table td { background-color: #fff; border: 1px solid var(--border-soft); }
-        .info-table input { border: 1px solid var(--border-soft); background: #fff; width: 100%; padding: 3px 5px; font-size: 0.75rem; color: var(--text-main); border-radius: 4px; }
-        .info-table input:focus { outline: none; border-color: var(--border-focus); background: #fffdf5; }
+        .info-table th { text-align: left; color: var(--text-muted); font-weight: 600; }
+        .info-table td { background-color: #fff; }
+        .info-table input { border: none; background: transparent; width: 100%; padding: 2px; font-size: 0.78rem; color: var(--text-main); }
+        .info-table input:focus { outline: none; background: #fffdf5; }
 
         table.inspection-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         table.inspection-table th, table.inspection-table td {
             border: 1px solid var(--border-soft);
-            padding: 3px 5px;
-            font-size: 0.72rem;
+            padding: 4px 6px;
+            font-size: 0.74rem;
         }
 
-        table.inspection-table th { background-color: #f1f5f9; text-align: center; font-weight: 700; color: #334155; border: 1px solid var(--border-soft); }
-        table.inspection-table td { border: 1px solid var(--border-soft); background-color: #fff; }
+        table.inspection-table th { background-color: #f8fafc; text-align: center; font-weight: 700; color: #334155; }
         
-        input[type="radio"], input[type="checkbox"] { transform: scale(1.05); accent-color: var(--primary); cursor: pointer; }
-        .form-control { padding: 4px 6px; border: 1px solid var(--border-soft); border-radius: 4px; font-size: 0.75rem; background-color: #ffffff; width: 100%; color: var(--text-main); }
-        .form-control:focus { outline: none; border-color: var(--border-focus); background: #fffdf5; }
+        input[type="radio"], input[type="checkbox"] { transform: scale(1.1); accent-color: var(--primary-warm); cursor: pointer; }
+        .form-control { padding: 5px 8px; border: 1px solid var(--border-soft); border-radius: 6px; font-size: 0.78rem; background-color: #ffffff; width: 100%; color: var(--text-main); }
+        .form-control:focus { outline: none; border-color: #cbd5e1; background: #fffdf5; }
+        textarea.form-control { resize: vertical; height: 32px; }
 
         .signature-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            margin-top: 6px;
+            gap: 8px;
+            margin-top: 8px;
             border-top: 1px dashed var(--border-soft);
-            padding-top: 4px;
+            padding-top: 6px;
         }
 
         .sig-box {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 3px;
             background: #f8fafc;
-            padding: 6px 8px;
+            padding: 8px 10px;
             border: 1px solid var(--border-soft);
             border-radius: 6px;
         }
@@ -294,28 +400,137 @@
         .sheet-footer-note {
             display: flex;
             justify-content: space-between;
-            font-size: 0.68rem;
+            font-size: 0.7rem;
             color: var(--text-muted);
-            margin-top: 4px;
+            margin-top: 6px;
             border-top: 1px solid var(--border-soft);
-            padding-top: 3px;
+            padding-top: 4px;
+        }
+
+        .planning-view {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .kpi-card {
+            background: #ffffff;
+            padding: 16px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-soft);
+            box-shadow: var(--shadow-soft);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+            border-color: #cbd5e1;
+        }
+
+        .kpi-card:active {
+            transform: scale(0.98);
+        }
+
+        .kpi-card.kpi-active {
+            border: 2px solid #334155 !important;
+            background: #f8fafc !important;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08) !important;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; bottom: 0; width: 4px;
+        }
+        .kpi-p1::before { background: #f43f5e; }
+        .kpi-cost::before { background: #f59e0b; }
+        .kpi-avoid::before { background: #10b981; }
+        .kpi-total::before { background: #0284c7; }
+
+        .kpi-title { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; display: flex; justify-content: space-between; }
+        .kpi-value { font-size: 1.45rem; font-weight: 700; color: #1e293b; margin-top: 4px; }
+        .kpi-sub { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+
+        .plan-table-box {
+            background: #ffffff;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-soft);
+            padding: 14px;
+            box-shadow: var(--shadow-soft);
+            overflow-x: auto;
+        }
+
+        .plan-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+            min-width: 820px;
+        }
+
+        .plan-table th {
+            background: #f8fafc;
+            color: #334155;
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 2px solid var(--border-soft);
+            font-weight: 700;
+        }
+
+        .plan-table td {
+            padding: 9px 12px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .plan-table tr:hover { background: #fafafa; }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 12px;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: var(--radius-lg);
+            max-width: 500px;
+            width: 100%;
+            padding: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.12);
         }
 
         @media print {
             @page { size: A4 portrait; margin: 4mm; }
-            body { background: white !important; padding: 0; font-size: 8px; }
-            .no-print { display: none !important; }
-            .official-sheet { box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; }
-            .sheet-title-container { margin-bottom: 2px; padding-bottom: 1px; }
-            .info-table th, .info-table td { padding: 1px 2px; font-size: 7.5px; border: 1px solid #000 !important; }
-            .section-header { padding: 2px 4px; margin-top: 3px; margin-bottom: 2px; font-size: 8px; }
-            table.inspection-table th, table.inspection-table td { padding: 1px 2px; font-size: 7.5px; border: 1px solid #000 !important; }
-            input[type="radio"], input[type="checkbox"] { transform: scale(0.8); }
-            textarea.form-control { height: 16px; padding: 1px 2px; font-size: 7.5px; border: 1px solid #000 !important; }
-            .form-control { padding: 1px 2px; font-size: 7.5px; height: 16px; border: 1px solid #000 !important; }
-            .signature-grid { gap: 4px; margin-top: 3px; padding-top: 2px; }
-            .sig-box { padding: 2px; gap: 1px; border: 1px solid #000 !important; }
-            .sheet-footer-note { margin-top: 2px; }
+            body { background: white !important; padding: 0; font-size: 8.5px; }
+            .no-print, .planning-view, .main-nav-bar, .modal-overlay { display: none !important; }
+            .official-sheet { box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; width: 100% !important; }
+            .sheet-title-container { margin-bottom: 4px; padding-bottom: 2px; }
+            .sheet-title-container h1 { font-size: 11px; }
+            .info-table th, .info-table td { padding: 1px 3px; font-size: 8px; }
+            .section-header { padding: 2px 4px; margin-top: 4px; margin-bottom: 2px; font-size: 8.5px; }
+            table.inspection-table th, table.inspection-table td { padding: 1px 3px; font-size: 8px; }
+            input[type="radio"], input[type="checkbox"] { transform: scale(0.85); }
+            textarea.form-control { height: 18px; padding: 1px 3px; font-size: 8px; }
+            .form-control { padding: 1px 3px; font-size: 8px; height: 18px; }
+            .signature-grid { gap: 4px; margin-top: 4px; padding-top: 2px; }
+            .sig-box { padding: 3px; gap: 1px; }
+            .sheet-footer-note { margin-top: 3px; }
         }
     </style>
 </head>
@@ -326,10 +541,22 @@
     <div class="no-print">
         <div class="control-hub">
             <div class="top-bar">
-                <div class="app-brand">⚡ ระบบตรวจสอบอุปกรณ์ไฟฟ้า (MEA)</div>
-                <div class="google-pill" onclick="handleGoogleLogin()">
-                    <span id="authStatus">👤 บัญชีหน้างาน</span>
+                <div class="app-brand">
+                    <div class="brand-icon">⚡</div>
+                    <span>ระบบบำรุงรักษาอุปกรณ์ไฟฟ้า</span>
                 </div>
+                <div class="google-pill" onclick="handleGoogleLogin()">
+                    <span id="authStatus">👤 เข้าสู่ระบบ Google</span>
+                </div>
+            </div>
+
+            <div class="main-nav-bar">
+                <button class="main-nav-btn active" id="navFormBtn" onclick="switchMainView('form')">
+                    📋 แบบฟอร์มตรวจสอบหน้างาน (Inspection Forms)
+                </button>
+                <button class="main-nav-btn" id="navPlanBtn" onclick="switchMainView('planning')">
+                    📊 แผนงาน PM & จัดลำดับงบประมาณ (PM Planning & Cost)
+                </button>
             </div>
 
             <div class="action-toolbar">
@@ -338,51 +565,466 @@
                 <button class="btn btn-secondary" onclick="copyAsNewRecord()">📄 คัดลอก</button>
                 <button class="btn btn-secondary" onclick="newForm()">➕ ฟอร์มใหม่</button>
                 <button class="btn btn-danger" onclick="clearForm()">🗑️ ล้าง</button>
-                <button class="btn btn-excel" onclick="exportPlanToExcel()">📗 Excel</button>
+                <button class="btn btn-excel" onclick="exportPlanToExcel()">📗 ส่งออก Excel</button>
+                <!-- เปลี่ยนข้อความตามที่ขอ -->
                 <button class="btn btn-print" onclick="window.print()">🖨️ พิมพ์/PDF</button>
             </div>
 
-            <div class="tab-scroller" id="tabContainer">
-                <button class="tab-btn active" onclick="switchTab(this, 'SF-07-0-015')">SF-07-0-015 หม้อแปลง</button>
-                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-016')">SF-07-0-016 LBS</button>
-                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-017')">SF-07-0-017 Sectionalizer</button>
-                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-018')">SF-07-0-018 RMU</button>
-                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-019')">SF-07-0-019 Unit Substation</button>
-                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-020')">SF-07-0-020 Capacitor Bank</button>
-                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-021')">SF-07-0-021 หม้อแปลงตาข่าย</button>
-                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-022')">SF-07-0-022 สวิตช์แรงกลาง</button>
-                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-023')">SF-07-0-023 กรองน้ำมัน TR</button>
-                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-024')">SF-07-0-024 Hot Spot</button>
-                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-025')">SF-07-0-025 Partial Discharge</button>
+            <div id="formTabSection">
+                <div class="tab-scroller" id="tabContainer">
+                    <button class="tab-btn active" onclick="switchTab(this, 'SF-07-0-015')">SF-07-0-015 หม้อแปลงจำหน่าย</button>
+                    <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-016')">SF-07-0-016 LBS</button>
+                    <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-017')">SF-07-0-017 Sectionalizer</button>
+                    <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-018')">SF-07-0-018 RMU</button>
+                    <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-019')">SF-07-0-019 Unit Substation</button>
+                    <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-020')">SF-07-0-020 Capacitor Bank</button>
+                    <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-021')">SF-07-0-021 หม้อแปลงตาข่าย</button>
+                    <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-022')">SF-07-0-022 สวิตช์แรงกลาง</button>
+                    <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-023')">SF-07-0-023 กรองน้ำมัน TR</button>
+                    <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-024')">SF-07-0-024 จุดร้อนแดง Hot Spot</button>
+                    <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-025')">SF-07-0-025 Partial Discharge</button>
+                </div>
             </div>
         </div>
 
-        <div class="extra-panel">
+        <div class="extra-panel" id="savedRecordsPanel">
             <div class="extra-panel-header">
-                <span id="savedCountText">📁 ข้อมูลที่บันทึกไว้ในเครื่อง (0 รายการ)</span>
-                <button class="btn btn-secondary" style="font-size:0.68rem; padding:2px 6px;" onclick="renderSavedRecordsList()">🔄 รีเฟรช</button>
+                <span id="savedCountText">📁 ข้อมูลที่บันทึกไว้ (6 รายการ)</span>
+                <button class="btn btn-secondary" style="font-size:0.7rem; padding:2px 8px;" onclick="renderSavedRecordsList()">🔄 รีเฟรช</button>
             </div>
             <div class="extra-grid">
                 <input type="text" id="filterPlant" class="form-control" placeholder="ค้นหา Station / สถานที่..." oninput="filterSavedRecords()">
+                <input type="text" id="filterWO" class="form-control" placeholder="ค้นหา Work Order / รหัส..." oninput="filterSavedRecords()">
+                <button class="btn btn-secondary" style="font-size:0.75rem; padding:4px 10px;" onclick="clearFilter()">ล้าง</button>
             </div>
             <div class="saved-records-list" id="savedRecordsContainer"></div>
         </div>
+
+        <div class="extra-panel" id="photoPanel">
+            <div class="extra-panel-header">
+                <span>📷 รูปภาพประกอบการตรวจสอบ</span>
+                <span id="photoSizeLabel" style="font-size:0.75rem; color:var(--text-muted);">0 KB</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
+                <span id="photoStatusText" style="font-size:0.78rem; color:var(--text-muted);">ยังไม่มีรูปภาพประกอบ</span>
+                <input type="file" id="actualFileInput" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
+                <button class="btn btn-primary" style="font-size:0.75rem; padding:3px 10px;" onclick="triggerUpload()">+ เพิ่มรูป</button>
+            </div>
+            <div id="imagePreviewBox" style="display:none; margin-top:8px; text-align:center;">
+                <img id="previewImg" src="" style="max-height:120px; border-radius:6px; border:1px solid var(--border-soft);">
+                <button class="btn btn-danger" style="font-size:0.65rem; padding:2px 6px; margin:4px auto 0;" onclick="removeImage()">ลบรูปภาพ</button>
+            </div>
+        </div>
+
+        <div class="extra-panel" id="criticalityPanel">
+            <div class="extra-panel-header">
+                <span>🎯 การประเมินความสำคัญของอุปกรณ์ (Criticality & Priority Ranking)</span>
+                <span id="priorityBadge" class="badge-priority p3-badge">P3 - ตามรอบปกติ (Routine)</span>
+            </div>
+            <div class="criticality-grid">
+                <div>
+                    <label style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">SAF (ความปลอดภัย)</label>
+                    <select id="crit_saf" class="form-control" onchange="calculateCriticalityAndCost()">
+                        <option value="1">1 - ต่ำมาก</option>
+                        <option value="2">2 - ต่ำ</option>
+                        <option value="3" selected>3 - ปานกลาง</option>
+                        <option value="4">4 - สูง</option>
+                        <option value="5">5 - วิกฤต</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">REL (ความต่อเนื่องการจ่ายไฟ)</label>
+                    <select id="crit_rel" class="form-control" onchange="calculateCriticalityAndCost()">
+                        <option value="1">1 - ลูกค้าน้อย</option>
+                        <option value="2">2 - ชุมชนขนาดเล็ก</option>
+                        <option value="3" selected>3 - ชุมชนหนาแน่น</option>
+                        <option value="4">4 - นิคมฯ / โรงพยาบาล</option>
+                        <option value="5">5 - ลูกค้ารายใหญ่ VIP</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">OPR (ความสำคัญต่อภารกิจ)</label>
+                    <select id="crit_opr" class="form-control" onchange="calculateCriticalityAndCost()">
+                        <option value="1">1 - มีสายป้อนสลับ</option>
+                        <option value="2">2 - สลับจ่ายได้ไว</option>
+                        <option value="3" selected>3 - สลับจ่ายปานกลาง</option>
+                        <option value="4">4 - ไม่มีสายป้อนสลับ</option>
+                        <option value="5">5 - สถานีศูนย์กลาง</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">CON (แนวโน้มขัดข้อง / สภาพ)</label>
+                    <select id="crit_con" class="form-control" onchange="calculateCriticalityAndCost()">
+                        <option value="1">1 - สภาพดีเยี่ยม</option>
+                        <option value="2">2 - ใช้งานได้ปกติ</option>
+                        <option value="3" selected>3 - เฝ้าระวังเล็กน้อย</option>
+                        <option value="4">4 - เริ่มเสื่อมสภาพ</option>
+                        <option value="5">5 - ชำรุดวิกฤต/ใกล้พัง</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">REC (ความยากในการกู้คืน)</label>
+                    <select id="crit_rec" class="form-control" onchange="calculateCriticalityAndCost()">
+                        <option value="1">1 - แก้ไข &lt; 1 ชม.</option>
+                        <option value="2">2 - แก้ไข 1-2 ชม.</option>
+                        <option value="3" selected>3 - แก้ไข 2-4 ชม.</option>
+                        <option value="4">4 - ต้องใช้อะไหล่สั่งทำ</option>
+                        <option value="5">5 - ต้องยกเปลี่ยนหม้อแปลง</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="cost-calc-grid">
+                <div>
+                    <label style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">ค่าแรง (Labor Cost):</label>
+                    <input type="number" id="cost_labor" class="form-control" value="1500" onchange="calculateCriticalityAndCost()">
+                    <span style="font-size:0.65rem; color:var(--text-muted);">เช่น ช่าง 2 คน x 3 ชม.</span>
+                </div>
+                <div>
+                    <label style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">ค่าอะไหล่/วัสดุ (Material Cost):</label>
+                    <input type="number" id="cost_material" class="form-control" value="2500" onchange="calculateCriticalityAndCost()">
+                    <span style="font-size:0.65rem; color:var(--text-muted);">เช่น น้ำมัน, ซิลิกาเจล, ฟิวส์</span>
+                </div>
+                <div>
+                    <label style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">ค่าเครื่องมือพิเศษ (Tool/Equipment):</label>
+                    <input type="number" id="cost_tool" class="form-control" value="1000" onchange="calculateCriticalityAndCost()">
+                    <span style="font-size:0.65rem; color:var(--text-muted);">เช่น รถกรองน้ำมัน, กล้องเทอร์โม</span>
+                </div>
+                <div>
+                    <label style="font-size:0.7rem; font-weight:700; color:var(--primary-dark);">รวมต้นทุนทำ PM ทั้งหมด:</label>
+                    <input type="text" id="cost_total" class="form-control" value="5,000 บาท" readonly style="font-weight:700; background:#fefdf9; color:#b45309;">
+                    <span id="cost_avoid_label" style="font-size:0.65rem; color:#059669; font-weight:600;">มูลค่าความเสียหายที่ลดได้: ~150,000 บาท</span>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- ส่วนแสดงใบตรวจสอบ -->
     <div id="formContentArea">
         <div class="official-sheet" id="printArea"></div>
+    </div>
+
+    <div id="planningContentArea" class="planning-view" style="display: none;">
+        <div class="kpi-grid">
+            <div class="kpi-card kpi-p1" id="kpiCardP1" onclick="filterByKpi('P1')" title="คลิกเพื่อกรองงานฉุกเฉิน P1">
+                <div class="kpi-title">
+                    <span>งานเร่งด่วนฉุกเฉิน (P1 Urgent)</span>
+                    <span style="font-size:0.7rem; color:#e11d48; font-weight:600;">👆 คลิกกรอง</span>
+                </div>
+                <div class="kpi-value" id="kpiP1Count">2 งาน</div>
+                <div class="kpi-sub">ต้องทำภายใน 24-48 ชม.</div>
+            </div>
+
+            <div class="kpi-card kpi-cost" id="kpiCardCost" onclick="filterByKpi('COST')" title="คลิกเพื่อเรียงลำดับงานตามงบประมาณ">
+                <div class="kpi-title">
+                    <span>งบประมาณที่วางแผนไว้ทั้งหมด</span>
+                    <span style="font-size:0.7rem; color:#b45309; font-weight:600;">👆 เรียงงบ</span>
+                </div>
+                <div class="kpi-value" id="kpiTotalBudget">฿ 54,500</div>
+                <div class="kpi-sub">จากแผนงาน PM ทั้งหมด</div>
+            </div>
+
+            <div class="kpi-card kpi-avoid" id="kpiCardAvoid" onclick="filterByKpi('AVOID')" title="คลิกเพื่อดูความคุ้มค่าที่ป้องกันได้สูงสุด">
+                <div class="kpi-title">
+                    <span>มูลค่าความเสียหายที่ป้องกันได้</span>
+                    <span style="font-size:0.7rem; color:#15803d; font-weight:600;">👆 ดูความคุ้มค่า</span>
+                </div>
+                <div class="kpi-value" id="kpiAvoidedLoss">฿ 1,450,000</div>
+                <div class="kpi-sub">Cost Avoidance จากการดักจับอาการเสีย</div>
+            </div>
+
+            <div class="kpi-card kpi-total" id="kpiCardDone" onclick="filterByKpi('DONE')" title="คลิกเพื่อกรองเฉพาะงานที่เสร็จแล้ว">
+                <div class="kpi-title">
+                    <span>สถานะแผนงานเสร็จสิ้น</span>
+                    <span style="font-size:0.7rem; color:#0369a1; font-weight:600;">👆 กรองงานเสร็จ</span>
+                </div>
+                <div class="kpi-value" id="kpiCompletion">66.7%</div>
+                <div class="kpi-sub">คลิกเพื่อดูกลุ่มงานเสร็จสิ้น</div>
+            </div>
+        </div>
+
+        <div class="plan-table-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <div>
+                    <h3 style="font-size:0.95rem; font-weight:700; color:#1e293b;" id="planTableTitle">📋 แผนงาน PM จัดลำดับตามความเสี่ยงและงบประมาณ (Ranked Priority Queue)</h3>
+                    <span style="font-size:0.72rem; color:var(--text-muted);" id="planTableSubtitle">เรียงลำดับความเสี่ยง P1 (วิกฤต) ➔ P2 (สูง) ➔ P3 (ปกติ)</span>
+                </div>
+                <button id="resetKpiFilterBtn" class="btn btn-secondary" style="display:none; font-size:0.72rem; padding:3px 8px;" onclick="filterByKpi('ALL')">✖ ล้างการกรอง (แสดงทั้งหมด)</button>
+            </div>
+
+            <table class="plan-table">
+                <thead>
+                    <tr>
+                        <th>Work Order</th>
+                        <th>วันที่กำหนดทำ</th>
+                        <th>รหัสฟอร์ม</th>
+                        <th>Station ID / สถานที่</th>
+                        <th>อุปกรณ์</th>
+                        <th>คะแนนความเสี่ยง</th>
+                        <th>ระดับความสำคัญ</th>
+                        <th>งบประมาณ PM</th>
+                        <th>สถานะ</th>
+                        <th>การดำเนินการ</th>
+                    </tr>
+                </thead>
+                <tbody id="planTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal-overlay" style="display:none;">
+        <div class="modal-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid var(--border-soft); padding-bottom:6px;">
+                <h3 style="font-size:0.95rem; font-weight:700; color:#1e293b;" id="modalTitle">✏️ แก้ไขข้อมูลใบงาน PM</h3>
+                <button onclick="closeEditModal()" style="background:none; border:none; font-size:1.1rem; cursor:pointer; color:var(--text-muted);">✖</button>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+                <div>
+                    <label style="font-size:0.75rem; font-weight:600;">Work Order No.</label>
+                    <input type="text" id="modalWO" class="form-control" readonly style="background:#f8fafc;">
+                </div>
+                <div>
+                    <label style="font-size:0.75rem; font-weight:600;">วันที่ดำเนินการ</label>
+                    <input type="date" id="modalDate" class="form-control">
+                </div>
+                <div>
+                    <label style="font-size:0.75rem; font-weight:600;">Station ID / สถานที่</label>
+                    <input type="text" id="modalLoc" class="form-control">
+                </div>
+                <div>
+                    <label style="font-size:0.75rem; font-weight:600;">ชื่ออุปกรณ์</label>
+                    <input type="text" id="modalAsset" class="form-control">
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
+                    <div>
+                        <label style="font-size:0.75rem; font-weight:600;">ระดับความสำคัญ</label>
+                        <select id="modalPriority" class="form-control">
+                            <option value="P1">P1 - ฉุกเฉินเร่งด่วน</option>
+                            <option value="P2">P2 - สำคัญสูง</option>
+                            <option value="P3">P3 - ตามรอบปกติ</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size:0.75rem; font-weight:600;">สถานะงาน</label>
+                        <select id="modalStatus" class="form-control">
+                            <option value="รอดำเนินการ">รอดำเนินการ</option>
+                            <option value="กำลังทำ">กำลังทำ</option>
+                            <option value="อนุมัติแล้ว">อนุมัติแล้ว</option>
+                            <option value="เสร็จสิ้น">เสร็จสิ้น</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label style="font-size:0.75rem; font-weight:600;">งบประมาณรวม (บาท)</label>
+                    <input type="number" id="modalTotalCost" class="form-control">
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:8px;">
+                    <button class="btn btn-secondary" onclick="closeEditModal()">ยกเลิก</button>
+                    <button class="btn btn-primary" onclick="saveModalChanges()">💾 บันทึกการแก้ไข</button>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>
 
 <script>
-    let savedRecords = JSON.parse(localStorage.getItem('mea_inspection_records')) || [];
+    const defaultData = [
+        {
+            orderId: "WO-2026-0801",
+            date: "2026-09-05",
+            formCode: "SF-07-0-024",
+            stationId: "ST-04",
+            location: "สายป้อน เทพารักษ์ 12",
+            asset: "ขั้วต่อ Bushing HV ด้านไฟเข้า",
+            score: 88,
+            priority: "P1",
+            laborCost: 1500,
+            materialCost: 2000,
+            toolCost: 3000,
+            totalCost: 6500,
+            avoidedCost: 450000,
+            status: "รอดำเนินการ",
+            formData: {}
+        },
+        {
+            orderId: "WO-2026-0802",
+            date: "2026-09-06",
+            formCode: "SF-07-0-023",
+            stationId: "ST-02",
+            location: "สถานีย่อยบางพลี",
+            asset: "หม้อแปลงวงจรตาข่าย TR-02",
+            score: 78,
+            priority: "P1",
+            laborCost: 3500,
+            materialCost: 8000,
+            toolCost: 5000,
+            totalCost: 16500,
+            avoidedCost: 500000,
+            status: "กำลังทำ",
+            formData: {}
+        },
+        {
+            orderId: "WO-2026-0803",
+            date: "2026-09-12",
+            formCode: "SF-07-0-016",
+            stationId: "ST-09",
+            location: "Feeder 04 กิ่งแก้ว",
+            asset: "Load Break Switch (SF6)",
+            score: 62,
+            priority: "P2",
+            laborCost: 1800,
+            materialCost: 2500,
+            toolCost: 1000,
+            totalCost: 5300,
+            avoidedCost: 200000,
+            status: "อนุมัติแล้ว",
+            formData: {}
+        },
+        {
+            orderId: "WO-2026-0804",
+            date: "2026-09-15",
+            formCode: "SF-07-0-018",
+            stationId: "ST-11",
+            location: "อาคารควบคุม Substation C",
+            asset: "Ring Main Unit (RMU)",
+            score: 55,
+            priority: "P2",
+            laborCost: 2000,
+            materialCost: 3200,
+            toolCost: 1000,
+            totalCost: 6200,
+            avoidedCost: 150000,
+            status: "เสร็จสิ้น",
+            formData: {}
+        },
+        {
+            orderId: "WO-2026-0805",
+            date: "2026-09-20",
+            formCode: "SF-07-0-015",
+            stationId: "ST-14",
+            location: "ซอยสุขุมวิท 101",
+            asset: "หม้อแปลงจำหน่าย 250 kVA",
+            score: 42,
+            priority: "P3",
+            laborCost: 1500,
+            materialCost: 2000,
+            toolCost: 500,
+            totalCost: 4000,
+            avoidedCost: 80000,
+            status: "เสร็จสิ้น",
+            formData: {}
+        },
+        {
+            orderId: "WO-2026-0806",
+            date: "2026-09-28",
+            formCode: "SF-07-0-020",
+            stationId: "ST-18",
+            location: "สายป้อน แพรกษา 5",
+            asset: "Capacitor Bank 24kV",
+            score: 35,
+            priority: "P3",
+            laborCost: 1500,
+            materialCost: 1500,
+            toolCost: 500,
+            totalCost: 3500,
+            avoidedCost: 70000,
+            status: "เสร็จสิ้น",
+            formData: {}
+        }
+    ];
+
+    let maintenancePlan = JSON.parse(localStorage.getItem('mea_pm_plan')) || defaultData;
     let currentRecordIndex = -1;
     let currentActiveForm = 'SF-07-0-015';
+    let currentKpiFilter = null;
 
     function saveToLocalStorage() {
-        localStorage.setItem('mea_inspection_records', JSON.stringify(savedRecords));
+        localStorage.setItem('mea_pm_plan', JSON.stringify(maintenancePlan));
+    }
+
+    function switchMainView(view) {
+        const navFormBtn = document.getElementById('navFormBtn');
+        const navPlanBtn = document.getElementById('navPlanBtn');
+        const formArea = document.getElementById('formContentArea');
+        const planArea = document.getElementById('planningContentArea');
+        const formTabSection = document.getElementById('formTabSection');
+        const critPanel = document.getElementById('criticalityPanel');
+        const savedPanel = document.getElementById('savedRecordsPanel');
+        const photoPanel = document.getElementById('photoPanel');
+
+        if(view === 'planning') {
+            navFormBtn.classList.remove('active');
+            navPlanBtn.classList.add('active');
+            formArea.style.display = 'none';
+            planArea.style.display = 'flex';
+            formTabSection.style.display = 'none';
+            critPanel.style.display = 'none';
+            savedPanel.style.display = 'none';
+            photoPanel.style.display = 'none';
+            renderPlanningTable();
+        } else {
+            navPlanBtn.classList.remove('active');
+            navFormBtn.classList.add('active');
+            planArea.style.display = 'none';
+            formArea.style.display = 'block';
+            formTabSection.style.display = 'block';
+            critPanel.style.display = 'block';
+            savedPanel.style.display = 'block';
+            photoPanel.style.display = 'block';
+            renderSavedRecordsList();
+        }
+    }
+
+    function filterByKpi(type) {
+        const cardP1 = document.getElementById('kpiCardP1');
+        const cardCost = document.getElementById('kpiCardCost');
+        const cardAvoid = document.getElementById('kpiCardAvoid');
+        const cardDone = document.getElementById('kpiCardDone');
+        const resetBtn = document.getElementById('resetKpiFilterBtn');
+        const title = document.getElementById('planTableTitle');
+        const subtitle = document.getElementById('planTableSubtitle');
+
+        [cardP1, cardCost, cardAvoid, cardDone].forEach(card => {
+            if(card) card.classList.remove('kpi-active');
+        });
+
+        if(currentKpiFilter === type || type === 'ALL') {
+            currentKpiFilter = null;
+            resetBtn.style.display = 'none';
+            title.innerText = "📋 แผนงาน PM จัดลำดับตามความเสี่ยงและงบประมาณ (Ranked Priority Queue)";
+            subtitle.innerText = "เรียงลำดับความเสี่ยง P1 (วิกฤต) ➔ P2 (สูง) ➔ P3 (ปกติ)";
+            renderPlanningTable();
+            return;
+        }
+
+        currentKpiFilter = type;
+        resetBtn.style.display = 'inline-block';
+
+        let listToRender = [...maintenancePlan];
+
+        if(type === 'P1') {
+            cardP1.classList.add('kpi-active');
+            listToRender = listToRender.filter(item => item.priority === 'P1');
+            title.innerText = "🚨 แผนงานเร่งด่วนฉุกเฉินระดับ P1 (Priority 1 Queue)";
+            subtitle.innerText = `พบ ${listToRender.length} รายการที่ต้องดำเนินการทันทีภายใน 24-48 ชั่วโมง`;
+        } else if(type === 'COST') {
+            cardCost.classList.add('kpi-active');
+            listToRender.sort((a, b) => b.totalCost - a.totalCost);
+            title.innerText = "💰 แผนงานเรียงตามงบประมาณ PM สูงสุด (Highest Budget First)";
+            subtitle.innerText = "เรียงลำดับรายการที่มีค่าใช้จ่าย (ค่าแรง + อะไหล่ + เครื่องมือ) จากมากไปน้อย";
+        } else if(type === 'AVOID') {
+            cardAvoid.classList.add('kpi-active');
+            listToRender.sort((a, b) => b.avoidedCost - a.avoidedCost);
+            title.innerText = "🛡️ แผนงานเรียงตามความคุ้มค่าและความเสียหายที่ป้องกันได้สูงสุด (Top Cost Avoidance)";
+            subtitle.innerText = "รายการที่มีมูลค่าความเสี่ยงและความเสียหายที่จะลดได้สูงที่สุดจากการเข้าบำรุงรักษา";
+        } else if(type === 'DONE') {
+            cardDone.classList.add('kpi-active');
+            listToRender = listToRender.filter(item => item.status === 'เสร็จสิ้น');
+            title.innerText = "✅ แผนงานที่ดำเนินการเสร็จสิ้นแล้ว (Completed PM Jobs)";
+            subtitle.innerText = `พบ ${listToRender.length} รายการที่ปฏิบัติงานเสร็จสมบูรณ์แล้ว`;
+        }
+
+        renderPlanningTable(listToRender);
     }
 
     function collectCurrentFormData() {
@@ -407,97 +1049,123 @@
     }
 
     function saveNewRecord() {
+        const calc = calculateCriticalityAndCost();
         const stationInput = document.querySelector('.info-table input[placeholder*="Station"]') || 
                              document.querySelector('.info-table input[placeholder*="สถานี"]');
         const locationInput = document.querySelector('.info-table input[placeholder*="สถานที่"]');
         
         const stationId = (stationInput && stationInput.value) ? stationInput.value : `ST-${Math.floor(Math.random()*80 + 10)}`;
-        const location = (locationInput && locationInput.value) ? locationInput.value : "พื้นที่หน้างาน MEA";
+        const location = (locationInput && locationInput.value) ? locationInput.value : "พื้นที่จำหน่ายไฟ MEA";
 
-        const newRec = {
-            id: `REC-${Date.now().toString().slice(-4)}`,
+        const newWO = {
+            orderId: `WO-2026-${Math.floor(1000 + Math.random() * 9000)}`,
             date: new Date().toISOString().split('T')[0],
             formCode: currentActiveForm,
             stationId: stationId,
             location: location,
+            asset: getFormTitleName(currentActiveForm),
+            score: calc.totalScore,
+            priority: calc.priority,
+            laborCost: calc.labor,
+            materialCost: calc.material,
+            toolCost: calc.tool,
+            totalCost: calc.totalCost,
+            avoidedCost: calc.estAvoided,
+            status: "รอดำเนินการ",
             formData: collectCurrentFormData()
         };
 
-        savedRecords.unshift(newRec);
+        maintenancePlan.unshift(newWO);
         currentRecordIndex = 0;
         saveToLocalStorage();
         renderSavedRecordsList();
-        alert(`💾 บันทึกข้อมูลลงเครื่องสำเร็จ (${newRec.id})`);
+        alert(`💾 บันทึกรายการใหม่ ${newWO.orderId} เรียบร้อยแล้ว!`);
     }
 
     function saveCurrentRecord() {
-        if(currentRecordIndex >= 0 && currentRecordIndex < savedRecords.length) {
-            savedRecords[currentRecordIndex].formData = collectCurrentFormData();
+        if(currentRecordIndex >= 0 && currentRecordIndex < maintenancePlan.length) {
+            const calc = calculateCriticalityAndCost();
+            const record = maintenancePlan[currentRecordIndex];
+            record.score = calc.totalScore;
+            record.priority = calc.priority;
+            record.laborCost = calc.labor;
+            record.materialCost = calc.material;
+            record.toolCost = calc.tool;
+            record.totalCost = calc.totalCost;
+            record.avoidedCost = calc.estAvoided;
+            record.formData = collectCurrentFormData();
+
             saveToLocalStorage();
             renderSavedRecordsList();
-            alert(`🔄 บันทึกทับข้อมูลเรียบร้อยแล้ว!`);
+            alert(`🔄 บันทึกทับรายการ ${record.orderId} เรียบร้อยแล้ว!`);
         } else {
             saveNewRecord();
         }
     }
 
     function copyAsNewRecord() {
-        if(currentRecordIndex >= 0 && currentRecordIndex < savedRecords.length) {
-            const original = savedRecords[currentRecordIndex];
+        if(currentRecordIndex >= 0 && currentRecordIndex < maintenancePlan.length) {
+            const original = maintenancePlan[currentRecordIndex];
             const copied = JSON.parse(JSON.stringify(original));
-            copied.id = `REC-${Date.now().toString().slice(-4)}`;
+            copied.orderId = `WO-2026-${Math.floor(1000 + Math.random() * 9000)}`;
             copied.date = new Date().toISOString().split('T')[0];
-            savedRecords.unshift(copied);
+            copied.status = "รอดำเนินการ (คัดลอก)";
+            maintenancePlan.unshift(copied);
             currentRecordIndex = 0;
             saveToLocalStorage();
             renderSavedRecordsList();
-            alert(`📄 คัดลอกข้อมูลเป็นฉบับใหม่สำเร็จ!`);
+            alert(`📄 คัดลอกข้อมูลเป็นฉบับใหม่ [${copied.orderId}] เรียบร้อยแล้ว!`);
         } else {
             saveNewRecord();
         }
     }
 
     function newForm() {
-        if(confirm("ต้องการล้างฟอร์มเพื่อกรอกใบงานใหม่ใช่หรือไม่?")) {
+        if(confirm("ต้องการล้างฟอร์มเพื่อสร้างใบงานใหม่ใช่หรือไม่?")) {
             currentRecordIndex = -1;
             clearForm();
         }
     }
 
     function clearForm() {
-        document.querySelectorAll('#formContentArea input[type="text"], #formContentArea textarea, #formContentArea input[type="time"]').forEach(el => el.value = '');
+        document.querySelectorAll('#formContentArea input[type="text"], #formContentArea textarea').forEach(el => el.value = '');
         document.querySelectorAll('#formContentArea input[type="radio"], #formContentArea input[type="checkbox"]').forEach(el => el.checked = false);
         setTodayDate();
+        removeImage();
+        calculateCriticalityAndCost();
         renderSavedRecordsList();
     }
 
     function renderSavedRecordsList(filteredList = null) {
         const container = document.getElementById('savedRecordsContainer');
-        const list = filteredList || savedRecords;
+        const list = filteredList || maintenancePlan;
         container.innerHTML = '';
 
-        document.getElementById('savedCountText').innerText = `📁 ข้อมูลที่บันทึกไว้ในเครื่อง (${savedRecords.length} รายการ)`;
+        document.getElementById('savedCountText').innerText = `📁 ข้อมูลที่บันทึกไว้ (${maintenancePlan.length} รายการ)`;
 
         if (list.length === 0) {
-            container.innerHTML = `<div style="padding:8px; text-align:center; color:var(--text-muted);">ยังไม่มีข้อมูลในเครื่อง</div>`;
+            container.innerHTML = `<div style="padding:10px; text-align:center; color:var(--text-muted);">ไม่พบรายการที่ค้นหา</div>`;
             return;
         }
 
         list.forEach((item) => {
-            const originalIndex = savedRecords.indexOf(item);
+            const originalIndex = maintenancePlan.indexOf(item);
             const isSelected = originalIndex === currentRecordIndex;
+            let badgeClass = item.priority === 'P1' ? 'p1-badge' : (item.priority === 'P2' ? 'p2-badge' : 'p3-badge');
 
             const div = document.createElement('div');
             div.className = `saved-item ${isSelected ? 'active-item' : ''}`;
             div.innerHTML = `
                 <div>
-                    <span style="font-weight:700; color:#1e293b;">${item.id}</span>
+                    <span style="font-weight:700; color:#1e293b;">${item.orderId}</span>
                     <span style="color:#0284c7; font-weight:600; margin:0 4px;">[${item.formCode}]</span>
-                    <span style="color:var(--text-muted); font-size:0.7rem;">${item.stationId}</span>
+                    <span style="color:var(--text-muted); font-size:0.72rem;">${item.stationId} - ${item.location}</span>
                 </div>
-                <div style="display:flex; gap:4px;">
-                    <button type="button" class="btn btn-secondary" style="font-size:0.65rem; padding:2px 6px;" onclick="selectRecordToView(${originalIndex}, event)">เปิดดู</button>
-                    <button type="button" class="btn btn-danger" style="font-size:0.65rem; padding:2px 5px;" onclick="deleteRecord(${originalIndex}, event)">ลบ</button>
+                <div style="display:flex; align-items:center; gap:6px;">
+                    <span class="badge-priority ${badgeClass}">${item.priority}</span>
+                    <span style="font-size:0.7rem; color:${item.status === 'เสร็จสิ้น' ? '#15803d' : '#b45309'}; font-weight:600;">${item.status}</span>
+                    <button type="button" class="btn btn-secondary" style="font-size:0.65rem; padding:3px 8px; cursor:pointer;" onclick="selectRecordToView(${originalIndex}, event)">✏️ ดู/แก้ไข</button>
+                    <button type="button" class="btn btn-danger" style="font-size:0.65rem; padding:3px 6px; cursor:pointer;" onclick="deleteRecord(${originalIndex}, event)">🗑️</button>
                 </div>
             `;
             container.appendChild(div);
@@ -505,48 +1173,285 @@
     }
 
     function selectRecordToView(idx, event) {
-        if (event) { event.preventDefault(); event.stopPropagation(); }
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        
         currentRecordIndex = idx;
-        const record = savedRecords[idx];
+        const record = maintenancePlan[idx];
         if (!record) return;
 
         const tabBtns = document.querySelectorAll('.tab-btn');
         let targetBtn = null;
-        tabBtns.forEach(btn => { if (btn.innerText.includes(record.formCode)) targetBtn = btn; });
+        tabBtns.forEach(btn => {
+            if (btn.innerText.includes(record.formCode)) {
+                targetBtn = btn;
+            }
+        });
 
         if (targetBtn) {
             switchTab(targetBtn, record.formCode);
         }
 
         setTimeout(() => {
+            const stationInput = document.querySelector('.info-table input[placeholder*="Station"]') || 
+                                 document.querySelector('.info-table input[placeholder*="สถานี"]');
+            const locationInput = document.querySelector('.info-table input[placeholder*="สถานที่"]');
+            if (stationInput && record.stationId) stationInput.value = record.stationId;
+            if (locationInput && record.location) locationInput.value = record.location;
+
             fillFormData(record.formData);
+
+            if (record.laborCost) document.getElementById('cost_labor').value = record.laborCost;
+            if (record.materialCost) document.getElementById('cost_material').value = record.materialCost;
+            if (record.toolCost) document.getElementById('cost_tool').value = record.toolCost;
+            
+            calculateCriticalityAndCost();
             renderSavedRecordsList();
-            window.scrollTo({ top: 250, behavior: 'smooth' });
-        }, 100);
+
+            const formArea = document.getElementById('formContentArea');
+            if (formArea) {
+                formArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 150);
     }
 
     function deleteRecord(idx, event) {
         if(event) event.stopPropagation();
-        if(confirm(`ยืนยันการลบรายการนี้?`)) {
-            savedRecords.splice(idx, 1);
+        if(confirm(`ยืนยันการลบรายการ ${maintenancePlan[idx].orderId}?`)) {
+            maintenancePlan.splice(idx, 1);
             if(currentRecordIndex === idx) currentRecordIndex = -1;
             saveToLocalStorage();
             renderSavedRecordsList();
+            renderPlanningTable();
         }
     }
 
     function filterSavedRecords() {
-        const val = document.getElementById('filterPlant').value.toLowerCase();
-        const filtered = savedRecords.filter(item => item.stationId.toLowerCase().includes(val) || item.location.toLowerCase().includes(val) || item.formCode.toLowerCase().includes(val));
+        const plantVal = document.getElementById('filterPlant').value.toLowerCase();
+        const woVal = document.getElementById('filterWO').value.toLowerCase();
+
+        const filtered = maintenancePlan.filter(item => {
+            const matchPlant = item.stationId.toLowerCase().includes(plantVal) || item.location.toLowerCase().includes(plantVal);
+            const matchWO = item.orderId.toLowerCase().includes(woVal) || item.formCode.toLowerCase().includes(woVal);
+            return matchPlant && matchWO;
+        });
+
         renderSavedRecordsList(filtered);
     }
 
+    function clearFilter() {
+        document.getElementById('filterPlant').value = '';
+        document.getElementById('filterWO').value = '';
+        renderSavedRecordsList();
+    }
+
+    function triggerUpload() {
+        document.getElementById('actualFileInput').click();
+    }
+
+    function handleImageUpload(e) {
+        const file = e.target.files[0];
+        if(!file) return;
+
+        const kbSize = (file.size / 1024).toFixed(1);
+        document.getElementById('photoSizeLabel').innerText = `${kbSize} KB`;
+        document.getElementById('photoStatusText').innerText = `แนบไฟล์: ${file.name}`;
+
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            document.getElementById('previewImg').src = evt.target.result;
+            document.getElementById('imagePreviewBox').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function removeImage() {
+        document.getElementById('actualFileInput').value = '';
+        document.getElementById('photoSizeLabel').innerText = '0 KB';
+        document.getElementById('photoStatusText').innerText = 'ยังไม่มีรูปภาพประกอบ';
+        document.getElementById('imagePreviewBox').style.display = 'none';
+        document.getElementById('previewImg').src = '';
+    }
+
+    let editingPlanIndex = -1;
+
+    function openEditModal(idx) {
+        editingPlanIndex = idx;
+        const item = maintenancePlan[idx];
+        document.getElementById('modalWO').value = item.orderId;
+        document.getElementById('modalDate').value = item.date;
+        document.getElementById('modalLoc').value = `${item.stationId} - ${item.location}`;
+        document.getElementById('modalAsset').value = item.asset;
+        document.getElementById('modalPriority').value = item.priority;
+        document.getElementById('modalStatus').value = item.status;
+        document.getElementById('modalTotalCost').value = item.totalCost;
+        document.getElementById('editModal').style.display = 'flex';
+    }
+
+    function closeEditModal() {
+        document.getElementById('editModal').style.display = 'none';
+        editingPlanIndex = -1;
+    }
+
+    function saveModalChanges() {
+        if(editingPlanIndex < 0) return;
+        const item = maintenancePlan[editingPlanIndex];
+        item.date = document.getElementById('modalDate').value;
+        item.asset = document.getElementById('modalAsset').value;
+        item.priority = document.getElementById('modalPriority').value;
+        item.status = document.getElementById('modalStatus').value;
+        item.totalCost = parseFloat(document.getElementById('modalTotalCost').value) || 0;
+
+        saveToLocalStorage();
+        closeEditModal();
+        renderPlanningTable();
+        renderSavedRecordsList();
+        alert("💾 บันทึกการแก้ไขแผนงานเรียบร้อยแล้ว!");
+    }
+
+    function renderPlanningTable(customList = null) {
+        const tbody = document.getElementById('planTableBody');
+        tbody.innerHTML = '';
+
+        let p1Count = 0;
+        let totalBudget = 0;
+        let totalAvoided = 0;
+        let completedCount = 0;
+
+        maintenancePlan.forEach(item => {
+            if(item.priority === 'P1') p1Count++;
+            totalBudget += item.totalCost;
+            totalAvoided += item.avoidedCost;
+            if(item.status === 'เสร็จสิ้น') completedCount++;
+        });
+
+        document.getElementById('kpiP1Count').innerText = `${p1Count} งาน`;
+        document.getElementById('kpiTotalBudget').innerText = `฿ ${totalBudget.toLocaleString()}`;
+        document.getElementById('kpiAvoidedLoss').innerText = `฿ ${totalAvoided.toLocaleString()}`;
+        const pct = maintenancePlan.length > 0 ? ((completedCount / maintenancePlan.length) * 100).toFixed(1) : 0;
+        document.getElementById('kpiCompletion').innerText = `${pct}%`;
+
+        const list = customList || maintenancePlan;
+
+        if(list.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:15px; color:var(--text-muted);">ไม่พบรายการที่ตรงกับเงื่อนไข</td></tr>`;
+            return;
+        }
+
+        list.forEach((item) => {
+            const originalIndex = maintenancePlan.indexOf(item);
+            let badgeClass = item.priority === 'P1' ? 'p1-badge' : (item.priority === 'P2' ? 'p2-badge' : 'p3-badge');
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td style="font-weight:700; color:#1e293b;">${item.orderId}</td>
+                <td>${item.date}</td>
+                <td><span style="font-weight:600; color:#0284c7;">${item.formCode}</span></td>
+                <td>${item.stationId} - ${item.location}</td>
+                <td>${item.asset}</td>
+                <td style="font-weight:700; text-align:center;">${item.score}/100</td>
+                <td><span class="badge-priority ${badgeClass}">${item.priority}</span></td>
+                <td style="font-weight:600; color:#1e293b;">฿${item.totalCost.toLocaleString()}</td>
+                <td><span style="font-weight:600; color:${item.status === 'เสร็จสิ้น' ? '#15803d' : '#b45309'}">${item.status}</span></td>
+                <td>
+                    <div style="display:flex; gap:3px;">
+                        <button class="btn btn-secondary" style="font-size:0.68rem; padding:2px 6px;" onclick="loadRecordToForm(${originalIndex})">ดูฟอร์ม</button>
+                        <button class="btn btn-primary" style="font-size:0.68rem; padding:2px 6px;" onclick="openEditModal(${originalIndex})">✏️ แก้ไข</button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function loadRecordToForm(idx) {
+        switchMainView('form');
+        selectRecordToView(idx);
+    }
+
+    function calculateCriticalityAndCost() {
+        const saf = parseInt(document.getElementById('crit_saf').value) || 0;
+        const rel = parseInt(document.getElementById('crit_rel').value) || 0;
+        const opr = parseInt(document.getElementById('crit_opr').value) || 0;
+        const con = parseInt(document.getElementById('crit_con').value) || 0;
+        const rec = parseInt(document.getElementById('crit_rec').value) || 0;
+
+        const totalScore = (saf * 5) + (rel * 5) + (opr * 4) + (con * 3) + (rec * 3);
+
+        const badge = document.getElementById('priorityBadge');
+        let priority = "P3";
+
+        if(totalScore >= 75) {
+            priority = "P1";
+            badge.className = "badge-priority p1-badge";
+            badge.innerText = `P1 - วิกฤต/ด่วนมาก (คะแนน: ${totalScore}/100)`;
+        } else if(totalScore >= 50) {
+            priority = "P2";
+            badge.className = "badge-priority p2-badge";
+            badge.innerText = `P2 - สำคัญสูง (คะแนน: ${totalScore}/100)`;
+        } else {
+            priority = "P3";
+            badge.className = "badge-priority p3-badge";
+            badge.innerText = `P3 - ตามรอบปกติ (คะแนน: ${totalScore}/100)`;
+        }
+
+        const labor = parseFloat(document.getElementById('cost_labor').value) || 0;
+        const material = parseFloat(document.getElementById('cost_material').value) || 0;
+        const tool = parseFloat(document.getElementById('cost_tool').value) || 0;
+        const totalCost = labor + material + tool;
+
+        document.getElementById('cost_total').value = totalCost.toLocaleString() + " บาท";
+
+        let estAvoided = totalCost * 15;
+        if(priority === 'P1') estAvoided = 450000;
+        else if(priority === 'P2') estAvoided = 180000;
+        else estAvoided = 80000;
+
+        document.getElementById('cost_avoid_label').innerText = `มูลค่าความเสียหายที่ลดได้: ~${estAvoided.toLocaleString()} บาท`;
+        return { totalScore, priority, totalCost, estAvoided, labor, material, tool };
+    }
+
+    function getFormTitleName(code) {
+        const titles = {
+            'SF-07-0-015': 'หม้อแปลงจำหน่าย',
+            'SF-07-0-016': 'Load Break Switch',
+            'SF-07-0-017': 'Sectionalizer',
+            'SF-07-0-018': 'Ring Main Unit',
+            'SF-07-0-019': 'Unit Substation',
+            'SF-07-0-020': 'Capacitor Bank',
+            'SF-07-0-021': 'หม้อแปลงตาข่าย',
+            'SF-07-0-022': 'สวิตช์แรงกลาง',
+            'SF-07-0-023': 'กรองน้ำมันหม้อแปลง',
+            'SF-07-0-024': 'จุดร้อนแดง Hot Spot',
+            'SF-07-0-025': 'Partial Discharge'
+        };
+        return titles[code] || 'อุปกรณ์ไฟฟ้า';
+    }
+
     function exportPlanToExcel() {
-        if(savedRecords.length === 0) { alert("ยังไม่มีข้อมูลสำหรับส่งออก Excel"); return; }
-        const ws = XLSX.utils.json_to_sheet(savedRecords);
+        const exportData = maintenancePlan.map(item => ({
+            'Work Order': item.orderId,
+            'วันที่กำหนดทำ': item.date,
+            'รหัสแบบฟอร์ม': item.formCode,
+            'Station ID': item.stationId,
+            'สถานที่ติดตั้ง': item.location,
+            'อุปกรณ์': item.asset,
+            'คะแนนความเสี่ยง (100)': item.score,
+            'ระดับความสำคัญ (Priority)': item.priority,
+            'ค่าแรง (บาท)': item.laborCost,
+            'ค่าอะไหล่ (บาท)': item.materialCost,
+            'ค่าเครื่องมือ (บาท)': item.toolCost,
+            'รวมงบประมาณ PM (บาท)': item.totalCost,
+            'มูลค่าความเสียหายที่ลดได้ (Cost Avoidance)': item.avoidedCost,
+            'สถานะ': item.status
+        }));
+
+        const ws = XLSX.utils.json_to_sheet(exportData);
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Inspection_Data");
-        XLSX.writeFile(wb, `MEA_Inspection_Data_${new Date().toISOString().split('T')[0]}.xlsx`);
+        XLSX.utils.book_append_sheet(wb, ws, "PM_Planning_Cost");
+        XLSX.writeFile(wb, `PM_Planning_Prioritization_${new Date().toISOString().split('T')[0]}.xlsx`);
     }
 
     function getCurrentLocation() {
@@ -559,104 +1464,85 @@
                     if(longEl) longEl.value = pos.coords.longitude.toFixed(6);
                     alert("📍 ดึงพิกัด GPS สำเร็จ!");
                 },
-                () => { alert("ไม่สามารถดึงพิกัดได้: กรุณาอนุญาตการเข้าถึง GPS บนเบราว์เซอร์"); },
+                () => { alert("ไม่สามารถดึงพิกัดได้: กรุณาอนุญาตการเข้าถึงตำแหน่ง GPS บนอุปกรณ์"); },
                 { enableHighAccuracy: true }
             );
-        } else { alert("เบราว์เซอร์ไม่รองรับ Geolocation"); }
+        } else {
+            alert("เบราว์เซอร์ไม่รองรับ Geolocation");
+        }
     }
 
     const unitSubstationPages = {
         1: `
-            <div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 6px;">แบบตรวจสอบบำรุงรักษา UNITSUBSTATION (1)</div>
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 6px;">แบบตรวจสอบบำรุงรักษา UNIT SUBSTATION (1)</div>
             <div class="no-print" style="margin-bottom: 6px;">
                 <div class="sub-tab-box">
-                    <button class="sub-tab-btn active" onclick="switchSubTab(1)">📄 หน้า 1 (ข้อมูลทั่วไป & รายการ 2.1-2.24)</button>
-                    <button class="sub-tab-btn" onclick="switchSubTab(2)">📄 หน้า 2 (รายการ 2.25+ & วัดกระแส/แรงดัน)</button>
+                    <button class="sub-tab-btn active" onclick="switchSubTab(1)">📄 หน้า 1 (ข้อมูลทั่วไป & ตู้ครอบ RMU)</button>
+                    <button class="sub-tab-btn" onclick="switchSubTab(2)">📄 หน้า 2 (หม้อแปลง, แรงต่ำ & ค่าไฟฟ้า)</button>
                 </div>
             </div>
             <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
             <table class="info-table">
-                <tr><th style="width: 15%;">Station ID</th><td style="width: 35%;"><input type="text" placeholder="Station ID"></td><th style="width: 12%;">GIS Lat.</th><td style="width: 15%;"><input type="text" id="latInput" placeholder="Lat"></td><th style="width: 8%;">Long.</th><td style="width: 15%;"><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="longInput" placeholder="Long" style="width:60%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
-                <tr><th>สถานที่</th><td colspan="5"><input type="text" placeholder="สถานที่ติดตั้ง"></td></tr>
-                <tr><th>ยี่ห้อ TR</th><td><input type="text" placeholder="ยี่ห้อ TR"></td><th>TR MEA No.</th><td colspan="3"><input type="text" placeholder="TR MEA No."></td></tr>
-                <tr><th>ยี่ห้อ RMU</th><td><input type="text" placeholder="ยี่ห้อ RMU"></td><th>RMU MEA No.</th><td colspan="3"><input type="text" placeholder="RMU MEA No."></td></tr>
+                <tr><th>Station ID</th><td><input type="text" placeholder="Station ID"></td><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td></tr>
+                <tr><th>GIS Lat.</th><td><input type="text" id="latInput" placeholder="Lat"></td><th>GIS Long.</th><td><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="longInput" placeholder="Long" style="width:70%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
+                <tr><th>ยี่ห้อ TR</th><td><input type="text" placeholder="ยี่ห้อ TR"></td><th>TR MEA No.</th><td><input type="text" placeholder="TR MEA No."></td></tr>
+                <tr><th>ยี่ห้อ RMU</th><td><input type="text" placeholder="ยี่ห้อ RMU"></td><th>RMU MEA No.</th><td><input type="text" placeholder="RMU MEA No."></td></tr>
             </table>
-            <div class="section-header"><span class="section-num">2</span> รายการตรวจสอบบำรุงรักษา</div>
+            <div class="section-header"><span class="section-num">2</span> รายการตรวจสอบบำรุงรักษา (ใบที่ 1)</div>
             <table class="inspection-table">
-                <thead><tr><th style="text-align: left; width: 55%;">รายการ</th><th style="width: 45px;">ปกติ</th><th style="width: 45px;">ชำรุด</th><th style="width: 45px;">ไม่มี</th><th>ข้อบกพร่อง</th></tr></thead>
+                <thead><tr><th style="text-align: left;">รายการตรวจสอบ</th><th style="width: 45px;">ปกติ</th><th style="width: 45px;">ชำรุด</th><th style="width: 45px;">ไม่มี</th><th style="width: 40%;">ข้อบกพร่อง / การดำเนินการแก้ไข</th></tr></thead>
                 <tbody>
                     <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">ตู้ครอบ Enclosure</td></tr>
-                    <tr><td>2.1 สภาพภายนอก</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.2 ประตู</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.3 ฐานตู้ / นั่งร้าน</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.1 สภาพภายนอก</td><td style="text-align:center;"><input type="radio" name="u1"></td><td style="text-align:center;"><input type="radio" name="u1"></td><td style="text-align:center;"><input type="radio" name="u1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.2 ประตู</td><td style="text-align:center;"><input type="radio" name="u2"></td><td style="text-align:center;"><input type="radio" name="u2"></td><td style="text-align:center;"><input type="radio" name="u2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.3 ฐานตู้ / นั่งร้าน</td><td style="text-align:center;"><input type="radio" name="u3"></td><td style="text-align:center;"><input type="radio" name="u3"></td><td style="text-align:center;"><input type="radio" name="u3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">RMU</td></tr>
-                    <tr><td>2.4 สภาพ RMU</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.5 ก๊าซ SF6</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.6 ตัวแสดงสถานะสวิตช์</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.7 กุญแจล็อคป้องกันการปลด - สับ</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.8 คันสับ</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.9 ตัวตรวจสอบแรงดัน</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.10 ตัวตรวจสอบการลัดวงจร</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">ระบบการปลด - สับด้วยไฟฟ้า (ถ้ามี)</td></tr>
-                    <tr><td>2.11 แรงดันไฟฟ้าเลี้ยงอุปกรณ์</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.12 สภาพแบตเตอรี่ หรือ UPS (ถ้ามี)</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.13 FRTU (ถ้ามี)</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.14 อุปกรณ์ควบคุมอื่น ๆ</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">การทดสอบการปลด - สับ</td></tr>
-                    <tr><td>2.15 การปลด - สับด้วย REMOTE (ถ้ามี)</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.16 การปลด - สับด้วย LOCAL กดปุ่ม (ถ้ามี)</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.17 การปลด - สับด้วยคันสับ</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">ระบบ ATF ที่ RMU (ถ้ามี)</td></tr>
-                    <tr><td>2.18 แรงดันไฟฟ้าเลี้ยงอุปกรณ์</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.19 การทดสอบ ATF</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">หม้อแปลง</td></tr>
-                    <tr><td>2.20 ตัวถังหม้อแปลง</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.21 Bushing HV-LV</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.22 สายหน้าหม้อแปลง HV - LV</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.23 LV Ground</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.24 HV Ground</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.4 สภาพ RMU</td><td style="text-align:center;"><input type="radio" name="u4"></td><td style="text-align:center;"><input type="radio" name="u4"></td><td style="text-align:center;"><input type="radio" name="u4"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.5 ก๊าซ SF6</td><td style="text-align:center;"><input type="radio" name="u5"></td><td style="text-align:center;"><input type="radio" name="u5"></td><td style="text-align:center;"><input type="radio" name="u5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.6 ตัวแสดงสถานะสวิตช์</td><td style="text-align:center;"><input type="radio" name="u6"></td><td style="text-align:center;"><input type="radio" name="u6"></td><td style="text-align:center;"><input type="radio" name="u6"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.7 กุญแจล็อคป้องกันการปลด - สับ</td><td style="text-align:center;"><input type="radio" name="u7"></td><td style="text-align:center;"><input type="radio" name="u7"></td><td style="text-align:center;"><input type="radio" name="u7"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.8 คันสับ</td><td style="text-align:center;"><input type="radio" name="u8"></td><td style="text-align:center;"><input type="radio" name="u8"></td><td style="text-align:center;"><input type="radio" name="u8"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.9 ตัวตรวจสอบแรงดัน</td><td style="text-align:center;"><input type="radio" name="u9"></td><td style="text-align:center;"><input type="radio" name="u9"></td><td style="text-align:center;"><input type="radio" name="u9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.10 ตัวตรวจสอบการลัดวงจร</td><td style="text-align:center;"><input type="radio" name="u10"></td><td style="text-align:center;"><input type="radio" name="u10"></td><td style="text-align:center;"><input type="radio" name="u10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                 </tbody>
             </table>
             <div class="signature-grid">
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField1"></div></div>
                 <div class="sig-box"><div class="field-group"><label>ผู้ตรวจสอบ</label><input type="text" class="form-control"></div><div class="field-group"><label>ตำแหน่ง</label><input type="text" class="form-control"></div><div class="field-group"><label>วันที่</label><input type="date" class="form-control" id="dateField2"></div></div>
             </div>
-            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span>หน้า 1 ของ 2</span><span>SF-07-0-019</span></div>
+            <div class="sheet-footer-note"><span>หน้า 1 ของ 2</span><span id="footerCode">SF-07-0-019</span></div>
         `,
         2: `
-            <div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 6px;">แบบตรวจสอบบำรุงรักษา UNITSUBSTATION (2)</div>
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 6px;">แบบตรวจสอบบำรุงรักษา UNIT SUBSTATION (2)</div>
             <div class="no-print" style="margin-bottom: 6px;">
                 <div class="sub-tab-box">
-                    <button class="sub-tab-btn" onclick="switchSubTab(1)">📄 หน้า 1 (ข้อมูลทั่วไป & รายการ 2.1-2.24)</button>
-                    <button class="sub-tab-btn active" onclick="switchSubTab(2)">📄 หน้า 2 (รายการ 2.25+ & วัดกระแส/แรงดัน)</button>
+                    <button class="sub-tab-btn" onclick="switchSubTab(1)">📄 หน้า 1 (ข้อมูลทั่วไป & ตู้ครอบ RMU)</button>
+                    <button class="sub-tab-btn active" onclick="switchSubTab(2)">📄 หน้า 2 (หม้อแปลง, แรงต่ำ & ค่าไฟฟ้า)</button>
                 </div>
             </div>
+            <div class="section-header">2 รายการตรวจสอบบำรุงรักษา (ใบที่ 2)</div>
             <table class="inspection-table">
-                <thead><tr><th style="text-align: left; width: 55%;">รายการ</th><th style="width: 45px;">ปกติ</th><th style="width: 45px;">ชำรุด</th><th style="width: 45px;">ไม่มี</th><th>ข้อบกพร่อง</th></tr></thead>
+                <thead><tr><th style="text-align: left;">รายการตรวจสอบ</th><th style="width: 45px;">ปกติ</th><th style="width: 45px;">ชำรุด</th><th style="width: 45px;">ไม่มี</th><th style="width: 40%;">ข้อบกพร่อง / การดำเนินการแก้ไข</th></tr></thead>
                 <tbody>
                     <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">อุปกรณ์ด้านแรงต่ำ</td></tr>
-                    <tr><td>2.25 สภาพทั่วไป CB หรือ FUSE</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.26 สายไฟฟ้า</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.27 บัสบาร์</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.28 เครื่องวัดไฟฟ้า</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.29 CT-TLM Meter (ถ้ามี)</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>จุดร้อนแดงส่องด้วยกล้องเทอร์โมวิชั่น</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.25 สภาพทั่วไป CB หรือ FUSE</td><td style="text-align:center;"><input type="radio" name="u25"></td><td style="text-align:center;"><input type="radio" name="u25"></td><td style="text-align:center;"><input type="radio" name="u25"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.26 สายไฟฟ้า</td><td style="text-align:center;"><input type="radio" name="u26"></td><td style="text-align:center;"><input type="radio" name="u26"></td><td style="text-align:center;"><input type="radio" name="u26"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.27 บัสบาร์</td><td style="text-align:center;"><input type="radio" name="u27"></td><td style="text-align:center;"><input type="radio" name="u27"></td><td style="text-align:center;"><input type="radio" name="u27"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.28 เครื่องวัดไฟฟ้า</td><td style="text-align:center;"><input type="radio" name="u28"></td><td style="text-align:center;"><input type="radio" name="u28"></td><td style="text-align:center;"><input type="radio" name="u28"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                 </tbody>
             </table>
-            <div class="section-header"><span class="section-num">3</span> ตรวจสอบวัดกระแสและแรงดันไฟฟ้า (ด้านแรงต่ำ)</div>
-            <table class="info-table" style="margin-bottom: 4px;">
-                <tr><td colspan="7"><label><input type="checkbox"> กลางวัน</label> &nbsp; &nbsp; <label><input type="checkbox"> กลางคืน</label> &nbsp; &nbsp; เวลา : <input type="text" style="width: 80px; display:inline-block;"> &nbsp; &nbsp; วิธีการ: <label><input type="checkbox"> วัดหน้างาน</label> &nbsp; <label><input type="checkbox"> TLM</label></td></tr>
-                <tr><th style="width:12%;">แรงดันไฟฟ้า(V)</th><td>V1-N=<input type="text"></td><td>V2-N=<input type="text"></td><td>V3-N=<input type="text"></td><td>V1-2=<input type="text"></td><td>V1-3=<input type="text"></td><td>V2-3=<input type="text"></td></tr>
-                <tr><th>กระแสไฟฟ้า(A)</th><td colspan="2">IN=<input type="text"></td><td colspan="2">I1=<input type="text"></td><td colspan="2">I2=<input type="text"></td></tr>
+            <div class="section-header">3 ตรวจสอบวัดกระแสและแรงดันไฟฟ้า (ด้านแรงต่ำ)</div>
+            <table class="info-table" style="margin-bottom: 3px;">
+                <tr><td colspan="7" style="background:#f8fafc; padding:3px 6px;"><div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap; font-size: 0.75rem;"><div><label><input type="checkbox"> กลางวัน</label> &nbsp; <label><input type="checkbox"> กลางคืน</label></div><div>เวลา : <input type="text" style="width: 80px; border-bottom: 1px solid #000; background:transparent;"></div><div>วิธีการ: <label><input type="checkbox"> วัดหน้างาน</label> &nbsp; <label><input type="checkbox"> TLM</label></div></div></td></tr>
+                <tr><th style="width:12%;">แรงดันไฟฟ้า(V)</th><td>V1-N=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td><td>V2-N=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td><td>V3-N=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td><td>V1-2=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td><td>V1-3=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td><td>V2-3=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td></tr>
+                <tr><th>กระแสไฟฟ้า(A)</th><td>IN=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td><td>I1=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td><td>I2=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td><td>I3=<input type="text" style="width:45px; border-bottom:1px solid #000;"></td><td colspan="2" style="font-size:0.7rem;">ผลรวมกระแสทั้งหมด=<input type="text" style="width:60px; border-bottom:1px solid #000;"></td></tr>
             </table>
-            <div class="section-header"><span class="section-num">4</span> สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div>
-            <div class="field-group" style="margin-bottom: 4px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid #000; background:transparent; border-radius:0;"></div>
-            <div class="section-header"><span class="section-num">5</span> การปรับปรุงข้อบกพร่อง :</div>
-            <div class="field-group" style="margin-bottom: 4px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid #000; background:transparent; border-radius:0;"></div>
+            <div class="section-header">4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div><div class="field-group" style="margin-bottom: 4px;"><textarea class="form-control" style="height:25px;"></textarea></div>
+            <div class="section-header">5 การปรับปรุงข้อบกพร่อง :</div><div class="field-group" style="margin-bottom: 4px;"><textarea class="form-control" style="height:25px;"></textarea></div>
             <table class="info-table" style="margin-top: 6px;">
-                <tr><th style="width:12%;">ผู้ตรวจ</th><td style="width:38%;"><input type="text"></td><th style="width:12%;">ผู้ตรวจสอบ</th><td style="width:38%;"><input type="text"></td></tr>
-                <tr><th>ตำแหน่ง</th><td><input type="text"></td><th>ตำแหน่ง</th><td><input type="text"></td></tr>
-                <tr><th>วันที่</th><td><input type="date" class="form-control"></td><th>วันที่</th><td><input type="date" class="form-control"></td></tr>
+                <tr><th style="width:12%;">ผู้ตรวจ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td><th style="width:12%;">ผู้ตรวจสอบ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td></tr>
+                <tr><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td></tr>
+                <tr><th>วันที่</th><td><input type="date" class="form-control" id="dateField3" style="border:none; background:transparent;"></td><th>วันที่</th><td><input type="date" class="form-control" id="dateField4" style="border:none; background:transparent;"></td></tr>
             </table>
             <div class="sheet-footer-note"><span>หน้า 2 ของ 2</span><span id="footerCode">SF-07-0-019</span></div>
         `
@@ -664,122 +1550,355 @@
 
     const formTemplates = {
         'SF-07-0-015': `
-            <div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย</div>
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย</div>
             <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
             <table class="info-table">
-                <tr><th style="width: 15%;">Station ID</th><td style="width: 35%;"><input type="text" placeholder="Station ID"></td><th style="width: 12%;">สถานที่</th><td style="width: 38%;"><input type="text" placeholder="สถานที่"></td></tr>
-                <tr><th>GIS</th><td colspan="3"><div style="display:flex; align-items:center; gap:6px;">Lat. <input type="text" id="latInput" style="width:35%;"> Long. <input type="text" id="longInput" style="width:35%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
-                <tr><th>MEA No1.</th><td><input type="text"></td><th>MEA No2.</th><td><input type="text"></td></tr>
-                <tr><th>MEA No3.</th><td><input type="text"></td><th>จำนวนเฟส</th><td><input type="text"></td></tr>
-                <tr><th>ยี่ห้อ</th><td><input type="text"></td><th>ขนาด</th><td><input type="text"></td></tr>
-                <tr><th>ชนิด</th><td><input type="text"></td><th>ลักษณะการติดตั้ง</th><td><input type="text"></td></tr>
+                <tr>
+                    <th style="width: 12%;">Station ID</th>
+                    <td style="width: 25%;"><input type="text" placeholder="ระบุ Station ID"></td>
+                    <th style="width: 12%;">สถานที่</th>
+                    <td colspan="3"><input type="text" placeholder="ระบุสถานที่"></td>
+                </tr>
+                <tr>
+                    <th>GIS</th>
+                    <td colspan="5" style="padding: 2px 4px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span>Lat.</span>
+                            <input type="text" id="latInput" placeholder="ละติจูด" style="width: 35%;">
+                            <span style="border-left: 1px solid var(--border-soft); padding-left: 8px;">Long.</span>
+                            <input type="text" id="longInput" placeholder="ลองจิจูด" style="width: 35%;">
+                            <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>MEA No1.</th>
+                    <td><input type="text"></td>
+                    <th>MEA No2.</th>
+                    <td><input type="text"></td>
+                    <th>MEA No3.</th>
+                    <td>
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" style="width: 50%;">
+                            <span style="border-left: 1px solid var(--border-soft); padding: 0 4px; font-weight: 600; font-size: 0.72rem; white-space: nowrap;">จำนวนเฟส</span>
+                            <input type="text" style="width: 50%;">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>ยี่ห้อ</th>
+                    <td><input type="text"></td>
+                    <th>ยี่ห้อ</th>
+                    <td><input type="text"></td>
+                    <th>ยี่ห้อ</th>
+                    <td>
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" style="width: 50%;">
+                            <span style="border-left: 1px solid var(--border-soft); padding: 0 4px; font-weight: 600; font-size: 0.72rem; white-space: nowrap;">ขนาด</span>
+                            <input type="text" style="width: 50%;">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>ชนิด</th>
+                    <td><input type="text"></td>
+                    <th>ลักษณะการติดตั้ง</th>
+                    <td colspan="3"><input type="text"></td>
+                </tr>
             </table>
+
             <div class="section-header"><span class="section-num">2</span> รายการตรวจสอบบำรุงรักษา</div>
             <table class="inspection-table">
-                <thead><tr><th rowspan="2" style="text-align: left; width: 45%;">รายการ</th><th colspan="3">ผลการตรวจสอบ</th><th rowspan="2" style="width: 40%;">ข้อบกพร่อง</th></tr><tr><th style="width: 45px;">ปกติ</th><th style="width: 45px;">ชำรุด</th><th style="width: 45px;">ไม่มี</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th rowspan="2" style="width: 45%; vertical-align: middle;">รายการ</th>
+                        <th colspan="3" style="padding: 2px;">ผลการตรวจสอบ</th>
+                        <th rowspan="2" style="width: 40%; vertical-align: middle;">ข้อบกพร่อง</th>
+                    </tr>
+                    <tr>
+                        <th style="width: 45px; font-size: 0.7rem; padding: 2px;">ปกติ</th>
+                        <th style="width: 45px; font-size: 0.7rem; padding: 2px;">ชำรุด</th>
+                        <th style="width: 45px; font-size: 0.7rem; padding: 2px;">ไม่มี</th>
+                    </tr>
+                </thead>
                 <tbody>
-                    <tr><td>2.1 Drop Fuse</td><td style="text-align:center;"><input type="checkbox" name="c1"></td><td style="text-align:center;"><input type="checkbox" name="c1"></td><td style="text-align:center;"><input type="checkbox" name="c1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.2 Station Post Type Insulator</td><td style="text-align:center;"><input type="checkbox" name="c2"></td><td style="text-align:center;"><input type="checkbox" name="c2"></td><td style="text-align:center;"><input type="checkbox" name="c2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.3 สายเข้า-ออก Drop Fuse</td><td style="text-align:center;"><input type="checkbox" name="c3"></td><td style="text-align:center;"><input type="checkbox" name="c3"></td><td style="text-align:center;"><input type="checkbox" name="c3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.4 คอนสาย</td><td style="text-align:center;"><input type="checkbox" name="c4"></td><td style="text-align:center;"><input type="checkbox" name="c4"></td><td style="text-align:center;"><input type="checkbox" name="c4"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.5 อุปกรณ์ป้องกันสัตว์</td><td style="text-align:center;"><input type="checkbox" name="c5"></td><td style="text-align:center;"><input type="checkbox" name="c5"></td><td style="text-align:center;"><input type="checkbox" name="c5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.6 Low Voltage Capacitor</td><td style="text-align:center;"><input type="checkbox" name="c6"></td><td style="text-align:center;"><input type="checkbox" name="c6"></td><td style="text-align:center;"><input type="checkbox" name="c6"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.7 กับดักฟ้าผ่า (L/A)</td><td style="text-align:center;"><input type="checkbox" name="c7"></td><td style="text-align:center;"><input type="checkbox" name="c7"></td><td style="text-align:center;"><input type="checkbox" name="c7"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.8 ตัวถังหม้อแปลง</td><td style="text-align:center;"><input type="checkbox" name="c8"></td><td style="text-align:center;"><input type="checkbox" name="c8"></td><td style="text-align:center;"><input type="checkbox" name="c8"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.9 Bushing HV-LV</td><td style="text-align:center;"><input type="checkbox" name="c9"></td><td style="text-align:center;"><input type="checkbox" name="c9"></td><td style="text-align:center;"><input type="checkbox" name="c9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.10 Cover (Bushing ,L/A, Term. kit)</td><td style="text-align:center;"><input type="checkbox" name="c10"></td><td style="text-align:center;"><input type="checkbox" name="c10"></td><td style="text-align:center;"><input type="checkbox" name="c10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.11 สายหน้าหม้อแปลง LV</td><td style="text-align:center;"><input type="checkbox" name="c11"></td><td style="text-align:center;"><input type="checkbox" name="c11"></td><td style="text-align:center;"><input type="checkbox" name="c11"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.12 LV Ground</td><td style="text-align:center;"><input type="checkbox" name="c12"></td><td style="text-align:center;"><input type="checkbox" name="c12"></td><td style="text-align:center;"><input type="checkbox" name="c12"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.13 HV Ground</td><td style="text-align:center;"><input type="checkbox" name="c13"></td><td style="text-align:center;"><input type="checkbox" name="c13"></td><td style="text-align:center;"><input type="checkbox" name="c13"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.14 CT-TLM Meter (ถ้ามี)</td><td style="text-align:center;"><input type="checkbox" name="c14"></td><td style="text-align:center;"><input type="checkbox" name="c14"></td><td style="text-align:center;"><input type="checkbox" name="c14"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.1 Drop Fuse</td><td style="text-align: center;"><input type="radio" name="c1"></td><td style="text-align: center;"><input type="radio" name="c1"></td><td style="text-align: center;"><input type="radio" name="c1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.2 Station Post Type Insulator</td><td style="text-align: center;"><input type="radio" name="c2"></td><td style="text-align: center;"><input type="radio" name="c2"></td><td style="text-align: center;"><input type="radio" name="c2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.3 สายเข้า-ออก Drop Fuse</td><td style="text-align: center;"><input type="radio" name="c3"></td><td style="text-align: center;"><input type="radio" name="c3"></td><td style="text-align: center;"><input type="radio" name="c3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.4 คอนสาย</td><td style="text-align: center;"><input type="radio" name="c4"></td><td style="text-align: center;"><input type="radio" name="c4"></td><td style="text-align: center;"><input type="radio" name="c4"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.5 อุปกรณ์ป้องกันสัตว์</td><td style="text-align: center;"><input type="radio" name="c5"></td><td style="text-align: center;"><input type="radio" name="c5"></td><td style="text-align: center;"><input type="radio" name="c5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.6 Low Voltage Capacitor</td><td style="text-align: center;"><input type="radio" name="c6"></td><td style="text-align: center;"><input type="radio" name="c6"></td><td style="text-align: center;"><input type="radio" name="c6"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.7 กับดักฟ้าผ่า (L/A)</td><td style="text-align: center;"><input type="radio" name="c7"></td><td style="text-align: center;"><input type="radio" name="c7"></td><td style="text-align: center;"><input type="radio" name="c7"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.8 ตัวถังหม้อแปลง</td><td style="text-align: center;"><input type="radio" name="c8"></td><td style="text-align: center;"><input type="radio" name="c8"></td><td style="text-align: center;"><input type="radio" name="c8"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.9 Bushing HV-LV</td><td style="text-align: center;"><input type="radio" name="c9"></td><td style="text-align: center;"><input type="radio" name="c9"></td><td style="text-align: center;"><input type="radio" name="c9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.10 Cover (Bushing ,L/A,Term. kit)</td><td style="text-align: center;"><input type="radio" name="c10"></td><td style="text-align: center;"><input type="radio" name="c10"></td><td style="text-align: center;"><input type="radio" name="c10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.11 สายหน้าหม้อแปลง LV</td><td style="text-align: center;"><input type="radio" name="c11"></td><td style="text-align: center;"><input type="radio" name="c11"></td><td style="text-align: center;"><input type="radio" name="c11"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.12 LV Ground</td><td style="text-align: center;"><input type="radio" name="c12"></td><td style="text-align: center;"><input type="radio" name="c12"></td><td style="text-align: center;"><input type="radio" name="c12"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.13 HV Ground</td><td style="text-align: center;"><input type="radio" name="c13"></td><td style="text-align: center;"><input type="radio" name="c13"></td><td style="text-align: center;"><input type="radio" name="c13"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.14 CT-TLM Meter (ถ้ามี)</td><td style="text-align: center;"><input type="radio" name="c14"></td><td style="text-align: center;"><input type="radio" name="c14"></td><td style="text-align: center;"><input type="radio" name="c14"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                 </tbody>
             </table>
+
             <div class="section-header"><span class="section-num">3</span> ตรวจสอบวัดกระแสและแรงดันไฟฟ้า</div>
-            <table class="info-table" style="margin-bottom: 3px;">
-                <tr><td colspan="7"><label><input type="checkbox"> กลางวัน</label> &nbsp; <label><input type="checkbox"> กลางคืน</label> &nbsp; เวลา : <input type="text" style="width:80px; display:inline-block;"> &nbsp; วิธีการ: <label><input type="checkbox"> วัดหน้างาน</label> &nbsp; <label><input type="checkbox"> TLM</label></td></tr>
-                <tr><th style="width:12%;">แรงดันไฟฟ้า(V)</th><td>V1-N=<input type="text"></td><td>V2-N=<input type="text"></td><td>V3-N=<input type="text"></td><td>V1-2=<input type="text"></td><td>V1-3=<input type="text"></td><td>V2-3=<input type="text"></td></tr>
-                <tr><th>กระแสไฟฟ้า(A)</th><td>IN=<input type="text"></td><td>I1=<input type="text"></td><td>I2=<input type="text"></td><td>I3=<input type="text"></td><td colspan="2">ผลรวมกระแสหน้าหม้อแปลงฯ ทั้งหมด=<input type="text"></td></tr>
+            <table class="info-table" style="margin-bottom: 6px;">
+                <tr>
+                    <td colspan="2">
+                        <label><input type="checkbox"> กลางวัน</label> &nbsp;&nbsp; 
+                        <label><input type="checkbox"> กลางคืน</label>
+                    </td>
+                    <th style="width: 8%;">เวลา :</th>
+                    <td><input type="time"></td>
+                    <th style="width: 8%;">วิธีการ:</th>
+                    <td colspan="2">
+                        <label><input type="checkbox"> วัดหน้างาน</label> &nbsp;&nbsp; 
+                        <label><input type="checkbox"> TLM</label>
+                    </td>
+                </tr>
+                <tr>
+                    <th>แรงดันไฟฟ้า(V)</th>
+                    <td>V1-N=<input type="text"></td>
+                    <td>V2-N=<input type="text"></td>
+                    <td>V3-N=<input type="text"></td>
+                    <td>V1-2=<input type="text"></td>
+                    <td>V1-3=<input type="text"></td>
+                    <td>V2-3=<input type="text"></td>
+                </tr>
+                <tr>
+                    <th>กระแสไฟฟ้า(A)</th>
+                    <td>IN=<input type="text"></td>
+                    <td>I1=<input type="text"></td>
+                    <td>I2=<input type="text"></td>
+                    <td>I3=<input type="text"></td>
+                    <th style="font-size: 0.7rem;">ผลรวมกระแสทั้งหมด</th>
+                    <td><input type="text"></td>
+                </tr>
             </table>
+
             <div class="section-header"><span class="section-num">4</span> สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div>
-            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid #000; background:transparent; border-radius:0;"></div>
+            <div class="field-group" style="margin-bottom: 6px;"><textarea class="form-control"></textarea></div>
+
             <div class="section-header"><span class="section-num">5</span> การปรับปรุงข้อบกพร่อง :</div>
-            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid #000; background:transparent; border-radius:0;"></div>
-            <table class="info-table" style="margin-top: 6px;">
+            <div class="field-group" style="margin-bottom: 8px;"><textarea class="form-control"></textarea></div>
+
+            <table class="info-table">
                 <tr><th style="width:12%;">ผู้ตรวจ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td><th style="width:12%;">ผู้ตรวจสอบ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td></tr>
                 <tr><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td></tr>
-                <tr><th>วันที่</th><td><input type="date" class="form-control" id="dateField1"></td><th>วันที่</th><td><input type="date" class="form-control" id="dateField2"></td></tr>
+                <tr><th>วันที่</th><td><input type="date" class="form-control" id="dateField1" style="border:none; background:transparent;"></td><th>วันที่</th><td><input type="date" class="form-control" id="dateField2" style="border:none; background:transparent;"></td></tr>
             </table>
-            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span>SF-07-0-015</span></div>
+
+            <div class="sheet-footer-note">
+                <span>ปรับปรุงครั้งที่ 0 วันที่...</span>
+                <span id="footerCode" style="font-weight: 700;">SF-07-0-015</span>
+            </div>
         `,
 
         'SF-07-0-016': `
-            <div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษา Load Break Switch</div>
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษา Load Break Switch</div>
             <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
             <table class="info-table">
-                <tr><th style="width: 15%;">Station ID</th><td style="width: 35%;"><input type="text" placeholder="Station ID"></td><th style="width: 12%;">GIS Lat.</th><td style="width: 15%;"><input type="text" id="latInput" placeholder="Lat"></td><th style="width: 8%;">Long.</th><td style="width: 15%;"><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="longInput" placeholder="Long" style="width:60%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
-                <tr><th>สถานที่</th><td colspan="5"><input type="text" placeholder="สถานที่"></td></tr>
-                <tr><th>ยี่ห้อ LBS</th><td><input type="text" placeholder="ยี่ห้อ LBS"></td><th>LBS MEA No.</th><td colspan="3"><input type="text" placeholder="LBS MEA No."></td></tr>
-                <tr><th>Switch No.</th><td><input type="text" placeholder="Switch No."></td><th>ตู้ OFDF No.</th><td colspan="3"><input type="text" placeholder="ตู้ OFDF No."></td></tr>
-                <tr><th>ยี่ห้อ VT</th><td><input type="text" placeholder="ยี่ห้อ VT"></td><th>VT MEA No.</th><td colspan="3"><input type="text" placeholder="VT MEA No."></td></tr>
+                <tr><th style="width: 15%;">Station ID</th><td style="width: 35%;"><input type="text" placeholder="ระบุ Station ID"></td><th style="width: 12%;">GIS Lat.</th><td style="width: 15%;"><input type="text" id="latInput" placeholder="ละติจูด"></td><th style="width: 8%;">Long.</th><td style="width: 15%;"><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="longInput" placeholder="ลองจิจูด" style="width:65%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
+                <tr><th>สถานที่</th><td colspan="5"><input type="text" placeholder="ระบุสถานที่ติดตั้ง"></td></tr>
+                <tr><th>ยี่ห้อ LBS</th><td><input type="text"></td><th>LBS MEA No.</th><td colspan="3"><input type="text"></td></tr>
+                <tr><th>ยี่ห้อ VT</th><td><input type="text"></td><th>VT MEA No.</th><td colspan="3"><input type="text"></td></tr>
+                <tr><th>Switch No.</th><td><input type="text"></td><th>ตู้ OFDF No.</th><td colspan="3"><input type="text"></td></tr>
             </table>
             <div class="section-header"><span class="section-num">2</span> รายการตรวจสอบบำรุงรักษา</div>
             <table class="info-table" style="margin-bottom: 4px;">
                 <tr>
-                    <td colspan="3" style="background:#f8fafc; padding:4px 6px;">- สถานะสวิตช์: &nbsp; [ &nbsp; ] ปลด &nbsp; &nbsp; &nbsp; [ &nbsp; ] สับ</td>
-                    <td colspan="3" style="background:#f8fafc; padding:4px 6px;">- สถานะระบบ SCADA/EMS/DMS: &nbsp; [ &nbsp; ] online &nbsp; &nbsp; &nbsp; [ &nbsp; ] offline</td>
+                    <td colspan="2" style="padding:4px 8px; font-size: 0.75rem;">- สถานะสวิตช์: &nbsp; [ &nbsp; ] ปลด &nbsp;&nbsp;&nbsp;&nbsp; [ &nbsp; ] สับ</td>
+                    <td colspan="2" style="padding:4px 8px; font-size: 0.75rem;">- สถานะระบบ SCADA/EMS/DMS: &nbsp; [ &nbsp; ] online &nbsp;&nbsp;&nbsp;&nbsp; [ &nbsp; ] offline</td>
                 </tr>
             </table>
             <table class="inspection-table">
-                <thead><tr><th style="text-align: left; width: 55%;">รายการ</th><th style="width: 45px;">ปกติ</th><th style="width: 45px;">ชำรุด</th><th style="width: 45px;">ไม่มี</th><th>ข้อบกพร่อง</th></tr></thead>
+                <thead><tr><th rowspan="2" style="text-align: left; width: 45%;">รายการ (2.1 ถึง 2.18)</th><th colspan="3">ผลการตรวจสอบ</th><th rowspan="2" style="width: 40%;">ข้อบกพร่อง</th></tr><tr><th style="width: 45px;">ปกติ</th><th style="width: 45px;">ชำรุด</th><th style="width: 45px;">ไม่มี</th></tr></thead>
                 <tbody>
-                    <tr><td>2.1 ตัวถัง LBS /สลักล็อคการปลดสับ</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.2 สถานะก๊าซ SF6</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.3 Bushing</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.4 กับดักฟ้าผ่า</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.5 VT</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.6 Drop Fuse ลง VT</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.7 คอนสาย</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.8 สายควบคุม LBS</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.9 อุปกรณ์ป้องกันสัตว์</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">ตู้ Control /FRTU /Ground</td></tr>
-                    <tr><td>2.10 ไฟสถานะหน้าตู้</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.11 แหล่งจ่ายไฟฟ้า และสายควบคุม</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.12 สภาพแบตเตอรี่หรือ Capacitor</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.13 Ground HV (L/A, LBS)</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.14 Ground LV (ตู้ Control)</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold;">ทดสอบ ปลด/สับ</td></tr>
-                    <tr><td>2.15 ทดสอบ ทาง Remote</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.16 ทดสอบ ทาง Local</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.1 ตัวถัง LBS /สลักล็อคการปลดสับ</td><td style="text-align:center;"><input type="radio" name="r1"></td><td style="text-align:center;"><input type="radio" name="r1"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.2 สถานะก๊าซ SF6</td><td style="text-align:center;"><input type="radio" name="r2"></td><td style="text-align:center;"><input type="radio" name="r2"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.3 Bushing</td><td style="text-align:center;"><input type="radio" name="r3"></td><td style="text-align:center;"><input type="radio" name="r3"></td><td style="text-align:center;"><input type="radio" name="r3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.4 กับดักฟ้าผ่า</td><td style="text-align:center;"><input type="radio" name="r4"></td><td style="text-align:center;"><input type="radio" name="r4"></td><td style="text-align:center;"><input type="radio" name="r4"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.5 VT</td><td style="text-align:center;"><input type="radio" name="r5"></td><td style="text-align:center;"><input type="radio" name="r5"></td><td style="text-align:center;"><input type="radio" name="r5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.6 Drop Fuse ลง VT</td><td style="text-align:center;"><input type="radio" name="r6"></td><td style="text-align:center;"><input type="radio" name="r6"></td><td style="text-align:center;"><input type="radio" name="r6"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.7 คอนสาย</td><td style="text-align:center;"><input type="radio" name="r7"></td><td style="text-align:center;"><input type="radio" name="r7"></td><td style="text-align:center;"><input type="radio" name="r7"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.8 สายควบคุม LBS</td><td style="text-align:center;"><input type="radio" name="r8"></td><td style="text-align:center;"><input type="radio" name="r8"></td><td style="text-align:center;"><input type="radio" name="r8"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.9 อุปกรณ์ป้องกันสัตว์</td><td style="text-align:center;"><input type="radio" name="r9"></td><td style="text-align:center;"><input type="radio" name="r9"></td><td style="text-align:center;"><input type="radio" name="r9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">ตู้ Control /FRTU /Ground</td></tr>
+                    <tr><td>2.10 ไฟสถานะหน้าตู้</td><td style="text-align:center;"><input type="radio" name="r10"></td><td style="text-align:center;"><input type="radio" name="r10"></td><td style="text-align:center;"><input type="radio" name="r10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.11 แหล่งจ่ายไฟฟ้า และสายควบคุม</td><td style="text-align:center;"><input type="radio" name="r11"></td><td style="text-align:center;"><input type="radio" name="r11"></td><td style="text-align:center;"><input type="radio" name="r11"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.12 สภาพแบตเตอรี่หรือ Capacitor</td><td style="text-align:center;"><input type="radio" name="r12"></td><td style="text-align:center;"><input type="radio" name="r12"></td><td style="text-align:center;"><input type="radio" name="r12"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.13 Ground HV (L/A, LBS)</td><td style="text-align:center;"><input type="radio" name="r13"></td><td style="text-align:center;"><input type="radio" name="r13"></td><td style="text-align:center;"><input type="radio" name="r13"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.14 Ground LV (ตู้ Control)</td><td style="text-align:center;"><input type="radio" name="r14"></td><td style="text-align:center;"><input type="radio" name="r14"></td><td style="text-align:center;"><input type="radio" name="r14"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">ทดสอบ ปลด/สับ</td></tr>
+                    <tr><td>2.15 ทดสอบ ทาง Remote</td><td style="text-align:center;"><input type="radio" name="r15"></td><td style="text-align:center;"><input type="radio" name="r15"></td><td style="text-align:center;"><input type="radio" name="r15"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.16 ทดสอบ ทาง Local</td><td style="text-align:center;"><input type="radio" name="r16"></td><td style="text-align:center;"><input type="radio" name="r16"></td><td style="text-align:center;"><input type="radio" name="r16"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                     <tr><td>ทดสอบระบบ ATS (ถ้ามี)</td><td style="text-align:center;"></td><td style="text-align:center;"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.17 แรงดันไฟฟ้าเลี้ยงอุปกรณ์</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
-                    <tr><td>2.18 การทดสอบ ATS</td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td style="text-align:center;"><input type="checkbox"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.17 แรงดันไฟฟ้าเลี้ยงอุปกรณ์</td><td style="text-align:center;"><input type="radio" name="r17"></td><td style="text-align:center;"><input type="radio" name="r17"></td><td style="text-align:center;"><input type="radio" name="r17"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.18 การทดสอบ ATS</td><td style="text-align:center;"><input type="radio" name="r18"></td><td style="text-align:center;"><input type="radio" name="r18"></td><td style="text-align:center;"><input type="radio" name="r18"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
                 </tbody>
             </table>
             <div class="section-header"><span class="section-num">3</span> สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div>
-            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid #000; background:transparent; border-radius:0;"></div>
+            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
             <div class="section-header"><span class="section-num">4</span> การปรับปรุงข้อบกพร่อง :</div>
-            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid #000; background:transparent; border-radius:0;"></div>
+            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
             <table class="info-table" style="margin-top: 6px;">
-                <tr><th style="width:12%;">ผู้ตรวจ</th><td style="width:38%;"><input type="text"></td><th style="width:12%;">ผู้ตรวจสอบ</th><td style="width:38%;"><input type="text"></td></tr>
-                <tr><th>ตำแหน่ง</th><td><input type="text"></td><th>ตำแหน่ง</th><td><input type="text"></td></tr>
-                <tr><th>วันที่</th><td><input type="date" class="form-control"></td><th>วันที่</th><td><input type="date" class="form-control"></td></tr>
+                <tr><th style="width:12%;">ผู้ตรวจ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td><th style="width:12%;">ผู้ตรวจสอบ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td></tr>
+                <tr><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td></tr>
+                <tr><th>วันที่</th><td><input type="date" class="form-control" id="dateField1" style="border:none; background:transparent;"></td><th>วันที่</th><td><input type="date" class="form-control" id="dateField2" style="border:none; background:transparent;"></td></tr>
             </table>
-            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span>SF-07-0-016</span></div>
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-016</span></div>
         `,
 
-        'SF-07-0-017': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">แบบตรวจสอบบำรุงรักษา Sectionalizer</div><div class="sheet-footer-note"><span>SF-07-0-017</span></div>`,
-        'SF-07-0-018': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)</div><div class="sheet-footer-note"><span>SF-07-0-018</span></div>`,
-        'SF-07-0-020': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">แบบตรวจสอบบำรุงรักษา Capacitor Bank</div><div class="sheet-footer-note"><span>SF-07-0-020</span></div>`,
-        'SF-07-0-021': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">แบบตรวจสอบเครื่องป้องกันหม้อแปลงวงจรตาข่าย</div><div class="sheet-footer-note"><span>SF-07-0-021</span></div>`,
-        'SF-07-0-022': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">แบบตรวจสอบหม้อแปลงตาข่ายและสวิตช์แรงกลาง</div><div class="sheet-footer-note"><span>SF-07-0-022</span></div>`,
-        'SF-07-0-023': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">แบบตรวจสอบทดสอบและกรองน้ำมันหม้อแปลง</div><div class="sheet-footer-note"><span>SF-07-0-023</span></div>`,
-        'SF-07-0-024': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)</div><div class="sheet-footer-note"><span>SF-07-0-024</span></div>`,
-        'SF-07-0-025': `<div style="text-align: center; font-weight: 700; font-size: 1.1rem;">รายงานผลการตรวจสอบ Partial Discharge</div><div class="sheet-footer-note"><span>SF-07-0-025</span></div>`
+        'SF-07-0-017': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษา Sectionalizer</div>
+            <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
+            <table class="info-table">
+                <tr><th style="width: 12%;">Station ID</th><td style="width: 38%;"><input type="text" placeholder="Station ID"></td><th style="width: 12%;">GIS Lat.</th><td style="width: 38%;"><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="latInput" placeholder="Lat" style="width:65%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
+                <tr><th>สถานที่</th><td colspan="3"><input type="text" placeholder="สถานที่"></td></tr>
+                <tr><th>ยี่ห้อ SZ</th><td><input type="text" placeholder="ยี่ห้อ SZ"></td><th>Long.</th><td><input type="text" id="longInput" placeholder="Long"></td></tr>
+                <tr><th>SZ MEA No.</th><td><input type="text" placeholder="SZ MEA No."></td><th>Switch No.</th><td><input type="text" placeholder="Switch No."></td></tr>
+            </table>
+            <div class="section-header"><span class="section-num">2</span> รายการตรวจสอบบำรุงรักษา</div>
+            <table class="info-table" style="margin-bottom: 4px;"><tr><td style="background:#f8fafc; padding:4px 8px; font-size: 0.75rem;">- สถานะสวิตช์: &nbsp; [ &nbsp; ] ปลด &nbsp;&nbsp;&nbsp;&nbsp; [ &nbsp; ] สับ</td></tr></table>
+            <table class="inspection-table">
+                <thead><tr><th rowspan="2" style="text-align: left; width: 45%;">รายการ (2.1 ถึง 2.13)</th><th colspan="3">ผลการตรวจสอบ</th><th rowspan="2" style="width: 40%;">ข้อบกพร่อง</th></tr><tr><th style="width: 45px;">ปกติ</th><th style="width: 45px;">ชำรุด</th><th style="width: 45px;">ไม่มี</th></tr></thead>
+                <tbody>
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">สภาพ SZ และอุปกรณ์ประกอบ</td></tr>
+                    <tr><td>2.1 ตัวถัง SZ / สลักล็อคการปลดสับ</td><td style="text-align:center;"><input type="radio" name="sz1"></td><td style="text-align:center;"><input type="radio" name="sz1"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.2 สถานะก๊าซ SF6</td><td style="text-align:center;"><input type="radio" name="sz2"></td><td style="text-align:center;"><input type="radio" name="sz2"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.3 Bushing</td><td style="text-align:center;"><input type="radio" name="sz3"></td><td style="text-align:center;"><input type="radio" name="sz3"></td><td style="text-align:center;"><input type="radio" name="sz3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.4 กับดักฟ้าผ่า</td><td style="text-align:center;"><input type="radio" name="sz4"></td><td style="text-align:center;"><input type="radio" name="sz4"></td><td style="text-align:center;"><input type="radio" name="sz4"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.5 คอนสาย</td><td style="text-align:center;"><input type="radio" name="sz5"></td><td style="text-align:center;"><input type="radio" name="sz5"></td><td style="text-align:center;"><input type="radio" name="sz5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.6 สายควบคุม SZ</td><td style="text-align:center;"><input type="radio" name="sz6"></td><td style="text-align:center;"><input type="radio" name="sz6"></td><td style="text-align:center;"><input type="radio" name="sz6"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.7 อุปกรณ์ป้องกันสัตว์</td><td style="text-align:center;"><input type="radio" name="sz7"></td><td style="text-align:center;"><input type="radio" name="sz7"></td><td style="text-align:center;"><input type="radio" name="sz7"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">ตู้ Control / Ground</td></tr>
+                    <tr><td>2.8 ไฟสถานะหน้าตู้</td><td style="text-align:center;"><input type="radio" name="sz8"></td><td style="text-align:center;"><input type="radio" name="sz8"></td><td style="text-align:center;"><input type="radio" name="sz8"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.9 แหล่งจ่ายไฟฟ้า และสายควบคุม</td><td style="text-align:center;"><input type="radio" name="sz9"></td><td style="text-align:center;"><input type="radio" name="sz9"></td><td style="text-align:center;"><input type="radio" name="sz9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.10 สภาพแบตเตอรี่หรือ Capacitor</td><td style="text-align:center;"><input type="radio" name="sz10"></td><td style="text-align:center;"><input type="radio" name="sz10"></td><td style="text-align:center;"><input type="radio" name="sz10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.11 Ground HV (L/A, SZ)</td><td style="text-align:center;"><input type="radio" name="sz11"></td><td style="text-align:center;"><input type="radio" name="sz11"></td><td style="text-align:center;"><input type="radio" name="sz11"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.12 Ground LV (ตู้ Control)</td><td style="text-align:center;"><input type="radio" name="sz12"></td><td style="text-align:center;"><input type="radio" name="sz12"></td><td style="text-align:center;"><input type="radio" name="sz12"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">ทดสอบ ปลด/สับ</td></tr>
+                    <tr><td>2.13 ทดลอง ทาง Local</td><td style="text-align:center;"><input type="radio" name="sz13"></td><td style="text-align:center;"><input type="radio" name="sz13"></td><td style="text-align:center;"><input type="radio" name="sz13"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                </tbody>
+            </table>
+            <div class="section-header"><span class="section-num">3</span> สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div>
+            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
+            <div class="section-header"><span class="section-num">4</span> การปรับปรุงข้อบกพร่อง :</div>
+            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
+            <table class="info-table" style="margin-top: 6px;">
+                <tr><th style="width:12%;">ผู้ตรวจ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td><th style="width:12%;">ผู้ตรวจสอบ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td></tr>
+                <tr><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td></tr>
+                <tr><th>วันที่</th><td><input type="date" class="form-control" id="dateField1" style="border:none; background:transparent;"></td><th>วันที่</th><td><input type="date" class="form-control" id="dateField2" style="border:none; background:transparent;"></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-017</span></div>
+        `,
+
+        'SF-07-0-018': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)</div>
+            <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
+            <table class="info-table">
+                <tr><th style="width: 12%;">Station ID</th><td style="width: 38%;"><input type="text" placeholder="Station ID"></td><th style="width: 12%;">GIS Lat.</th><td style="width: 38%;"><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="latInput" placeholder="Lat" style="width:65%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
+                <tr><th>สถานที่</th><td colspan="3"><input type="text" placeholder="สถานที่"></td></tr>
+                <tr><th>ยี่ห้อ RMU</th><td><input type="text" placeholder="ยี่ห้อ RMU"></td><th>Long.</th><td><input type="text" id="longInput" placeholder="Long"></td></tr>
+                <tr><th>RMU MEA No.</th><td colspan="3"><input type="text" placeholder="RMU MEA No."></td></tr>
+            </table>
+            <div class="section-header"><span class="section-num">2</span> รายการตรวจสอบบำรุงรักษา</div>
+            <table class="inspection-table">
+                <thead><tr><th rowspan="2" style="text-align: left; width: 45%;">รายการ (2.1 ถึง 2.19)</th><th colspan="3">ผลการตรวจสอบ</th><th rowspan="2" style="width: 40%;">ข้อบกพร่อง</th></tr><tr><th style="width: 45px;">ปกติ</th><th style="width: 45px;">ชำรุด</th><th style="width: 45px;">ไม่มี</th></tr></thead>
+                <tbody>
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">ตู้ครอบ RMU (กรณีติดตั้งนอกอาคาร)</td></tr>
+                    <tr><td>2.1 สภาพภายนอก</td><td style="text-align:center;"><input type="radio" name="rmu1"></td><td style="text-align:center;"><input type="radio" name="rmu1"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.2 ประตู</td><td style="text-align:center;"><input type="radio" name="rmu2"></td><td style="text-align:center;"><input type="radio" name="rmu2"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.3 ฐานตู้</td><td style="text-align:center;"><input type="radio" name="rmu3"></td><td style="text-align:center;"><input type="radio" name="rmu3"></td><td style="text-align:center;"><input type="radio" name="rmu3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">RMU</td></tr>
+                    <tr><td>2.4 สภาพ RMU / ห้อง</td><td style="text-align:center;"><input type="radio" name="rmu4"></td><td style="text-align:center;"><input type="radio" name="rmu4"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.5 ก๊าซ SF6</td><td style="text-align:center;"><input type="radio" name="rmu5"></td><td style="text-align:center;"><input type="radio" name="rmu5"></td><td style="text-align:center;"><input type="radio" name="rmu5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.6 ตัวแสดงสถานะสวิทซ์</td><td style="text-align:center;"><input type="radio" name="rmu6"></td><td style="text-align:center;"><input type="radio" name="rmu6"></td><td style="text-align:center;"><input type="radio" name="rmu6"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.7 กุญแจล็อคป้องกันการปลด-สับ</td><td style="text-align:center;"><input type="radio" name="rmu7"></td><td style="text-align:center;"><input type="radio" name="rmu7"></td><td style="text-align:center;"><input type="radio" name="rmu7"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.8 คันสับ</td><td style="text-align:center;"><input type="radio" name="rmu8"></td><td style="text-align:center;"><input type="radio" name="rmu8"></td><td style="text-align:center;"><input type="radio" name="rmu8"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.9 ตัวตรวจสอบแรงดัน</td><td style="text-align:center;"><input type="radio" name="rmu9"></td><td style="text-align:center;"><input type="radio" name="rmu9"></td><td style="text-align:center;"><input type="radio" name="rmu9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.10 ตัวตรวจสอบการลัดวงจร</td><td style="text-align:center;"><input type="radio" name="rmu10"></td><td style="text-align:center;"><input type="radio" name="rmu10"></td><td style="text-align:center;"><input type="radio" name="rmu10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">ระบบการปลด-สับด้วยไฟฟ้า & ทดสอบ & ATF</td></tr>
+                    <tr><td>2.11 แรงดันไฟฟ้าเลี้ยงอุปกรณ์</td><td style="text-align:center;"><input type="radio" name="rmu11"></td><td style="text-align:center;"><input type="radio" name="rmu11"></td><td style="text-align:center;"><input type="radio" name="rmu11"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.12 สภาพแบตเตอรี่หรือ UPS (ถ้ามี)</td><td style="text-align:center;"><input type="radio" name="rmu12"></td><td style="text-align:center;"><input type="radio" name="rmu12"></td><td style="text-align:center;"><input type="radio" name="rmu12"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.13 FRTU (ถ้ามี)</td><td style="text-align:center;"><input type="radio" name="rmu13"></td><td style="text-align:center;"><input type="radio" name="rmu13"></td><td style="text-align:center;"><input type="radio" name="rmu13"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.14 อุปกรณ์ควบคุมอื่นๆ</td><td style="text-align:center;"><input type="radio" name="rmu14"></td><td style="text-align:center;"><input type="radio" name="rmu14"></td><td style="text-align:center;"><input type="radio" name="rmu14"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.15 การปลดสับด้วย REMOTE (ถ้ามี)</td><td style="text-align:center;"><input type="radio" name="rmu15"></td><td style="text-align:center;"><input type="radio" name="rmu15"></td><td style="text-align:center;"><input type="radio" name="rmu15"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.16 การปลดสับด้วย LOCAL (ถ้ามี)</td><td style="text-align:center;"><input type="radio" name="rmu16"></td><td style="text-align:center;"><input type="radio" name="rmu16"></td><td style="text-align:center;"><input type="radio" name="rmu16"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.17 การปลดสับด้วยคันสับ</td><td style="text-align:center;"><input type="radio" name="rmu17"></td><td style="text-align:center;"><input type="radio" name="rmu17"></td><td style="text-align:center;"><input type="radio" name="rmu17"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.18 แรงดันไฟฟ้าเลี้ยงอุปกรณ์ (ATF)</td><td style="text-align:center;"><input type="radio" name="rmu18"></td><td style="text-align:center;"><input type="radio" name="rmu18"></td><td style="text-align:center;"><input type="radio" name="rmu18"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.19 การทดสอบ ATF (ถ้ามี)</td><td style="text-align:center;"><input type="radio" name="rmu19"></td><td style="text-align:center;"><input type="radio" name="rmu19"></td><td style="text-align:center;"><input type="radio" name="rmu19"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                </tbody>
+            </table>
+            <div class="section-header"><span class="section-num">3</span> สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div>
+            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
+            <div class="section-header"><span class="section-num">4</span> การปรับปรุงข้อบกพร่อง :</div>
+            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
+            <table class="info-table" style="margin-top: 6px;">
+                <tr><th style="width:12%;">ผู้ตรวจ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td><th style="width:12%;">ผู้ตรวจสอบ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td></tr>
+                <tr><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td></tr>
+                <tr><th>วันที่</th><td><input type="date" class="form-control" id="dateField1" style="border:none; background:transparent;"></td><th>วันที่</th><td><input type="date" class="form-control" id="dateField2" style="border:none; background:transparent;"></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-018</span></div>
+        `,
+
+        'SF-07-0-020': `
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV ในสายป้อน</div>
+            <div class="section-header"><span class="section-num">1</span> ข้อมูลทั่วไป</div>
+            <table class="info-table">
+                <tr><th style="width: 14%;">Station ID</th><td style="width: 36%;"><input type="text" placeholder="Station ID"></td><th style="width: 14%;">สถานที่</th><td style="width: 36%;"><input type="text" placeholder="สถานที่"></td></tr>
+                <tr><th>MEA No.</th><td><input type="text" placeholder="MEA No."></td><th>สายป้อน</th><td><input type="text" placeholder="สายป้อน"></td></tr>
+                <tr><th>GIS Lat.</th><td><input type="text" id="latInput" placeholder="Lat"></td><th>Long.</th><td><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="longInput" placeholder="Long" style="width:65%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
+                <tr><th>ชนิด Control</th><td><input type="text" placeholder="Control"></td><th>ยี่ห้อ</th><td><input type="text" placeholder="ยี่ห้อ"></td></tr>
+                <tr><th>ชนิด Switch</th><td><input type="text" placeholder="Switch"></td><th>ยี่ห้อ</th><td><input type="text" placeholder="ยี่ห้อ"></td></tr>
+            </table>
+            <div class="section-header"><span class="section-num">2</span> รายการตรวจสอบบำรุงรักษา</div>
+            <table class="inspection-table">
+                <thead><tr><th rowspan="2" style="text-align: left; width: 45%;">รายการ (2.1 ถึง 2.19)</th><th colspan="3">ผลการตรวจสอบ</th><th rowspan="2" style="width: 40%;">ข้อบกพร่อง</th></tr><tr><th style="width: 45px;">ปกติ</th><th style="width: 45px;">ชำรุด</th><th style="width: 45px;">ไม่มี</th></tr></thead>
+                <tbody>
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">อุปกรณ์ประกอบ</td></tr>
+                    <tr><td>2.1 Drop Fuse</td><td style="text-align:center;"><input type="radio" name="cb1"></td><td style="text-align:center;"><input type="radio" name="cb1"></td><td style="text-align:center;"><input type="radio" name="cb1"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.2 Station Post Type Insulator</td><td style="text-align:center;"><input type="radio" name="cb2"></td><td style="text-align:center;"><input type="radio" name="cb2"></td><td style="text-align:center;"><input type="radio" name="cb2"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.3 สายเข้า-ออก Drop Fuse</td><td style="text-align:center;"><input type="radio" name="cb3"></td><td style="text-align:center;"><input type="radio" name="cb3"></td><td style="text-align:center;"><input type="radio" name="cb3"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.4 คอนสาย</td><td style="text-align:center;"><input type="radio" name="cb4"></td><td style="text-align:center;"><input type="radio" name="cb4"></td><td style="text-align:center;"><input type="radio" name="cb4"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.5 อุปกรณ์ป้องกันสัตว์</td><td style="text-align:center;"><input type="radio" name="cb5"></td><td style="text-align:center;"><input type="radio" name="cb5"></td><td style="text-align:center;"><input type="radio" name="cb5"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.6 กับดักฟ้าผ่า (L/A)</td><td style="text-align:center;"><input type="radio" name="cb6"></td><td style="text-align:center;"><input type="radio" name="cb6"></td><td style="text-align:center;"><input type="radio" name="cb6"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.7 Cover (Bushing, L/A)</td><td style="text-align:center;"><input type="radio" name="cb7"></td><td style="text-align:center;"><input type="radio" name="cb7"></td><td style="text-align:center;"><input type="radio" name="cb7"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.8 HV Ground</td><td style="text-align:center;"><input type="radio" name="cb8"></td><td style="text-align:center;"><input type="radio" name="cb8"></td><td style="text-align:center;"><input type="radio" name="cb8"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">อุปกรณ์ควบคุม (สำหรับสถานี Switching Capacitor Bank)</td></tr>
+                    <tr><td>2.9 Vacuum CB</td><td style="text-align:center;"><input type="radio" name="cb9"></td><td style="text-align:center;"><input type="radio" name="cb9"></td><td style="text-align:center;"><input type="radio" name="cb9"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.10 Supply</td><td style="text-align:center;"><input type="radio" name="cb10"></td><td style="text-align:center;"><input type="radio" name="cb10"></td><td style="text-align:center;"><input type="radio" name="cb10"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.11 Fuse Control ภายในตู้</td><td style="text-align:center;"><input type="radio" name="cb11"></td><td style="text-align:center;"><input type="radio" name="cb11"></td><td style="text-align:center;"><input type="radio" name="cb11"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.12 หลอดไฟแสดงสถานะในตู้</td><td style="text-align:center;"><input type="radio" name="cb12"></td><td style="text-align:center;"><input type="radio" name="cb12"></td><td style="text-align:center;"><input type="radio" name="cb12"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.13 หน้าจอ Digital Control</td><td style="text-align:center;"><input type="radio" name="cb13"></td><td style="text-align:center;"><input type="radio" name="cb13"></td><td style="text-align:center;"><input type="radio" name="cb13"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.14 เสียงนาฬิกาเดิน</td><td style="text-align:center;"><input type="radio" name="cb14"></td><td style="text-align:center;"><input type="radio" name="cb14"></td><td style="text-align:center;"><input type="radio" name="cb14"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.15 อุปกรณ์ทั่วไปภายในตู้</td><td style="text-align:center;"><input type="radio" name="cb15"></td><td style="text-align:center;"><input type="radio" name="cb15"></td><td style="text-align:center;"><input type="radio" name="cb15"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td colspan="5" style="background:#f8fafc; padding:3px 6px; font-size: 0.75rem;"><div style="display:flex; gap:15px; align-items:center;"><div>เวลา Cap Off : <input type="text" style="width:90px; border-bottom:1px solid #000; background:transparent;"></div><div>เวลา Cap On : <input type="text" style="width:90px; border-bottom:1px solid #000; background:transparent;"></div></div></td></tr>
+                    <tr><td colspan="5" style="background:#f5f5f4; font-weight:bold; font-size:0.73rem;">Capacitor Cell</td></tr>
+                    <tr><td>2.16 ตัวถังคาปาซิเตอร์</td><td style="text-align:center;"><input type="radio" name="cb16"></td><td style="text-align:center;"><input type="radio" name="cb16"></td><td style="text-align:center;"><input type="radio" name="cb16"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.17 Bushing</td><td style="text-align:center;"><input type="radio" name="cb17"></td><td style="text-align:center;"><input type="radio" name="cb17"></td><td style="text-align:center;"><input type="radio" name="cb17"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.18 Fuse ภายใน</td><td style="text-align:center;"><input type="radio" name="cb18"></td><td style="text-align:center;"><input type="radio" name="cb18"></td><td style="text-align:center;"><input type="radio" name="cb18"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                    <tr><td>2.19 ค่าคาปาซิแตนท์ที่วัดได้</td><td style="text-align:center;"><input type="radio" name="cb19"></td><td style="text-align:center;"><input type="radio" name="cb19"></td><td style="text-align:center;"></td><td><input type="text" class="form-control" style="border:none; background:transparent;"></td></tr>
+                </tbody>
+            </table>
+            <div class="section-header"><span class="section-num">3</span> สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div>
+            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
+            <div class="section-header"><span class="section-num">4</span> การปรับปรุงข้อบกพร่อง :</div>
+            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
+            <table class="info-table" style="margin-top: 6px;">
+                <tr><th style="width:12%;">ผู้ตรวจ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td><th style="width:12%;">ผู้ตรวจสอบ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td></tr>
+                <tr><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td></tr>
+                <tr><th>วันที่</th><td><input type="date" class="form-control" id="dateField1" style="border:none; background:transparent;"></td><th>วันที่</th><td><input type="date" class="form-control" id="dateField2" style="border:none; background:transparent;"></td></tr>
+            </table>
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-020</span></div>
+        `
     };
 
     function switchSubTab(pageNum) {
         document.querySelectorAll('.sub-tab-btn').forEach((tab, index) => {
-            if(index + 1 === pageNum) tab.classList.add('active'); else tab.classList.remove('active');
+            if(index + 1 === pageNum) {
+                tab.classList.add('active');
+            } else {
+                tab.classList.remove('active');
+            }
         });
         document.getElementById('subFormContent').innerHTML = unitSubstationPages[pageNum];
         setTodayDate();
@@ -793,33 +1912,40 @@
         if(formCode === 'SF-07-0-019') {
             document.getElementById('formContentArea').innerHTML = `
                 <div class="official-sheet" id="printArea">
-                    <div id="subFormContent">${unitSubstationPages[1]}</div>
+                    <div id="subFormContent">
+                        ${unitSubstationPages[1]}
+                    </div>
                 </div>
             `;
-            setTodayDate();
             return;
         }
 
         if(formTemplates[formCode]) {
             document.getElementById('formContentArea').innerHTML = `
-                <div class="official-sheet" id="printArea">${formTemplates[formCode]}</div>
+                <div class="official-sheet" id="printArea">
+                    ${formTemplates[formCode]}
+                </div>
             `;
             setTodayDate();
         }
+        calculateCriticalityAndCost();
     }
 
     function setTodayDate() {
         const today = new Date().toISOString().split('T')[0];
-        document.querySelectorAll('input[type="date"]').forEach(el => { if(!el.value) el.value = today; });
+        document.querySelectorAll('input[type="date"]').forEach(el => {
+            if(!el.value) el.value = today;
+        });
     }
 
     function handleGoogleLogin() {
         document.getElementById('authStatus').innerText = "👤 คุณศิรภัสสร (Admin PM)";
-        alert("เข้าสู่ระบบสำเร็จ!");
+        alert("เข้าสู่ระบบสำเร็จ! สิทธิ์การใช้งาน: Maintenance Engineer / Supervisor");
     }
 
     document.addEventListener("DOMContentLoaded", () => {
         switchTab(document.querySelector('.tab-btn'), 'SF-07-0-015');
+        calculateCriticalityAndCost();
         renderSavedRecordsList();
     });
 </script>
