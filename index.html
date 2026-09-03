@@ -161,18 +161,6 @@
             font-size: 0.8rem;
         }
 
-        .sheet-title-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--accent);
-            padding-bottom: 4px;
-            margin-bottom: 6px;
-        }
-
-        .sheet-title-container h1 { font-size: 1rem; font-weight: 700; color: var(--accent); }
-        .sheet-code { font-size: 0.75rem; font-weight: 700; background: var(--accent); color: white; padding: 2px 6px; border-radius: 4px; }
-
         .section-header {
             background-color: #e2e8f0;
             font-weight: 700;
@@ -247,7 +235,6 @@
             .no-print { display: none !important; }
             .official-sheet { box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; }
             .sheet-title-container { margin-bottom: 3px; padding-bottom: 2px; }
-            .sheet-title-container h1 { font-size: 10.5px; }
             .info-table th, .info-table td { padding: 1px 2px; font-size: 7.5px; }
             .section-header { padding: 2px 4px; margin-top: 3px; margin-bottom: 2px; font-size: 8px; }
             table.inspection-table th, table.inspection-table td { padding: 1px 2px; font-size: 7.5px; }
@@ -289,8 +276,8 @@
                 <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-020')">SF-07-0-020</button>
                 <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-021')">SF-07-0-021</button>
                 <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-022')">SF-07-0-022</button>
-                <button class="tab-btn active" onclick="switchTab(this, 'SF-07-0-023')">SF-07-0-023</button>
-                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-024')">SF-07-0-024</button>
+                <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-023')">SF-07-0-023</button>
+                <button class="tab-btn active" onclick="switchTab(this, 'SF-07-0-024')">SF-07-0-024</button>
                 <button class="tab-btn" onclick="switchTab(this, 'SF-07-0-025')">SF-07-0-025</button>
             </div>
         </div>
@@ -340,141 +327,166 @@
     <!-- ส่วนแสดงใบตรวจสอบ -->
     <div id="formContentArea">
         <div class="official-sheet" id="printArea">
-            <div style="text-align: center; font-weight: 700; font-size: 1.05rem; margin-bottom: 6px;">แบบตรวจสอบบำรุงรักษาทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย</div>
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 6px;">รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)</div>
             
             <table class="info-table" style="margin-bottom: 4px;">
                 <tr>
-                    <th style="width: 12%;">สถานที่</th>
-                    <td colspan="3"><input type="text" placeholder="สถานที่"></td>
+                    <th style="width: 10%;">ผู้ตรวจ:</th>
+                    <td style="width: 35%;">1. <input type="text" style="width: 85%; border-bottom: 1px solid #000; background:transparent;"></td>
+                    <th style="width: 12%;">ตำแหน่ง</th>
+                    <td style="width: 18%;"><input type="text"></td>
+                    <th style="width: 10%;">วันที่ตรวจ</th>
+                    <td style="width: 15%;"><input type="date" id="dateField1" style="border:none; background:transparent;"></td>
                 </tr>
                 <tr>
-                    <th style="width: 15%;">STATION ID</th>
-                    <td style="width: 35%;"><input type="text" placeholder="Station ID"></td>
-                    <th style="width: 15%;">SW.ยี่ห้อ</th>
-                    <td style="width: 35%;"><input type="text" placeholder="SW.ยี่ห้อ"></td>
-                </tr>
-                <tr>
-                    <th>TR.MEA No.</th>
-                    <td colspan="3"><input type="text" placeholder="TR.MEA No."></td>
-                </tr>
-            </table>
-
-            <div class="section-header" style="background:#fde047; color:#0f172a; text-align:center; display:block; font-weight:700;">ขั้นตอนการกรองน้ำมัน</div>
-
-            <div style="font-size:0.75rem; font-weight:700; margin-top:4px; margin-bottom:2px;">1 ทดสอบน้ำมันหม้อแปลงด้วยเครื่องทดสอบ โดยทดสอบ 5 ครั้ง ห่างครั้งละ 5 นาที</div>
-            <table class="inspection-table" style="margin-bottom: 3px;">
-                <thead>
-                    <tr>
-                        <th style="text-align: left; width: 45%;">ครั้งที่</th>
-                        <th style="width: 45px;">1</th>
-                        <th style="width: 45px;">2</th>
-                        <th style="width: 45px;">3</th>
-                        <th style="width: 45px;">4</th>
-                        <th style="width: 45px;">5</th>
-                        <th>ค่าเฉลี่ย</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Breakdown Voltage (kV)</td>
-                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                    </tr>
-                </tbody>
-            </table>
-            <div style="font-size: 0.7rem; color: #334155; margin-bottom: 4px; line-height: 1.2;">
-                *ทดสอบครั้งที่ 1 ถ้าต่ำกว่า 26 kV ดำเนินการกรองน้ำมัน<br>หากเกินกว่า 26 kV ทดสอบให้ครบ 5 ครั้ง แล้วหาค่าเฉลี่ย ถ้ายังต่ำกว่า 26 kV ดำเนินการกรองน้ำมัน
-            </div>
-
-            <div style="font-size:0.75rem; font-weight:700; margin-top:4px; margin-bottom:2px;">2 กรองน้ำมันครั้งที่ 1 แล้วดำเนินการทดสอบใหม่</div>
-            <table class="inspection-table" style="margin-bottom: 3px;">
-                <thead>
-                    <tr>
-                        <th style="text-align: left; width: 45%;">ครั้งที่</th>
-                        <th style="width: 45px;">1</th>
-                        <th style="width: 45px;">2</th>
-                        <th style="width: 45px;">3</th>
-                        <th style="width: 45px;">4</th>
-                        <th style="width: 45px;">5</th>
-                        <th>ค่าเฉลี่ย</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Breakdown Voltage (kV)</td>
-                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                    </tr>
-                </tbody>
-            </table>
-            <div style="font-size: 0.7rem; color: #334155; margin-bottom: 4px; line-height: 1.2;">
-                *ทดสอบครั้งที่ 1 ถ้าต่ำกว่า 26 kV ดำเนินการกรองน้ำมัน<br>หากเกินกว่า 26 kV ทดสอบให้ครบ 5 ครั้ง แล้วหาค่าเฉลี่ย ถ้ายัังต่ำกว่า 26 kV ดำเนินการกรองน้ำมันครั้งที่ 2
-            </div>
-
-            <div style="font-size:0.75rem; font-weight:700; margin-top:4px; margin-bottom:2px;">3 กรองน้ำมันครั้งที่ 2 แล้วดำเนินการทดสอบใหม่</div>
-            <table class="inspection-table" style="margin-bottom: 3px;">
-                <thead>
-                    <tr>
-                        <th style="text-align: left; width: 45%;">ครั้งที่</th>
-                        <th style="width: 45px;">1</th>
-                        <th style="width: 45px;">2</th>
-                        <th style="width: 45px;">3</th>
-                        <th style="width: 45px;">4</th>
-                        <th style="width: 45px;">5</th>
-                        <th>ค่าเฉลี่ย</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Breakdown Voltage (kV)</td>
-                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                        <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
-                    </tr>
-                </tbody>
-            </table>
-            <div style="font-size: 0.7rem; color: #334155; margin-bottom: 4px;">
-                *ทดสอบครบ 5 ครั้ง ถ้าต่ำกว่า 26 kV ให้หาแนวทางแก้ไขต่อไป
-            </div>
-
-            <div class="section-header" style="background:#0f172a; color:#fff;">ข้อเสนอแนะ/ข้อมูลเพิ่มเติม</div>
-            <div class="field-group" style="margin-bottom: 4px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
-            <div class="field-group" style="margin-bottom: 4px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
-            <div class="field-group" style="margin-bottom: 4px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;"></div>
-
-            <table class="info-table" style="margin-top: 6px;">
-                <tr>
-                    <th style="width:12%;">ผู้ตรวจ</th>
-                    <td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td>
-                    <th style="width:12%;">ผู้ตรวจสอบ</th>
-                    <td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td>
-                </tr>
-                <tr>
+                    <th>ผู้ตรวจ:</th>
+                    <td>2. <input type="text" style="width: 85%; border-bottom: 1px solid #000; background:transparent;"></td>
                     <th>ตำแหน่ง</th>
-                    <td><input type="text" placeholder="ตำแหน่ง"></td>
-                    <th>ตำแหน่ง</th>
-                    <td><input type="text" placeholder="ตำแหน่ง"></td>
-                </tr>
-                <tr>
-                    <th>วันที่</th>
-                    <td><input type="date" class="form-control" id="dateField1" style="border:none; background:transparent;"></td>
-                    <th>วันที่</th>
-                    <td><input type="date" class="form-control" id="dateField2" style="border:none; background:transparent;"></td>
+                    <td colspan="3"><input type="text"></td>
                 </tr>
             </table>
 
-            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่....</span><span id="footerCode">SF-07-0-023</span></div>
+            <div class="section-header"><span class="section-num">1</span> ข้อมูลภาพถ่าย</div>
+            <table class="info-table">
+                <tr>
+                    <th style="width: 12%;">ชื่อภาพ</th>
+                    <td style="width: 38%;"><input type="text" placeholder="ชื่อภาพ"></td>
+                    <th style="width: 12%;">emissivity</th>
+                    <td style="width: 38%;"><input type="text" placeholder="emissivity"></td>
+                </tr>
+                <tr>
+                    <th>Station ID</th>
+                    <td><input type="text" placeholder="Station ID"></td>
+                    <th>อุปกรณ์</th>
+                    <td><input type="text" placeholder="อุปกรณ์"></td>
+                </tr>
+                <tr>
+                    <th>MEA No.</th>
+                    <td><input type="text" placeholder="MEA No."></td>
+                    <th>สถานที่</th>
+                    <td><input type="text" placeholder="สถานที่"></td>
+                </tr>
+                <tr>
+                    <th>สายป้อน</th>
+                    <td colspan="3"><input type="text" placeholder="สายป้อน"></td>
+                </tr>
+                <tr>
+                    <th>GIS Lat.</th>
+                    <td><input type="text" id="latInput" placeholder="Lat"></td>
+                    <th>Long.</th>
+                    <td>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <input type="text" id="longInput" placeholder="Long" style="width:65%;">
+                            <button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 4px 0;">
+                <div style="border: 1px solid var(--border); padding: 4px; text-align: center; background: #f8fafc; border-radius: 4px; min-height: 120px;">
+                    <label style="font-size:0.7rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom: 2px;">ภาพถ่ายจริง</label>
+                    <input type="file" accept="image/*" style="font-size: 0.6rem; display:block; margin: 20px auto;">
+                </div>
+                <div style="border: 1px solid var(--border); padding: 4px; text-align: center; background: #f8fafc; border-radius: 4px; min-height: 120px;">
+                    <label style="font-size:0.7rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom: 2px;">ภาพถ่ายความร้อน</label>
+                    <input type="file" accept="image/*" style="font-size: 0.6rem; display:block; margin: 20px auto;">
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; align-items: flex-start;">
+                <div>
+                    <div class="section-header"><span class="section-num">2</span> อุณหภูมิสูงสุดที่จุดวัดฯ</div>
+                    <table class="inspection-table" style="margin-bottom: 2px;">
+                        <thead>
+                            <tr><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="font-size: 0.7rem; font-weight: 600; margin-top: 3px; margin-bottom: 2px;">อุณหภูมิเปรียบเทียบที่จุดวัดฯ (Delta T) (°C)</div>
+                    <table class="inspection-table">
+                        <thead>
+                            <tr>
+                                <th>ΔT(____)</th>
+                                <th>ΔT(____)</th>
+                                <th>ΔT(____)</th>
+                                <th>ΔT(____)</th>
+                                <th>ΔT(____)</th>
+                                <th>ΔT(____)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                                <td><input type="text" class="form-control" style="border:none; text-align:center;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div>
+                    <table class="inspection-table" style="margin-top: 6px;">
+                        <thead>
+                            <tr>
+                                <th style="width: 45px;">ลำดับความสำคัญ</th>
+                                <th>Delta T</th>
+                                <th>ข้อเสนอแนะการดำเนินการ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td style="text-align:center; font-weight:bold;">4</td><td>0-10°C</td><td>อุปกรณ์ปกติ</td></tr>
+                            <tr><td style="text-align:center; font-weight:bold;">3</td><td>>10-20°C</td><td>แก้ไขในการบำรุงรักษาครั้งต่อไป</td></tr>
+                            <tr><td style="text-align:center; font-weight:bold;">2</td><td>>20-40°C</td><td>ควรแก้ไขภายใน 1 เดือน</td></tr>
+                            <tr><td style="text-align:center; font-weight:bold;">1</td><td>>40°C</td><td>ควรได้รับการแก้ไขเร่งด่วน</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div style="text-align: center; font-size: 0.65rem; color: var(--text-muted); margin: 3px 0;">อ้างอิงมาตรฐาน Standard for Infrared Inspection of Electrical Systems & Rotating Equipment, 2016 Edition</div>
+
+            <div class="section-header"><span class="section-num">3</span> รายการจากการตรวจสอบ</div>
+            <div style="font-size: 0.75rem; margin-bottom: 2px;">
+                ลำดับความสำคัญ <input type="text" style="width: 60px; border-bottom: 1px solid #000; background:transparent; text-align:center;"> &nbsp; 
+                การตรวจสอบ: <input type="text" style="width: 70%; border-bottom: 1px solid #000; background:transparent;">
+            </div>
+            <div style="font-size: 0.75rem; margin-bottom: 4px;">
+                ข้อแนะนำการแก้ไข: <input type="text" style="width: 80%; border-bottom: 1px solid #000; background:transparent;">
+            </div>
+
+            <div class="section-header"><span class="section-num">4</span> การส่งต่อดำเนินการแก้ไข</div>
+            <div style="font-size: 0.75rem; margin-bottom: 4px; display:flex; gap:10px; align-items:center;">
+                <div>ส่งต่อให้กลุ่มงาน <input type="text" style="width: 150px; border-bottom: 1px solid #000; background:transparent;"></div>
+                <div>โปรดดำเนินการแก้ไข <input type="text" style="width: 150px; border-bottom: 1px solid #000; background:transparent;"></div>
+                <div>วันที่: <input type="date" style="border:none; background:transparent;"></div>
+            </div>
+            <div style="text-align: right; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px;">(หพบจ./ชพบจ.)</div>
+
+            <div class="section-header"><span class="section-num">5</span> การดำเนินการปรับปรุง</div>
+            <div style="font-size: 0.75rem; margin-bottom: 4px; display:flex; gap:10px; align-items:center;">
+                <div>ดำเนินการแก้ไขเมื่อวันที่ <input type="date" style="border:none; background:transparent;"></div>
+                <div>จึงเสนอมาเพื่อโปรดทราบตำแหน่ง <input type="text" style="width: 150px; border-bottom: 1px solid #000; background:transparent;"></div>
+            </div>
+            <div style="text-align: right; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px;">(ผู้ดำเนินการปรับปรุง)</div>
+            <div style="font-size: 0.75rem; margin-bottom: 4px;">
+                ทราบ <input type="text" style="width: 200px; border-bottom: 1px solid #000; background:transparent;"> &nbsp; วันที่: <input type="date" style="border:none; background:transparent;">
+            </div>
+            <div style="text-align: right; font-size: 0.7rem; color: var(--text-muted);">(หพบจ./ชพบจ.)</div>
+
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-024</span></div>
         </div>
     </div>
 </div>
@@ -483,7 +495,6 @@
     document.addEventListener("DOMContentLoaded", () => {
         const today = new Date().toISOString().split('T')[0];
         if(document.getElementById('dateField1')) document.getElementById('dateField1').value = today;
-        if(document.getElementById('dateField2')) document.getElementById('dateField2').value = today;
     });
 
     function getCurrentLocation() {
@@ -1007,46 +1018,67 @@
         `,
 
         'SF-07-0-024': `
-            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)</div>
-            <div class="grid-form" style="margin-bottom: 4px; display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
-                <div class="field-group"><label>ผู้ตรวจ 1:</label><input type="text" class="form-control" placeholder="ชื่อ-นามสกุล"></div>
-                <div class="field-group"><label>ผู้ตรวจ 2:</label><input type="text" class="form-control" placeholder="ชื่อ-นามสกุล"></div>
-            </div>
-            <div class="section-header"><span class="section-num">1</span> ข้อมูลภาพถ่าย Thermovision</div>
+            <div style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 6px;">รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)</div>
+            <table class="info-table" style="margin-bottom: 4px;">
+                <tr>
+                    <th style="width: 10%;">ผู้ตรวจ:</th>
+                    <td style="width: 35%;">1. <input type="text" style="width: 85%; border-bottom: 1px solid #000; background:transparent;"></td>
+                    <th style="width: 12%;">ตำแหน่ง</th>
+                    <td style="width: 18%;"><input type="text"></td>
+                    <th style="width: 10%;">วันที่ตรวจ</th>
+                    <td style="width: 15%;"><input type="date" id="dateField1" style="border:none; background:transparent;"></td>
+                </tr>
+                <tr>
+                    <th>ผู้ตรวจ:</th>
+                    <td>2. <input type="text" style="width: 85%; border-bottom: 1px solid #000; background:transparent;"></td>
+                    <th>ตำแหน่ง</th>
+                    <td colspan="3"><input type="text"></td>
+                </tr>
+            </table>
+            <div class="section-header"><span class="section-num">1</span> ข้อมูลภาพถ่าย</div>
             <table class="info-table">
-                <tr><th>ชื่อภาพ</th><td><input type="text" placeholder="ชื่อภาพ"></td><th>Station ID</th><td><input type="text" placeholder="Station ID"></td></tr>
-                <tr><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td><th>อุปกรณ์</th><td><input type="text" placeholder="อุปกรณ์"></td></tr>
-                <tr><th>MEA No.</th><td><input type="text" placeholder="MEA No."></td><th>สายป้อน</th><td><input type="text" placeholder="สายป้อน"></td></tr>
-                <tr><th>วันที่ตรวจ</th><td><input type="date" class="form-control" id="dateField1" style="background:transparent; border:none;"></td><th>ตำแหน่ง</th><td><input type="text" placeholder="ตำแหน่ง"></td></tr>
-                <tr><th>GIS Lat/Long</th><td><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="latInput" placeholder="Lat" style="width:40%;"><input type="text" id="longInput" placeholder="Long" style="width:40%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td><th>Emissivity</th><td><input type="text" placeholder="Emissivity"></td></tr>
+                <tr><th style="width: 12%;">ชื่อภาพ</th><td style="width: 38%;"><input type="text" placeholder="ชื่อภาพ"></td><th style="width: 12%;">emissivity</th><td style="width: 38%;"><input type="text" placeholder="emissivity"></td></tr>
+                <tr><th>Station ID</th><td><input type="text" placeholder="Station ID"></td><th>อุปกรณ์</th><td><input type="text" placeholder="อุปกรณ์"></td></tr>
+                <tr><th>MEA No.</th><td><input type="text" placeholder="MEA No."></td><th>สถานที่</th><td><input type="text" placeholder="สถานที่"></td></tr>
+                <tr><th>สายป้อน</th><td colspan="3"><input type="text" placeholder="สายป้อน"></td></tr>
+                <tr><th>GIS Lat.</th><td><input type="text" id="latInput" placeholder="Lat"></td><th>Long.</th><td><div style="display:flex; justify-content:space-between; align-items:center;"><input type="text" id="longInput" placeholder="Long" style="width:65%;"><button type="button" class="btn-geo" onclick="getCurrentLocation()">📍 GPS</button></div></td></tr>
             </table>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 4px 0;">
-                <div style="border: 1px dashed var(--border); padding: 4px; text-align: center; background: #f8fafc; border-radius: 4px;"><label style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">🖼️ ภาพถ่ายจริง (Visual)</label><input type="file" accept="image/*" style="font-size: 0.65rem; display:block; margin: 2px auto;"></div>
-                <div style="border: 1px dashed var(--border); padding: 4px; text-align: center; background: #f8fafc; border-radius: 4px;"><label style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">🌡️ ภาพถ่ายความร้อน (Thermal)</label><input type="file" accept="image/*" style="font-size: 0.65rem; display:block; margin: 2px auto;"></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 4px 0;">
+                <div style="border: 1px solid var(--border); padding: 4px; text-align: center; background: #f8fafc; border-radius: 4px; min-height: 120px;"><label style="font-size:0.7rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom: 2px;">ภาพถ่ายจริง</label><input type="file" accept="image/*" style="font-size: 0.6rem; display:block; margin: 20px auto;"></div>
+                <div style="border: 1px solid var(--border); padding: 4px; text-align: center; background: #f8fafc; border-radius: 4px; min-height: 120px;"><label style="font-size:0.7rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom: 2px;">ภาพถ่ายความร้อน</label><input type="file" accept="image/*" style="font-size: 0.6rem; display:block; margin: 20px auto;"></div>
             </div>
-            <div class="section-header"><span class="section-num">2</span> เกณฑ์ความสำคัญ (Standard for Infrared Inspection)</div>
-            <table class="inspection-table">
-                <thead><tr><th style="width: 40px;">ระดับ</th><th>Delta T (°C)</th><th style="text-align: left;">ข้อเสนอแนะการดำเนินการ</th><th style="width: 50px;">เลือก</th></tr></thead>
-                <tbody>
-                    <tr><td style="text-align:center; font-weight:bold; color:#059669;">4</td><td>0 - 10°C</td><td>อุปกรณ์ปกติ</td><td style="text-align:center;"><input type="checkbox"></td></tr>
-                    <tr><td style="text-align:center; font-weight:bold; color:#d97706;">3</td><td>> 10 - 20°C</td><td>แก้ไขในการบำรุงรักษาครั้งต่อไป</td><td style="text-align:center;"><input type="checkbox"></td></tr>
-                    <tr><td style="text-align:center; font-weight:bold; color:#ea580c;">2</td><td>> 20 - 40°C</td><td>ควรแก้ไขภายใน 1 เดือน</td><td style="text-align:center;"><input type="checkbox"></td></tr>
-                    <tr><td style="text-align:center; font-weight:bold; color:#dc2626;">1</td><td>> 40°C</td><td>ควรได้รับการแก้ไขเร่งด่วน</td><td style="text-align:center;"><input type="checkbox"></td></tr>
-                </tbody>
-            </table>
-            <div class="section-header"><span class="section-num">3</span> รายการรายละเอียด & <span class="section-num">4</span> การส่งต่อแก้ไข</div>
-            <div class="field-group" style="margin-bottom: 3px;"><input type="text" class="form-control" style="border:none; border-bottom:1px solid var(--border); background:transparent; border-radius:0;" placeholder="รายละเอียดและกลุ่มงานที่รับเรื่อง..."></div>
-            <table class="info-table" style="margin-top: 6px;">
-                <tr>
-                    <th style="width:12%;">ผู้ตรวจ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td>
-                    <th style="width:12%;">ผู้ตรวจสอบ</th><td style="width:38%;"><input type="text" placeholder="ชื่อ-นามสกุล"></td>
-                </tr>
-                <tr>
-                    <th>วันที่</th><td><input type="date" class="form-control" id="dateField2" style="border:none; background:transparent;"></td>
-                    <th>วันที่แก้ไข</th><td><input type="date" class="form-control" style="border:none; background:transparent;"></td>
-                </tr>
-            </table>
-            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่....</span><span id="footerCode">SF-07-0-024</span></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; align-items: flex-start;">
+                <div>
+                    <div class="section-header"><span class="section-num">2</span> อุณหภูมิสูงสุดที่จุดวัดฯ</div>
+                    <table class="inspection-table" style="margin-bottom: 2px;"><thead><tr><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr></thead><tbody><tr><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td></tr></tbody></table>
+                    <div style="font-size: 0.7rem; font-weight: 600; margin-top: 3px; margin-bottom: 2px;">อุณหภูมิเปรียบเทียบที่จุดวัดฯ (Delta T) (°C)</div>
+                    <table class="inspection-table"><thead><tr><th>ΔT(____)</th><th>ΔT(____)</th><th>ΔT(____)</th><th>ΔT(____)</th><th>ΔT(____)</th><th>ΔT(____)</th></tr></thead><tbody><tr><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td><td><input type="text" class="form-control" style="border:none; text-align:center;"></td></tr></tbody></table>
+                </div>
+                <div>
+                    <table class="inspection-table" style="margin-top: 6px;">
+                        <thead><tr><th style="width: 45px;">ลำดับความสำคัญ</th><th>Delta T</th><th>ข้อเสนอแนะการดำเนินการ</th></tr></thead>
+                        <tbody>
+                            <tr><td style="text-align:center; font-weight:bold;">4</td><td>0-10°C</td><td>อุปกรณ์ปกติ</td></tr>
+                            <tr><td style="text-align:center; font-weight:bold;">3</td><td>>10-20°C</td><td>แก้ไขในการบำรุงรักษาครั้งต่อไป</td></tr>
+                            <tr><td style="text-align:center; font-weight:bold;">2</td><td>>20-40°C</td><td>ควรแก้ไขภายใน 1 เดือน</td></tr>
+                            <tr><td style="text-align:center; font-weight:bold;">1</td><td>>40°C</td><td>ควรได้รับการแก้ไขเร่งด่วน</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div style="text-align: center; font-size: 0.65rem; color: var(--text-muted); margin: 3px 0;">อ้างอิงมาตรฐาน Standard for Infrared Inspection of Electrical Systems & Rotating Equipment, 2016 Edition</div>
+            <div class="section-header"><span class="section-num">3</span> รายการจากการตรวจสอบ</div>
+            <div style="font-size: 0.75rem; margin-bottom: 2px;">ลำดับความสำคัญ <input type="text" style="width: 60px; border-bottom: 1px solid #000; background:transparent; text-align:center;"> &nbsp; การตรวจสอบ: <input type="text" style="width: 70%; border-bottom: 1px solid #000; background:transparent;"></div>
+            <div style="font-size: 0.75rem; margin-bottom: 4px;">ข้อแนะนำการแก้ไข: <input type="text" style="width: 80%; border-bottom: 1px solid #000; background:transparent;"></div>
+            <div class="section-header"><span class="section-num">4</span> การส่งต่อดำเนินการแก้ไข</div>
+            <div style="font-size: 0.75rem; margin-bottom: 4px; display:flex; gap:10px; align-items:center;"><div>ส่งต่อให้กลุ่มงาน <input type="text" style="width: 150px; border-bottom: 1px solid #000; background:transparent;"></div><div>โปรดดำเนินการแก้ไข <input type="text" style="width: 150px; border-bottom: 1px solid #000; background:transparent;"></div><div>วันที่: <input type="date" style="border:none; background:transparent;"></div></div>
+            <div style="text-align: right; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px;">(หพบจ./ชพบจ.)</div>
+            <div class="section-header"><span class="section-num">5</span> การดำเนินการปรับปรุง</div>
+            <div style="font-size: 0.75rem; margin-bottom: 4px; display:flex; gap:10px; align-items:center;"><div>ดำเนินการแก้ไขเมื่อวันที่ <input type="date" style="border:none; background:transparent;"></div><div>จึงเสนอมาเพื่อโปรดทราบตำแหน่ง <input type="text" style="width: 150px; border-bottom: 1px solid #000; background:transparent;"></div></div>
+            <div style="text-align: right; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px;">(ผู้ดำเนินการปรับปรุง)</div>
+            <div style="font-size: 0.75rem; margin-bottom: 4px;">ทราบ <input type="text" style="width: 200px; border-bottom: 1px solid #000; background:transparent;"> &nbsp; วันที่: <input type="date" style="border:none; background:transparent;"></div>
+            <div style="text-align: right; font-size: 0.7rem; color: var(--text-muted);">(หพบจ./ชพบจ.)</div>
+            <div class="sheet-footer-note"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span id="footerCode">SF-07-0-024</span></div>
         `,
 
         'SF-07-0-025': `
