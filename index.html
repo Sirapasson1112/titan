@@ -1,4 +1,3 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -403,6 +402,12 @@
   .cal-ev.purple { background: #8b5cf6; }
   .cal-ev.plan { background: transparent; color: var(--brand-ink); box-shadow: inset 0 0 0 1.5px var(--brand); border-style: dashed; }
   .cal-ev.plan.late { box-shadow: inset 0 0 0 1.5px var(--red); color: var(--red-ink); }
+  .cal-ev.active { background: #e5483f; }
+  .cal-ev.done { background: #16a34a; opacity: .9; }
+  .cal-ev[draggable="true"] { cursor: grab; }
+  .cal-cell.drop-hover { background: var(--brand-soft); outline: 2px dashed var(--brand); outline-offset: -2px; }
+  .cal-ev[data-wid] { touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+  @media print { .paper-a4 { zoom: 1 !important; } }
   .cal-legend { display: flex; gap: 16px; padding: 10px 20px 18px; flex-wrap: wrap; }
   .cal-legend .item { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--text-soft); }
   .cal-legend .dot { width: 8px; height: 8px; border-radius: 3px; }
@@ -955,7 +960,7 @@ const REF_KPI_MTTR = "<i>MTTR (Mean Time To Repair)</i> = เวลาซ่อ�
 const REF_KPI_FAIL = "<i>จำนวนครั้งที่เกิดความขัดข้อง (Number of failures)</i> เป็นข้อมูลตั้งต้นของ MTBF = เวลาเดินเครื่องรวม ÷ จำนวนครั้งที่ขัดข้อง (ตัวชี้วัดความเชื่อถือได้ที่ใช้ทั่วไป) · ไม่พบตัวชี้วัดมาตรฐานที่นับ “จำนวนครั้งต่อเดือน” โดยตรง จึงเป็นตัวชี้วัดที่ระบบนี้กำหนดเอง และเป้า ≤ 5 ครั้งก็ตั้งในโครงงานนี้ · อ้างอิงเชิงแนวคิด: Wireman (2005) <i>Developing Performance Indicators for Managing Maintenance</i>";
 const REF_COST = "Wireman (2005); SMRP (2020) — ตัวชี้วัดต้นทุนบำรุงรักษา (Maintenance Cost)";
 const REF_RATIO = "SMRP (2020) — ตัวชี้วัดค่าบำรุงรักษาเทียบกับมูลค่าทรัพย์สิน (ดัดแปลง: ระบบนี้ใช้ค่าการได้มาสะสมแทนมูลค่าทดแทน)";
-const BUILD_TAG = "2026-11-06-nolatlng-v130";
+const BUILD_TAG = "2026-11-09-touch-tablet-v132";
 /* v83: demo/sample data switched off. Set USE_SAMPLE_DATA = true to bring the generated work orders, history and KPI months back. */
 const USE_SAMPLE_DATA = false;
 /* v89: Google sign-in. Without signing in, people can look and fill things in, but nothing is saved.
@@ -2105,6 +2110,7 @@ window.viewAssetRow = function(tableId, rowId){
     }
     if (row.assetTableId && row.assetCode) actionBtns += `<button class="btn" onclick="showAssetHistory('${row.assetTableId}','${row.assetCode}')">${ic('history')} ประวัติอุปกรณ์</button>`;
     if (FIELD_STOPS.some(s => s.wo.id === row.id)) actionBtns += `<button class="btn" onclick="showWoOnMap('${row.id}')">${ic('mapPin')} นำทาง</button>`;
+    if (row.status === "รอดำเนินการ" || row.status === "เกินกำหนด") actionBtns += `<button class="btn primary" onclick="activateWo('${row.id}')">▶ เริ่มงาน (แอ็กทีฟ)</button>`;
     actionBtns += `<button class="btn" onclick="showWoInCalendar('${row.id}')">${ic('calendar')} ดูในปฏิทิน</button>`;
   } else {
     // An asset row: offer related work orders, and the matching inspection form if one exists.
@@ -3360,9 +3366,88 @@ function woInMonth(year, month){
 function calChip(r){
   if (r.__plan) return pmPlanChip(r);
   const cls = calTypeClass(r);
-  const extra = r.status === "เกินกำหนด" ? " late" : r.status === "เสร็จสิ้น" ? " done" : "";
-  return `<div class="cal-ev ${cls}${extra}" title="${r.code} · ${r.equip} · ${r.status}" onclick="viewAssetRow('workorder','${r.id}')">${r.inspectionId ? "✓ " : ""}${r.assetCode || r.code}</div>`;
+  const extra = r.status === "เกินกำหนด" ? " late" : r.status === "เสร็จสิ้น" ? " done" : r.status === "กำลังดำเนินการ" ? " active" : "";
+  return `<div class="cal-ev ${cls}${extra}" data-wid="${r.id}" title="${r.code} · ${r.equip} · ${r.status}" onclick="viewAssetRow('workorder','${r.id}')">${r.inspectionId ? "✓ " : ""}${r.assetCode || r.code}</div>`;
 }
+// Move a work order to a day of the calendar (used by drag and drop).
+window.moveWoToDay = function(id, y, m, d){
+  const st = TableState["workorder"]; const row = st && st.data.find(r => r.id === id); if (!row) return;
+  const cur = parseWoDate(row);
+  if (cur.day === d && cur.month === m && cur.yearBE === y + 543) return;
+  const prev = row.date, target = fmtWoDate({ day:d, month:m, yearBE:y + 543 });
+  row.date = target;
+  try { autoFlagOverdue(); } catch(x){}
+  renderTable("workorder"); persistTable("workorder"); refreshLinkedViews(); queueSync();
+  showToast(`ย้ายใบงาน ${row.code} จาก ${prev} ไป ${target} แล้ว`);
+};
+// Pointer-based drag: a mouse drags after a small move; a finger long-presses first so scrolling still works.
+(function calPointerDrag(){
+  let s = null;
+  const clearHover = () => document.querySelectorAll(".cal-cell.drop-hover").forEach(c => c.classList.remove("drop-hover"));
+  const cellAt = (x, y) => { const el = document.elementFromPoint(x, y); return el && el.closest ? el.closest(".cal-cell[data-day]") : null; };
+  const begin = () => {
+    s.active = true;
+    s.ghost = s.el.cloneNode(true);
+    s.ghost.removeAttribute("data-wid");
+    s.ghost.style.cssText = "position:fixed;width:96px;opacity:.92;pointer-events:none;z-index:9999;box-shadow:0 10px 24px rgba(0,0,0,.28);left:" + (s.x0 - 48) + "px;top:" + (s.y0 - 14) + "px;";
+    document.body.appendChild(s.ghost);
+    s.el.style.opacity = ".35";
+    try { if (navigator.vibrate) navigator.vibrate(12); } catch(x){}
+  };
+  document.addEventListener("pointerdown", e => {
+    const chip = e.target.closest && e.target.closest(".cal-ev[data-wid]");
+    if (!chip || e.button > 0) return;
+    s = { id: chip.dataset.wid, el: chip, x0: e.clientX, y0: e.clientY, pid: e.pointerId, type: e.pointerType, active: false, over: null };
+    if (s.type === "touch") s.timer = setTimeout(() => { if (s && !s.active) begin(); }, 280);
+  }, true);
+  document.addEventListener("pointermove", e => {
+    if (!s || e.pointerId !== s.pid) return;
+    const dist = Math.hypot(e.clientX - s.x0, e.clientY - s.y0);
+    if (!s.active){
+      if (s.type === "touch"){ if (dist > 10){ clearTimeout(s.timer); s = null; } return; }
+      if (dist < 6) return;
+      begin();
+    }
+    e.preventDefault();
+    s.ghost.style.left = (e.clientX - 48) + "px"; s.ghost.style.top = (e.clientY - 14) + "px";
+    clearHover();
+    const c = cellAt(e.clientX, e.clientY);
+    if (c){ c.classList.add("drop-hover"); s.over = +c.dataset.day; } else s.over = null;
+  }, { passive:false });
+  const finish = (e, cancelled) => {
+    if (!s || e.pointerId !== s.pid) return;
+    clearTimeout(s.timer);
+    if (s.active){
+      const day = cancelled ? null : s.over, id = s.id, cm = calMonth();
+      clearHover(); s.ghost.remove(); s.el.style.opacity = "";
+      window.__calSuppressClick = true; setTimeout(() => { window.__calSuppressClick = false; }, 400);
+      if (day) moveWoToDay(id, cm.year, cm.month, day);
+    }
+    s = null;
+  };
+  document.addEventListener("pointerup", e => finish(e, false), true);
+  document.addEventListener("pointercancel", e => finish(e, true), true);
+  document.addEventListener("click", e => { if (window.__calSuppressClick){ e.stopPropagation(); e.preventDefault(); } }, true);
+})();
+window.activateWo = function(id){
+  const st = TableState["workorder"]; const row = st && st.data.find(r => r.id === id); if (!row) return;
+  row.status = "กำลังดำเนินการ"; delete row.statusRaw; delete row.autoOverdue; delete row.origStatus;
+  closeModal(); renderTable("workorder"); persistTable("workorder"); refreshLinkedViews(); queueSync();
+  showToast(`เริ่มงาน ${row.code} แล้ว — ขึ้นสีแดงในปฏิทิน`);
+};
+// Paper forms are 780px wide; on tablets/phones scale them to fit the screen (CSS zoom keeps taps accurate).
+function fitPaperToWidth(){
+  document.querySelectorAll(".paper-wrap").forEach(w => {
+    const avail = w.clientWidth; if (!avail) return;
+    const s = Math.min(1, avail / 780);
+    w.querySelectorAll(".paper-a4").forEach(p => { p.style.zoom = s < 1 ? s.toFixed(3) : ""; });
+  });
+}
+let __paperFitRaf = 0;
+const schedulePaperFit = () => { cancelAnimationFrame(__paperFitRaf); __paperFitRaf = requestAnimationFrame(fitPaperToWidth); };
+window.addEventListener("resize", schedulePaperFit);
+window.addEventListener("orientationchange", schedulePaperFit);
+new MutationObserver(schedulePaperFit).observe(document.body, { childList:true, subtree:true });
 function renderCalendarView(){
   const label = document.getElementById("calMonthLabel");
   const grid = document.getElementById("calDaysGrid");
@@ -3383,7 +3468,7 @@ function renderCalendarView(){
   for (let d = 1; d <= daysInMonth; d++){
     const evs = (byDay[d] || []).sort((a, b) => rank(a) - rank(b)).concat(planByDay[d] || []);
     const isToday = now.getFullYear() === year && now.getMonth() === month && now.getDate() === d;
-    html += `<div class="cal-cell${isToday ? " today" : ""}"><div class="d${evs.length ? " has" : ""}" ${evs.length ? `onclick="showPmDay(${d})" title="ดูงานทั้งหมดของวันนี้"` : ""}>${d}</div><span class="cal-add admin-only" role="button" tabindex="0" title="สร้างงานในวันนี้" onclick="event.stopPropagation(); openCalWoForm(${year}, ${month}, ${d})">+</span>${evs.slice(0, SHOW).map(calChip).join("")}${evs.length > SHOW ? `<div class="cal-more" onclick="showPmDay(${d})">+${evs.length - SHOW} งาน</div>` : ""}</div>`;
+    html += `<div class="cal-cell${isToday ? " today" : ""}" data-day="${d}"><div class="d${evs.length ? " has" : ""}" ${evs.length ? `onclick="showPmDay(${d})" title="ดูงานทั้งหมดของวันนี้"` : ""}>${d}</div><span class="cal-add admin-only" role="button" tabindex="0" title="สร้างงานในวันนี้" onclick="event.stopPropagation(); openCalWoForm(${year}, ${month}, ${d})">+</span>${evs.slice(0, SHOW).map(calChip).join("")}${evs.length > SHOW ? `<div class="cal-more" onclick="showPmDay(${d})">+${evs.length - SHOW} งาน</div>` : ""}</div>`;
   }
   const total = startWeekday + daysInMonth;
   const rem = (7 - (total % 7)) % 7;
@@ -5397,7 +5482,7 @@ function openFindingsModal(entryId){
   const existing = entry.cmCode ? `<div class="hist-empty" style="text-align:left; margin-top:10px;">สร้างใบงานแก้ไข <b>${entry.cmCode}</b> จากใบตรวจนี้ไปแล้ว</div>` : "";
   openModal("พบจุดผิดปกติจากการตรวจ", `
     <p style="margin:0 0 8px; font-size:13px; color:var(--text-soft);">${entry.code} · ${entry.summary}</p>
-    <ul class="find-list">${list}</ul>${existing}
+    <ul class="find-list">${list}</ul>${existing}${entry.cmCode ? "" : `<div class="insp-field" style="margin-top:12px;"><label>วันที่ซ่อมตามแผน (CM) — จะขึ้นในปฏิทิน</label><input type="date" id="fm-cmdate" value="${new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10)}"></div>`}
     <p style="margin:12px 0 0; font-size:12.5px; color:var(--text-soft); line-height:1.7;">สร้างใบงานแก้ไข (CM) เพื่อให้ขึ้นในรายการใบงาน ปฏิทิน และแผนที่นำทาง หรือบันทึกเป็นความขัดข้อง (นับใน MTTR) ถ้าอุปกรณ์ใช้งานไม่ได้แล้ว</p>`,
     `<button class="btn" onclick="closeModal()">ไว้ทีหลัง</button>
      ${a.tableId && FAILURE_TYPE_LABEL[a.tableId] ? `<button class="btn" onclick="failureFromInspection('${entry.id}')">${ic('alert')} บันทึกความขัดข้อง</button>` : ""}
@@ -5411,7 +5496,8 @@ window.createCorrectiveWo = function(entryId){
   const a = inspAssetFor(entry);
   const n = st.data.filter(r => /^CM-/.test(r.code)).length + 1;
   const code = "CM-" + padNum(n, 4);
-  const d = new Date();
+  let d = new Date();
+  { const p = (((document.getElementById("fm-cmdate") || {}).value) || "").split("-").map(Number); if (p.length === 3 && p[0] && p[1] && p[2]) d = new Date(p[0], p[1] - 1, p[2]); }
   const label = a.tableId ? `${PM_TYPE_LABEL[a.tableId] || a.tableId} ${a.code}` : (a.code || (INSPECTION_FORMS.find(f => f.code === entry.code) || {}).equip || entry.code);
   const row = { id:"wo-cm-" + Date.now(), code, equip:label, assetTableId:a.tableId || undefined, assetCode:a.code || undefined,
     date:`${d.getDate()} ${THAI_MONTHS_SHORT[d.getMonth()]} ${String(d.getFullYear() + 543).slice(-2)}`, owner:PROFILE_SET() ? PROFILE_NAME : "ยังไม่ระบุ", status:"รอดำเนินการ",
