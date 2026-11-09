@@ -403,6 +403,8 @@
   .cal-ev.plan { background: transparent; color: var(--brand-ink); box-shadow: inset 0 0 0 1.5px var(--brand); border-style: dashed; }
   .cal-ev.plan.late { box-shadow: inset 0 0 0 1.5px var(--red); color: var(--red-ink); }
   .cal-ev.active { background: #e5483f; }
+  .cal-ev.late { background: #e5483f; box-shadow: none; }
+  .cal-ev.late.done { background: #16a34a; }
   .cal-ev.done { background: #16a34a; opacity: .9; }
   .cal-ev[draggable="true"] { cursor: grab; }
   .cal-cell.drop-hover { background: var(--brand-soft); outline: 2px dashed var(--brand); outline-offset: -2px; }
@@ -960,7 +962,7 @@ const REF_KPI_MTTR = "<i>MTTR (Mean Time To Repair)</i> = เวลาซ่อ�
 const REF_KPI_FAIL = "<i>จำนวนครั้งที่เกิดความขัดข้อง (Number of failures)</i> เป็นข้อมูลตั้งต้นของ MTBF = เวลาเดินเครื่องรวม ÷ จำนวนครั้งที่ขัดข้อง (ตัวชี้วัดความเชื่อถือได้ที่ใช้ทั่วไป) · ไม่พบตัวชี้วัดมาตรฐานที่นับ “จำนวนครั้งต่อเดือน” โดยตรง จึงเป็นตัวชี้วัดที่ระบบนี้กำหนดเอง และเป้า ≤ 5 ครั้งก็ตั้งในโครงงานนี้ · อ้างอิงเชิงแนวคิด: Wireman (2005) <i>Developing Performance Indicators for Managing Maintenance</i>";
 const REF_COST = "Wireman (2005); SMRP (2020) — ตัวชี้วัดต้นทุนบำรุงรักษา (Maintenance Cost)";
 const REF_RATIO = "SMRP (2020) — ตัวชี้วัดค่าบำรุงรักษาเทียบกับมูลค่าทรัพย์สิน (ดัดแปลง: ระบบนี้ใช้ค่าการได้มาสะสมแทนมูลค่าทดแทน)";
-const BUILD_TAG = "2026-11-09-touch-tablet-v132";
+const BUILD_TAG = "2026-11-09-testdata-v134";
 /* v83: demo/sample data switched off. Set USE_SAMPLE_DATA = true to bring the generated work orders, history and KPI months back. */
 const USE_SAMPLE_DATA = false;
 /* v89: Google sign-in. Without signing in, people can look and fill things in, but nothing is saved.
@@ -2065,9 +2067,20 @@ function fieldFormHtml(tableId, values){
 // Which asset tables have a matching inspection-form template (index into INSPECTION_FORMS).
 const ASSET_INSPECTION_LINK = { transformer: 0, lbs: 1, sectionalizer: 2, rmu: 3, substation: 4, capbank: 5, netprotector: 6, nettransformer: 7 };
 // Links between a work order and the records it came from / led to.
+// Which SF-07 form a work order uses. Fixed by its equipment type; a manual choice (for types with no fixed form) is remembered.
+function formIdxForWo(r){
+  if (!r) return undefined;
+  if (r.inspFormCode){ const i = INSPECTION_FORMS.findIndex(f => f.code === r.inspFormCode); if (i >= 0) return i; }
+  if (r.inspectionId){ const h = loadInspHistory().find(x => x.id === r.inspectionId); if (h){ const i = INSPECTION_FORMS.findIndex(f => f.code === h.code); if (i >= 0) return i; } }
+  return r.assetTableId != null ? ASSET_INSPECTION_LINK[r.assetTableId] : undefined;
+}
+function woFormText(r){
+  const i = formIdxForWo(r);
+  return i === undefined ? "ยังไม่กำหนด (เลือกตอนตรวจ)" : `${INSPECTION_FORMS[i].code} · ${INSPECTION_FORMS[i].equip}`;
+}
 function woLinkRows(row){
   const hist = loadInspHistory();
-  let out = "";
+  let out = `<div class="mini-stat-row"><span class="lbl">ใบตรวจที่ใช้</span><span class="val">${woFormText(row)}</span></div>`;
   if (row.fromInspection){
     const i = hist.findIndex(h => h.id === row.fromInspection);
     if (i >= 0) out += `<div class="mini-stat-row search-hit" onclick="closeModal(); goTo('inspection'); requestAnimationFrame(()=>viewInspectionHistoryEntry(${i}))"><span class="lbl">เปิดจากใบตรวจ</span><span class="val cell-link">${hist[i].code} · ${new Date(hist[i].savedAt).toLocaleDateString("th-TH", { dateStyle:"medium" })}</span></div>`;
@@ -2099,7 +2112,7 @@ window.viewAssetRow = function(tableId, rowId){
   if (tableId === "workorder"){
     // A work-order row: offer to jump to the equipment it's about, and to fill in that
     // equipment's inspection form if one exists.
-    const inspIdx = row.assetTableId != null ? ASSET_INSPECTION_LINK[row.assetTableId] : undefined;
+    const inspIdx = formIdxForWo(row);
     if (row.inspectionId){
       const hi = loadInspHistory().findIndex(h => h.id === row.inspectionId);
       if (hi >= 0) actionBtns += `<button class="btn" onclick="closeModal(); goTo('inspection'); requestAnimationFrame(()=>viewInspectionHistoryEntry(${hi}))">${ic('checklist')} ดูใบตรวจที่บันทึก</button>`;
@@ -3324,8 +3337,8 @@ const pagePmPlanning = `
       <div class="item"><span class="dot" style="background:var(--green)"></span>LBS</div>
       <div class="item"><span class="dot" style="background:#7c879c"></span>Unit Substation</div>
       <div class="item"><span class="dot" style="background:#8b5cf6"></span>อุปกรณ์อื่น (SZ / RMU / Capacitor / Network)</div>
-      <div class="item"><span class="dot" style="background:transparent; box-shadow: inset 0 0 0 2px var(--red);"></span>เกินกำหนด</div>
-      <div class="item"><span class="dot" style="background:var(--brand); opacity:.45;"></span>เสร็จสิ้นแล้ว</div>
+      <div class="item"><span class="dot" style="background:#e5483f;"></span>เกินกำหนด</div>
+      <div class="item"><span class="dot" style="background:#16a34a;"></span>เสร็จสิ้นแล้ว</div>
     </div>
   </div>
   <div class="side-stack">
@@ -3540,7 +3553,7 @@ window.woInspectAction = function(id){
     if (h){ goTo("inspection"); requestAnimationFrame(() => loadInspEntry(h.id)); return; }
     showToast("ไม่พบใบตรวจที่บันทึกไว้ของใบงานนี้"); return;
   }
-  const idx = row.assetTableId != null ? ASSET_INSPECTION_LINK[row.assetTableId] : undefined;
+  const idx = formIdxForWo(row);
   if (idx !== undefined) startInspectionForWorkOrder(row.id, idx); else chooseFormForWo(row.id);
 };
 const WO_TYPE_OPTS = ["DT1P", "DT2P", "DT1C", "DT2C"];
@@ -3850,6 +3863,7 @@ const woAssetType = r => r.assetTypeName || WO_ASSET_TYPE[r.assetTableId] || "";
 workOrderCfg.view = [
   { h:"Work Order",   f:r => r.code },
   { h:"Description",  f:r => r.equip },
+  { h:"ใบตรวจที่ใช้", f:r => woFormText(r) },
   { h:"WBS Code",     f:r => r.wbs || "" },
   { h:"เลขรับเรื่อง",    f:r => r.requestNo || "" },
   { h:"SAP PM Order", f:r => r.sapOrder || "" },
@@ -4142,6 +4156,7 @@ function pendingWo(){
 }
 window.startInspectionForWorkOrder = function(woId, idx){
   PENDING_INSP_WO = { woId, idx };
+  { const w = TableState["workorder"] && TableState["workorder"].data.find(r => r.id === woId); if (w && INSPECTION_FORMS[idx]){ w.inspFormCode = INSPECTION_FORMS[idx].code; persistTable("workorder"); } }
   closeModal(); goTo("inspection");
   requestAnimationFrame(() => openInspectionForm(idx));
 };
@@ -6335,7 +6350,283 @@ try {
     if (Array.isArray(rows)){ const kept = rows.filter(r => !r.auto); if (Array.isArray(v)) localStorage.setItem(tableStoreKey("workorder"), JSON.stringify(kept)); else { v.rows = kept; localStorage.setItem(tableStoreKey("workorder"), JSON.stringify(v)); } }
   }
 } catch(e){}
-const WO_ROWS = loadStoredRows("workorder") || (USE_SAMPLE_DATA ? makeWorkOrderRows(WO_SEED) : []);
+/* TEST BUILD ONLY: simulated PM work orders (Oct 19, Nov 2) for checking calendar colours. */
+const TEST_PM_ROWS = [
+ {
+  "id": "test-pm-01",
+  "code": "WO-TEST-001",
+  "equip": "PM หม้อแปลงจำหน่าย",
+  "assetTableId": "transformer",
+  "assetCode": "TR-100",
+  "wtype": "DT1P",
+  "date": "2 ต.ค. 69",
+  "status": "เสร็จสิ้น",
+  "owner": "ศูนย์งานซ่อมบำรุง",
+  "place": "MEA สมุทรปราการ",
+  "plant": "7901"
+ },
+ {
+  "id": "test-pm-02",
+  "code": "WO-TEST-002",
+  "equip": "PM Load Break Switch",
+  "assetTableId": "lbs",
+  "assetCode": "LBS-101",
+  "wtype": "DT2P",
+  "date": "4 ต.ค. 69",
+  "status": "เสร็จสิ้น",
+  "owner": "ศูนย์งานซ่อมบำรุง",
+  "place": "MEA สมุทรปราการ",
+  "plant": "7901"
+ },
+ {
+  "id": "test-pm-03",
+  "code": "WO-TEST-003",
+  "equip": "PM Sectionalizer",
+  "assetTableId": "sectionalizer",
+  "assetCode": "SZ-102",
+  "wtype": "DT1C",
+  "date": "6 ต.ค. 69",
+  "status": "เกินกำหนด",
+  "owner": "ศูนย์งานซ่อมบำรุง",
+  "place": "MEA สมุทรปราการ",
+  "plant": "7901"
+ },
+ {
+  "id": "test-pm-04",
+  "code": "WO-TEST-004",
+  "equip": "PM Ring Main Unit",
+  "assetTableId": "rmu",
+  "assetCode": "RMU-103",
+  "wtype": "DT2C",
+  "date": "7 ต.ค. 69",
+  "status": "เสร็จสิ้น",
+  "owner": "ศูนย์งานซ่อมบำรุง",
+  "place": "MEA สมุทรปราการ",
+  "plant": "7901"
+ },
+ {
+  "id": "test-pm-05",
+  "code": "WO-TEST-005",
+  "equip": "PM Unit Substation",
+  "assetTableId": "substation",
+  "assetCode": "SS-104",
+  "wtype": "DT1P",
+  "date": "9 ต.ค. 69",
+  "status": "เสร็จสิ้น",
+  "owner": "ศูนย์งานซ่อมบำรุง",
+  "place": "MEA สมุทรปราการ",
+  "plant": "7901"
+ },
+ {
+  "id": "test-pm-06",
+  "code": "WO-TEST-006",
+  "equip": "PM Capacitor Bank",
+  "assetTableId": "capbank",
+  "assetCode": "CB-105",
+  "wtype": "DT1C",
+  "date": "11 ต.ค. 69",
+  "status": "เกินกำหนด",
+  "owner": "ศูนย์งานซ่อมบำรุง",
+  "place": "MEA สมุทรปราการ",
+  "plant": "7901"
+ },
+ {
+  "id": "test-pm-07",
+  "code": "WO-TEST-007",
+  "equip": "PM Feeder",
+  "assetTableId": "feeder",
+  "assetCode": "FD-106",
+  "wtype": "DT2P",
+  "date": "13 ต.ค. 69",
+  "status": "เสร็จสิ้น",
+  "owner": "ศูนย์งานซ่อมบำรุง",
+  "place": "MEA สมุทรปราการ",
+  "plant": "7901"
+ },
+ {
+  "id": "test-pm-08",
+  "code": "WO-TEST-008",
+  "equip": "PM หม้อแปลงจำหน่าย",
+  "assetTableId": "transformer",
+  "assetCode": "TR-107",
+  "wtype": "DT1P",
+  "date": "14 ต.ค. 69",
+  "status": "เสร็จสิ้น",
+  "owner": "ศูนย์งานซ่อมบำรุง",
+  "place": "MEA สมุทรปราการ",
+  "plant": "7901"
+ },
+ {
+  "id": "test-pm-09",
+  "code": "WO-TEST-009",
+  "equip": "PM Load Break Switch",
+  "assetTableId": "lbs",
+  "assetCode": "LBS-108",
+  "wtype": "DT2P",
+  "date": "16 ต.ค. 69",
+  "status": "เกินกำหนด",
+  "owner": "ศูนย์งานซ่อมบำรุง",
+  "place": "MEA สมุทรปราการ",
+  "plant": "7901"
+ },
+ {
+  "id": "test-pm-10",
+  "code": "WO-TEST-010",
+  "equip": "PM Sectionalizer",
+  "assetTableId": "sectionalizer",
+  "assetCode": "SZ-109",
+  "wtype": "DT1C",
+  "date": "18 ต.ค. 69",
+  "status": "เสร็จสิ้น",
+  "owner": "ศูนย์งานซ่อมบำรุง",
+  "place": "MEA สมุทรปราการ",
+  "plant": "7901"
+ },
+ {
+  "id": "test-pm-11",
+  "code": "WO-TEST-011",
+  "equip": "PM Ring Main Unit",
+  "assetTableId": "rmu",
+  "assetCode": "RMU-110",
+  "wtype": "DT2C",
+  "date": "20 ต.ค. 69",
+  "status": "เสร็จสิ้น",
+  "owner": "ศูนย์งานซ่อมบำรุง",
+  "place": "MEA สมุทรปราการ",
+  "plant": "7901"
+ },
+ {
+  "id": "test-pm-12",
+  "code": "WO-TEST-012",
+  "equip": "PM Unit Substation",
+  "assetTableId": "substation",
+  "assetCode": "SS-111",
+  "wtype": "DT1P",
+  "date": "21 ต.ค. 69",
+  "status": "เกินกำหนด",
+  "owner": "ศูนย์งานซ่อมบำรุง",
+  "place": "MEA สมุทรปราการ",
+  "plant": "7901"
+ },
+ {
+  "id": "test-pm-13",
+  "code": "WO-TEST-013",
+  "equip": "PM Capacitor Bank",
+  "assetTableId": "capbank",
+  "assetCode": "CB-112",
+  "wtype": "DT1C",
+  "date": "23 ต.ค. 69",
+  "status": "เสร็จสิ้น",
+  "owner": "ศูนย์งานซ่อมบำรุง",
+  "place": "MEA สมุทรปราการ",
+  "plant": "7901"
+ },
+ {
+  "id": "test-pm-14",
+  "code": "WO-TEST-014",
+  "equip": "PM Feeder",
+  "assetTableId": "feeder",
+  "assetCode": "FD-113",
+  "wtype": "DT2P",
+  "date": "25 ต.ค. 69",
+  "status": "เสร็จสิ้น",
+  "owner": "ศูนย์งานซ่อมบำรุง",
+  "place": "MEA สมุทรปราการ",
+  "plant": "7901"
+ },
+ {
+  "id": "test-pm-15",
+  "code": "WO-TEST-015",
+  "equip": "PM หม้อแปลงจำหน่าย",
+  "assetTableId": "transformer",
+  "assetCode": "TR-114",
+  "wtype": "DT1P",
+  "date": "27 ต.ค. 69",
+  "status": "เกินกำหนด",
+  "owner": "ศูนย์งานซ่อมบำรุง",
+  "place": "MEA สมุทรปราการ",
+  "plant": "7901"
+ },
+ {
+  "id": "test-pm-16",
+  "code": "WO-TEST-016",
+  "equip": "PM Load Break Switch",
+  "assetTableId": "lbs",
+  "assetCode": "LBS-115",
+  "wtype": "DT2P",
+  "date": "28 ต.ค. 69",
+  "status": "เสร็จสิ้น",
+  "owner": "ศูนย์งานซ่อมบำรุง",
+  "place": "MEA สมุทรปราการ",
+  "plant": "7901"
+ },
+ {
+  "id": "test-pm-17",
+  "code": "WO-TEST-017",
+  "equip": "PM Sectionalizer",
+  "assetTableId": "sectionalizer",
+  "assetCode": "SZ-116",
+  "wtype": "DT1C",
+  "date": "29 ต.ค. 69",
+  "status": "เสร็จสิ้น",
+  "owner": "ศูนย์งานซ่อมบำรุง",
+  "place": "MEA สมุทรปราการ",
+  "plant": "7901"
+ },
+ {
+  "id": "test-pm-18",
+  "code": "WO-TEST-018",
+  "equip": "PM Ring Main Unit",
+  "assetTableId": "rmu",
+  "assetCode": "RMU-117",
+  "wtype": "DT2C",
+  "date": "30 ต.ค. 69",
+  "status": "เกินกำหนด",
+  "owner": "ศูนย์งานซ่อมบำรุง",
+  "place": "MEA สมุทรปราการ",
+  "plant": "7901"
+ },
+ {
+  "id": "test-pm-19",
+  "code": "WO-TEST-019",
+  "equip": "PM Unit Substation",
+  "assetTableId": "substation",
+  "assetCode": "SS-118",
+  "wtype": "DT1P",
+  "date": "31 ต.ค. 69",
+  "status": "เกินกำหนด",
+  "owner": "ศูนย์งานซ่อมบำรุง",
+  "place": "MEA สมุทรปราการ",
+  "plant": "7901"
+ },
+ {
+  "id": "test-pm-20",
+  "code": "WO-TEST-020",
+  "equip": "PM Capacitor Bank",
+  "assetTableId": "capbank",
+  "assetCode": "CB-119",
+  "wtype": "DT1C",
+  "date": "1 พ.ย. 69",
+  "status": "เสร็จสิ้น",
+  "owner": "ศูนย์งานซ่อมบำรุง",
+  "place": "MEA สมุทรปราการ",
+  "plant": "7901"
+ },
+ {
+  "id": "test-pm-21",
+  "code": "WO-TEST-021",
+  "equip": "PM Feeder",
+  "assetTableId": "feeder",
+  "assetCode": "FD-120",
+  "wtype": "DT2P",
+  "date": "5 พ.ย. 69",
+  "status": "เกินกำหนด",
+  "owner": "ศูนย์งานซ่อมบำรุง",
+  "place": "MEA สมุทรปราการ",
+  "plant": "7901"
+ }
+];
+const WO_ROWS = loadStoredRows("workorder") || (USE_SAMPLE_DATA ? makeWorkOrderRows(WO_SEED) : TEST_PM_ROWS);
 // v36 (once per browser): sample work orders saved by older builds were all dated ก.ย. 69. Move them into
 // the current month like a fresh start would, and undo "เกินกำหนด" that only came from that stale date.
 // Work orders the user created (wo-new-…, wo-cm-…) are left exactly as they are.
