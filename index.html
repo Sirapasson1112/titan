@@ -1015,7 +1015,7 @@ const REF_KPI_MTTR = "<i>MTTR (Mean Time To Repair)</i> = เวลาซ่อ�
 const REF_KPI_FAIL = "<i>จำนวนครั้งที่เกิดความขัดข้อง (Number of failures)</i> เป็นข้อมูลตั้งต้นของ MTBF = เวลาเดินเครื่องรวม ÷ จำนวนครั้งที่ขัดข้อง (ตัวชี้วัดความเชื่อถือได้ที่ใช้ทั่วไป) · ไม่พบตัวชี้วัดมาตรฐานที่นับ “จำนวนครั้งต่อเดือน” โดยตรง จึงเป็นตัวชี้วัดที่ระบบนี้กำหนดเอง และเป้า ≤ 5 ครั้งก็ตั้งในโครงงานนี้ · อ้างอิงเชิงแนวคิด: Wireman (2005) <i>Developing Performance Indicators for Managing Maintenance</i>";
 const REF_COST = "Wireman (2005); SMRP (2020) — ตัวชี้วัดต้นทุนบำรุงรักษา (Maintenance Cost)";
 const REF_RATIO = "SMRP (2020) — ตัวชี้วัดค่าบำรุงรักษาเทียบกับมูลค่าทรัพย์สิน (ดัดแปลง: ระบบนี้ใช้ค่าการได้มาสะสมแทนมูลค่าทดแทน)";
-const BUILD_TAG = "2026-11-12-pmfreqact-v149";
+const BUILD_TAG = "2026-11-12-pmfreqact-v150";
 /* v83: demo/sample data switched off. Set USE_SAMPLE_DATA = true to bring the generated work orders, history and KPI months back. */
 const USE_SAMPLE_DATA = false;
 /* v89: Google sign-in. Without signing in, people can look and fill things in, but nothing is saved.
@@ -3691,6 +3691,7 @@ function renderPmFreq(){
     : st.next.diff === 0 ? `<div class="pmf-pill late">ครบรอบวันนี้!<small>${st.next.dt.getDate()} ${THAI_MONTHS_SHORT[st.next.dt.getMonth()]}</small></div>`
     : `<div class="pmf-pill ${st.next.diff <= 7 ? "soon" : "ok"}">อีก ${st.next.diff} วัน<small>ครบ ${st.next.dt.getDate()} ${THAI_MONTHS_SHORT[st.next.dt.getMonth()]}</small></div>`;
   const act = (p, st) => { const tg = pmfTarget(p, st); if (!tg) return "";
+    if (!tg.wo && !st.late && !(st.next && st.next.diff <= 0)) return ""; // v150: a plan not yet due is already on the calendar — no "create" button until it is due / overdue
     const lbl = !tg.wo ? "＋ สร้างใบงาน" : tg.wo.status === "เสร็จสิ้น" ? "✓ ดูใบงานที่เสร็จแล้ว" : tg.wo.status === "กำลังดำเนินการ" ? "✎ กรอกผล / ปิดงาน" : "▶ เริ่มงาน / กรอกผล";
     return `<button class="pmf-act${tg.wo ? (tg.wo.status === "เสร็จสิ้น" ? " done" : " has") : ""}" onclick="pmFreqAct('${p.id}')">${lbl}</button>`; };
   body.innerHTML = `<div class="pmf-head"><span>แผน PM (เรียงตามความเร่งด่วน)</span><div class="pmf-months">${THAI_MONTHS_SHORT.map((tt, i) => `<span class="${i === curM ? "cur" : ""}${i === PMF_MONTH ? " sel" : ""}">${tt}</span>`).join("")}</div><span style="text-align:center">ถึงรอบอีก / เกินมา</span></div>`
