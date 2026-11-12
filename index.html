@@ -434,6 +434,8 @@
   .pmf-seg.on.open { background: #2563eb; }
   .pmf-seg.on.done { background: #16a34a; }
   .pmf-seg.cur { outline: 2px solid #94a3b8; outline-offset: 1px; }
+  .pmf-head .pmf-months span.sel { background: var(--brand); color: #fff; border-radius: 6px; }
+  .pmf-seg.sel { box-shadow: 0 0 0 2px var(--brand); }
   .pmf-now { position: absolute; top: -4px; bottom: -4px; width: 2px; background: #e5483f; left: var(--nowx, 0%); border-radius: 2px; pointer-events: none; z-index: 2; box-shadow: 0 0 6px #e5483f99; transition: left .8s linear; }
   .pmf-now::before { content: ""; position: absolute; top: -3px; left: -4px; width: 10px; height: 10px; border-radius: 50%; background: #e5483f; animation: pmfRing 1.6s ease-out infinite; }
   .pmf-pill { text-align: center; border-radius: 10px; padding: 5px 6px; line-height: 1.15; color: #fff; font-weight: 800; font-size: 13px; }
@@ -1009,7 +1011,7 @@ const REF_KPI_MTTR = "<i>MTTR (Mean Time To Repair)</i> = เวลาซ่อ�
 const REF_KPI_FAIL = "<i>จำนวนครั้งที่เกิดความขัดข้อง (Number of failures)</i> เป็นข้อมูลตั้งต้นของ MTBF = เวลาเดินเครื่องรวม ÷ จำนวนครั้งที่ขัดข้อง (ตัวชี้วัดความเชื่อถือได้ที่ใช้ทั่วไป) · ไม่พบตัวชี้วัดมาตรฐานที่นับ “จำนวนครั้งต่อเดือน” โดยตรง จึงเป็นตัวชี้วัดที่ระบบนี้กำหนดเอง และเป้า ≤ 5 ครั้งก็ตั้งในโครงงานนี้ · อ้างอิงเชิงแนวคิด: Wireman (2005) <i>Developing Performance Indicators for Managing Maintenance</i>";
 const REF_COST = "Wireman (2005); SMRP (2020) — ตัวชี้วัดต้นทุนบำรุงรักษา (Maintenance Cost)";
 const REF_RATIO = "SMRP (2020) — ตัวชี้วัดค่าบำรุงรักษาเทียบกับมูลค่าทรัพย์สิน (ดัดแปลง: ระบบนี้ใช้ค่าการได้มาสะสมแทนมูลค่าทดแทน)";
-const BUILD_TAG = "2026-11-12-pmfreq-v143";
+const BUILD_TAG = "2026-11-12-pmfreq-v144";
 /* v83: demo/sample data switched off. Set USE_SAMPLE_DATA = true to bring the generated work orders, history and KPI months back. */
 const USE_SAMPLE_DATA = false;
 /* v89: Google sign-in. Without signing in, people can look and fill things in, but nothing is saved.
@@ -3433,7 +3435,7 @@ const pagePmPlanning = `
 <div class="card pmfreq-card" id="pmFreqCard" style="margin-top:16px;">
   <div class="cal-head">
     <div><h3 id="pmFreqTitle">ความถี่แผน PM</h3><div class="sub">แต่ละแผนเป็นเส้นปะแบ่งรายเดือน — ช่วงที่ทึบคือเดือนที่ถึงรอบ กดช่องเพื่อไปดูเดือนนั้นในปฏิทิน</div></div>
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"><span class="pmf-live"><i></i>สด <b id="pmFreqClock">--:--:--</b></span><input type="search" class="select-sm" id="pmFreqSearch" placeholder="ค้นหาแผน PM…" oninput="renderPmFreq()" style="min-width:160px;"></div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"><select class="select-sm" id="pmFreqMonth" aria-label="กรองเดือน" onchange="pmFreqPick()"></select><select class="select-sm" id="pmFreqYear" aria-label="เลือกปี" onchange="pmFreqPick()"></select><span class="pmf-live"><i></i>สด <b id="pmFreqClock">--:--:--</b></span><input type="search" class="select-sm" id="pmFreqSearch" placeholder="ค้นหาแผน PM…" oninput="renderPmFreq()" style="min-width:160px;"></div>
   </div>
   <div class="pmf-sum" id="pmFreqSum"></div>
   <div class="pmfreq-wrap"><div id="pmFreqBody"></div></div>
@@ -3603,6 +3605,19 @@ function pmFreqLabel(p){
   const w = /^YEAR/.test(u) ? "ปี" : /^MONTH/.test(u) ? "เดือน" : /^WEEK/.test(u) ? "สัปดาห์" : /^DAY/.test(u) ? "วัน" : "เดือน";
   return n === 1 ? `ทุก ${w}` : `ทุก ${n} ${w}`;
 }
+// v144: the card has its own year / month filter. Year follows the calendar until it is picked here; moving the calendar's year/month takes it back.
+let PMF_YEAR = null, PMF_MONTH = -1;
+window.pmFreqPick = function(){
+  const y = parseInt(document.getElementById("pmFreqYear").value, 10), m = parseInt(document.getElementById("pmFreqMonth").value, 10);
+  PMF_YEAR = isNaN(y) ? null : y; PMF_MONTH = isNaN(m) ? -1 : m; renderPmFreq();
+};
+function pmfSyncPickers(year){
+  const ys = document.getElementById("pmFreqYear"), ms = document.getElementById("pmFreqMonth"); if (!ys || !ms) return;
+  if (!ms.options.length) ms.innerHTML = `<option value="-1">ทุกเดือน</option>` + THAI_MONTHS.map((t, i) => `<option value="${i}">${t}</option>`).join("");
+  const lo = Math.min(NOW_Y - 1, year), hi = Math.max(NOW_Y + 6, year); let h = ""; for (let y = lo; y <= hi; y++) h += `<option value="${y}">${y + 543}</option>`;
+  if (ys.dataset.range !== lo + "-" + hi){ ys.innerHTML = h; ys.dataset.range = lo + "-" + hi; }
+  ys.value = String(year); ms.value = String(PMF_MONTH);
+}
 window.pmFreqGo = function(y, m){ CAL_MONTH_OFFSET = (y * 12 + m) - (CAL_BASE_YEAR * 12 + CAL_BASE_MONTH); renderPmPlanning(); };
 const PMF_DAY = 864e5;
 function pmfToday(){ const d = new Date(); return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
@@ -3620,13 +3635,14 @@ function pmfStatus(p){
 }
 function renderPmFreq(){
   const body = document.getElementById("pmFreqBody"); if (!body) return;
-  const { year } = calMonth();
-  setText("pmFreqTitle", `ความถี่แผน PM — ปี ${year + 543}`);
+  const year = PMF_YEAR != null ? PMF_YEAR : calMonth().year;
+  pmfSyncPickers(year);
+  setText("pmFreqTitle", `ความถี่แผน PM — ${PMF_MONTH >= 0 ? THAI_MONTHS[PMF_MONTH] + " " : "ปี "}${year + 543}`);
   const q = pmNorm((document.getElementById("pmFreqSearch") || {}).value || "");
   const all = pmPlanStore().rows.filter(p => (!p.status || String(p.status).toUpperCase() === "ACTIVE"));
-  const rows = all.filter(p => !q || pmNorm([p.pm, p.desc, p.asset, p.place].join(" ")).includes(q));
+  const rows = all.filter(p => (!q || pmNorm([p.pm, p.desc, p.asset, p.place].join(" ")).includes(q)) && (PMF_MONTH < 0 || pmPlanDaysIn(p, year, PMF_MONTH).length));
   const sumEl = document.getElementById("pmFreqSum");
-  if (!rows.length){ body.innerHTML = `<div class="hist-empty" style="padding:18px 0;">${pmPlanStore().rows.length ? "ไม่พบแผนที่ค้นหา" : "ยังไม่มีแผน PM — กด “นำเข้าแผน PM” เพื่อดูความถี่เป็นเส้นปะ"}</div>`; if (sumEl) sumEl.innerHTML = ""; return; }
+  if (!rows.length){ body.innerHTML = `<div class="hist-empty" style="padding:18px 0;">${pmPlanStore().rows.length ? (PMF_MONTH >= 0 ? "ไม่มีแผน PM ที่ถึงรอบในเดือนนี้" : "ไม่พบแผนที่ค้นหา") : "ยังไม่มีแผน PM — กด “นำเข้าแผน PM” เพื่อดูความถี่เป็นเส้นปะ"}</div>`; if (sumEl) sumEl.innerHTML = ""; return; }
   const t = pmfToday(), curM = (year === NOW_Y) ? NOW_M : -1;
   const wos = TableState.workorder ? TableState.workorder.data : [];
   const matches = []; for (let m = 0; m < 12; m++) matches.push(pmMatchMonth(year, m));
@@ -3639,7 +3655,7 @@ function renderPmFreq(){
     : !st.next ? `<div class="pmf-pill none">ไม่มีรอบถัดไป</div>`
     : st.next.diff === 0 ? `<div class="pmf-pill late">ครบรอบวันนี้!<small>${st.next.dt.getDate()} ${THAI_MONTHS_SHORT[st.next.dt.getMonth()]}</small></div>`
     : `<div class="pmf-pill ${st.next.diff <= 7 ? "soon" : "ok"}">อีก ${st.next.diff} วัน<small>ครบ ${st.next.dt.getDate()} ${THAI_MONTHS_SHORT[st.next.dt.getMonth()]}</small></div>`;
-  body.innerHTML = `<div class="pmf-head"><span>แผน PM (เรียงตามความเร่งด่วน)</span><div class="pmf-months">${THAI_MONTHS_SHORT.map((tt, i) => `<span class="${i === curM ? "cur" : ""}">${tt}</span>`).join("")}</div><span style="text-align:center">ถึงรอบอีก / เกินมา</span></div>`
+  body.innerHTML = `<div class="pmf-head"><span>แผน PM (เรียงตามความเร่งด่วน)</span><div class="pmf-months">${THAI_MONTHS_SHORT.map((tt, i) => `<span class="${i === curM ? "cur" : ""}${i === PMF_MONTH ? " sel" : ""}">${tt}</span>`).join("")}</div><span style="text-align:center">ถึงรอบอีก / เกินมา</span></div>`
     + info.map(({ p, st }) => `<div class="pmf-row"><div class="pmf-name" title="${escAttr(p.desc || "")}"><b>${escAttr(p.pm || "แผน")} · ${pmFreqLabel(p)}</b><small>${escAttr(p.desc || p.asset || "")}</small></div><div class="pmf-months">${
       THAI_MONTHS_SHORT.map((tt, i) => {
         const days = pmPlanDaysIn(p, year, i), on = days.length > 0; let cls = "";
@@ -3648,7 +3664,7 @@ function renderPmFreq(){
           if (wo) cls = wo.status === "เสร็จสิ้น" ? " done" : " open";
           else { const last = new Date(year, i, Math.max.apply(null, days)), first = new Date(year, i, Math.min.apply(null, days)); cls = last < t ? " late" : (i === curM && first.getMonth() === t.getMonth() && last >= t) ? " soon" : ""; }
         }
-        return `<div class="pmf-seg${on ? " on" : ""}${cls}${i === curM ? " cur" : ""}" title="${escAttr(tt)} ${year + 543}${on ? " · ถึงรอบ PM" : ""}" onclick="pmFreqGo(${year}, ${i})"></div>`; }).join("")}${curM >= 0 ? '<i class="pmf-now"></i>' : ""}</div>${pill(st)}</div>`).join("");
+        return `<div class="pmf-seg${on ? " on" : ""}${cls}${i === curM ? " cur" : ""}${i === PMF_MONTH ? " sel" : ""}" title="${escAttr(tt)} ${year + 543}${on ? " · ถึงรอบ PM" : ""}" onclick="pmFreqGo(${year}, ${i})"></div>`; }).join("")}${curM >= 0 ? '<i class="pmf-now"></i>' : ""}</div>${pill(st)}</div>`).join("");
   pmfTick(true);
   if (!window.__pmfTimer) window.__pmfTimer = setInterval(() => { if (!document.getElementById("pmFreqBody")){ clearInterval(window.__pmfTimer); window.__pmfTimer = 0; return; } pmfTick(); }, 1000);
 }
@@ -3682,14 +3698,17 @@ function syncCalPickers(){
 window.pickCalMonth = function(){
   const y = parseInt(document.getElementById("calYearPick").value, 10), m = parseInt(document.getElementById("calMonthPick").value, 10);
   if (isNaN(y) || isNaN(m)) return;
+  PMF_YEAR = null;
   CAL_MONTH_OFFSET = (y * 12 + m) - (CAL_BASE_YEAR * 12 + CAL_BASE_MONTH);
   renderPmPlanning();
 };
 window.jumpCalToday = function(){
+  PMF_YEAR = null;
   CAL_MONTH_OFFSET = (NOW_Y * 12 + NOW_M) - (CAL_BASE_YEAR * 12 + CAL_BASE_MONTH);
   renderPmPlanning();
 };
 window.shiftCalMonth = function(delta){
+  PMF_YEAR = null;
   CAL_MONTH_OFFSET += delta;
   renderPmPlanning();
 };
