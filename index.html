@@ -402,14 +402,35 @@
   .cal-ev.purple { background: #8b5cf6; }
   .cal-ev.plan { background: transparent; color: var(--brand-ink); box-shadow: inset 0 0 0 1.5px var(--brand); border-style: dashed; }
   .cal-ev.plan.late { box-shadow: inset 0 0 0 1.5px var(--red); color: var(--red-ink); }
-  .cal-ev.active { background: #e5483f; }
+  .cal-ev.wait { background: #f59e0b; color: #3b2a00; }
+  .cal-ev.active { background: #2563eb; }
   .cal-ev.late { background: #e5483f; box-shadow: none; }
   .cal-ev.late.done { background: #16a34a; }
   .cal-ev.done { background: #16a34a; opacity: .9; }
+  .cal-ev.canc, .cal-ev.canc.gray, .cal-ev.canc.blue, .cal-ev.canc.amber, .cal-ev.canc.purple { background: #d9dce2; color: #5f6675; text-decoration: line-through; text-decoration-thickness: 1.5px; box-shadow: none; opacity: 1; }
   .cal-ev[draggable="true"] { cursor: grab; }
   .cal-cell.drop-hover { background: var(--brand-soft); outline: 2px dashed var(--brand); outline-offset: -2px; }
   .cal-ev[data-wid] { touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
   @media print { .paper-a4 { zoom: 1 !important; } }
+  .pmfreq-wrap { overflow-x: auto; padding: 4px 20px 6px; }
+  #pmFreqBody { min-width: 760px; max-height: 440px; overflow-y: auto; }
+  .pmf-row, .pmf-head { display: grid; grid-template-columns: 230px 1fr; gap: 12px; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--card-line); }
+  .pmf-head { position: sticky; top: 0; background: var(--card, #fff); z-index: 1; font-size: 11px; color: var(--text-soft); font-weight: 700; }
+  .pmf-months { display: grid; grid-template-columns: repeat(12, 1fr); gap: 5px; }
+  .pmf-head .pmf-months span { text-align: center; }
+  .pmf-head .pmf-months span.cur { color: var(--brand); }
+  .pmf-name { min-width: 0; }
+  .pmf-name b { font-size: 12.5px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pmf-name small { font-size: 11px; color: var(--text-soft); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pmf-seg { height: 14px; cursor: pointer; border-radius: 4px; position: relative; }
+  .pmf-seg::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 0; border-top: 3px dashed #b6bcc8; transform: translateY(-50%); }
+  .pmf-seg.on { background: var(--brand); }
+  .pmf-seg.on::after { display: none; }
+  .pmf-seg.cur { outline: 2px solid #f59e0b; outline-offset: 1px; }
+  .pmf-seg:hover { filter: brightness(.9); }
+  .pmf-key { display: inline-block; width: 22px; height: 0; border-top: 3px dashed #b6bcc8; }
+  .pmf-key.solid { border-top: 6px solid var(--brand); border-radius: 3px; }
+  .pmf-key.now { border-top: 3px solid #f59e0b; }
   .cal-legend { display: flex; gap: 16px; padding: 10px 20px 18px; flex-wrap: wrap; }
   .cal-legend .item { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--text-soft); }
   .cal-legend .dot { width: 8px; height: 8px; border-radius: 3px; }
@@ -942,6 +963,7 @@
       </div>
       <div class="topbar-spacer"></div>
       
+      <span id="rtPill" style="display:none; align-items:center; font-size:12px; font-weight:700; margin-right:8px; cursor:default;">● ข้อมูลร่วมกัน</span>
       <span id="topRoleBadge"></span>
       <div class="icon-btn mobile-only" title="ค้นหา" onclick="openSearchModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div>
       <span id="authArea"></span>
@@ -962,7 +984,7 @@ const REF_KPI_MTTR = "<i>MTTR (Mean Time To Repair)</i> = เวลาซ่อ�
 const REF_KPI_FAIL = "<i>จำนวนครั้งที่เกิดความขัดข้อง (Number of failures)</i> เป็นข้อมูลตั้งต้นของ MTBF = เวลาเดินเครื่องรวม ÷ จำนวนครั้งที่ขัดข้อง (ตัวชี้วัดความเชื่อถือได้ที่ใช้ทั่วไป) · ไม่พบตัวชี้วัดมาตรฐานที่นับ “จำนวนครั้งต่อเดือน” โดยตรง จึงเป็นตัวชี้วัดที่ระบบนี้กำหนดเอง และเป้า ≤ 5 ครั้งก็ตั้งในโครงงานนี้ · อ้างอิงเชิงแนวคิด: Wireman (2005) <i>Developing Performance Indicators for Managing Maintenance</i>";
 const REF_COST = "Wireman (2005); SMRP (2020) — ตัวชี้วัดต้นทุนบำรุงรักษา (Maintenance Cost)";
 const REF_RATIO = "SMRP (2020) — ตัวชี้วัดค่าบำรุงรักษาเทียบกับมูลค่าทรัพย์สิน (ดัดแปลง: ระบบนี้ใช้ค่าการได้มาสะสมแทนมูลค่าทดแทน)";
-const BUILD_TAG = "2026-11-09-testdata-v134";
+const BUILD_TAG = "2026-11-12-pmfreq-v141";
 /* v83: demo/sample data switched off. Set USE_SAMPLE_DATA = true to bring the generated work orders, history and KPI months back. */
 const USE_SAMPLE_DATA = false;
 /* v89: Google sign-in. Without signing in, people can look and fill things in, but nothing is saved.
@@ -1557,7 +1579,7 @@ window.runTopSearch = function(query){
   const typeName = { feeder:"สายป้อน", transformer:"หม้อแปลง", lbs:"LBS", substation:"สถานีย่อย" };
   const groups = [];
   const wos = TableState["workorder"] ? TableState["workorder"].data : [];
-  const woHits = wos.filter(r => has(r.code, r.equip, r.owner, r.status, r.place)).map(r => `<div class="mini-stat-row search-hit" onclick="goToEquipment('workorder','${r.code}')"><span class="lbl"><b>${r.code}</b> · ${r.equip} · ${r.date}</span><span class="val">${statusBadge(r.status)}</span></div>`);
+  const woHits = wos.filter(r => has(r.code, r.equip, r.owner, r.status, r.place)).map(r => `<div class="mini-stat-row search-hit" onclick="goToEquipment('workorder','${r.code}')"><span class="lbl"${r.status === "ยกเลิก" ? ' style="text-decoration:line-through; color:var(--text-faint);"' : ""}><b>${r.code}</b> · ${r.equip} · ${r.date}</span><span class="val">${statusBadge(r.status)}</span></div>`);
   if (woHits.length) groups.push(["ใบงาน", woHits]);
   const flHits = FAILURE_LOG.filter(f => has(f.equip, f.assetCode, f.cause, f.reporter, f.note)).map(f => `<div class="mini-stat-row search-hit" onclick="closeModal(); viewFailure('${f.id}')"><span class="lbl"><b>${f.equip}</b> · ${f.cause}</span><span class="val" style="font-size:11.5px; color:var(--text-faint);">${f.dateLabel} · ${f.hours.toFixed(1)} ชม.</span></div>`);
   if (flHits.length) groups.push(["ความขัดข้อง", flHits]);
@@ -1709,8 +1731,8 @@ function normWoStatus(t){
   if (/(ยกเลิก|cancel|\bcanc|\bcan\b|\bcnlc?\b|\bdlfl\b|\bdlt\b|\bvoid)/.test(x)) return "ยกเลิก";
   if (/(เกินกำหนด|เกินเวลา|ล่าช้า|overdue|\blate\b|delay)/.test(x)) return "เกินกำหนด";
   if (/(เสร็จ|แล้วเสร็จ|(?<!เ)ปิด|complete|\bcomp\b|\bclose|\bclosed\b|\bclos\b|\bdone\b|finish|\bcnf\b|\bteco\b|\btecq\b|\bhist\b)/.test(x)) return "เสร็จสิ้น";
-  if (/(กำลัง|ระหว่าง|อยู่ระหว่าง|in ?prog|\binprg\b|ongoing|\bwip\b|started|\brel\b|\bpcnf\b|released|working|progress)/.test(x)) return "กำลังดำเนินการ";
-  if (/(รอ|อนุมัติ|ใหม่|เปิด|pending|waiting|\bwappr\b|\bwsch\b|\bwmatl\b|\bwpcond\b|\bappr\b|\bnew\b|\bopen\b|\bcrtd\b|\bwait|sched|plan|draft|request)/.test(x)) return "รอดำเนินการ";
+  if (/(กำลัง|ระหว่าง|อยู่ระหว่าง|in ?prog|ongoing|\bwip\b|started|working|progress)/.test(x)) return "กำลังดำเนินการ";
+  if (/(รอ|อนุมัติ|ใหม่|เปิด|pending|waiting|\binprg\b|\brel\b|\bpcnf\b|released|\bwappr\b|\bwsch\b|\bwmatl\b|\bwpcond\b|\bappr\b|\bnew\b|\bopen\b|\bcrtd\b|\bwait|sched|plan|draft|request)/.test(x)) return "รอดำเนินการ";
   return "";
 }
 window.importTableCSV = function(tableId){
@@ -1775,6 +1797,7 @@ window.importTableCSV = function(tableId){
     DATE_MDY = false;
     st.page = 1; st.status = ""; st.search = "";
     { const sb = document.querySelector("#" + tableId + "-table-wrap")?.closest(".card")?.querySelector(".search-sm input"); if (sb) sb.value = ""; }
+    if (added && tableId === "workorder"){ try { autoFlagOverdue(); } catch(e){ console.error(e); } }
     renderTable(tableId);
     if (added && tableId === "workorder"){
       const ids = new Set(st.data.filter(r => !idsBefore.has(r.id)).map(r => r.id)), cnt = {};
@@ -1882,13 +1905,13 @@ function persistTable(id){
   queueSync();
 }
 window.openResetDataModal = function(){
-  openModal("ล้างข้อมูลที่บันทึกในเครื่องนี้", `<p style="margin:0; font-size:13px; line-height:1.8; color:var(--text-soft);">จะลบ <b>ใบงานที่แก้ไขหรือเพิ่ม</b>, <b>ความขัดข้องที่บันทึก</b> และ <b>ประวัติใบตรวจ</b> ที่เก็บไว้ในเบราว์เซอร์นี้ แล้วกลับไปใช้ข้อมูลตัวอย่างเริ่มต้น<br>ชื่อผู้ใช้ ภาษา และบทบาทจะยังอยู่เหมือนเดิม · <b style="color:var(--red-ink);">ย้อนกลับไม่ได้</b> — แนะนำให้ส่งออก Excel เก็บไว้ก่อน</p>`,
+  openModal("ล้างข้อมูลที่บันทึกในเครื่องนี้", `<p style="margin:0; font-size:13px; line-height:1.8; color:var(--text-soft);">จะลบ <b>ใบงานที่แก้ไขหรือเพิ่ม</b>, <b>ความขัดข้องที่บันทึก</b> และ <b>ประวัติใบตรวจ</b> ที่เก็บไว้ในเบราว์เซอร์นี้ แล้วกลับไปใช้ข้อมูลตัวอย่างเริ่มต้น (ถ้าเปิดข้อมูลร่วมกันไว้ ข้อมูลจากกลางจะถูกดึงกลับมา ข้อมูลของคนอื่นไม่ถูกลบ)<br>ชื่อผู้ใช้ ภาษา และบทบาทจะยังอยู่เหมือนเดิม · <b style="color:var(--red-ink);">ย้อนกลับไม่ได้</b> — แนะนำให้ส่งออก Excel เก็บไว้ก่อน</p>`,
     `<button class="btn" onclick="closeModal()">ยกเลิก</button><button class="btn primary" style="background:var(--red); border-color:var(--red);" onclick="resetLocalData()">ล้างข้อมูล</button>`);
 };
 window.resetLocalData = function(){
   try {
     ["feeder","transformer","lbs","substation","workorder"].forEach(id => localStorage.removeItem(tableStoreKey(id)));
-    ["failure-log-user","insp-history","insp-sample-v39","insp-cost-v42","cost-import-v1","asset-reg-v1"].forEach(k => localStorage.removeItem(k));
+    ["failure-log-user","insp-history","insp-sample-v39","insp-cost-v42","cost-import-v1","asset-reg-v1","rt-known"].forEach(k => localStorage.removeItem(k));
   } catch(e){}
   location.reload();
 };
@@ -1908,9 +1931,31 @@ function initAssetTable(tableId, config){
   renderTable(tableId);
 }
 
+// Month / year filter of the work-order page (same date as the calendar: Reported Date).
+function woPeriodRows(rows){
+  const st = TableState["workorder"]; if (!st || (st.fYear == null || st.fYear === "") && (st.fMonth == null || st.fMonth === "")) return rows;
+  return rows.filter(r => { const p = parseWoDate(r); return (st.fYear === "" || st.fYear == null || p.yearBE === +st.fYear) && (st.fMonth === "" || st.fMonth == null || p.month === +st.fMonth); });
+}
+window.setWoPeriod = function(){
+  const st = TableState["workorder"]; if (!st) return;
+  const y = document.getElementById("wo-fy"), m = document.getElementById("wo-fm");
+  st.fYear = y ? y.value : ""; st.fMonth = m ? m.value : ""; st.page = 1; renderTable("workorder");
+};
+window.clearWoPeriod = function(){ const st = TableState["workorder"]; if (!st) return; st.fYear = ""; st.fMonth = ""; st.page = 1; renderTable("workorder"); };
+function renderWoPeriodPick(){
+  const st = TableState["workorder"]; const y = document.getElementById("wo-fy"), m = document.getElementById("wo-fm"); if (!st || !y || !m) return;
+  const ys = Array.from(new Set(st.data.map(r => parseWoDate(r).yearBE).filter(v => v > 2500))).sort((a, b) => b - a);
+  if (st.fYear && !ys.includes(+st.fYear)) ys.push(+st.fYear);
+  const wantY = `<option value="">ทุกปี</option>` + ys.map(v => `<option value="${v}">${v}</option>`).join("");
+  if (y.innerHTML !== wantY) y.innerHTML = wantY;
+  if (!m.innerHTML) m.innerHTML = `<option value="">ทุกเดือน</option>` + THAI_MONTHS.map((n, i) => `<option value="${i}">${n}</option>`).join("");
+  y.value = st.fYear == null ? "" : String(st.fYear); m.value = st.fMonth == null ? "" : String(st.fMonth);
+  const b = document.getElementById("wo-fclear"); if (b) b.style.display = (y.value || m.value) ? "" : "none";
+}
 function getFilteredRows(tableId){
   const st = TableState[tableId];
   let rows = st.data;
+  if (tableId === "workorder") rows = woPeriodRows(rows);
   if (st.status) rows = rows.filter(r => r.status === st.status);
   if (st.search){
     const q = st.search.toLowerCase();
@@ -1966,7 +2011,7 @@ function renderTable(tableId){
     const el = document.getElementById(`${tableId}-kpi-${k}`);
     if (el) el.textContent = st.data.filter(r => r.status === status).length;
   });
-  if (tableId === "workorder"){ renderWorkOrderChips(); renderKpiCards(); try { updateUndoImportBtn(); } catch(e){} }
+  if (tableId === "workorder"){ renderWoPeriodPick(); renderWorkOrderChips(); renderKpiCards(); try { updateUndoImportBtn(); } catch(e){} }
 }
 
 // v91: history of imported files (newest first). Each entry remembers which work orders it brought in.
@@ -2123,7 +2168,7 @@ window.viewAssetRow = function(tableId, rowId){
     }
     if (row.assetTableId && row.assetCode) actionBtns += `<button class="btn" onclick="showAssetHistory('${row.assetTableId}','${row.assetCode}')">${ic('history')} ประวัติอุปกรณ์</button>`;
     if (FIELD_STOPS.some(s => s.wo.id === row.id)) actionBtns += `<button class="btn" onclick="showWoOnMap('${row.id}')">${ic('mapPin')} นำทาง</button>`;
-    if (row.status === "รอดำเนินการ" || row.status === "เกินกำหนด") actionBtns += `<button class="btn primary" onclick="activateWo('${row.id}')">▶ เริ่มงาน (แอ็กทีฟ)</button>`;
+    if (row.status === "รอดำเนินการ" || row.status === "เกินกำหนด" || (row.status === "กำลังดำเนินการ" && !row.activatedAt)) actionBtns += `<button class="btn primary" onclick="activateWo('${row.id}')">▶ เริ่มงาน (Active)</button>`;
     actionBtns += `<button class="btn" onclick="showWoInCalendar('${row.id}')">${ic('calendar')} ดูในปฏิทิน</button>`;
   } else {
     // An asset row: offer related work orders, and the matching inspection form if one exists.
@@ -2397,7 +2442,8 @@ function renderWorkOrderChips(){
     { label:"ยกเลิก", value:"ยกเลิก" },
   ];
   chipsEl.innerHTML = groups.map(g => {
-    const count = g.value ? st.data.filter(r => r.status === g.value).length : st.data.length;
+    const base = woPeriodRows(st.data);
+    const count = g.value ? base.filter(r => r.status === g.value).length : base.length;
     return `<div class="chip ${st.status===g.value?"active":""}" tabindex="0" onclick="setTableStatus('workorder','${g.value}')">${g.label}<span class="n">${count}</span></div>`;
   }).join("");
 }
@@ -3332,13 +3378,11 @@ const pagePmPlanning = `
       <div id="calDaysGrid" style="display:contents;"></div>
     </div>
     <div class="cal-legend">
-      <div class="item"><span class="dot" style="background:var(--brand)"></span>Feeder</div>
-      <div class="item"><span class="dot" style="background:var(--amber)"></span>Transformer</div>
-      <div class="item"><span class="dot" style="background:var(--green)"></span>LBS</div>
-      <div class="item"><span class="dot" style="background:#7c879c"></span>Unit Substation</div>
-      <div class="item"><span class="dot" style="background:#8b5cf6"></span>อุปกรณ์อื่น (SZ / RMU / Capacitor / Network)</div>
+      <div class="item"><span class="dot" style="background:#f59e0b"></span>รอดำเนินการ</div>
+      <div class="item"><span class="dot" style="background:#2563eb"></span>กำลังดำเนินการ</div>
       <div class="item"><span class="dot" style="background:#e5483f;"></span>เกินกำหนด</div>
-      <div class="item"><span class="dot" style="background:#16a34a;"></span>เสร็จสิ้นแล้ว</div>
+      <div class="item"><span class="dot" style="background:#16a34a;"></span>เสร็จสิ้น</div>
+      <div class="item"><span class="dot" style="background:#d9dce2; box-shadow: inset 0 0 0 1px #aab0bb;"></span><s>ยกเลิก</s> (ไม่ต้องทำต่อ)</div>
     </div>
   </div>
   <div class="side-stack">
@@ -3361,6 +3405,18 @@ const pagePmPlanning = `
     </div>
   </div>
 </div>
+<div class="card pmfreq-card" id="pmFreqCard" style="margin-top:16px;">
+  <div class="cal-head">
+    <div><h3 id="pmFreqTitle">ความถี่แผน PM</h3><div class="sub">แต่ละแผนเป็นเส้นปะแบ่งรายเดือน — ช่วงที่ทึบคือเดือนที่ถึงรอบ กดช่องเพื่อไปดูเดือนนั้นในปฏิทิน</div></div>
+    <input type="search" class="select-sm" id="pmFreqSearch" placeholder="ค้นหาแผน PM…" oninput="renderPmFreq()" style="min-width:160px;">
+  </div>
+  <div class="pmfreq-wrap"><div id="pmFreqBody"></div></div>
+  <div class="cal-legend">
+    <div class="item"><span class="pmf-key solid"></span>เดือนที่ถึงรอบ PM</div>
+    <div class="item"><span class="pmf-key dash"></span>เดือนที่ไม่มีรอบ</div>
+    <div class="item"><span class="pmf-key now"></span>เดือนปัจจุบัน</div>
+  </div>
+</div>
 `;
 const CAL_BASE_YEAR = NOW_Y, CAL_BASE_MONTH = NOW_M; // the calendar opens on the current month
 let CAL_MONTH_OFFSET = 0;
@@ -3378,8 +3434,8 @@ function woInMonth(year, month){
 }
 function calChip(r){
   if (r.__plan) return pmPlanChip(r);
-  const cls = calTypeClass(r);
-  const extra = r.status === "เกินกำหนด" ? " late" : r.status === "เสร็จสิ้น" ? " done" : r.status === "กำลังดำเนินการ" ? " active" : "";
+  const cls = (r.status === "รอดำเนินการ" || !r.status) ? "wait" : "";
+  const extra = r.status === "เกินกำหนด" ? " late" : r.status === "เสร็จสิ้น" ? " done" : r.status === "กำลังดำเนินการ" ? " active" : r.status === "ยกเลิก" ? " canc" : "";
   return `<div class="cal-ev ${cls}${extra}" data-wid="${r.id}" title="${r.code} · ${r.equip} · ${r.status}" onclick="viewAssetRow('workorder','${r.id}')">${r.inspectionId ? "✓ " : ""}${r.assetCode || r.code}</div>`;
 }
 // Move a work order to a day of the calendar (used by drag and drop).
@@ -3444,7 +3500,7 @@ window.moveWoToDay = function(id, y, m, d){
 })();
 window.activateWo = function(id){
   const st = TableState["workorder"]; const row = st && st.data.find(r => r.id === id); if (!row) return;
-  row.status = "กำลังดำเนินการ"; delete row.statusRaw; delete row.autoOverdue; delete row.origStatus;
+  row.status = "กำลังดำเนินการ"; row.activatedAt = Date.now(); row.manualStatus = true; delete row.statusRaw; delete row.autoOverdue; delete row.origStatus;
   closeModal(); renderTable("workorder"); persistTable("workorder"); refreshLinkedViews(); queueSync();
   showToast(`เริ่มงาน ${row.code} แล้ว — ขึ้นสีแดงในปฏิทิน`);
 };
@@ -3470,10 +3526,10 @@ function renderCalendarView(){
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const startWeekday = new Date(year, month, 1).getDay(); // 0 = Sunday
   const byDay = {};
-  woInMonth(year, month).filter(r => r.status !== "ยกเลิก").forEach(r => { const d = parseWoDate(r).day; (byDay[d] = byDay[d] || []).push(r); });
+  woInMonth(year, month).forEach(r => { const d = parseWoDate(r).day; (byDay[d] = byDay[d] || []).push(r); });
   const planByDay = {}; pmPlanOccurrences(year, month).forEach(o => { (planByDay[o.day] = planByDay[o.day] || []).push(o); });
   // Open work first so the chips that need attention are the ones shown.
-  const rank = r => r.status === "เกินกำหนด" ? 0 : r.status === "เสร็จสิ้น" ? 2 : 1;
+  const rank = r => r.status === "เกินกำหนด" ? 0 : r.status === "เสร็จสิ้น" ? 2 : r.status === "ยกเลิก" ? 3 : 1;
   const now = new Date();
   const SHOW = 3;
   let html = "";
@@ -3498,6 +3554,7 @@ function renderPmPlanning(){
   const late = list.filter(r => r.status === "เกินกำหนด").length;
   const open = list.length - done - late;
   setText("pmStatTitle", `งานตามแผน ${THAI_MONTHS_SHORT[month]} ${year + 543}`);
+  try { renderPmFreq(); } catch(e){ console.error(e); }
   const plans = pmPlanOccurrences(year, month);
   setText("calMonthSub", (list.length ? `${list.length} งานในเดือนนี้ · เสร็จแล้ว ${done} งาน` : "ยังไม่มีงาน PM ในเดือนนี้") + (plans.length ? ` · แผน PM ที่ถึงกำหนดและยังไม่ออกใบงาน ${plans.length} งาน (กรอบเส้นประ)` : ""));
   try { const b = document.querySelector("#pmPlanBtn .n"); if (b) b.textContent = pmPlanStore().rows.length ? ` (${pmPlanStore().rows.length})` : ""; } catch(e){}
@@ -3509,6 +3566,25 @@ function renderPmPlanning(){
   setText("pmDonutPct", pct == null ? "–" : pct + "%");
   if (typeof svgDonut === "function" && document.getElementById("chartPmDonut"))
     svgDonut("chartPmDonut", list.length ? [done, list.length - done] : [0, 1], ["#3c668e", "#e3e3e0"]);
+}
+// v141: frequency of each PM plan across the year, drawn as a dashed line split into 12 months.
+function pmFreqLabel(p){
+  const n = Math.max(1, Math.round(parseFloat(p.freq) || 1)), u = String(p.unit || "").toUpperCase();
+  const w = /^YEAR/.test(u) ? "ปี" : /^MONTH/.test(u) ? "เดือน" : /^WEEK/.test(u) ? "สัปดาห์" : /^DAY/.test(u) ? "วัน" : "เดือน";
+  return n === 1 ? `ทุก ${w}` : `ทุก ${n} ${w}`;
+}
+window.pmFreqGo = function(y, m){ CAL_MONTH_OFFSET = (y * 12 + m) - (CAL_BASE_YEAR * 12 + CAL_BASE_MONTH); renderPmPlanning(); };
+function renderPmFreq(){
+  const body = document.getElementById("pmFreqBody"); if (!body) return;
+  const { year } = calMonth();
+  setText("pmFreqTitle", `ความถี่แผน PM — ปี ${year + 543}`);
+  const q = pmNorm((document.getElementById("pmFreqSearch") || {}).value || "");
+  const rows = pmPlanStore().rows.filter(p => (!p.status || String(p.status).toUpperCase() === "ACTIVE") && (!q || pmNorm([p.pm, p.desc, p.asset, p.place].join(" ")).includes(q)));
+  if (!rows.length){ body.innerHTML = `<div class="hist-empty" style="padding:18px 0;">${pmPlanStore().rows.length ? "ไม่พบแผนที่ค้นหา" : "ยังไม่มีแผน PM — กด “นำเข้าแผน PM” เพื่อดูความถี่เป็นเส้นปะ"}</div>`; return; }
+  const curM = (year === NOW_Y) ? NOW_M : -1;
+  body.innerHTML = `<div class="pmf-head"><span>แผน PM</span><div class="pmf-months">${THAI_MONTHS_SHORT.map((t, i) => `<span class="${i === curM ? "cur" : ""}">${t}</span>`).join("")}</div></div>`
+    + rows.map(p => `<div class="pmf-row"><div class="pmf-name" title="${escAttr(p.desc || "")}"><b>${escAttr(p.pm || "แผน")} · ${pmFreqLabel(p)}</b><small>${escAttr(p.desc || p.asset || "")}</small></div><div class="pmf-months">${
+      THAI_MONTHS_SHORT.map((t, i) => { const on = pmPlanDaysIn(p, year, i).length > 0; return `<div class="pmf-seg${on ? " on" : ""}${i === curM ? " cur" : ""}" title="${escAttr(t)} ${year + 543}${on ? " · ถึงรอบ PM" : ""}" onclick="pmFreqGo(${year}, ${i})"></div>`; }).join("")}</div></div>`).join("");
 }
 // v43: jump straight to any month / year, or back to this month.
 function syncCalPickers(){
@@ -3542,7 +3618,7 @@ window.shiftCalMonth = function(delta){
 };
 function pmListHtml(list){
   return list.length
-    ? `<div class="mini-stat-list">${list.map(r => `<div class="mini-stat-row search-hit" onclick="viewAssetRow('workorder','${r.id}')"><span class="dot" style="background:${{ blue:"var(--brand)", amber:"var(--amber)", green:"var(--green)", gray:"#7c879c", purple:"#8b5cf6" }[calTypeClass(r)]}"></span><span class="lbl"><b>${r.code}</b> · ${r.equip} · ${r.date}</span><span class="val">${statusBadge(r.status)}${r.status !== "ยกเลิก" && (r.inspectionId || r.status !== "เสร็จสิ้น") ? `<button class="row-icon-btn" title="${r.inspectionId ? "ดูใบตรวจที่บันทึก" : "ตรวจและปิดใบงาน"}" style="color:var(--green-ink); margin-left:6px;" onclick="event.stopPropagation(); woInspectAction('${r.id}')">${ic('checklist')}</button>` : ""}</span></div>`).join("")}</div>`
+    ? `<div class="mini-stat-list">${list.map(r => `<div class="mini-stat-row search-hit" onclick="viewAssetRow('workorder','${r.id}')"><span class="dot" style="background:${({ "รอดำเนินการ":"#f59e0b", "กำลังดำเนินการ":"#2563eb", "เกินกำหนด":"#e5483f", "เสร็จสิ้น":"#16a34a", "ยกเลิก":"#b6bcc8" }[r.status] || "#f59e0b")}"></span><span class="lbl"${r.status === "ยกเลิก" ? ' style="text-decoration:line-through; color:var(--text-faint);"' : ""}><b>${r.code}</b> · ${r.equip} · ${r.date}</span><span class="val">${statusBadge(r.status)}${r.status !== "ยกเลิก" && (r.inspectionId || r.status !== "เสร็จสิ้น") ? `<button class="row-icon-btn" title="${r.inspectionId ? "ดูใบตรวจที่บันทึก" : "ตรวจและปิดใบงาน"}" style="color:var(--green-ink); margin-left:6px;" onclick="event.stopPropagation(); woInspectAction('${r.id}')">${ic('checklist')}</button>` : ""}</span></div>`).join("")}</div>`
     : `<div class="hist-empty">ไม่มีงาน</div>`;
 }
 window.woInspectAction = function(id){
@@ -3926,7 +4002,11 @@ const pageWorkOrder = `
   <div class="chip-row" id="workorder-chips"></div>
   <div class="table-toolbar">
     <div class="search-sm">${ic('search')}<input placeholder="ค้นหา Work Order / Description / MEA No. / สถานที่ติดตั้ง..." oninput="setTableSearch('workorder', this.value)"></div>
+    <select class="select-sm" id="wo-fm" aria-label="กรองเดือน" onchange="setWoPeriod()"></select>
+    <select class="select-sm" id="wo-fy" aria-label="กรองปี" onchange="setWoPeriod()"></select>
+    <button class="btn" id="wo-fclear" style="display:none" onclick="clearWoPeriod()">ล้างตัวกรอง</button>
   </div>
+  <div style="padding:0 20px 8px; font-size:11.5px; color:var(--text-faint);">ตัวกรองเดือน/ปีใช้ Reported Date ตัวเดียวกับปฏิทิน PM — ตัวเลขแท็บสถานะด้านบนนับเฉพาะช่วงที่เลือก</div>
   <div id="workorder-table-wrap" class="table-wrap"></div>
   <div class="table-foot"><div class="count" id="workorder-count"></div><div class="pager" id="workorder-pager"></div></div>
 </div>
@@ -4935,6 +5015,7 @@ function renderInspDash(){
   const history = loadInspHistory();
   root.innerHTML = inspDashHtml(history);
   drawInspDash(history);
+  try { drawInspRate(history); } catch(e){}
 }
 function inspDashHtml(history){
   if (!INSP_DB) INSP_DB = { year:String(KPI_PERIOD.yearBE), month:String(KPI_PERIOD.monthIdx) };
@@ -4964,7 +5045,17 @@ function inspDashHtml(history){
   const ring = `<svg width="116" height="116" viewBox="0 0 100 100" role="img" aria-label="สัดส่วนที่พบความผิดปกติ ${pct.toFixed(0)}%"><circle cx="50" cy="50" r="38" fill="none" stroke="rgba(255,255,255,0.16)" stroke-width="11"/>
     ${list.length ? `<circle cx="50" cy="50" r="38" fill="none" stroke="#5eead4" stroke-width="11" stroke-dasharray="${arcOk.toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 50 50)"/><circle cx="50" cy="50" r="38" fill="none" stroke="#ff8a80" stroke-width="11" stroke-dasharray="${arcBad.toFixed(1)} ${C.toFixed(1)}" stroke-dashoffset="${(-arcOk).toFixed(1)}" transform="rotate(-90 50 50)"/>` : ""}
     <text x="50" y="49" text-anchor="middle" font-size="19" font-weight="800" fill="#fff" font-family="Inter, sans-serif">${pct.toFixed(0)}%</text><text x="50" y="64" text-anchor="middle" font-size="8.5" fill="rgba(255,255,255,0.8)">ผิดปกติ</text></svg>`;
-  const stat = (dotC, lbl, v, sub, ref, drill) => `<div class="idb-stat idb-link" title="กดเพื่อดูรายการในประวัติการตรวจสอบ" onclick="inspDrill(${drill || "{}"})"><div class="l"><i style="background:${dotC};"></i>${lbl}</div><div class="v num">${v}</div>${sub ? `<div class="s">${sub}</div>` : ""}${ref ? refNote(ref) : ""}</div>`;
+  const mon = fn => Array.from({ length:12 }, (_, m) => fn(inYear.filter(h => new Date(h.savedAt).getMonth() === m)));
+  const spark = (vals, col) => {
+    const W = 64, H = 26, mx = Math.max(1, ...vals), selM = D.month === "" ? -1 : +D.month;
+    const pts = vals.map((v, i) => [2 + i * (W - 4) / 11, H - 3 - v / mx * (H - 8)]);
+    const line = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join("");
+    const area = line + `L${pts[11][0].toFixed(1)} ${H}L${pts[0][0].toFixed(1)} ${H}Z`;
+    const gid = "sg" + col.replace("#", "");
+    return `<svg class="idb-spark" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true"><defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".55"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs><path d="${area}" fill="url(#${gid})"/><path d="${line}" fill="none" stroke="${col}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>${selM >= 0 ? `<circle cx="${pts[selM][0].toFixed(1)}" cy="${pts[selM][1].toFixed(1)}" r="2.8" fill="#fff" stroke="${col}" stroke-width="1.6"/>` : ""}</svg>`;
+  };
+  const S_TOT = mon(L => L.length), S_BAD = mon(L => L.filter(h => (h.findings || []).length).length), S_FND = mon(L => L.reduce((a, h) => a + (h.findings || []).length, 0)), S_WO = mon(L => L.filter(h => h.woCode).length);
+  const stat = (dotC, lbl, v, sub, ref, drill, sp) => `<div class="idb-stat idb-link" title="กดเพื่อดูรายการในประวัติการตรวจสอบ" onclick="inspDrill(${drill || "{}"})">${sp || ""}<div class="l"><i style="background:${dotC};"></i>${lbl}</div><div class="v num">${v}</div>${sub ? `<div class="s">${sub}</div>` : ""}${ref ? refNote(ref) : ""}</div>`;
   const src = "ประวัติการตรวจสอบที่บันทึกจากแบบตรวจสอบ SF-07 ในช่วงที่เลือก";
   const dot = c => `<span style="display:inline-block; width:9px; height:9px; border-radius:3px; background:${c}; margin-right:5px;"></span>`;
   const OKG = "linear-gradient(90deg,#2f6fa8,#4ea1e0)", BADG = "linear-gradient(90deg,#f59e0b,#ef4444)";
@@ -5010,6 +5101,37 @@ function inspDashHtml(history){
     .idb-row .track { height:9px; border-radius:6px; background:var(--gray-soft); margin-top:4px; overflow:hidden; display:flex; }
     .idb-row .track > div { border-radius:6px; }
     .idb-rank { display:inline-flex; width:22px; height:22px; border-radius:7px; align-items:center; justify-content:center; background:linear-gradient(135deg,#f59e0b,#ef4444); color:#fff; font-size:11px; font-weight:800; margin-right:8px; flex:none; }
+
+    .idb-hero { position:relative; overflow:hidden; box-shadow:0 18px 40px -20px rgba(30,54,82,.8); animation:idbUp .5s ease both; }
+    .idb-hero::before { content:""; position:absolute; right:-70px; top:-90px; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle,rgba(125,211,252,.35),transparent 68%); pointer-events:none; }
+    .idb-hero::after { content:""; position:absolute; left:30%; bottom:-120px; width:340px; height:240px; border-radius:50%; background:radial-gradient(circle,rgba(94,234,212,.20),transparent 70%); pointer-events:none; }
+    .idb-hero > * { position:relative; z-index:1; }
+    .idb-head .t { font-size:21px; letter-spacing:-.2px; }
+    .idb-stat { position:relative; backdrop-filter:blur(4px); transition:transform .18s, background .18s, box-shadow .18s; animation:idbUp .55s ease both; }
+    .idb-stat:nth-child(2) { animation-delay:.06s; } .idb-stat:nth-child(3) { animation-delay:.12s; } .idb-stat:nth-child(4) { animation-delay:.18s; }
+    .idb-stat.idb-link:hover { transform:translateY(-3px); box-shadow:0 14px 24px -14px rgba(0,0,0,.55); }
+    .idb-stat .v { font-size:27px; }
+    .idb-spark { position:absolute; right:10px; top:10px; opacity:.95; }
+    .idb-hero svg[role="img"] { filter:drop-shadow(0 6px 12px rgba(0,0,0,.35)); }
+    .idb-card { border-radius:16px; box-shadow:0 12px 30px -22px rgba(20,40,70,.55); transition:transform .18s, box-shadow .18s; animation:idbUp .55s ease both; }
+    .idb-card:hover { transform:translateY(-2px); box-shadow:0 18px 36px -22px rgba(20,40,70,.6); }
+    .idb-grid .idb-col:nth-child(2) .idb-card { animation-delay:.1s; }
+    .idb-card h3 { font-size:15px; display:flex; align-items:center; gap:8px; }
+    .idb-card h3::before { content:""; width:8px; height:18px; border-radius:4px; background:var(--cc,#3c668e); display:inline-block; }
+    .idb-card .idb-row:nth-child(3) .idb-rank { background:linear-gradient(135deg,#fbbf24,#f59e0b); box-shadow:0 4px 10px -3px rgba(245,158,11,.7); }
+    .idb-card .idb-row:nth-child(4) .idb-rank { background:linear-gradient(135deg,#cbd5e1,#94a3b8); }
+    .idb-card .idb-row:nth-child(5) .idb-rank { background:linear-gradient(135deg,#f0a36b,#c2733a); }
+    #chartInspMonth svg path[fill^="url"] { transform-box:fill-box; transform-origin:50% 100%; animation:idbGrow .7s cubic-bezier(.2,.8,.2,1) both; }
+    .idb-frm .chip { align-self:center; height:auto; min-height:0; padding:2px 9px; }
+    .idb-empty { text-align:center; padding:34px 10px 30px; color:var(--text-soft); }
+    .idb-empty .ico { width:68px; height:68px; margin:0 auto 12px; border-radius:50%; background:linear-gradient(135deg,#e6f0fa,#d3e4f5); display:flex; align-items:center; justify-content:center; box-shadow:0 10px 24px -14px rgba(60,102,142,.7); }
+    .idb-empty b { display:block; font-size:15px; color:var(--text); margin-bottom:3px; }
+    .idb-rate-wrap { position:relative; }
+    @keyframes idbUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+    @keyframes idbGrow { from { transform:scaleY(.02); opacity:.2; } to { transform:scaleY(1); opacity:1; } }
+    @keyframes idbDash { from { stroke-dashoffset:var(--len); } to { stroke-dashoffset:0; } }
+    @media (prefers-reduced-motion: reduce) { .idb-hero, .idb-stat, .idb-card, #chartInspMonth svg path[fill^="url"] { animation:none !important; } }
+    @media (max-width:520px) { .idb-spark { display:none; } }
     @media (max-width:1100px) { .idb-grid { grid-template-columns:minmax(0,1fr); } .idb-stats { grid-template-columns:repeat(2, 1fr); } }
     @media (max-width:520px) { .idb-hero { padding:16px 14px 14px; } .idb-card { padding:14px 14px 16px; } .idb-body { justify-content:center; } }
   </style>
@@ -5025,18 +5147,19 @@ function inspDashHtml(history){
     <div class="idb-body">
       ${ring}
       <div class="idb-stats">
-        ${stat("#7dd3fc", "ตรวจทั้งหมด", list.length.toLocaleString() + " ครั้ง", "", src, "{}")}
-        ${stat("#ff8a80", "พบความผิดปกติ", bad.length.toLocaleString() + " ครั้ง", list.length ? `${pct.toFixed(1)}% ของการตรวจ` : "", "นับการตรวจที่มีข้อบกพร่องอย่างน้อย 1 จุด ÷ การตรวจทั้งหมด × 100", "{bad:'1'}")}
-        ${stat("#fcd34d", "จุดผิดปกติรวม", nFind.toLocaleString() + " จุด", bad.length ? `เฉลี่ย ${(nFind / bad.length).toFixed(1)} จุด/ครั้ง` : "", "ผลรวมข้อบกพร่องที่ติ๊กไว้ในแบบตรวจสอบ", "{bad:'1'}")}
-        ${stat("#5eead4", "ตรวจตามใบงาน", withWo.toLocaleString() + " ครั้ง", list.length ? `${(withWo / list.length * 100).toFixed(0)}% · ที่เหลือตรวจอิสระ` : "", "การตรวจที่บันทึกจากใบงาน PM ซึ่งปิดใบงานให้อัตโนมัติ", "{wo:'1'}")}
+        ${stat("#7dd3fc", "ตรวจทั้งหมด", list.length.toLocaleString() + " ครั้ง", "", src, "{}", spark(S_TOT, "#7dd3fc"))}
+        ${stat("#ff8a80", "พบความผิดปกติ", bad.length.toLocaleString() + " ครั้ง", list.length ? `${pct.toFixed(1)}% ของการตรวจ` : "", "นับการตรวจที่มีข้อบกพร่องอย่างน้อย 1 จุด ÷ การตรวจทั้งหมด × 100", "{bad:'1'}", spark(S_BAD, "#ff8a80"))}
+        ${stat("#fcd34d", "จุดผิดปกติรวม", nFind.toLocaleString() + " จุด", bad.length ? `เฉลี่ย ${(nFind / bad.length).toFixed(1)} จุด/ครั้ง` : "", "ผลรวมข้อบกพร่องที่ติ๊กไว้ในแบบตรวจสอบ", "{bad:'1'}", spark(S_FND, "#fcd34d"))}
+        ${stat("#5eead4", "ตรวจตามใบงาน", withWo.toLocaleString() + " ครั้ง", list.length ? `${(withWo / list.length * 100).toFixed(0)}% · ที่เหลือตรวจอิสระ` : "", "การตรวจที่บันทึกจากใบงาน PM ซึ่งปิดใบงานให้อัตโนมัติ", "{wo:'1'}", spark(S_WO, "#5eead4"))}
       </div>
     </div>
     ${worst ? `<div class="idb-insight"><b>ควรให้ความสนใจ:</b> ${esc(worst.f.equip)} พบความผิดปกติ ${worst.b} จาก ${worst.n} ครั้ง (${(worst.b / worst.n * 100).toFixed(0)}%) ใน${period}</div>` : ""}
   </div>
-  ${empty ? `<div class="card idb-card"><div class="hist-empty" style="padding:18px 6px;">ยังไม่มีการตรวจสอบใน${period}</div></div>` : `
+  ${empty ? `<div class="card idb-card" style="--cc:#4ea1e0;"><div class="idb-empty"><div class="ico"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3c668e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2.5"/><path d="M9 4.5h6M9 11l2 2 4-4M9 17h6"/></svg></div><b>ยังไม่มีการตรวจสอบใน${period}</b>เมื่อบันทึกใบตรวจ SF-07 ข้อมูลจะมาแสดงที่นี่ทันที<div style="margin-top:12px;"><button class="btn primary" onclick="goTo('inspection')">ไปบันทึกใบตรวจ</button></div></div></div>` : `
   <div class="idb-grid">
     <div class="idb-col">
       <div class="card idb-card" style="--cc:#4ea1e0;"><h3>จำนวนการตรวจรายเดือน · ปี ${D.year}</h3><div class="hint">ตัวเลขบนแท่ง = จำนวนครั้งที่ตรวจ · แตะที่เดือนเพื่อเลือกและดูรายละเอียด</div><div class="bar-wrap" id="chartInspMonth" style="height:auto; padding:4px 0 0;"></div></div>
+      <div class="card idb-card" style="--cc:#ef5350;"><h3>อัตราผิดปกติรายเดือน</h3><div class="hint">% ของการตรวจในเดือนนั้นที่พบข้อบกพร่อง · เส้นประ = ค่าเฉลี่ยทั้งปี</div><div class="idb-rate-wrap" id="chartInspRate"></div></div>
       <div class="card idb-card" style="--cc:#f59e0b;"><h3>ข้อบกพร่องที่พบบ่อย</h3><div class="hint">5 อันดับแรกใน${period}</div>
         ${top.length ? top.map(([t, n], i) => `<div class="idb-row idb-link" title="กดเพื่อดูรายการที่พบข้อบกพร่องนี้" onclick="inspDrill({bad:'1', find:decodeURIComponent('${encodeURIComponent(t)}')})"><div class="top"><span class="nm" title="${esc(t)}"><span class="idb-rank">${i + 1}</span>${esc(t)}</span><span class="num" style="white-space:nowrap; color:var(--red-ink); font-weight:700;">${n} ครั้ง</span></div>
           <div class="track"><div style="width:${(n / maxT * 100).toFixed(1)}%; background:${BADG};"></div></div></div>`).join("") : `<div class="hist-empty" style="padding:10px 0;">ไม่พบข้อบกพร่องในช่วงนี้</div>`}
@@ -5057,6 +5180,39 @@ function inspDashHtml(history){
       </div>
     </div>
   </div>`}`;
+}
+function drawInspRate(history){
+  const el = document.getElementById("chartInspRate"); if (!el) return;
+  const D = INSP_DB, tot = [], ab = [];
+  for (let m = 0; m < 12; m++){
+    const L = history.filter(h => { const d = new Date(h.savedAt); return String(d.getFullYear() + 543) === D.year && d.getMonth() === m; });
+    tot.push(L.length); ab.push(L.filter(h => (h.findings || []).length).length);
+  }
+  const pct = tot.map((t, i) => t ? ab[i] / t * 100 : null);
+  const T = tot.reduce((a, b) => a + b, 0), avg = T ? ab.reduce((a, b) => a + b, 0) / T * 100 : 0;
+  const w = el.clientWidth || 560, h = 190, padL = 34, padR = 16, padT = 18, padB = 26, cw = w - padL - padR, ch = h - padT - padB, gap = cw / 12;
+  const mx = Math.max(20, Math.ceil(Math.max(...pct.map(v => v || 0), avg) * 1.25 / 20) * 20);
+  const X = i => padL + (i + 0.5) * gap, Y = v => padT + ch - v / mx * ch, base = padT + ch;
+  const idx = pct.map((v, i) => v == null ? -1 : i).filter(i => i >= 0);
+  if (!idx.length){ el.innerHTML = ""; return; }
+  const P = idx.map(i => ({ i, x:X(i), y:Y(pct[i]) }));
+  let d = `M${P[0].x.toFixed(1)} ${P[0].y.toFixed(1)}`;
+  for (let k = 0; k < P.length - 1; k++){
+    const p0 = P[k - 1] || P[k], p1 = P[k], p2 = P[k + 1], p3 = P[k + 2] || p2;
+    const c1y = Math.min(base, Math.max(padT, p1.y + (p2.y - p0.y) / 6)), c2y = Math.min(base, Math.max(padT, p2.y - (p3.y - p1.y) / 6));
+    d += `C${(p1.x + (p2.x - p0.x) / 6).toFixed(1)} ${c1y.toFixed(1)} ${(p2.x - (p3.x - p1.x) / 6).toFixed(1)} ${c2y.toFixed(1)} ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+  }
+  const area = `${d}L${P[P.length - 1].x.toFixed(1)} ${base}L${P[0].x.toFixed(1)} ${base}Z`;
+  let grid = "";
+  for (let i = 0; i <= 2; i++){ const y = padT + ch - ch * i / 2; grid += `<line x1="${padL}" x2="${w - padR}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}" stroke-dasharray="${i ? "3 5" : "0"}" style="stroke:var(--card-line);"/><text x="${padL - 8}" y="${(y + 3.5).toFixed(1)}" text-anchor="end" font-size="10.5" style="fill:var(--text-faint);">${Math.round(mx * i / 2)}%</text>`; }
+  const sel = D.month === "" ? -1 : +D.month;
+  const dots = P.map(p => `<g><title>${RP_MONTHS[p.i]} · ${pct[p.i].toFixed(1)}% (${ab[p.i]} จาก ${tot[p.i]} ครั้ง)</title><circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${sel === p.i ? 6 : 4}" fill="#fff" stroke="#ef5350" stroke-width="2.4"/><text x="${p.x.toFixed(1)}" y="${(p.y - 10).toFixed(1)}" text-anchor="middle" font-size="10.5" font-weight="700" style="fill:var(--text-soft);">${pct[p.i].toFixed(0)}%</text></g>`).join("");
+  const xl = THAI_MONTHS_SHORT_KPI.map((m, i) => (gap < 30 && i % 2 && sel !== i) ? "" : `<text x="${X(i).toFixed(1)}" y="${h - 7}" text-anchor="middle" font-size="10.5" font-weight="${sel === i ? 800 : 500}" style="fill:${sel === i ? "var(--text)" : "var(--text-faint)"};">${m}</text>`).join("");
+  const ay = Y(avg).toFixed(1);
+  try { const hn = el.previousElementSibling; if (hn) hn.textContent = `% ของการตรวจในเดือนนั้นที่พบข้อบกพร่อง · เส้นประ = ค่าเฉลี่ยทั้งปี (${avg.toFixed(1)}%)`; } catch(e){}
+  el.innerHTML = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="display:block;" role="img" aria-label="อัตราผิดปกติรายเดือน"><defs><linearGradient id="irA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ef5350" stop-opacity=".32"/><stop offset="1" stop-color="#ef5350" stop-opacity="0"/></linearGradient></defs>${grid}
+    <path d="${area}" fill="url(#irA)"/><path d="${d}" fill="none" stroke="#ef5350" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" pathLength="1" style="--len:1; stroke-dasharray:1; animation:idbDash 1s ease both;"/>
+    <line x1="${padL}" x2="${w - padR}" y1="${ay}" y2="${ay}" stroke="#7c879c" stroke-dasharray="5 4" stroke-width="1.3"/><text x="${w - padR}" y="${(+ay - 5).toFixed(1)}" text-anchor="end" font-size="1" style="fill:transparent;"></text>${dots}${xl}</svg>`;
 }
 function drawInspDash(history){
   const el = document.getElementById("chartInspMonth"); if (!el) return;
@@ -5760,7 +5916,7 @@ window.pickBackupFile = function(){
 window.applyRestore = function(){
   const p = window.__pendingRestore; if (!p) return;
   try {
-    const keep = collectStore(k => !/^tbl-|^failure-log-user$|^insp-history$|^sync-/.test(k));
+    const keep = collectStore(k => !/^tbl-|^failure-log-user$|^insp-history$|^sync-|^rt-known$/.test(k));
     localStorage.clear();
     Object.entries(keep).forEach(([k, v]) => localStorage.setItem(k, v));
     Object.entries(p.data).forEach(([k, v]) => { if (!BACKUP_SKIP.has(k) && !/^sync-(url|key|auto|last)/.test(k)) localStorage.setItem(k, v); });
@@ -5774,6 +5930,224 @@ function renderBackupStatus(){
   const days = at ? Math.floor((Date.now() - Date.parse(at)) / 86400000) : null;
   el.innerHTML = at ? `${new Date(at).toLocaleString("th-TH", { dateStyle:"medium", timeStyle:"short" })}${days >= 7 ? ` <span class="badge red" style="margin-left:4px;">${days} วันแล้ว</span>` : ""}` : `<span class="badge red">ยังไม่เคยสำรอง</span>`;
 }
+
+/* ===================== v131: realtime shared data (Firebase Realtime Database over REST + live stream) ===================== */
+/* Everyone who enters the shared passcode reads and writes the same records. Work orders, inspections and
+   failure records are stored one record per id, so two people editing different records never overwrite
+   each other; the newer edit wins on the same record and deletions are remembered. The PM plan and the
+   import history are shared as one document each (last write wins). No SDK is needed: sign-in, writes and
+   the live stream are plain HTTPS calls, so the file stays a single standalone page. */
+const RT_DEFAULT = { apiKey:"", databaseURL:"", email:"", authHost:"", tokenHost:"" };
+const RT_SETS = { workorder: tableStoreKey("workorder"), insp: "insp-history", failure: "failure-log-user" };
+const RT_DOCS = { plan: "pm-plan-v1", imports: "wo-last-import" };
+const RT_WATCH = k => k === RT_SETS.workorder || k === RT_SETS.insp || k === RT_SETS.failure || k === RT_DOCS.plan || k === RT_DOCS.imports;
+const RT = { token:"", refresh:"", exp:0, es:null, tree:{}, known:{ docs:{} }, ready:false, busy:false, dirty:false, pushTimer:null, applyTimer:null, tokenTimer:null, retryTimer:null, state:"off", msg:"", last:0, writing:false };
+const rtLsGet = k => { try { return localStorage.getItem(k) || ""; } catch(e){ return ""; } };
+const rtRawSet = (k, v) => { RT.writing = true; try { localStorage.setItem(k, v); } catch(e){ RT.writing = false; return false; } RT.writing = false; return true; };
+function rtCfg(){ let c = {}; try { c = JSON.parse(rtLsGet("rt-cfg") || "{}") || {}; } catch(e){} const o = Object.assign({}, RT_DEFAULT); Object.keys(RT_DEFAULT).forEach(k => { if (c[k]) o[k] = c[k]; }); o.databaseURL = String(o.databaseURL || "").replace(/\/+$/, ""); return o; }
+function rtEnabled(){ const c = rtCfg(); return !!(c.apiKey && c.databaseURL && c.email && rtLsGet("rt-pass") && rtLsGet("rt-on") !== "0"); }
+const rtHash = s => { let h = 5381; for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return String(h) + ":" + s.length; };
+const rtSig = r => { const { _ts, ...rest } = r; return rtHash(JSON.stringify(rest)); };
+const rtTs = r => r && (r._ts || Date.parse(r.updatedAt || r.savedAt || "") || 0) || 0;
+const rtKey = id => encodeURIComponent(String(id)).replace(/\./g, "%2E");
+const rtUnkey = k => { try { return decodeURIComponent(k); } catch(e){ return k; } };
+function rtList(set){ try { const v = JSON.parse(rtLsGet(RT_SETS[set]) || "[]"); return Array.isArray(v) ? v : []; } catch(e){ return []; } }
+function rtLoadKnown(){ try { const k = JSON.parse(rtLsGet("rt-known") || "{}") || {}; RT.known = Object.assign({ docs:{} }, k); if (!RT.known.docs) RT.known.docs = {}; } catch(e){ RT.known = { docs:{} }; } }
+let rtKnownTimer = null;
+function rtSaveKnown(){ clearTimeout(rtKnownTimer); rtKnownTimer = setTimeout(() => rtRawSet("rt-known", JSON.stringify(RT.known)), 300); }
+function rtState(state, msg){ RT.state = state; RT.msg = msg || ""; rtRenderStatus(); }
+function rtRenderStatus(){
+  const el = document.getElementById("rtStatus"), pill = document.getElementById("rtPill");
+  const map = { off:["ปิดอยู่", "var(--text-faint)"], connecting:["กำลังเชื่อมต่อ…", "var(--amber-ink, #b45309)"], live:["เชื่อมต่อแล้ว · เรียลไทม์", "var(--green-ink, #15803d)"], error:["เชื่อมต่อไม่ได้", "var(--red-ink, #b91c1c)"] };
+  const m = map[RT.state] || map.off;
+  if (el) el.innerHTML = `<span style="color:${m[1]}; font-weight:700;">● ${m[0]}</span>${RT.msg ? `<div style="color:var(--text-soft); margin-top:2px;">${inspEsc(RT.msg)}</div>` : ""}${RT.last && RT.state === "live" ? `<div style="color:var(--text-soft); margin-top:2px;">อัปเดตล่าสุด ${new Date(RT.last).toLocaleTimeString("th-TH")}</div>` : ""}`;
+  if (pill){ pill.style.display = RT.state === "off" ? "none" : "inline-flex"; pill.style.color = m[1]; pill.title = "ข้อมูลร่วมกัน: " + m[0] + (RT.msg ? " — " + RT.msg : ""); }
+}
+// ---- auth
+async function rtLogin(){
+  const c = rtCfg(), pass = rtLsGet("rt-pass");
+  const res = await fetch(`${c.authHost || "https://identitytoolkit.googleapis.com"}/v1/accounts:signInWithPassword?key=${encodeURIComponent(c.apiKey)}`, { method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify({ email:c.email, password:pass, returnSecureToken:true }) });
+  const j = await res.json().catch(() => ({}));
+  if (!res.ok){ const code = (j.error && j.error.message) || ""; throw new Error(/PASSWORD|CREDENTIALS/.test(code) ? "รหัสผ่านกลางไม่ถูกต้อง" : /EMAIL_NOT_FOUND/.test(code) ? "ไม่พบบัญชีกลางใน Firebase (ตรวจอีเมลและการเปิด Email/Password)" : /API key/i.test(code) ? "API key ไม่ถูกต้อง" : (code || "เข้าสู่ระบบไม่สำเร็จ")); }
+  RT.token = j.idToken; RT.refresh = j.refreshToken; RT.exp = Date.now() + (parseInt(j.expiresIn, 10) || 3600) * 1000;
+}
+async function rtRefreshToken(){
+  const c = rtCfg();
+  const res = await fetch(`${c.tokenHost || "https://securetoken.googleapis.com"}/v1/token?key=${encodeURIComponent(c.apiKey)}`, { method:"POST", headers:{ "Content-Type":"application/x-www-form-urlencoded" }, body:"grant_type=refresh_token&refresh_token=" + encodeURIComponent(RT.refresh) });
+  const j = await res.json().catch(() => ({}));
+  if (!res.ok || !j.id_token) throw new Error("refresh");
+  RT.token = j.id_token; RT.refresh = j.refresh_token || RT.refresh; RT.exp = Date.now() + (parseInt(j.expires_in, 10) || 3600) * 1000;
+}
+function rtScheduleToken(){
+  clearTimeout(RT.tokenTimer);
+  RT.tokenTimer = setTimeout(async () => {
+    try { await rtRefreshToken(); } catch(e){ try { await rtLogin(); } catch(e2){ rtState("error", e2.message); rtScheduleRetry(); return; } }
+    rtOpen(); rtScheduleToken();
+  }, Math.max(30000, RT.exp - Date.now() - 300000));
+}
+function rtScheduleRetry(){ clearTimeout(RT.retryTimer); RT.retryTimer = setTimeout(() => { if (rtEnabled()) rtStart(); }, 15000); }
+// ---- stream
+function rtClose(){ if (RT.es){ try { RT.es.close(); } catch(e){} RT.es = null; } }
+function rtOpen(){
+  rtClose();
+  const c = rtCfg(); let es;
+  try { es = new EventSource(`${c.databaseURL}/cmms.json?auth=${encodeURIComponent(RT.token)}`); } catch(e){ rtState("error", "เปิดการเชื่อมต่อไม่ได้"); rtScheduleRetry(); return; }
+  RT.es = es;
+  es.addEventListener("put", e => rtEvent("put", e.data));
+  es.addEventListener("patch", e => rtEvent("patch", e.data));
+  es.addEventListener("auth_revoked", () => { rtStart(); });
+  es.addEventListener("cancel", () => { rtState("error", "ไม่มีสิทธิ์อ่านฐานข้อมูล — ตรวจ Rules ใน Firebase"); });
+  es.onerror = () => { if (RT.es === es && es.readyState === 2){ rtState("error", "การเชื่อมต่อหลุด — กำลังลองใหม่"); rtScheduleRetry(); } else if (RT.state === "live") rtState("connecting", "กำลังเชื่อมต่อใหม่…"); };
+}
+function rtSetIn(root, parts, val){
+  if (!parts.length) return val;
+  let o = root; for (let i = 0; i < parts.length - 1; i++){ if (typeof o[parts[i]] !== "object" || o[parts[i]] === null) o[parts[i]] = {}; o = o[parts[i]]; }
+  if (val === null || val === undefined) delete o[parts[parts.length - 1]]; else o[parts[parts.length - 1]] = val;
+  return root;
+}
+function rtEvent(type, raw){
+  let m; try { m = JSON.parse(raw); } catch(e){ return; }
+  const base = String(m.path || "/").split("/").filter(Boolean), touched = new Set();
+  if (type === "put"){ RT.tree = rtSetIn(RT.tree || {}, base, m.data); if (!base.length || !RT.tree) RT.tree = RT.tree || {}; touched.add(base[0] || "*"); if (base[0] === "deleted" && base[1]) touched.add("del:" + base[1]); }
+  else if (m.data && typeof m.data === "object"){
+    Object.keys(m.data).forEach(k => { const parts = base.concat(k.split("/").filter(Boolean)); RT.tree = rtSetIn(RT.tree || {}, parts, m.data[k]); touched.add(parts[0]); if (parts[0] === "deleted" && parts[1]) touched.add("del:" + parts[1]); });
+  }
+  RT.tree = RT.tree || {}; RT.last = Date.now();
+  if (!RT.ready){ RT.ready = true; rtMerge(null); rtState("live"); rtPush(); return; }
+  const sets = new Set(); touched.forEach(t => { if (t === "*"){ Object.keys(RT_SETS).forEach(s => sets.add(s)); sets.add("docs"); } else if (RT_SETS[t]) sets.add(t); else if (t.indexOf("del:") === 0 && RT_SETS[t.slice(4)]) sets.add(t.slice(4)); else if (t === "doc") sets.add("docs"); });
+  if (sets.size) rtMerge(sets);
+  rtRenderStatus();
+}
+// ---- remote -> local
+function rtMerge(only){
+  const want = s => !only || only.has(s);
+  let changed = false;
+  Object.keys(RT_SETS).forEach(set => {
+    if (!want(set)) return;
+    const remote = (RT.tree && RT.tree[set]) || {}, dead = ((RT.tree && RT.tree.deleted) || {})[set] || {};
+    const known = RT.known[set] || (RT.known[set] = {});
+    const list = rtList(set), byId = new Map(list.map(r => [String(r && r.id), r]));
+    let dirty = false;
+    Object.keys(dead).forEach(k => { const id = rtUnkey(k); if (byId.has(id)){ byId.delete(id); dirty = true; } delete known[id]; });
+    const fresh = [];
+    Object.keys(remote).forEach(k => {
+      const r = remote[k]; if (!r || r.id == null || dead[k]) return;
+      const id = String(r.id), l = byId.get(id);
+      if (!l){ if (known[id] !== undefined) return; fresh.push(r); byId.set(id, r); known[id] = rtSig(r); dirty = true; return; }  // known here but gone: deleted here, deletion not sent yet
+      const sl = rtSig(l), sr = rtSig(r);
+      if (sl === sr){ known[id] = sr; return; }
+      if (known[id] !== undefined && known[id] !== sl) return;   // edited here and not yet sent: keep ours
+      if (rtTs(r) >= rtTs(l)){ byId.set(id, r); known[id] = sr; dirty = true; }
+    });
+    // known here but missing remotely without a deletion mark: the remote copy was lost, send ours again
+    Object.keys(known).forEach(id => { if (!remote[rtKey(id)] && !dead[rtKey(id)] && byId.has(id)) delete known[id]; });
+    if (dirty){
+      const out = list.filter(r => byId.has(String(r && r.id))).map(r => byId.get(String(r.id)));
+      fresh.slice().reverse().forEach(r => { if (!out.includes(r)) out.unshift(r); });
+      rtRawSet(RT_SETS[set], JSON.stringify(out)); changed = true;
+    }
+  });
+  if (want("docs")){
+    const docs = (RT.tree && RT.tree.doc) || {};
+    Object.keys(RT_DOCS).forEach(name => {
+      const rd = docs[name]; if (!rd || typeof rd.v !== "string") return;
+      const local = rtLsGet(RT_DOCS[name]), kh = RT.known.docs[name];
+      if (rtHash(local) === rtHash(rd.v)){ RT.known.docs[name] = rtHash(rd.v); return; }
+      if (local && kh !== rtHash(local)) return;        // changed here and not yet sent
+      rtRawSet(RT_DOCS[name], rd.v); RT.known.docs[name] = rtHash(rd.v); changed = true;
+    });
+  }
+  rtSaveKnown();
+  if (changed){ clearTimeout(RT.applyTimer); RT.applyTimer = setTimeout(rtApply, 250); }
+  return changed;
+}
+function rtApply(){
+  try { if (!rtList("workorder").length && TableState.workorder && TableState.workorder.data.length){ TableState.workorder.data = []; if (ASSET_DATA.workorder) ASSET_DATA.workorder = []; if (typeof rememberTableSig === "function") rememberTableSig("workorder"); renderTable("workorder"); } } catch(e){}
+  try { applySyncedData(); } catch(e){}
+  try { renderPmPlanning(); } catch(e){}
+  try { buildFieldStops(); renderFieldMap(); } catch(e){}
+  try { refreshLinkedViews(); } catch(e){}
+  try { if (document.getElementById("inspSaved")) refreshInspUi(); } catch(e){}
+  try { if (document.getElementById("pageFailures") || document.querySelector("#failuresRoot")) renderFailuresPage(); } catch(e){}
+}
+// ---- local -> remote
+function rtQueue(){ if (!RT.ready) return; clearTimeout(RT.pushTimer); RT.pushTimer = setTimeout(rtPush, 600); }
+async function rtPush(){
+  if (!RT.ready || !RT.token) return;
+  if (RT.busy){ RT.dirty = true; return; }
+  RT.busy = true; RT.dirty = false;
+  try {
+    const upd = {}, now = Date.now(), nextKnown = {}, docKnown = {};
+    Object.keys(RT_SETS).forEach(set => {
+      const list = rtList(set), known = RT.known[set] || {}, seen = {}, nk = {}; let stamped = false;
+      list.forEach(r => {
+        if (!r || r.id == null) return;
+        const id = String(r.id), sg = rtSig(r); seen[id] = 1; nk[id] = sg;
+        if (known[id] !== sg){
+          if (!r._ts || (set !== "workorder" && known[id] !== undefined)){ r._ts = now; stamped = true; }
+          upd[`${set}/${rtKey(id)}`] = r;
+        }
+      });
+      Object.keys(known).forEach(id => { if (!seen[id]){ upd[`${set}/${rtKey(id)}`] = null; upd[`deleted/${set}/${rtKey(id)}`] = now; } });
+      if (stamped) rtRawSet(RT_SETS[set], JSON.stringify(list));
+      nextKnown[set] = nk;
+    });
+    Object.keys(RT_DOCS).forEach(name => {
+      const raw = rtLsGet(RT_DOCS[name]); if (!raw) return;
+      const h = rtHash(raw); docKnown[name] = h;
+      if (RT.known.docs[name] !== h) upd[`doc/${name}`] = { v:raw, t:now };
+    });
+    const keys = Object.keys(upd);
+    if (keys.length){
+      const c = rtCfg();
+      for (let i = 0; i < keys.length; i += 150){
+        const part = {}; keys.slice(i, i + 150).forEach(k => { part[k] = upd[k]; });
+        let res = await fetch(`${c.databaseURL}/cmms.json?auth=${encodeURIComponent(RT.token)}`, { method:"PATCH", body:JSON.stringify(part) });
+        if (res.status === 401){ try { await rtRefreshToken(); } catch(e){ await rtLogin(); } res = await fetch(`${c.databaseURL}/cmms.json?auth=${encodeURIComponent(RT.token)}`, { method:"PATCH", body:JSON.stringify(part) }); }
+        if (!res.ok) throw new Error("เขียนข้อมูลไม่สำเร็จ (" + res.status + ")");
+      }
+    }
+    Object.keys(nextKnown).forEach(s => { RT.known[s] = nextKnown[s]; });
+    Object.keys(docKnown).forEach(n => { RT.known.docs[n] = docKnown[n]; });
+    rtSaveKnown(); RT.last = Date.now(); if (RT.state !== "live") rtState("live"); else rtRenderStatus();
+  } catch(e){
+    RT.dirty = true; rtState(navigator.onLine === false ? "error" : "error", navigator.onLine === false ? "ออฟไลน์ — จะส่งข้อมูลให้เมื่อกลับมาออนไลน์" : (e.message || "ส่งข้อมูลไม่สำเร็จ"));
+    clearTimeout(RT.pushTimer); RT.pushTimer = setTimeout(rtPush, 8000);
+  } finally {
+    RT.busy = false;
+    if (RT.dirty && RT.state === "live"){ RT.dirty = false; rtQueue(); }
+  }
+}
+// ---- lifecycle
+async function rtStart(){
+  if (!rtEnabled()){ rtState("off"); return; }
+  clearTimeout(RT.retryTimer); rtClose(); RT.ready = false; RT.tree = {}; rtLoadKnown();
+  rtState("connecting");
+  try { await rtLogin(); } catch(e){ rtState("error", e.message === "Failed to fetch" ? "ติดต่อ Firebase ไม่ได้ — ตรวจอินเทอร์เน็ต" : e.message); if (!/ไม่ถูกต้อง|ไม่พบบัญชี/.test(e.message)) rtScheduleRetry(); return; }
+  rtScheduleToken(); rtOpen();
+}
+function rtStop(){ clearTimeout(RT.retryTimer); clearTimeout(RT.tokenTimer); clearTimeout(RT.pushTimer); rtClose(); RT.ready = false; rtState("off"); }
+window.addEventListener("online", () => { if (rtEnabled() && RT.state !== "live") rtStart(); else rtQueue(); });
+(() => { const orig = Storage.prototype.setItem; Storage.prototype.setItem = function(k, v){ orig.call(this, k, v); if (this === window.localStorage && !RT.writing && RT_WATCH(k)) { try { rtQueue(); } catch(e){} } }; })();
+window.saveRealtimeSettings = function(){
+  const g = id => ((document.getElementById(id) || {}).value || "").trim();
+  const cfg = { apiKey:g("rtApiKey"), databaseURL:g("rtDbUrl").replace(/\/+$/, ""), email:g("rtEmail") }, pass = (document.getElementById("rtPass") || {}).value || "";
+  const def = rtCfg();
+  Object.keys(cfg).forEach(k => { if (!cfg[k]) cfg[k] = def[k]; });
+  if (!cfg.apiKey || !cfg.databaseURL || !cfg.email || !(pass || rtLsGet("rt-pass"))){ showToast("กรอก API key, Database URL, อีเมลบัญชีกลาง และรหัสผ่านกลางให้ครบ"); return; }
+  if (!/^https?:\/\//.test(cfg.databaseURL)){ showToast("Database URL ต้องขึ้นต้นด้วย https://"); return; }
+  try { const old = JSON.parse(rtLsGet("rt-cfg") || "{}") || {}; localStorage.setItem("rt-cfg", JSON.stringify(Object.assign({}, old, cfg))); if (pass) localStorage.setItem("rt-pass", pass); localStorage.setItem("rt-on", "1"); } catch(e){}
+  rtStart(); showToast("กำลังเชื่อมต่อข้อมูลร่วมกัน…");
+};
+window.stopRealtime = function(){ try { localStorage.setItem("rt-on", "0"); } catch(e){} rtStop(); showToast("ปิดการเชื่อมต่อแล้ว — ข้อมูลในเครื่องนี้ยังอยู่"); };
+function renderRealtimePanel(){
+  const c = rtCfg(), set = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || ""; };
+  set("rtApiKey", c.apiKey); set("rtDbUrl", c.databaseURL); set("rtEmail", c.email); set("rtPass", "");
+  const p = document.getElementById("rtPass"); if (p) p.placeholder = rtLsGet("rt-pass") ? "•••••• (บันทึกไว้แล้ว)" : "รหัสผ่านกลางของทีม";
+  const off = document.getElementById("rtStop"); if (off) off.style.display = rtLsGet("rt-on") === "1" ? "" : "none";
+  rtRenderStatus();
+}
+window.addEventListener("load", () => setTimeout(() => { try { rtLoadKnown(); if (rtEnabled()) rtStart(); } catch(e){} }, 700));
 
 /* ===================== v14: cross-device sync through a Google Apps Script web app ===================== */
 /* The Apps Script keeps one merged copy (a JSON file in the owner's Drive) and writes readable
@@ -5954,6 +6328,7 @@ function renderSyncPanel(){
   if (k) k.value = syncGet("sync-key");
   if (a) a.checked = syncGet("sync-auto") !== "0";
   setSyncStatus(""); renderBackupStatus();
+  try { renderRealtimePanel(); } catch(e){}
 }
 
 /* v116: tab icon = the same logo as the sidebar, drawn at start-up (rounded white tile) so it no longer depends on any hosted file */
@@ -6059,6 +6434,18 @@ const pageSettings = `
   <div class="panel-head"><h3>บัญชีผู้ใช้งาน</h3><span class="link-more" onclick="openUserModal(null)">+ เพิ่มบัญชี</span></div>
   <p style="padding:0 20px; margin:0 0 8px; font-size:12.5px; color:var(--text-soft); line-height:1.7;">เพิ่มบัญชีให้ทีม กำหนดบทบาท รีเซ็ตรหัสผ่าน หรือปิดใช้งาน · รหัสผ่านที่ผู้ดูแลตั้งให้เป็นรหัสชั่วคราว ผู้ใช้ต้องเปลี่ยนเองเมื่อเข้าสู่ระบบครั้งแรก · บัญชีเก็บในเบราว์เซอร์นี้ ย้ายไปเครื่องอื่นได้ด้วยไฟล์สำรองข้อมูล</p>
   <div id="usersPanelBody"></div><div style="height:10px"></div>
+</div>
+<div class="card panel" style="max-width:560px; margin-top:16px;" id="rtPanel">
+  <div class="panel-head"><h3>ข้อมูลร่วมกันแบบเรียลไทม์ (Firebase)</h3></div>
+  <p style="padding:0 20px; margin:0 0 12px; font-size:12.5px; color:var(--text-soft); line-height:1.7;">ทุกคนที่ใส่รหัสผ่านกลางเดียวกันจะเห็นใบงาน แผน PM ใบตรวจ และความขัดข้องชุดเดียวกัน ใครแก้ไขหรือเพิ่มข้อมูล เครื่องอื่นเห็นทันทีโดยไม่ต้องรีเฟรช · ตั้งค่า Firebase ครั้งเดียว (ดูวิธีในคู่มือ) แล้วทุกเครื่องกรอกรหัสผ่านกลางเท่านั้น</p>
+  <div class="mini-stat-list">
+    <div class="mini-stat-row sync-row"><span class="lbl">API key</span><span class="val"><input type="text" id="rtApiKey" class="sync-in" placeholder="AIza…" autocomplete="off"></span></div>
+    <div class="mini-stat-row sync-row"><span class="lbl">Database URL</span><span class="val"><input type="url" id="rtDbUrl" class="sync-in" placeholder="https://ชื่อโปรเจกต์-default-rtdb.asia-southeast1.firebasedatabase.app" autocomplete="off"></span></div>
+    <div class="mini-stat-row sync-row"><span class="lbl">อีเมลบัญชีกลาง</span><span class="val"><input type="email" id="rtEmail" class="sync-in" placeholder="เช่น team@pmweb.online" autocomplete="off"></span></div>
+    <div class="mini-stat-row sync-row"><span class="lbl">รหัสผ่านกลาง</span><span class="val"><input type="password" id="rtPass" class="sync-in" placeholder="รหัสผ่านกลางของทีม" autocomplete="new-password"></span></div>
+    <div class="mini-stat-row"><span class="lbl">สถานะ</span><span class="val" id="rtStatus" style="font-size:12px; text-align:right;"></span></div>
+    <div class="mini-stat-row"><span class="lbl"></span><span class="val" style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;"><button class="btn" id="rtStop" onclick="stopRealtime()" style="display:none;">ปิดการเชื่อมต่อ</button><button class="btn primary" onclick="saveRealtimeSettings()">เชื่อมต่อ</button></span></div>
+  </div>
 </div>
 <div class="card panel" style="max-width:560px; margin-top:16px;" id="syncPanel">
   <div class="panel-head"><h3>ซิงก์ข้อมูลข้ามเครื่อง (Google Sheets)</h3><span class="link-more" onclick="showSyncHelp()">วิธีตั้งค่า</span></div>
@@ -6217,7 +6604,7 @@ const pageGuide = `
       <li>ใบงานที่ถูก<b>ยกเลิก</b> คือใบงานที่ถูกสั่งให้ไม่ต้องดำเนินการต่อ (เช่น ซ้ำกับใบงานอื่น, เลื่อนแผน, อุปกรณ์ถูกปลดออกจากระบบ) — เมื่อเปลี่ยนสถานะใบงานเป็น "ยกเลิก" ผ่านปุ่มแก้ไข ระบบจะให้กรอก <b>เหตุผลการยกเลิก</b> ด้วย และแสดงเหตุผลนั้นเวลากด "ดู" รายละเอียดใบงาน</li>
       <li>ปุ่ม <b>ส่งออก Excel</b> / <b>นำเข้าไฟล์</b> ใช้บันทึกหรือเพิ่มใบงานเป็นชุดจากไฟล์ (.xlsx หรือ .csv แถวแรกเป็นหัวตาราง) ตารางแสดง 10 รายการต่อหน้า</li>
       <li><b>คอลัมน์ที่ระบบอ่านจากไฟล์:</b> Work Order, Description, WBS Code, เลขรับเรื่อง, SAP PM Order, สถานที่ติดตั้ง, MEA No., ศูนย์งานซ่อมบำรุง, Status, Switch No. (ป้ายแดง), Fixed ID, Work Type, Project, Target Start, Target Finish, Reported Date, Plant, System Status, User Status · วันที่อ่านได้ทั้งแบบไทย อังกฤษ และ เดือน/วัน/ปี ที่มี AM/PM</li>
-      <li><b>สถานะจากไฟล์:</b> CLOSED และ COMPLETE = เสร็จสิ้น · INPRG = กำลังดำเนินการ · CANC = ยกเลิก · WAPPR และสถานะรออนุมัติอื่น = รอดำเนินการ ใบงานที่นำเข้าใช้สถานะตามไฟล์ ไม่ถูกเปลี่ยนเป็นเกินกำหนดอัตโนมัติ · <b>Work Type</b> ลงท้าย P = งาน PM, ลงท้าย C = งานซ่อมแก้ไข ใช้แยกการนับ KPI</li>
+      <li><b>สถานะจากไฟล์:</b> CLOSED และ COMPLETE = เสร็จสิ้น · INPRG, REL, PCNF = รอดำเนินการ (ยังไม่เริ่ม จนกว่าจะกด Active) · CANC = ยกเลิก · WAPPR และสถานะรออนุมัติอื่น = รอดำเนินการ ใบงานที่นำเข้าใช้สถานะตามไฟล์ ไม่ถูกเปลี่ยนเป็นเกินกำหนดอัตโนมัติ · <b>Work Type</b> ลงท้าย P = งาน PM, ลงท้าย C = งานซ่อมแก้ไข ใช้แยกการนับ KPI</li>
       <li><b>ประวัตินำเข้าไฟล์:</b> ปุ่ม "ประวัติการนำเข้า" แสดงไฟล์ที่เคยนำเข้า กด "ลบไฟล์นี้" เพื่อลบเฉพาะใบงานที่มากับไฟล์นั้น (กรณีนำเข้าผิดไฟล์) ใบงานอื่นไม่ถูกแตะ · ลบใบงานทีละใบได้ด้วยไอคอนถังขยะท้ายแถว</li>
     </ul>
   </div>
@@ -6294,6 +6681,7 @@ const pageGuide = `
       <li><b>ผู้ดูแลระบบ</b> เพิ่มบัญชีให้ทีม เปลี่ยนบทบาท รีเซ็ตรหัสผ่าน ปิดใช้งาน หรือลบบัญชีได้ที่ ตั้งค่า › บัญชีผู้ใช้งาน · รหัสที่ผู้ดูแลตั้งให้เป็นรหัสชั่วคราว ผู้ใช้ต้องเปลี่ยนเองตอนเข้าครั้งแรก · ทุกคนเปลี่ยนรหัสของตัวเองได้ที่ ตั้งค่า หรือกดชื่อมุมขวาบน · กรอกรหัสผิด 5 ครั้งต้องรอ 30 วินาที</li>
       <li>ระบบไม่มีเซิร์ฟเวอร์ บัญชีผู้ใช้จึงเก็บในเบราว์เซอร์ของแต่ละเครื่อง (รหัสผ่านเก็บแบบเข้ารหัส ไม่เก็บตัวจริง) ใช้ไฟล์สำรองข้อมูลเพื่อย้ายบัญชีไปเครื่องอื่น · ระบบบัญชีนี้ใช้<b>แยกสิทธิ์</b>ผู้ดูแล/ผู้ใช้งานในเครื่องเดียวกัน ไม่ใช่ระบบรักษาความปลอดภัยของข้อมูล — ผู้ที่เข้าถึงเบราว์เซอร์ของเครื่องได้ก็เข้าถึงข้อมูลในเครื่องนั้นได้</li>
       <li>ปุ่ม <b>ผู้ดูแลระบบ (Admin) / ผู้ใช้งานทั่วไป (User)</b> ในหน้านี้สลับบทบาทการใช้งาน — โหมด <b>Admin</b> แก้ไข/เพิ่ม/ลบข้อมูลได้เต็มสิทธิ์ ส่วนโหมด <b>User</b> จะซ่อนปุ่มแก้ไข/เพิ่ม/ลบทั่วทั้งระบบไว้ชั่วคราว (ดูได้อย่างเดียว) เหมาะสำหรับสาธิตมุมมองของผู้ใช้งานทั่วไป ป้ายบทบาทบนแถบบนสุดจะเปลี่ยนตามและกดกลับมาที่หน้านี้ได้ทันที</li>
+      <li><b>ข้อมูลร่วมกันแบบเรียลไทม์ (Firebase)</b> — ตั้งค่าครั้งเดียว: สร้างโปรเจกต์ที่ console.firebase.google.com › สร้าง Realtime Database (เลือก Singapore) › เปิด Authentication แบบ Email/Password แล้วสร้างผู้ใช้กลาง 1 บัญชี (รหัสผ่านคือรหัสผ่านกลางของทีม) › ที่แท็บ Rules ใส่ <code>{"rules":{".read":"auth != null",".write":"auth != null"}}</code> › คัดลอก API key และ Database URL มากรอกใน ตั้งค่า › ข้อมูลร่วมกัน แล้วกด "เชื่อมต่อ" ทุกเครื่องที่กรอกรหัสผ่านกลางจะเห็นและแก้ไขข้อมูลชุดเดียวกันทันที (ใบงาน ใบตรวจ ความขัดข้อง แผน PM) อย่าเปิดร่วมกับการซิงก์ Google Sheets</li>
       <li><b>ซิงก์ข้อมูลข้ามเครื่อง (Google Sheets)</b> — กด "วิธีตั้งค่า" แล้วทำตาม 5 ขั้น (สร้าง Google Sheet › วางโค้ด Apps Script › Deploy เป็น Web app › นำลิงก์และรหัสมากรอก) หลังจากนั้นทุกครั้งที่บันทึก ระบบจะส่งข้อมูลไปรวมกันและรับข้อมูลของเครื่องอื่นกลับมาอัตโนมัติ ถ้าออฟไลน์จะซิงก์ให้เมื่อกลับมามีสัญญาณ หัวหน้าเปิดดูแผ่นงาน ใบงาน / ใบตรวจ / ความขัดข้อง ใน Google Sheets ได้เลย</li>
       <li><b>สำรองและกู้คืนข้อมูล</b> — กด "สำรองข้อมูล" เพื่อเก็บทุกอย่างเป็นไฟล์ .json (ควรทำทุกสัปดาห์ ระบบจะขึ้นป้ายแดงเมื่อเกิน 7 วัน) และ "นำเข้าจากไฟล์" เพื่อกู้คืนหรือย้ายไปเครื่องใหม่</li>
       <li><b>ติดตั้งเป็นแอป / ใช้แบบออฟไลน์</b> — เมื่ออัปโหลดไฟล์ sw.js, manifest.webmanifest และไอคอนไว้โฟลเดอร์เดียวกับหน้าเว็บ มือถือจะกด "เพิ่มลงหน้าจอหลัก" ได้ และเปิดใช้/กรอกใบตรวจได้แม้ไม่มีสัญญาณ</li>
@@ -6763,7 +7151,7 @@ function autoFlagOverdue(){
   const d = new Date(), today = ((d.getFullYear() + 543) * 12 + d.getMonth()) * 40 + d.getDate();
   let n = 0;
   TableState["workorder"].data.forEach(r => {
-    if (/-imp-/.test(String(r.id || ""))){ if (r.autoOverdue && r.origStatus){ r.status = r.origStatus; delete r.autoOverdue; delete r.origStatus; n++; } return; } // imported: trust the file's Status
+    // v140: imported rows are checked too — a file row still open (pending / in progress) whose due date has passed shows as overdue; closed / cancelled rows keep the file's Status.
     if ((r.status !== "รอดำเนินการ" && r.status !== "กำลังดำเนินการ") || r.manualStatus) return;
     const due = woDueDay(r);
     if (due != null && due < today){ r.origStatus = r.status; r.status = "เกินกำหนด"; r.autoOverdue = true; n++; }
