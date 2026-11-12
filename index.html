@@ -319,6 +319,8 @@
   .panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
   .panel-head h3 { font-size: 14.5px; font-weight: 700; margin: 0; }
   .panel-head .muted { font-size: 12px; color: var(--text-faint); }
+  .insp-hist-btn { box-shadow: 0 4px 14px rgba(47,74,115,.28); font-weight: 700; }
+  .insp-hist-btn2 { border-color: var(--brand); color: var(--brand-ink); font-weight: 700; background: var(--brand-soft); }
   .link-more { font-size: 12px; color: var(--brand-ink); font-weight: 600; cursor: pointer; }
   .donut-wrap { display: flex; flex-direction: column; align-items: center; padding: 20px; }
   .donut-canvas-box { position: relative; width: 168px; height: 168px; margin-bottom: 6px; }
@@ -1011,7 +1013,7 @@ const REF_KPI_MTTR = "<i>MTTR (Mean Time To Repair)</i> = เวลาซ่อ�
 const REF_KPI_FAIL = "<i>จำนวนครั้งที่เกิดความขัดข้อง (Number of failures)</i> เป็นข้อมูลตั้งต้นของ MTBF = เวลาเดินเครื่องรวม ÷ จำนวนครั้งที่ขัดข้อง (ตัวชี้วัดความเชื่อถือได้ที่ใช้ทั่วไป) · ไม่พบตัวชี้วัดมาตรฐานที่นับ “จำนวนครั้งต่อเดือน” โดยตรง จึงเป็นตัวชี้วัดที่ระบบนี้กำหนดเอง และเป้า ≤ 5 ครั้งก็ตั้งในโครงงานนี้ · อ้างอิงเชิงแนวคิด: Wireman (2005) <i>Developing Performance Indicators for Managing Maintenance</i>";
 const REF_COST = "Wireman (2005); SMRP (2020) — ตัวชี้วัดต้นทุนบำรุงรักษา (Maintenance Cost)";
 const REF_RATIO = "SMRP (2020) — ตัวชี้วัดค่าบำรุงรักษาเทียบกับมูลค่าทรัพย์สิน (ดัดแปลง: ระบบนี้ใช้ค่าการได้มาสะสมแทนมูลค่าทดแทน)";
-const BUILD_TAG = "2026-11-12-pmfreq-v144";
+const BUILD_TAG = "2026-11-12-pmimport-v147";
 /* v83: demo/sample data switched off. Set USE_SAMPLE_DATA = true to bring the generated work orders, history and KPI months back. */
 const USE_SAMPLE_DATA = false;
 /* v89: Google sign-in. Without signing in, people can look and fill things in, but nothing is saved.
@@ -3384,8 +3386,6 @@ const pagePmPlanning = `
   <div><h1>ปฏิทินงานบำรุงรักษาเชิงป้องกัน (PM)</h1><p>ใบงาน PM ทุกใบเรียงตามวันกำหนด — กดงานในปฏิทินเพื่อเปิดใบงาน</p></div>
   <div class="head-actions">
     <div class="today-chip" id="pmTodayChip" title="วันที่ปัจจุบันของเครื่อง — อัปเดตอัตโนมัติทุกวินาที"><span class="td-lbl">วันนี้</span><span class="td-day"></span><span class="td-time"></span></div>
-    <button class="btn admin-only" onclick="importPmPlan()">${ic('upload')} นำเข้าแผน PM</button>
-    <button class="btn" id="pmPlanBtn" onclick="openPmPlanList()">${ic('clock')} แผน PM<span class="n"></span></button>
     <button class="btn" onclick="showPmListView()">${ic('clipboard')} มุมมองรายการ</button>
   </div>
 </div>
@@ -3435,7 +3435,7 @@ const pagePmPlanning = `
 <div class="card pmfreq-card" id="pmFreqCard" style="margin-top:16px;">
   <div class="cal-head">
     <div><h3 id="pmFreqTitle">ความถี่แผน PM</h3><div class="sub">แต่ละแผนเป็นเส้นปะแบ่งรายเดือน — ช่วงที่ทึบคือเดือนที่ถึงรอบ กดช่องเพื่อไปดูเดือนนั้นในปฏิทิน</div></div>
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"><select class="select-sm" id="pmFreqMonth" aria-label="กรองเดือน" onchange="pmFreqPick()"></select><select class="select-sm" id="pmFreqYear" aria-label="เลือกปี" onchange="pmFreqPick()"></select><span class="pmf-live"><i></i>สด <b id="pmFreqClock">--:--:--</b></span><input type="search" class="select-sm" id="pmFreqSearch" placeholder="ค้นหาแผน PM…" oninput="renderPmFreq()" style="min-width:160px;"></div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"><button class="btn admin-only" onclick="importPmPlan()">${ic('upload')} นำเข้าแผน PM</button><button class="btn" id="pmPlanBtn" onclick="openPmPlanList()">${ic('clock')} แผน PM<span class="n"></span></button><select class="select-sm" id="pmFreqMonth" aria-label="กรองเดือน" onchange="pmFreqPick()"></select><select class="select-sm" id="pmFreqYear" aria-label="เลือกปี" onchange="pmFreqPick()"></select><span class="pmf-live"><i></i>สด <b id="pmFreqClock">--:--:--</b></span><input type="search" class="select-sm" id="pmFreqSearch" placeholder="ค้นหาแผน PM…" oninput="renderPmFreq()" style="min-width:160px;"></div>
   </div>
   <div class="pmf-sum" id="pmFreqSum"></div>
   <div class="pmfreq-wrap"><div id="pmFreqBody"></div></div>
@@ -5413,7 +5413,7 @@ function inspSavedHtml(idx){
       <td><button class="row-icon-btn" title="ลบรายการนี้" onclick="deleteInspSaved('${h.id}')">${ic('trash')}</button></td></tr>`).join("");
   const filt = F.plant || F.wo || F.date;
   return `<div class="panel-head" style="padding:16px 20px 0;"><h3>ข้อมูลที่บันทึกไว้ (${all.length})</h3>
-      <span style="display:flex; gap:8px; align-items:center;"><span class="link-more" onclick="showInspectionHistory()">ประวัติทุกแบบฟอร์ม</span><span class="link-more" onclick="openBlankPrintModal()">พิมพ์ใบเปล่า</span><button class="btn" onclick="refreshInspSaved()">${ic('history')} รีเฟรช</button></span></div>
+      <span style="display:flex; gap:8px; align-items:center;"><button class="btn insp-hist-btn2" onclick="showInspectionHistory()">${ic('history')} ประวัติทุกแบบฟอร์ม</button><button class="btn" onclick="openBlankPrintModal()">พิมพ์ใบเปล่า</button><button class="btn" onclick="refreshInspSaved()">${ic('history')} รีเฟรช</button></span></div>
     <div class="iw-filters">
       <input type="search" placeholder="Plant" value="${inspEsc(F.plant)}" oninput="setInspSF('plant', this.value)">
       <input type="search" placeholder="Work Order" value="${inspEsc(F.wo)}" oninput="setInspSF('wo', this.value)">
@@ -6478,6 +6478,7 @@ function renderSyncPanel(){
 const pageInspection = `
 <div class="page-head">
   <div><h1>ใบตรวจสอบบำรุงรักษา</h1><p>เลือกแบบฟอร์ม กรอก แล้วบันทึก · ทั้งหมด ${INSPECTION_FORMS.length} แบบฟอร์ม (SF-07-0-015 ถึง SF-07-0-025)</p></div>
+  <div class="head-actions"><button class="btn primary insp-hist-btn" onclick="showInspectionHistory()">${ic('history')} ประวัติการตรวจสอบ</button></div>
 </div>
 <div id="inspectionRoot"></div>
 `;
