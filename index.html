@@ -1013,7 +1013,7 @@ const REF_KPI_MTTR = "<i>MTTR (Mean Time To Repair)</i> = เวลาซ่อ�
 const REF_KPI_FAIL = "<i>จำนวนครั้งที่เกิดความขัดข้อง (Number of failures)</i> เป็นข้อมูลตั้งต้นของ MTBF = เวลาเดินเครื่องรวม ÷ จำนวนครั้งที่ขัดข้อง (ตัวชี้วัดความเชื่อถือได้ที่ใช้ทั่วไป) · ไม่พบตัวชี้วัดมาตรฐานที่นับ “จำนวนครั้งต่อเดือน” โดยตรง จึงเป็นตัวชี้วัดที่ระบบนี้กำหนดเอง และเป้า ≤ 5 ครั้งก็ตั้งในโครงงานนี้ · อ้างอิงเชิงแนวคิด: Wireman (2005) <i>Developing Performance Indicators for Managing Maintenance</i>";
 const REF_COST = "Wireman (2005); SMRP (2020) — ตัวชี้วัดต้นทุนบำรุงรักษา (Maintenance Cost)";
 const REF_RATIO = "SMRP (2020) — ตัวชี้วัดค่าบำรุงรักษาเทียบกับมูลค่าทรัพย์สิน (ดัดแปลง: ระบบนี้ใช้ค่าการได้มาสะสมแทนมูลค่าทดแทน)";
-const BUILD_TAG = "2026-11-12-pmimport-v147";
+const BUILD_TAG = "2026-11-12-nosample-v148";
 /* v83: demo/sample data switched off. Set USE_SAMPLE_DATA = true to bring the generated work orders, history and KPI months back. */
 const USE_SAMPLE_DATA = false;
 /* v89: Google sign-in. Without signing in, people can look and fill things in, but nothing is saved.
@@ -1041,6 +1041,15 @@ try { // once per browser: remove the sample records that earlier builds already
     const hr = localStorage.getItem("insp-history");
     if (hr){ const h = JSON.parse(hr); if (Array.isArray(h)) localStorage.setItem("insp-history", JSON.stringify(h.filter(x => !(x.sample || /^h[sy]\d+$/.test(String(x.id || "")))))); }
     localStorage.setItem("sample-purge-v83", "1");
+  }
+} catch(e){}
+try { // v148 (once per browser): remove the built-in test work orders (WO-TEST-xxx) that earlier builds saved here
+  if (!localStorage.getItem("sample-purge-v148")){
+    const wk = "tbl-workorder-v1", raw = localStorage.getItem(wk);
+    if (raw){ const v = JSON.parse(raw), isT = x => /^test-pm-\d+$/.test(String(x && x.id || ""));
+      if (Array.isArray(v)) localStorage.setItem(wk, JSON.stringify(v.filter(x => !isT(x))));
+      else if (v && Array.isArray(v.rows)){ v.rows = v.rows.filter(x => !isT(x)); localStorage.setItem(wk, JSON.stringify(v)); } }
+    localStorage.setItem("sample-purge-v148", "1");
   }
 } catch(e){}
 console.log("CMMS build:", BUILD_TAG);
@@ -7111,7 +7120,7 @@ const TEST_PM_ROWS = [
   "plant": "7901"
  }
 ];
-const WO_ROWS = loadStoredRows("workorder") || (USE_SAMPLE_DATA ? makeWorkOrderRows(WO_SEED) : TEST_PM_ROWS);
+const WO_ROWS = loadStoredRows("workorder") || (USE_SAMPLE_DATA ? makeWorkOrderRows(WO_SEED) : []); // v148: the built-in test work orders (TEST_PM_ROWS) are no longer loaded — start empty
 // v36 (once per browser): sample work orders saved by older builds were all dated ก.ย. 69. Move them into
 // the current month like a fresh start would, and undo "เกินกำหนด" that only came from that stale date.
 // Work orders the user created (wo-new-…, wo-cm-…) are left exactly as they are.
