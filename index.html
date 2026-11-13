@@ -1015,7 +1015,7 @@ const REF_KPI_MTTR = "<i>MTTR (Mean Time To Repair)</i> = เวลาซ่อ�
 const REF_KPI_FAIL = "<i>จำนวนครั้งที่เกิดความขัดข้อง (Number of failures)</i> เป็นข้อมูลตั้งต้นของ MTBF = เวลาเดินเครื่องรวม ÷ จำนวนครั้งที่ขัดข้อง (ตัวชี้วัดความเชื่อถือได้ที่ใช้ทั่วไป) · ไม่พบตัวชี้วัดมาตรฐานที่นับ “จำนวนครั้งต่อเดือน” โดยตรง จึงเป็นตัวชี้วัดที่ระบบนี้กำหนดเอง และเป้า ≤ 5 ครั้งก็ตั้งในโครงงานนี้ · อ้างอิงเชิงแนวคิด: Wireman (2005) <i>Developing Performance Indicators for Managing Maintenance</i>";
 const REF_COST = "Wireman (2005); SMRP (2020) — ตัวชี้วัดต้นทุนบำรุงรักษา (Maintenance Cost)";
 const REF_RATIO = "SMRP (2020) — ตัวชี้วัดค่าบำรุงรักษาเทียบกับมูลค่าทรัพย์สิน (ดัดแปลง: ระบบนี้ใช้ค่าการได้มาสะสมแทนมูลค่าทดแทน)";
-const BUILD_TAG = "2026-11-13-insphf-v153";
+const BUILD_TAG = "2026-11-13-wo-form-link-v154";
 /* v83: demo/sample data switched off. Set USE_SAMPLE_DATA = true to bring the generated work orders, history and KPI months back. */
 const USE_SAMPLE_DATA = false;
 /* v89: Google sign-in. Without signing in, people can look and fill things in, but nothing is saved.
@@ -1824,6 +1824,8 @@ window.importTableCSV = function(tableId){
         ["code","equip","date","owner"].forEach(k => { if (row[k] === undefined) row[k] = ""; });
         if (row.lat !== undefined || row.lng !== undefined){ const a = parseFloat(row.lat), b = parseFloat(row.lng); if (isFinite(a) && isFinite(b) && Math.abs(a) <= 90 && Math.abs(b) <= 180 && (a || b)){ row.lat = a; row.lng = b; } else { delete row.lat; delete row.lng; } }
         if (row.assetTypeName && typeToTable[row.assetTypeName.toLowerCase()]) row.assetTableId = typeToTable[row.assetTypeName.toLowerCase()];
+        if (!row.assetTableId) row.assetTableId = assetTableForCode(row.assetCode) || assetTableFromText(row.equip) || undefined;
+        if (!row.assetTableId) delete row.assetTableId;
         { const rawSt = String(row.status || "").trim(); row.statusRaw = rawSt;
           const st0 = [rawSt, row.userStatus, row.sysStatus].map(normWoStatus).find(v => v);
           if (!st0 && rawSt) unknownStatus.add(rawSt);
@@ -2155,11 +2157,27 @@ function fieldFormHtml(tableId, values){
 const ASSET_INSPECTION_LINK = { transformer: 0, lbs: 1, sectionalizer: 2, rmu: 3, substation: 4, capbank: 5, netprotector: 6, nettransformer: 7 };
 // Links between a work order and the records it came from / led to.
 // Which SF-07 form a work order uses. Fixed by its equipment type; a manual choice (for types with no fixed form) is remembered.
+// Asset code prefix (MEA No. such as SS-139) and equipment text -> asset table id.
+const ASSET_CODE_PREFIX = { TR:"transformer", LBS:"lbs", SZ:"sectionalizer", RMU:"rmu", SS:"substation", CB:"capbank", NP:"netprotector", NT:"nettransformer", NW:"nettransformer", FD:"feeder" };
+function assetTableForCode(code){
+  const pre = String(code || "").trim().toUpperCase().split(/[-\s]/)[0];
+  return ASSET_CODE_PREFIX[pre];
+}
+function assetTableFromText(text){
+  const t = String(text || "").toLowerCase();
+  if (!t) return undefined;
+  const hit = Object.entries(WO_ASSET_TYPE).sort((a, b) => b[0].length - a[0].length).find(([k, v]) => t.includes(String(v).toLowerCase()) || t.includes(k));
+  return hit ? hit[0] : undefined;
+}
+function workOrderAssetTable(r){
+  return r.assetTableId || assetTableForCode(r.assetCode) || assetTableFromText(r.equip) || assetTableFromText(r.description);
+}
 function formIdxForWo(r){
   if (!r) return undefined;
   if (r.inspFormCode){ const i = INSPECTION_FORMS.findIndex(f => f.code === r.inspFormCode); if (i >= 0) return i; }
   if (r.inspectionId){ const h = loadInspHistory().find(x => x.id === r.inspectionId); if (h){ const i = INSPECTION_FORMS.findIndex(f => f.code === h.code); if (i >= 0) return i; } }
-  return r.assetTableId != null ? ASSET_INSPECTION_LINK[r.assetTableId] : undefined;
+  const tid = workOrderAssetTable(r);
+  return tid ? ASSET_INSPECTION_LINK[tid] : undefined;
 }
 function woFormText(r){
   const i = formIdxForWo(r);
@@ -4560,6 +4578,7 @@ window.saveInspectionForm = function(code){
       sigs: sigs.some(Boolean) ? sigs : undefined, findings: findings.length ? findings : undefined,
       woId: wo ? wo.id : undefined, woCode: wo ? wo.code : (((document.getElementById("inspWo") || {}).value || "").trim() || undefined), assetCode: wo ? wo.assetCode : undefined, assetTableId: wo ? wo.assetTableId : undefined };
     const history = loadInspHistory();
+    if (wo){ entry.woId = wo.id; entry.woCode = wo.code; }
     history.unshift(entry);
     if (!saveInspHistory(history)){
       // Browser storage is full (photos are the big part): keep the answers, drop this entry's photos.
