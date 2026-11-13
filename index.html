@@ -1015,7 +1015,7 @@ const REF_KPI_MTTR = "<i>MTTR (Mean Time To Repair)</i> = เวลาซ่อ�
 const REF_KPI_FAIL = "<i>จำนวนครั้งที่เกิดความขัดข้อง (Number of failures)</i> เป็นข้อมูลตั้งต้นของ MTBF = เวลาเดินเครื่องรวม ÷ จำนวนครั้งที่ขัดข้อง (ตัวชี้วัดความเชื่อถือได้ที่ใช้ทั่วไป) · ไม่พบตัวชี้วัดมาตรฐานที่นับ “จำนวนครั้งต่อเดือน” โดยตรง จึงเป็นตัวชี้วัดที่ระบบนี้กำหนดเอง และเป้า ≤ 5 ครั้งก็ตั้งในโครงงานนี้ · อ้างอิงเชิงแนวคิด: Wireman (2005) <i>Developing Performance Indicators for Managing Maintenance</i>";
 const REF_COST = "Wireman (2005); SMRP (2020) — ตัวชี้วัดต้นทุนบำรุงรักษา (Maintenance Cost)";
 const REF_RATIO = "SMRP (2020) — ตัวชี้วัดค่าบำรุงรักษาเทียบกับมูลค่าทรัพย์สิน (ดัดแปลง: ระบบนี้ใช้ค่าการได้มาสะสมแทนมูลค่าทดแทน)";
-const BUILD_TAG = "2026-11-12-pmfreqact-v150";
+const BUILD_TAG = "2026-11-13-insphf-v153";
 /* v83: demo/sample data switched off. Set USE_SAMPLE_DATA = true to bring the generated work orders, history and KPI months back. */
 const USE_SAMPLE_DATA = false;
 /* v89: Google sign-in. Without signing in, people can look and fill things in, but nothing is saved.
@@ -1801,7 +1801,8 @@ window.importTableCSV = function(tableId){
     // v82: work-order files with the new headings (WONUM, REPORTDATE, …) are read by heading name
     const HMAP = { WONUM:"code", REPORTDATE:"date", STATUS:"status", WORKTYPE:"wtype", DESCRIPTION:"equip", WORKCENTER:"owner", MEANO:"assetCode", LOCATION:"place", "ชนิดอุปกรณ์":"assetTypeName",
       "WORK ORDER":"code", "WORK TYPE":"wtype", "WBS CODE":"wbs", "เลขรับเรื่อง":"requestNo", "SAP PM ORDER":"sapOrder", "สถานที่ติดตั้ง":"place", "MEA NO.":"assetCode", "ศูนย์งานซ่อมบำรุง":"owner",
-      "SWITCH NO.(ป้ายแดง)":"switchNo", "FIXED ID":"fixedId", "PROJECT":"project", "TARGET START":"targetStart", "TARGET FINISH":"targetFinish", "REPORTED DATE":"date", "PLANT":"plant", "SYSTEM STATUS":"sysStatus", "USER STATUS":"userStatus" };
+      "SWITCH NO.(ป้ายแดง)":"switchNo", "FIXED ID":"fixedId", "PROJECT":"project", "TARGET START":"targetStart", "TARGET FINISH":"targetFinish", "REPORTED DATE":"date", "PLANT":"plant", "SYSTEM STATUS":"sysStatus", "USER STATUS":"userStatus",
+      "LATITUDE":"lat", "LAT":"lat", "LONGITUDE":"lng", "LNG":"lng", "LONG":"lng", "ละติจูด":"lat", "ลองจิจูด":"lng" };
     const hdr = rows[0].map(h => String(h).trim().toUpperCase() === String(h).trim() ? String(h).trim() : String(h).trim());
     const byHead = tableId === "workorder" && hdr.some(h => HMAP[h.toUpperCase()] || HMAP[h]);
     DATE_MDY = false;
@@ -1821,6 +1822,7 @@ window.importTableCSV = function(tableId){
       if (byHead){
         hdr.forEach((h, i) => { const k = HMAP[h] || HMAP[h.toUpperCase()]; if (k) row[k] = cells[i] !== undefined ? String(cells[i]).trim() : ""; });
         ["code","equip","date","owner"].forEach(k => { if (row[k] === undefined) row[k] = ""; });
+        if (row.lat !== undefined || row.lng !== undefined){ const a = parseFloat(row.lat), b = parseFloat(row.lng); if (isFinite(a) && isFinite(b) && Math.abs(a) <= 90 && Math.abs(b) <= 180 && (a || b)){ row.lat = a; row.lng = b; } else { delete row.lat; delete row.lng; } }
         if (row.assetTypeName && typeToTable[row.assetTypeName.toLowerCase()]) row.assetTableId = typeToTable[row.assetTypeName.toLowerCase()];
         { const rawSt = String(row.status || "").trim(); row.statusRaw = rawSt;
           const st0 = [rawSt, row.userStatus, row.sysStatus].map(normWoStatus).find(v => v);
@@ -2382,7 +2384,7 @@ function renderFlowStrip(){
   const steps = [
     { ic:"calendar", k:"1 · ปฏิทินงาน PM", n:planned, u:"งาน", l:`งานเดือน ${period}`, go:"goTo('pmplanning')" },
     { ic:"clipboard", k:"2 · ใบงานค้าง", n:open.length, u:"ใบ", l:late ? `เกินกำหนด ${late} ใบ` : "ไม่มีงานเกินกำหนด", go:"goTo('workorder')", cls: late ? "warn" : "" },
-    { ic:"mapPin", k:"3 · ออกตรวจภาคสนาม", n:FIELD_STOPS.length, u:"จุด", l:"เรียงตามระยะทาง", go:"goTo('fieldnav')" },
+    { ic:"mapPin", k:"3 · ออกตรวจภาคสนาม", n:FIELD_STOPS.length, u:"จุด", l:"เรียงเป็นเส้นทางต่อเนื่อง", go:"goTo('fieldnav')" },
     { ic:"checklist", k:"4 · ตรวจสอบ", n:insp.length, u:"ใบตรวจ", l:`ปิดใบงานแล้ว ${insp.filter(h => h.woCode).length} ใบ`, go:"goTo('inspection'); showInspectionHistory()" },
     { ic:"alert", k:"5 · ความขัดข้อง", n:k.failures, u:"ครั้ง", l:k.mttr == null ? "ไม่มีการซ่อมเดือนนี้" : `MTTR ${k.mttr.toFixed(1)} ชม.`, go:"openKpiModal('mttr')", cls: k.failures > KPI_TARGETS.failures || (k.mttr != null && k.mttr > KPI_TARGETS.mttr) ? "warn" : "" },
     { ic:"chart", k:"6 · สรุปผล KPI", n:k.completion == null ? "–" : k.completion.toFixed(1), u:k.completion == null ? "" : "%", l:"PM Completion", go:"scrollToKpi()", cls: k.completion == null ? "" : k.completion >= KPI_TARGETS.completion ? "good" : "warn" },
@@ -2454,7 +2456,7 @@ function renderWoCostCard(){
 }
 // After an inspection closes a work order: offer the next step instead of leaving the user on the form.
 function showAfterCloseModal(wo){
-  const nextStop = FIELD_STOPS.find(s => s.wo.id !== wo.id);
+  const nextStop = FIELD_STOPS.find(s => s.wo.id !== wo.id && !s.wo.point);
   const nextIdx = nextStop ? ASSET_INSPECTION_LINK[nextStop.wo.assetTableId] : undefined;
   const k = computeKpis();
   openModal(`ปิดใบงาน ${wo.code} แล้ว`, `<div class="mini-stat-list">
@@ -2549,11 +2551,104 @@ function buildFieldStops(){
       item.lng = coord.lng + Math.cos(angle) * radius * 1.25; // lng degrees are narrower at this latitude
     });
   });
-  FIELD_STOPS = picked.map(item => ({
+  // v151: points imported from a latitude / longitude file that aren't work orders
+  const fromFile = fieldPoints().filter(pt => !wost.data.some(w => w.code && w.code === pt.code)).map(pt => ({
+    wo: { id: "fp-" + pt.id, code: pt.code || "จุด", equip: pt.name || pt.code || "จุดจากไฟล์", status: "รอดำเนินการ", place: pt.place || "", lat: pt.lat, lng: pt.lng, point: true, pid: pt.id },
+    district: pt.place || "จุดจากไฟล์", lat: pt.lat, lng: pt.lng, exact: true }));
+  FIELD_STOPS = orderFieldRoute(picked.concat(fromFile).map(item => ({
     wo: item.wo, district: item.district, lat: item.lat, lng: item.lng, exact: !!item.exact,
     distKm: haversineKm(FIELD_ORIGIN.lat, FIELD_ORIGIN.lng, item.lat, item.lng),
-  })).sort((a,b) => a.distKm - b.distKm);
+  })));
 }
+// v152: a real route — from the start go to the nearest stop, then always the nearest stop from where you are,
+// then smooth it (2-opt) so the path never jumps back and forth. legKm = distance from the previous stop.
+function orderFieldRoute(stops){
+  const n = stops.length; if (!n) return stops;
+  const d = (a, b) => haversineKm(a.lat, a.lng, b.lat, b.lng);
+  const left = stops.slice(), path = [FIELD_ORIGIN];
+  while (left.length){
+    const cur = path[path.length - 1]; let bi = 0, bd = Infinity;
+    left.forEach((s, i) => { const x = d(cur, s); if (x < bd - 1e-9){ bd = x; bi = i; } });
+    path.push(left.splice(bi, 1)[0]);
+  }
+  if (n > 2 && n <= 400){
+    let improved = true, guard = 0;
+    while (improved && guard++ < 60){
+      improved = false;
+      for (let i = 1; i < n; i++) for (let j = i + 1; j <= n; j++){
+        const before = d(path[i - 1], path[i]) + (j < n ? d(path[j], path[j + 1]) : 0);
+        const after = d(path[i - 1], path[j]) + (j < n ? d(path[i], path[j + 1]) : 0);
+        if (after < before - 1e-9){ for (let a = i, b = j; a < b; a++, b--){ const t = path[a]; path[a] = path[b]; path[b] = t; } improved = true; }
+      }
+    }
+  }
+  const out = path.slice(1); let prev = FIELD_ORIGIN;
+  out.forEach(s => { s.legKm = d(prev, s); prev = s; });
+  return out;
+}
+const FIELD_PTS_KEY = "field-points-v1";
+function fieldPoints(){ try { const v = JSON.parse(localStorage.getItem(FIELD_PTS_KEY) || "[]"); return Array.isArray(v) ? v : []; } catch(e){ return []; } }
+function saveFieldPoints(a){ try { localStorage.setItem(FIELD_PTS_KEY, JSON.stringify(a)); } catch(e){ showToast("บันทึกจุดนำทางไม่ได้ — พื้นที่เก็บข้อมูลเต็ม"); } }
+// pick a column by any of its common names (Latitude / Lat / ละติจูด …)
+function fpCol(hdr, names){ const n = names.map(x => x.toLowerCase().replace(/[\s._]/g, "")); return hdr.findIndex(h => n.includes(String(h).toLowerCase().replace(/[\s._]/g, ""))); }
+window.importFieldPoints = function(){
+  const input = document.createElement("input");
+  input.type = "file"; input.accept = ".csv,text/csv,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+  input.onchange = async () => {
+    const file = input.files[0]; if (!file) return;
+    let rows;
+    try {
+      if (/\.xlsx$/i.test(file.name)){
+        const ok = await getXLSXLib(); if (!ok || typeof XLSX === "undefined"){ showToast("ไม่สามารถโหลดตัวอ่านไฟล์ Excel ได้ ลองใช้ไฟล์ .csv แทน"); return; }
+        const wb = XLSX.read(await file.arrayBuffer(), { type: "array" });
+        rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, raw: false, defval: "" }).map(r => r.map(v => String(v == null ? "" : v)));
+      } else rows = parseCSV(await file.text());
+    } catch(e){ showToast("อ่านไฟล์ไม่ได้ — ตรวจสอบว่าเป็นไฟล์ .csv หรือ .xlsx"); return; }
+    if (!rows || rows.length < 2){ showToast("ไฟล์ว่างหรือไม่มีข้อมูล"); return; }
+    const hdr = rows[0].map(h => String(h).trim());
+    const iLat = fpCol(hdr, ["latitude", "lat", "ละติจูด", "y"]), iLng = fpCol(hdr, ["longitude", "lng", "lon", "long", "ลองจิจูด", "x"]);
+    const iCode = fpCol(hdr, ["work order", "workorder", "wonum", "wo", "mea no.", "meano", "asset", "รหัส", "code", "id"]);
+    const iName = fpCol(hdr, ["description", "name", "ชื่อ", "ชื่อจุด", "รายละเอียด", "สถานที่ติดตั้ง", "สถานที่", "location", "place"]);
+    const iPlace = fpCol(hdr, ["place", "district", "พื้นที่", "อำเภอ", "สถานที่ติดตั้ง"]);
+    if (iLat < 0 || iLng < 0){ showToast("ไม่พบคอลัมน์ Latitude / Longitude (หรือ ละติจูด / ลองจิจูด) ในแถวแรกของไฟล์"); return; }
+    const wost = TableState["workorder"], pts = fieldPoints(); let toWo = 0, added = 0, updated = 0, bad = 0;
+    rows.slice(1).forEach((c, k) => {
+      if (!c.some(v => String(v).trim() !== "")) return;
+      let lat = parseFloat(String(c[iLat]).replace(",", ".")), lng = parseFloat(String(c[iLng]).replace(",", "."));
+      if (isFinite(lat) && isFinite(lng) && Math.abs(lat) > 90 && Math.abs(lng) <= 90){ const t = lat; lat = lng; lng = t; } // swapped columns
+      if (!isFinite(lat) || !isFinite(lng) || Math.abs(lat) > 90 || Math.abs(lng) > 180 || (!lat && !lng)){ bad++; return; }
+      const code = iCode >= 0 ? String(c[iCode]).trim() : "", name = iName >= 0 ? String(c[iName]).trim() : "", place = iPlace >= 0 && iPlace !== iName ? String(c[iPlace]).trim() : "";
+      const wo = code && wost ? wost.data.find(w => w.code === code || (w.assetCode && w.assetCode === code)) : null;
+      if (wo){ wo.lat = lat; wo.lng = lng; toWo++; return; }
+      const ex = code ? pts.find(p => p.code === code) : null;
+      if (ex){ ex.lat = lat; ex.lng = lng; if (name) ex.name = name; if (place) ex.place = place; updated++; }
+      else { pts.push({ id: Date.now().toString(36) + k, code, name, place, lat, lng }); added++; }
+    });
+    saveFieldPoints(pts);
+    if (toWo){ try { persistTable("workorder"); } catch(e){} }
+    buildFieldStops(); renderFieldMap();
+    showToast(`นำเข้าพิกัด: จุดใหม่ ${added}${updated ? " · อัปเดต " + updated : ""}${toWo ? " · ใส่พิกัดให้ใบงาน " + toWo + " ใบ" : ""}${bad ? " · ข้าม " + bad + " แถวที่พิกัดไม่ถูกต้อง" : ""}`);
+  };
+  input.click();
+};
+window.clearFieldPoints = function(){
+  const n = fieldPoints().length; if (!n){ showToast("ไม่มีจุดจากไฟล์ให้ล้าง"); return; }
+  if (!confirm(`ล้างจุดนำทางที่นำเข้าจากไฟล์ ${n} จุด? (ใบงานไม่ถูกลบ)`)) return;
+  saveFieldPoints([]); buildFieldStops(); renderFieldMap(); showToast("ล้างจุดจากไฟล์แล้ว");
+};
+window.deleteFieldPoint = function(pid){ saveFieldPoints(fieldPoints().filter(p => p.id !== pid)); closeModal(); buildFieldStops(); renderFieldMap(); showToast("ลบจุดนี้แล้ว"); };
+// use the device's current position as the starting point of the route (nearest → farthest from here)
+const FIELD_ORIGIN_DEFAULT = { lat: FIELD_ORIGIN.lat, lng: FIELD_ORIGIN.lng, label: FIELD_ORIGIN.label };
+window.useMyLocationForRoute = function(){
+  if (FIELD_ORIGIN.mine){ Object.assign(FIELD_ORIGIN, FIELD_ORIGIN_DEFAULT); FIELD_ORIGIN.mine = false; buildFieldStops(); renderFieldMap(); showToast("กลับไปใช้ศูนย์ปฏิบัติการเป็นจุดเริ่มต้น"); updateFieldOriginBtn(); return; }
+  if (!navigator.geolocation){ showToast("เครื่องนี้ไม่รองรับการหาตำแหน่ง"); return; }
+  showToast("กำลังหาตำแหน่งของคุณ…");
+  navigator.geolocation.getCurrentPosition(pos => {
+    FIELD_ORIGIN.lat = pos.coords.latitude; FIELD_ORIGIN.lng = pos.coords.longitude; FIELD_ORIGIN.label = "ตำแหน่งปัจจุบันของฉัน"; FIELD_ORIGIN.mine = true;
+    buildFieldStops(); renderFieldMap(); updateFieldOriginBtn(); showToast("เรียงจุดจากใกล้ไปไกลตามตำแหน่งปัจจุบันของคุณแล้ว");
+  }, () => showToast("หาตำแหน่งไม่ได้ — ตรวจสอบว่าอนุญาตการเข้าถึงตำแหน่งในเบราว์เซอร์แล้ว"), { enableHighAccuracy: true, timeout: 12000 });
+};
+function updateFieldOriginBtn(){ const b = document.getElementById("fieldOriginBtn"); if (b) b.textContent = FIELD_ORIGIN.mine ? "เริ่มจากศูนย์ปฏิบัติการ" : "เริ่มจากตำแหน่งปัจจุบัน"; }
 
 function renderFieldMap(){
   const mapWrap = document.getElementById("fieldMapSvgWrap");
@@ -2634,7 +2729,7 @@ function renderFieldMap(){
     listEl.innerHTML = stops.map((s, i) => `
       <div class="field-stop-row ${FIELD_FOCUS === i ? "focused" : ""}" data-stop="${i}" onclick="showFieldStopDetail(${i})">
         <div class="num" style="background:${s.wo.status==='เกินกำหนด' ? 'var(--red-soft)' : s.wo.status==='กำลังดำเนินการ' ? 'var(--green-soft)' : 'var(--amber-soft)'}; color:${s.wo.status==='เกินกำหนด' ? 'var(--red-ink)' : s.wo.status==='กำลังดำเนินการ' ? 'var(--green-ink)' : 'var(--amber-ink)'};">${stopLabel(i)}</div>
-        <div class="body"><div class="t">${s.wo.equip}</div><div class="d">${s.district} · ${s.distKm.toFixed(1)} กม. จากศูนย์ปฏิบัติการ</div></div>
+        <div class="body"><div class="t">${s.wo.equip}</div><div class="d">${s.district} · ${(s.legKm != null ? s.legKm : s.distKm).toFixed(1)} กม. จาก${i === 0 ? (FIELD_ORIGIN.mine ? "ตำแหน่งของฉัน" : "ศูนย์ปฏิบัติการ") : "จุด " + i}</div></div>
         ${statusBadge(s.wo.status)}
         <button class="stop-pin-btn" title="แสดงจุดนี้บนแผนที่" onclick="event.stopPropagation(); focusFieldStop(${i})">${ic('mapPin')}</button>
       </div>`).join("") || `<div style="padding:26px; text-align:center; color:var(--text-faint);">ไม่มีงานที่ต้องออกตรวจภาคสนามในขณะนี้</div>`;
@@ -2644,20 +2739,22 @@ function renderFieldMap(){
 window.showFieldStopDetail = function(i){
   const s = FIELD_STOPS[i]; if (!s) return;
   const gmapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${FIELD_ORIGIN.lat},${FIELD_ORIGIN.lng}&destination=${s.lat},${s.lng}`;
+  const isPt = !!s.wo.point;
   const body = `<div class="mini-stat-list">
-    <div class="mini-stat-row"><span class="lbl">เลขที่ใบงาน</span><span class="val">${s.wo.code}</span></div>
+    <div class="mini-stat-row"><span class="lbl">${isPt ? "รหัสจุด" : "เลขที่ใบงาน"}</span><span class="val">${s.wo.code}</span></div>
+    ${isPt ? `<div class="mini-stat-row"><span class="lbl">พิกัด</span><span class="val">${s.lat.toFixed(5)}, ${s.lng.toFixed(5)}</span></div>` : ""}
     <div class="mini-stat-row"><span class="lbl">อุปกรณ์</span><span class="val">${s.wo.equip}</span></div>
     <div class="mini-stat-row"><span class="lbl">พื้นที่</span><span class="val">${s.district}</span></div>
-    <div class="mini-stat-row"><span class="lbl">ระยะทางโดยประมาณ</span><span class="val">${s.distKm.toFixed(1)} กม.</span></div>
+    <div class="mini-stat-row"><span class="lbl">ระยะจากจุดก่อนหน้า (เส้นตรง)</span><span class="val">${(s.legKm != null ? s.legKm : s.distKm).toFixed(1)} กม. · จากจุดเริ่มต้น ${s.distKm.toFixed(1)} กม.</span></div>
     <div class="mini-stat-row"><span class="lbl">สถานะ</span><span class="val">${statusBadge(s.wo.status)}</span></div>
   </div>`;
   const inspIdx = s.wo.assetTableId != null ? ASSET_INSPECTION_LINK[s.wo.assetTableId] : undefined;
-  const inspBtn = inspIdx !== undefined ? `<button class="btn" onclick="startInspectionForWorkOrder('${s.wo.id}', ${inspIdx})">${ic('checklist')} ตรวจและปิดใบงาน</button>` : "";
+  const inspBtn = isPt ? "" : inspIdx !== undefined ? `<button class="btn" onclick="startInspectionForWorkOrder('${s.wo.id}', ${inspIdx})">${ic('checklist')} ตรวจและปิดใบงาน</button>` : "";
   openModal(`จุดตรวจ ${stopLabel(i)} — ${s.wo.code}`, body,
     `<button class="btn" onclick="closeModal(); focusFieldStop(${i})">${ic('mapPin')} แสดงบนแผนที่</button>
      <a class="btn" href="${gmapsUrl}" target="_blank" rel="noopener" style="text-decoration:none; display:inline-flex; align-items:center; gap:7px;">${ic('mapPin')} เปิดนำทางใน Google Maps</a>
      ${inspBtn}
-     <button class="btn primary" onclick="closeModal(); viewAssetRow('workorder','${s.wo.id}')">เปิดใบงาน</button>`);
+     ${isPt ? `<button class="btn" style="color:var(--red-ink);" onclick="deleteFieldPoint('${s.wo.pid}')">${ic('trash')} ลบจุดนี้</button><button class="btn primary" onclick="closeModal()">ปิด</button>` : `<button class="btn primary" onclick="closeModal(); viewAssetRow('workorder','${s.wo.id}')">เปิดใบงาน</button>`}`);
 };
 
 window.openFullRoute = function(){
@@ -2873,7 +2970,7 @@ function syncFieldGoogleMap(){
     const order = FIELD_STOPS.slice(0, shown).map((x, i) => `<span style="display:inline-flex; align-items:center; gap:4px; margin:2px 8px 2px 0; white-space:nowrap;"><b style="display:inline-flex; width:20px; height:20px; border-radius:50%; background:var(--brand-ink); color:#fff; font-size:11px; align-items:center; justify-content:center;">${i + 1}</b>${x.wo.equip}</span>`).join("→ ");
     bar.innerHTML = s
       ? `กำลังแสดง <b>จุดตรวจ ${stopLabel(FIELD_FOCUS)}</b> · ${s.wo.code} · ${s.wo.equip} (${s.district}) <button class="btn" onclick="focusFieldStop(null)">${ic('arrowLeft')} กลับไปดูเส้นทางทั้งหมด</button>`
-      : n ? `เส้นทางตรวจ <b>${shown} จุด</b> เรียงจากใกล้ไปไกล · <b>เริ่มต้น</b> = ${FIELD_ORIGIN.label}${n > shown ? ` · แสดง ${shown} จุดแรก (เหลืออีก ${n - shown} จุดในรายการด้านล่าง)` : ""}<div style="margin-top:6px; line-height:1.9;">ลำดับ: ${order}</div>${nm && LF_ROUTE.pts ? `<div style="margin-top:2px; color:var(--text-soft); font-size:12px;">ระยะทางตามถนนรวมประมาณ ${LF_ROUTE.km.toFixed(1)} กม. · ใช้เวลาขับรถประมาณ ${Math.round(LF_ROUTE.min)} นาที (ไม่รวมเวลาตรวจ)</div>` : ""}${g ? `<div style="margin-top:2px; color:var(--text-soft); font-size:12px;">บนแผนที่ Google ชื่อแต่ละจุดขึ้นต้นด้วยเลขลำดับ (1. 2. 3. …) · A = เริ่มต้น</div>` : ""}`
+      : n ? `เส้นทางตรวจ <b>${shown} จุด</b> เรียงเป็นเส้นทางต่อเนื่อง (จุดที่อยู่ทางเดียวกันและใกล้กันไปก่อน) · รวมประมาณ <b>${FIELD_STOPS.reduce((t, x) => t + (x.legKm || 0), 0).toFixed(1)} กม.</b> (เส้นตรง) · <b>เริ่มต้น</b> = ${FIELD_ORIGIN.label}${n > shown ? ` · แสดง ${shown} จุดแรก (เหลืออีก ${n - shown} จุดในรายการด้านล่าง)` : ""}<div style="margin-top:6px; line-height:1.9;">ลำดับ: ${order}</div>${nm && LF_ROUTE.pts ? `<div style="margin-top:2px; color:var(--text-soft); font-size:12px;">ระยะทางตามถนนรวมประมาณ ${LF_ROUTE.km.toFixed(1)} กม. · ใช้เวลาขับรถประมาณ ${Math.round(LF_ROUTE.min)} นาที (ไม่รวมเวลาตรวจ)</div>` : ""}${g ? `<div style="margin-top:2px; color:var(--text-soft); font-size:12px;">บนแผนที่ Google ชื่อแต่ละจุดขึ้นต้นด้วยเลขลำดับ (1. 2. 3. …) · A = เริ่มต้น</div>` : ""}`
           : `ไม่มีจุดตรวจในขณะนี้ — แสดงตำแหน่ง${FIELD_ORIGIN.label}`;
   }
   if (hint) hint.textContent = "* จุดที่กรอกพิกัดไว้ในใบงานจะอยู่ตรงตำแหน่งจริง ส่วนจุดที่ไม่มีพิกัดเป็นตำแหน่งโดยประมาณตามเขต · ถ้าแผนที่ไม่ขึ้น (ออฟไลน์/เครือข่ายปิดกั้น) กด \"แผนที่จำลอง\"";
@@ -4150,7 +4247,7 @@ const pageWorkOrder = `
 /* ===================== PAGE: FIELD NAVIGATION ===================== */
 const pageFieldNav = `
 <div class="page-head">
-  <div><h1>นำทางตรวจภาคสนาม</h1><p>จุดตรวจของใบงานที่ยังค้าง (รอดำเนินการ/กำลังดำเนินการ/เกินกำหนด) เรียงตามระยะทางจากศูนย์ปฏิบัติการ — กดไอคอนหมุดในรายการเพื่อซูมแผนที่ไปที่จุดนั้น หรือกดรายการเพื่อดูรายละเอียด</p></div>
+  <div><h1>นำทางตรวจภาคสนาม</h1><p>จุดตรวจของใบงานที่ยังค้าง (รอดำเนินการ/กำลังดำเนินการ/เกินกำหนด) เรียงเป็นเส้นทางต่อเนื่องจากจุดเริ่มต้น (จุดที่อยู่ใกล้กันไปก่อน) — กดไอคอนหมุดในรายการเพื่อซูมแผนที่ไปที่จุดนั้น หรือกดรายการเพื่อดูรายละเอียด</p></div>
 </div>
 <div class="card" style="margin-bottom:16px;">
   <div class="field-map-toolbar">
@@ -4162,6 +4259,8 @@ const pageFieldNav = `
     <div class="map-seg" role="tablist" aria-label="รูปแบบแผนที่">
       <button id="mapModeNum" onclick="setFieldMapMode('num')">แผนที่</button>
     </div>
+    <button class="btn" onclick="importFieldPoints()">${ic('upload')} นำเข้าไฟล์พิกัด</button>
+    <button class="btn" id="fieldOriginBtn" onclick="useMyLocationForRoute()">เริ่มจากตำแหน่งปัจจุบัน</button>
     <button class="btn" onclick="openFullRoute()">${ic('mapPin')} เปิดนำทางทั้งเส้นทางในแอป Google Maps</button>
   </div>
   <div class="gmap-bar" id="gmapBar"></div>
@@ -4513,7 +4612,7 @@ window.showInspectionHistory = function(){
   const F = INSP_HF;
   const yrs = [...new Set(history.map(h => String(new Date(h.savedAt).getFullYear() + 543)))].sort().reverse();
   const list = history.map((h, i) => ({ h, i })).filter(({ h }) => { const d = new Date(h.savedAt);
-    return (!F.year || String(d.getFullYear() + 543) === F.year) && (F.month === "" || String(d.getMonth()) === F.month) && (!F.form || h.code === F.form) && (!F.bad || (h.findings || []).length) && (!F.wo || h.woCode) && (!F.find || (h.findings || []).some(t => String(t).split(" — ")[0].trim() === F.find)); });
+    return (!F.year || String(d.getFullYear() + 543) === F.year) && (F.month === "" || String(d.getMonth()) === F.month) && (!F.form || h.code === F.form) && (!F.bad || (h.findings || []).length) && (!F.wo || h.woCode) && (!F.q || [h.woCode, h.code, h.title, h.summary].join(" ").toLowerCase().includes(F.q.toLowerCase())) && (!F.find || (h.findings || []).some(t => String(t).split(" — ")[0].trim() === F.find)); });
   const PAGE = 15, pages = Math.max(1, Math.ceil(list.length / PAGE)); F.page = Math.min(Math.max(1, F.page), pages);
   const rows = list.slice((F.page - 1) * PAGE, F.page * PAGE).map(({ h, i }) => `
     <tr>
@@ -4530,13 +4629,14 @@ window.showInspectionHistory = function(){
         <h3>ประวัติการตรวจสอบ (${list.length === history.length ? history.length : list.length + " จาก " + history.length})</h3>
         ${history.length ? `<span class="link-more" onclick="exportInspectionHistory()">ส่งออก Excel</span>` : ""}
       </div>
-      ${history.length > PAGE ? `<div style="display:flex; gap:8px; flex-wrap:wrap; padding:10px 20px 2px;">
+      ${history.length ? `<div style="display:flex; gap:8px; flex-wrap:wrap; padding:10px 20px 2px;">
+        <input type="search" id="insp-hq" class="select-sm" placeholder="ค้นหา ใบงาน / แบบฟอร์ม / อุปกรณ์…" value="${(F.q || "").replace(/"/g, "&quot;")}" oninput="INSP_HF.q = this.value; INSP_HF.page = 1; INSP_HF._f = 1; showInspectionHistory()" style="min-width:210px;">
         <select class="select-sm" style="max-width:100%;" aria-label="ปี" onchange="setInspHF('year', this.value)"><option value="">ทุกปี</option>${yrs.map(y => `<option value="${y}" ${F.year === y ? "selected" : ""}>ปี ${y}</option>`).join("")}</select>
         <select class="select-sm" style="max-width:100%;" aria-label="เดือน" onchange="setInspHF('month', this.value)"><option value="">ทุกเดือน</option>${RP_MONTHS.map((m, i) => `<option value="${i}" ${F.month === String(i) ? "selected" : ""}>${m}</option>`).join("")}</select>
         <select class="select-sm" style="max-width:100%;" aria-label="แบบฟอร์ม" onchange="setInspHF('form', this.value)"><option value="">ทุกแบบฟอร์ม</option>${INSPECTION_FORMS.map(f => `<option value="${f.code}" ${F.form === f.code ? "selected" : ""}>${f.code.replace("SF-07-0-", "")} · ${f.title.replace("แบบตรวจสอบบำรุงรักษา", "").trim()}</option>`).join("")}</select>
         <select class="select-sm" style="max-width:100%;" aria-label="ผลตรวจ" onchange="setInspHF('bad', this.value)"><option value="">ทุกผลตรวจ</option><option value="1" ${F.bad ? "selected" : ""}>เฉพาะที่พบความผิดปกติ</option></select>
         ${F.wo ? `<span class="badge teal">เฉพาะที่ตรวจตามใบงาน</span>` : ""}${F.find ? `<span class="badge red" title="${F.find.replace(/"/g, "&quot;")}">ข้อบกพร่อง: ${F.find.replace(/</g, "&lt;")}</span>` : ""}
-        ${F.year || F.month !== "" || F.form || F.bad || F.wo || F.find ? `<button class="btn" onclick="setInspHF('reset', '')">ล้างตัวกรอง</button>` : ""}
+        ${F.year || F.month !== "" || F.form || F.bad || F.wo || F.find || F.q ? `<button class="btn" onclick="setInspHF('reset', '')">ล้างตัวกรอง</button>` : ""}
       </div>` : ""}
       <div class="table-wrap">
         <table>
@@ -4546,16 +4646,17 @@ window.showInspectionHistory = function(){
       </div>
       ${list.length > PAGE ? `<div class="table-foot"><div class="count">แสดง ${(F.page - 1) * PAGE + 1}-${Math.min(list.length, F.page * PAGE)} จาก ${list.length} รายการ</div><div class="pager"><button class="btn" ${F.page <= 1 ? "disabled" : ""} onclick="setInspHF('page', ${F.page - 1})">ก่อนหน้า</button><span style="font-size:12.5px; padding:0 8px;">หน้า ${F.page}/${pages}</span><button class="btn" ${F.page >= pages ? "disabled" : ""} onclick="setInspHF('page', ${F.page + 1})">ถัดไป</button></div></div>` : ""}
     </div>`;
+  if (F._f){ F._f = 0; const el = document.getElementById("insp-hq"); if (el){ el.focus(); try { el.setSelectionRange(el.value.length, el.value.length); } catch(e){} } }
 };
-let INSP_HF = { year:"", month:"", form:"", bad:"", wo:"", find:"", page:1 };
+let INSP_HF = { year:"", month:"", form:"", bad:"", wo:"", find:"", q:"", page:1 };
 // v64: open the history list from the dashboard with the matching filters applied.
 window.inspDrill = function(o){
   const D = INSP_DB || { year:String(KPI_PERIOD.yearBE), month:String(KPI_PERIOD.monthIdx) };
-  INSP_HF = Object.assign({ year:D.year, month:D.month, form:"", bad:"", wo:"", find:"", page:1 }, o || {});
+  INSP_HF = Object.assign({ year:D.year, month:D.month, form:"", bad:"", wo:"", find:"", q:"", page:1 }, o || {});
   goTo("inspection"); showInspectionHistory();
 };
 window.setInspHF = function(k, v){
-  if (k === "reset") INSP_HF = { year:"", month:"", form:"", bad:"", wo:"", find:"", page:1 };
+  if (k === "reset") INSP_HF = { year:"", month:"", form:"", bad:"", wo:"", find:"", q:"", page:1 };
   else { INSP_HF[k] = k === "page" ? parseInt(v, 10) : v; if (k !== "page") INSP_HF.page = 1; }
   showInspectionHistory();
 };
